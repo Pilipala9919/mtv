@@ -101,7 +101,9 @@ def main():
     INDEX.write_text(html, encoding="utf-8")
     print(f"apk sha256: {sha}")
     print(f"apk size: {len(apk_data)} bytes ({size_mb:.1f} MB)")
-    sync_update_channels()
+    preview_version=sync_update_channels()
+    html=re.sub(r"[0-9]+\.[0-9]+\.[0-9]+-[a-zA-Z0-9.]+(?=\.apk|/| 体验版|-source-and-apk\.zip)",preview_version,INDEX.read_text(encoding="utf-8"))
+    INDEX.write_text(html,encoding="utf-8")
     print("changed" if changed else "already up to date")
     return 0
 
@@ -143,6 +145,7 @@ def sync_update_channels():
     for name,data in staged.items():
         target=ROOT/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data)
     print("Both update channels verified and synchronized")
+    return feed["versionName"]
 
 
 if __name__ == "__main__":
