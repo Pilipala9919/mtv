@@ -71,8 +71,7 @@ def main():
 
     changed = False
     if old_apk and old_apk != apk_name:
-        for f in ROOT.glob("MarcoTV-*.apk"):
-            f.unlink()
+        # Keep versioned APKs: older clients and preview feeds may still need them.
         changed = True
     (ROOT / apk_name).write_bytes(apk_data)
     if old_version and old_version != version:
@@ -102,8 +101,48 @@ def main():
     INDEX.write_text(html, encoding="utf-8")
     print(f"apk sha256: {sha}")
     print(f"apk size: {len(apk_data)} bytes ({size_mb:.1f} MB)")
+    sync_update_channels()
     print("changed" if changed else "already up to date")
     return 0
+
+
+def sync_update_channels():
+    """Pilipala: mirror only published upstream feeds after release digest validation."""
+    staged = {}
+    for channel in ("stable", "preview"):
+        feed = json.loads(fetch(f"https://raw.githubusercontent.com/{SOURCE_REPO}/main/docs/updates/{channel}.json"))
+        version = feed["versionName"]
+        if not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:-[a-zA-Z0-9.]+)?", version) or len(version)>48:
+            raise ValueError("Invalid version")
+        if feed["schema"]!=1 or type(feed["versionCode"]) is not int or feed["versionCode"]<=0:
+            raise ValueError("Invalid schema/code")
+        if not 23<=feed["minSdk"]<=100 or not 0<feed["size"]<=128*1024*1024 or not re.fullmatch(r"[a-f0-9]{64}", feed["sha256"]):
+            raise ValueError("Invalid feed bounds")
+        if ("-" in version)!=feed["prerelease"] or (channel=="stable" and feed["prerelease"]):
+            raise ValueError("Wrong release channel")
+        name=f"MarcoTV-{version}.apk"
+        official=f"https://github.com/{SOURCE_REPO}/releases/download/v{version}/{name}"
+        if feed["url"]!=official:raise ValueError("Unexpected upstream APK URL")
+        release=json.loads(fetch(f"https://api.github.com/repos/{SOURCE_REPO}/releases/tags/v{version}"))
+        if release["draft"] or release["prerelease"]!=feed["prerelease"]:raise ValueError("Release not ready")
+        assets={a["name"]:a for a in release["assets"]}
+        asset=assets[name]
+        if asset["browser_download_url"]!=official or asset["size"]!=feed["size"]:raise ValueError("Release mismatch")
+        local=ROOT/name
+        data=local.read_bytes() if local.exists() else b""
+        if len(data)!=feed["size"] or hashlib.sha256(data).hexdigest()!=feed["sha256"]:data=fetch(official,binary=True)
+        if len(data)!=feed["size"] or hashlib.sha256(data).hexdigest()!=feed["sha256"]:raise ValueError("APK digest mismatch")
+        if asset.get("digest") and asset["digest"]!="sha256:"+feed["sha256"]:raise ValueError("GitHub digest mismatch")
+        checksum=fetch(assets[name+".sha256"]["browser_download_url"]).split()[0]
+        if checksum!=feed["sha256"]:raise ValueError("Published checksum mismatch")
+        staged[name]=data
+        staged[name+".sha256"]=(feed["sha256"]+"  "+name+"\n").encode()
+        feed["url"]=f"https://marcotv.wlj9919.top/{name}"
+        staged[f"updates/{channel}.json"]=(json.dumps(feed,ensure_ascii=False,indent=2)+"\n").encode("utf-8")
+    # All checks finish before replacing public channel files. Pages deploys one Git commit.
+    for name,data in staged.items():
+        target=ROOT/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data)
+    print("Both update channels verified and synchronized")
 
 
 if __name__ == "__main__":

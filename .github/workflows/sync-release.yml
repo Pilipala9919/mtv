@@ -17,7 +17,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Sync latest stable release
+      - name: Check update sync validation
+        run: python3 scripts/test_sync.py
+      - name: Sync stable page and both update channels
         run: python3 scripts/sync_release.py
       - name: Commit and push if changed
         run: |
