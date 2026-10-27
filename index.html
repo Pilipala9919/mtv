@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marco TV · 免费开源 Android 电视桌面</title>
+<meta name="description" content="Marco TV 是 Pilipala 开发的免费开源 Android 电视桌面：横向卡片、时钟屏保、遥控器自定义。本站为镜像站，最新版以 GitHub Releases 为准。">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b0e14;color:#e8ecf3;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}
+a{color:#38c8ff}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 60px}
+.tag{display:inline-block;border:1px solid #38c8ff;color:#38c8ff;border-radius:99px;padding:2px 12px;font-size:13px}
+h1{font-size:40px;line-height:1.25;margin:14px 0 8px}h2{font-size:22px;margin:36px 0 12px;border-left:4px solid #38c8ff;padding-left:12px}
+p.lead{color:#b8c0cf;font-size:17px}.card{background:#141924;border:1px solid #232c3d;border-radius:16px;padding:20px;margin:16px 0}
+.btn{display:inline-block;background:#38c8ff;color:#04121a!important;text-decoration:none;font-weight:700;border-radius:12px;padding:12px 22px;margin:6px 10px 6px 0}
+.btn2{display:inline-block;border:1px solid #38c8ff;color:#38c8ff;text-decoration:none;border-radius:12px;padding:11px 20px;margin:6px 10px 6px 0}
+code{word-break:break-all;background:#0b0e14;border:1px solid #232c3d;border-radius:6px;padding:2px 6px;font-size:13px}
+img{width:100%;border-radius:14px;border:1px solid #232c3d;margin:10px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}h1{font-size:30px}}
+.small{color:#9aa5b5;font-size:14px}ul{padding-left:20px}li{margin:6px 0}
+.warn{background:#1a1410;border:1px solid #6b4a1f;border-radius:12px;padding:14px 18px}
+</style>
+</head>
+<body><div class="wrap">
+<span class="tag">镜像站 · marcotv.wlj9919.top</span>
+<h1>Marco TV</h1>
+<p class="lead">Pilipala 开发的免费开源 Android 电视桌面。横向卡片、连续焦点动画、粗体时间与日期、风景壁纸、时钟屏保，以及适合遥控器的自定义设置。</p>
+<div class="warn"><strong>免费声明：</strong>本软件免费开源。如果你付费购买了本软件，请尽快向购买平台申请退款。</div>
+
+<div class="card">
+<h2 style="margin-top:0;border:none;padding:0">下载稳定版</h2>
+<p><strong>当前稳定版：0.11.1</strong> · 发布于 2026 年 10 月 25 日 · 约 7.8MB<br>
+<span class="small">主分支另有 0.12.0-rc.1 预览版，普通用户请继续用下面的稳定版，不要当稳定版装。</span></p>
+<a class="btn" href="MarcoTV-0.11.1.apk" download>下载 MarcoTV-0.11.1.apk</a>
+<a class="btn2" href="https://github.com/Pilipala9919/MarcoTV/releases/latest" target="_blank" rel="noopener">去 GitHub 看全部版本</a>
+<a class="btn2" href="https://github.com/Pilipala9919/MarcoTV/releases/download/v0.11.1/MarcoTV-0.11.1-source-and-apk.zip" target="_blank" rel="noopener">源码加安装包打包下载</a>
+<p class="small">校验值 SHA256：<br><code>8844394cf4fc79845b96d696be6921463e4a0c2cd68129c011ee78297d67fa3e</code><br>
+下载后对一下这串字符，不一样就重新下载，不要装。</p>
+</div>
+
+<img src="desktop.webp" alt="Marco TV 桌面实机截图">
+<div class="grid">
+<img src="library.webp" alt="Marco TV 应用库实机截图">
+<img src="clock.webp" alt="Marco TV 时钟实机截图">
+</div>
+<img src="screensaver.webp" alt="Marco TV 时钟屏保实机截图">
+<p class="small">以上为 0.11.1 稳定版实机截图，桌面及播放使用示例内容，私人应用、网络与记录已遮挡。更多截图见原项目展示页。</p>
+
+<h2>能做什么</h2>
+<ul>
+<li>读取已安装应用和系统输入源，支持收藏、排序、隐藏、改名、自定义封面</li>
+<li>默认按最近从 Marco TV 打开的顺序排列，置顶应用优先，也支持自定义排序</li>
+<li>可选系统最近任务：双击 Home 打开堆叠卡片，回到原页面（需电脑启动任务辅助服务）</li>
+<li>本地备份与恢复：自动快照、设置和图片导出，恢复前先预览并备份原配置</li>
+<li>四张内置风景壁纸，也支持本地图片；闲置时放大并提亮时间、压暗背景</li>
+<li>滑块左右微调、长按加速，调整时实时预览；设置逐级返回，Home 可直接回桌面</li>
+<li>本地异常记录和诊断报告导出，不上传日志；备份只在本地，不上云</li>
+</ul>
+
+<h2>先核对你的电视能不能装</h2>
+<ul>
+<li>最低 <strong>Android 6.0 / API 23</strong>；实测设备是小米 MiTV-ASTP0、Android 9</li>
+<li>先看背面铭牌记下品牌和完整型号，再到原厂设置里看实际系统，不要只记“55 寸”</li>
+<li><strong>不能装：</strong>三星 Tizen、LG webOS、Roku、Apple tvOS；华为、荣耀智慧屏、海信 VIDAA 不能只凭品牌判断，要先确认是不是 Android APK 兼容环境</li>
+<li>最低版本符合，不代表 Home 接管、自动恢复这些管理功能一定都开放，要逐项验收</li>
+</ul>
+
+<h2>最简单的安装：U盘</h2>
+<ol>
+<li>把 <code>MarcoTV-0.11.1.apk</code> 复制到 U 盘根目录</li>
+<li>U 盘插到电视普通 USB 口，用电视自带文件管理器打开 U 盘</li>
+<li>选中安装包，如果系统提示禁止安装，就给“实际打开安装包的那个文件管理器”开一次安装未知应用权限，再重新打开安装包</li>
+<li>装好后从应用列表打开 Marco TV，先验证方向键、应用启动和设置界面</li>
+<li>只想先看看桌面，到这里就够了；想设为默认桌面、开机打开、自动恢复，再走 ADB 那一步</li>
+</ol>
+<p>完整安装说明、使用说明、各品牌电视设置入口、常见问题，见原项目文档：<a href="https://github.com/Pilipala9919/MarcoTV" target="_blank" rel="noopener">github.com/Pilipala9919/MarcoTV</a></p>
+
+<h2>常见问题，挑最常问的说</h2>
+<ul>
+<li><strong>品牌在表里就一定能用吗？</strong>不能，只按品牌判断不够，要核对完整型号、地区和实际系统。</li>
+<li><strong>没有开发者选项怎么办？</strong>U盘试装不一定需要它；需要 ADB 时再按品牌表去关于页找版本号字段启用。</li>
+<li><strong>还是装不上？</strong>先确认授权的是实际打开安装包的那个应用，再看是不是儿童模式、酒店模式或品牌禁装，核对安装失败的原文。</li>
+<li><strong>提示签名冲突？</strong>已装版本和这个安装包签名不同，不要直接清数据或卸载，先用备份与恢复导出配置和图片。</li>
+<li><strong>有人要收钱、要激活码？</strong>没有这个流程，Pilipala 是免费发行，付过钱的尽快找购买平台退款。</li>
+<li><strong>反馈要带什么？</strong>品牌、完整型号、系统与软件版本、当前步骤、错误原文；截图前遮住序列号、IP、Wi-Fi 名称这些个人信息。</li>
+</ul>
+
+<h2>隐私</h2>
+<p>备份只做本地快照和用户主动文件导出，不上云；诊断只保存在电视本地，可关闭、清除和预览后导出，不会自动上传。报告里不含 Wi-Fi 名称、IP、节目、视频地址和密码。</p>
+
+<div class="card">
+<p style="margin-top:0"><strong>原项目：</strong><a href="https://github.com/Pilipala9919/MarcoTV" target="_blank" rel="noopener">Pilipala9919 / MarcoTV</a> · 协议 GPL-3.0-only · 版权 © 2026 Pilipala</p>
+<p class="small">本站为镜像站，只做展示和下载中转，方便国内访问；最新版本、问题反馈和源码以 GitHub 原仓库为准。本页内容整理自原项目 README 与文档，版本信息以 0.11.1 稳定版为准，镜像建于 2026 年 10 月 27 日。本站每天自动检查原项目新稳定版，有新版时自动换安装包、版本号和校验值，再由 Cloudflare 自动重新部署，不用手动重传。</p>
+</div>
+</div></body>
+</html>
