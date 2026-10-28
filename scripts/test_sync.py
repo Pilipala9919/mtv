@@ -39,4 +39,20 @@ class SyncChecks(unittest.TestCase):
     def test_draft_keeps_old_index(self):self.exercise(lambda f,r:r.update(draft=True),True)
     def test_traversal_keeps_old_index(self):self.exercise(lambda f,r:f.update(versionName='../evil'),True)
 
+class ChannelPageChecks(unittest.TestCase):
+    def page(self, version):
+        return sync.render_channels('<p>以上为 0.11.1 实机截图</p><h2>体验版与电视在线更新</h2><p>old</p><h2>先核对你的电视能不能装</h2>', version)
+    def test_stable_replaces_preview_label(self):
+        page=self.page('0.12.0')
+        self.assertIn('0.12.0 正式版',page)
+        self.assertNotIn('old',page)
+        self.assertIn('0.11.1 实机截图',page)
+        self.assertIn('0.11.1 没有在线更新',page)
+    def test_future_preview_and_repeated_sync(self):
+        page=self.page('0.12.0')
+        page=sync.render_channels(page,'0.13.0-rc.1')
+        self.assertIn('0.13.0-rc.1 体验版',page)
+        self.assertNotIn('0.12.0.apk',page)
+        self.assertEqual(page,sync.render_channels(page,'0.13.0-rc.1'))
+
 if __name__=='__main__':unittest.main()

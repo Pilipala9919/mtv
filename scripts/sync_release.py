@@ -75,8 +75,12 @@ def main():
         changed = True
     (ROOT / apk_name).write_bytes(apk_data)
     if old_version and old_version != version:
-        html = html.replace(f"v{old_version}", f"v{version}")
-        html = html.replace(old_version, version)
+        # Only update release links and labels; screenshot provenance and old-version
+        # upgrade instructions must retain their historical version.
+        html = html.replace(f"MarcoTV-{old_version}", f"MarcoTV-{version}")
+        html = html.replace(f"/v{old_version}/", f"/v{version}/")
+        html = html.replace(f"当前稳定版：{old_version}", f"当前稳定版：{version}")
+        html = html.replace(f"版本信息以 {old_version} 稳定版为准", f"版本信息以 {version} 稳定版为准")
         changed = True
     html, n = re.subn(r"发布于 \d{4} 年 \d{1,2} 月 \d{1,2} 日",
                       f"发布于 {published.year} 年 {published.month} 月 {published.day} 日", html)
@@ -102,10 +106,25 @@ def main():
     print(f"apk sha256: {sha}")
     print(f"apk size: {len(apk_data)} bytes ({size_mb:.1f} MB)")
     preview_version=sync_update_channels()
-    html=re.sub(r"[0-9]+\.[0-9]+\.[0-9]+-[a-zA-Z0-9.]+(?=\.apk|/| 体验版|-source-and-apk\.zip)",preview_version,INDEX.read_text(encoding="utf-8"))
+    html=render_channels(INDEX.read_text(encoding="utf-8"), preview_version)
     INDEX.write_text(html,encoding="utf-8")
     print("changed" if changed else "already up to date")
     return 0
+
+
+def render_channels(html, version):
+    """Render either a preview release or its stable successor without stale RC labels."""
+    preview = "-" in version
+    label = "体验版" if preview else "正式版"
+    status = "体验版仍在验证中，日常使用默认推荐上方稳定版。" if preview else "体验渠道与稳定渠道当前提供同一正式版，原 RC 用户可直接覆盖升级。"
+    section = f'''<h2>电视在线更新</h2>
+<p>当前提供 <a href="MarcoTV-{version}.apk">{version} {label}</a>。{status} TCL Android 11 应用入口兼容仍待该机复测。</p>
+<p>安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。镜像优先，失败后尝试 GitHub；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
+<p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}-source-and-apk.zip">对应源码</a> · <a href="MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
+'''
+    result, count = re.subn(r"<h2>(?:体验版与)?电视在线更新</h2>.*?(?=<h2>先核对你的电视能不能装</h2>)", lambda _: section, html, flags=re.S)
+    if count != 1: raise ValueError("Update section missing or duplicated")
+    return result
 
 
 def sync_update_channels():
