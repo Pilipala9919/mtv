@@ -12,7 +12,7 @@ import json
 import re
 import sys
 import urllib.request
-from datetime import date, datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -40,7 +40,7 @@ def main():
     release = json.loads(fetch(API))
     tag = release["tag_name"]
     version = tag[1:] if tag.startswith("v") else tag
-    published = datetime.fromisoformat(release["published_at"].replace("Z", "+00:00")).date()
+    published = datetime.fromisoformat(release["published_at"].replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=8))).date()
     assets = {a["name"]: a for a in release.get("assets", [])}
     apk_names = [n for n in assets if n.endswith(".apk")]
     if not apk_names:
@@ -90,7 +90,7 @@ def main():
     if re.search(r"[0-9a-f]{64}", html):
         html, n = re.subn(r"[0-9a-f]{64}", sha, html, count=1)
         changed = changed or n > 0
-    today = date.today()
+    today = datetime.now(timezone(timedelta(hours=8))).date()
     html, n = re.subn(r"镜像建于 \d{4} 年 \d{1,2} 月 \d{1,2} 日",
                       f"镜像上次同步于 {today.year} 年 {today.month} 月 {today.day} 日", html)
     html, n2 = re.subn(r"镜像上次同步于 \d{4} 年 \d{1,2} 月 \d{1,2} 日",
@@ -118,7 +118,7 @@ def render_channels(html, version):
     label = "体验版" if preview else "正式版"
     status = "体验版仍在验证中，日常使用默认推荐上方稳定版。" if preview else "体验渠道与稳定渠道当前提供同一正式版，原 RC 用户可直接覆盖升级。"
     section = f'''<h2>电视在线更新</h2>
-<p>当前提供 <a href="MarcoTV-{version}.apk">{version} {label}</a>。{status} TCL Android 11 应用入口兼容仍待该机复测。</p>
+<p>当前提供 <a href="MarcoTV-{version}.apk">{version} {label}</a>。{status} TCL Android 11 的 Home 长按与任务服务，以及华为 SE65，仍待对应固件实测。</p>
 <p>安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。镜像优先，失败后尝试 GitHub；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
 <p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}-source-and-apk.zip">对应源码</a> · <a href="MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
 '''
