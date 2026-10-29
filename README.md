@@ -16,6 +16,14 @@ Marco TV（Pilipala 开发的免费开源 Android 电视桌面）的镜像站源
 
 版权 © 2026 Pilipala。电视默认稳定渠道，用户主动选择体验渠道才会收到预览版。APK 安装仍需用户确认。`_headers` 设置索引短缓存；`404.html` 防止不存在的更新路径回退首页。
 
+## Lite 实验版镜像
+
+- 独立说明和下载入口：`/lite/`，首页也提供 Lite 下载卡片。
+- 当前镜像 Lite 0.1.0，文件为 `MarcoTV-Lite-0.1.0.apk` 与同名 `.sha256`，逐字节校验与官方 Release 一致。
+- `lite/validation.json` 和 `lite/docs/assets/` 来自相同版本。展示图是 Android 4.0.2 模拟器界面绘制，不是真机兼容或性能证明。
+- Lite 不写入 `updates/stable.json` / `updates/preview.json`；现有稳定版同步任务不自动更新 Lite。后续 Lite 发布应单独核验官方 `lite-v*` Release、APK SHA-256、说明和验证记录，再更新此入口。
+- 源码下载链接指向 GitHub 上对应的 Lite 标签及完整源码包。现有无 U 盘安装助手内含完整版，不用于自动安装 Lite。
+
 ## Cloudflare Pages 设置
 
 - 连接仓库：本仓库，生产分支 `main`

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marco TV Lite · 老电视兼容实验版 · Pilipala</title>
+<meta name="description" content="Marco TV Lite 0.1.0 国内镜像下载。面向 Android 4.0 的免费开源轻量桌面，独立安装，已完成模拟器基础验证，欢迎老电视用户实测反馈。">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b0e14;color:#e8ecf3;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.8}main{max-width:960px;margin:auto;padding:28px 22px 64px}a{color:#8adbe5}h1{font-size:clamp(32px,6vw,56px);line-height:1.15;letter-spacing:-1px;margin:20px 0 14px}h2{font-size:24px;margin-top:34px}h3{font-size:19px}p{margin:12px 0}.muted,figcaption{color:#a5b7c7}.tag{display:inline-block;border:1px solid #547779;color:#b9e9e8;padding:3px 14px;border-radius:30px;font-size:13px}.card{background:#142230;border:1px solid #2a4153;border-radius:22px;padding:24px;margin:24px 0}.btn{display:inline-block;background:#b7e1e5;color:#102634;font-weight:700;text-decoration:none;padding:12px 20px;border-radius:12px;margin:6px 12px 6px 0}.outline{background:transparent;border:1px solid #709697;color:#b7e1e5}.notice{border-left:3px solid #deb87a;padding-left:16px;color:#e9d4b1}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid .card{margin:0}figure{margin:28px 0}img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid #304152}figcaption{font-size:13px;margin-top:8px}code{overflow-wrap:anywhere;font-size:12px}li{margin:9px 0}ul,ol{padding-left:24px}footer{margin-top:40px;padding-top:22px;border-top:1px solid #2a4153;font-size:14px}@media(max-width:600px){.grid{grid-template-columns:1fr}.card{padding:19px}.btn{display:block;text-align:center;margin-right:0}}
+</style>
+</head>
+<body><main>
+<nav><a href="../">← Marco TV 镜像首页</a></nav>
+<header>
+<p><span class="tag">LITE · 0.1.0 · 老电视兼容实验版</span></p>
+<h1>老电视，也有新桌面。</h1>
+<p class="muted">Marco TV Lite，由 Pilipala 开发。保留卡片桌面、四款时钟与 Magic Desktop，让老系统先用好基础功能。</p>
+<p class="notice">目标最低 Android 4.0。已通过 Android 4.0.2 模拟器基础验证，尚无老电视真机验证。更多机型等待实测反馈，欢迎加入测试！</p>
+</header>
+<section class="card" id="download">
+<h2 style="margin-top:0">下载 Marco TV Lite 0.1.0</h2>
+<p>约 4.1 MiB · 2026 年 10 月 29 日 · 独立安装，可与完整版共存。</p>
+<a class="btn" href="../MarcoTV-Lite-0.1.0.apk" download>下载 Lite 实验版 APK</a>
+<a class="btn outline" href="#install">安装与使用说明</a>
+<p><a href="../MarcoTV-Lite-0.1.0.apk.sha256">下载校验文件</a> · <a href="https://github.com/Pilipala9919/MarcoTV/releases/tag/lite-v0.1.0">GitHub 发布页</a></p>
+<p class="muted">SHA-256：<br><code>2ce5a7af7fea727102c715e18335e2fecf651e0a3ec566cdf3269227b5b14d24</code></p>
+<p><strong>本软件免费开源。如果你付费购买了本软件，请尽快向购买平台申请退款。</strong></p>
+</section>
+<section>
+<h2>轻量版，保留这些日常体验</h2>
+<div class="grid">
+<div class="card"><h3>卡片桌面</h3><p>左右选择、确定打开；长按管理置顶和隐藏。支持最近打开或名称排序，向右移动时整行跟随滚动。</p></div>
+<div class="card"><h3>Magic Desktop</h3><p>平面缩小预览，11 项调整。卡片位置、高度、圆角和时钟外观可调，保存才生效，返回撤销。</p></div>
+<div class="card"><h3>四款时钟</h3><p>现代宽体、修长窄体、柔圆错倾、雅致衬线。圆体倾斜幅度可调，桌面闲置后放大时间、压暗壁纸。</p></div>
+<div class="card"><h3>简单维护</h3><p>两张内置壁纸、本机外观快照和设备状态页。无联网权限，不上传使用数据。</p></div>
+</div>
+<figure><img src="docs/assets/lite-magic-api14.png" width="1280" height="672" alt="Lite 的 Magic Desktop 平面预览，左侧桌面右侧调整项"><figcaption>Android 4.0.2 模拟器中实际界面绘制导出；不是电视实拍或流畅度证明。卡片为系统示例应用。</figcaption></figure>
+</section>
+<section id="install">
+<h2>先试用，再决定是否设为桌面</h2>
+<ol>
+<li>在电视「关于／系统信息」核对实际 Android 版本。不能安装 Android APK 的系统不适用。</li>
+<li>下载上方带 <strong>Lite</strong> 的 APK。通过电视浏览器、厂商文件接收、U 盘或已经授权的电脑 ADB 传到电视。</li>
+<li>按系统提示，允许实际打开安装包的文件管理器或浏览器安装未知来源应用，然后安装。</li>
+<li>从原厂应用列表打开 <strong>Marco TV Lite</strong>，检查方向键、确定、返回和应用启动。</li>
+<li>确认基本操作正常后，如果系统提供默认桌面选择，再选择 Lite。不要停用或卸载原厂桌面。</li>
+</ol>
+<p class="notice">镜像站现有安装助手内置的是完整版，不会自动安装 Lite。Android 4.x 请直接使用本页 Lite APK；是否允许浏览器下载、文件接收或默认桌面选择，由电视固件决定。</p>
+<h3>遥控器怎么操作</h3>
+<p>左右选择卡片，确定打开；上键进入顶部设置与 Magic Desktop，下键回到卡片。长按确定打开单应用菜单。Magic Desktop 中上下选项目、左右调数值，滚动到底部选择保存、取消或恢复默认值；恢复默认值也需要再保存。</p>
+<p>第一次按键从桌面时钟屏保唤醒，避免误开应用。Lite 的屏保只在桌面前台生效，不接管电视系统屏保。</p>
+<h3>更新、备份与恢复</h3>
+<p>Lite 首版没有在线更新，更新时手动覆盖安装 Lite APK。它不接入完整版的稳定／体验更新渠道，设置和备份也不互通。</p>
+<p>「保存本机外观备份」只保留外观参数与内置壁纸选择，不包含应用排序记录，也不能迁移到其他电视。卸载 Lite 会删除设置和内部备份。需要恢复原厂桌面时，在系统设置改回默认桌面，或卸载 Lite。</p>
+</section>
+<section>
+<h2>验证到了哪里</h2>
+<p><strong>18 项本地检查 + 23 项 Android 4.0.2 模拟器运行检查通过。</strong>覆盖安装运行、应用发现和打开、方向键、四款字体绘制、预览保存与撤销、本机外观恢复和异常备份保护。</p>
+<p>厂商 Home 键、真实遥控器长按／双击、关屏唤醒、长时间运行及实际流畅度仍待真机验证。Android 4.0.3/4.0.4、4.1–5.x 和其他架构未逐项运行验证。</p>
+<p>Lite 首版暂不提供 Marco 互联、系统最近任务、媒体播放卡片、ADB 自动恢复和开机接管。完整版继续面向 Android 6.0 及以上；<a href="../">查看完整版功能与下载</a>。</p>
+<p><a href="validation.json">查看完整验证记录</a> · <a href="https://github.com/Pilipala9919/MarcoTV/issues">提交实测反馈</a></p>
+<p class="muted">反馈请附电视品牌型号、Android 与固件版本、软件版本、具体操作和结果。截图请遮挡账号、Wi-Fi 名称、IP、序列号和私人应用。</p>
+</section>
+<footer>
+<p>© 2026 Pilipala · <a href="../LICENSE">GPL-3.0-only</a> · <a href="https://github.com/Pilipala9919/MarcoTV/blob/lite-v0.1.0/lite/README.md">完整说明与开源资产许可</a></p>
+<p>对应版本完整源码：<a href="https://github.com/Pilipala9919/MarcoTV/archive/refs/tags/lite-v0.1.0.zip">源码 ZIP</a> · <a href="https://github.com/Pilipala9919/MarcoTV/releases/download/lite-v0.1.0/MarcoTV-Lite-0.1.0-source-and-apk.zip">源码与 APK 完整包</a>（GitHub 下载）。</p>
+<p class="muted">本站镜像提供 Lite APK、校验文件、说明和验证记录；源码下载链接指向同一发布版本。Lite 为独立实验版，不替换完整版正式更新。</p>
+</footer>
+</main></body></html>
