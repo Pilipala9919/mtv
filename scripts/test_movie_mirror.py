@@ -67,7 +67,7 @@ class MirrorTests(unittest.TestCase):
         self.assertEqual((self.out/'updates/preview.json').read_bytes(), before)
 
     def test_wrong_asset_host(self):
-        self.release['assets'][0]['browser_download_url']='https://example.org/file.apk'
+        self.release['assets'][0]['browser_download_url']='https://example.invalid/file.apk'
         with self.assertRaises(ValueError): self.sync()
         self.assertFalse(self.out.exists())
 
