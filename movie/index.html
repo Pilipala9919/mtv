@@ -1,23 +1,20 @@
 <!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marco Movie · Pilipala</title><style>body{margin:0;background:#101013;color:#f5f5f7;font:16px/1.8 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:64px 24px}h1{font-size:48px;letter-spacing:-2px}.muted{color:#a1a1aa}.card{background:#232329;border:1px solid #37373f;border-radius:28px;padding:28px;margin:24px 0}a{color:#9ac6ff}.button{display:inline-block;background:#f5f5f7;color:#111;padding:12px 24px;border-radius:18px;text-decoration:none;margin:6px 12px 6px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}code{overflow-wrap:anywhere}</style>
 <main><p class="muted">PILIPALA · ANDROID TV</p><h1>Marco Movie</h1><p>为遥控器和大屏幕设计的播放器。</p>
-<div class="card"><h2>0.4.13 Preview</h2><p>Android 6.0+ · ARM 32 位 · 13.6 MB</p>
-<a class="button" href="MarcoMovie-0.4.13-preview.apk">下载安装包</a><a class="button" href="MarcoMovie-0.4.13-source.zip">下载同版本源码</a>
-<p><a href="MarcoMovie-0.4.13-preview.apk.sha256">校验文件</a> · <a href="https://github.com/Pilipala9919/MarcoMovie/releases/tag/v0.4.13-preview">GitHub 发布页</a></p>
-<p class="muted">SHA-256<br><code>caa0420c8bb1cf37c9681e7193a06dfda647c46bbb86ff064575846506b31587</code></p></div>
-<div class="card"><h2>本次更新</h2><pre>Marco Movie 0.4.13 Preview
+<div class="card"><h2>0.4.14 Preview</h2><p>Android 6.0+ · ARM 32 位 · 13.6 MB</p>
+<a class="button" href="MarcoMovie-0.4.14-preview.apk">下载安装包</a><a class="button" href="MarcoMovie-0.4.14-source.zip">下载同版本源码</a>
+<p><a href="MarcoMovie-0.4.14-preview.apk.sha256">校验文件</a> · <a href="https://github.com/Pilipala9919/MarcoMovie/releases/tag/v0.4.14-preview">GitHub 发布页</a></p>
+<p class="muted">SHA-256<br><code>1c55cafc1df2b838a565eb6bcdacb7a9044a03b7f89ebb7b2fa2c0f3b3ada626</code></p></div>
+<div class="card"><h2>本次更新</h2><pre>Marco Movie 0.4.14 Preview
 
-修复聚合搜索的结果处理和失败提示，改善不同电视显示区域下的布局与播放器方向键操作。
+- 首页从切换源按上返回“继续播放”，并回到顶部。
+- 选集位于大海报右侧信息列，减少短简介造成的空白；线路直接平铺为按钮。
+- 聚焦剧集后在选集上方显示完整标题；切换线路后开始播放使用所选线路。
+- 播放信息加载和网页解析留在当前页显示转圈提示，返回可取消，迟到结果不会自动打开播放器；直连媒体直接进入播放器。
 
-- 首拼/全拼匹配获得有效结果后立即显示，避免后续回退请求拖到超时；支持目录型结果继续展开。
-- 搜索来源按钮保留失败、超时和空结果来源，区分提示并支持单源重试，其他结果保留。
-- 点播播放中，工具条隐藏时按上/下会显示标题、进度和 Dock，并聚焦第一个“下集”按钮。
-- 按实际可用窗口校准比例；首页/搜索列数随宽度调整，键盘可滚动，弹窗使用窗口坐标。
-- 保留 0.4.12 的扫码提交修复、镜像同步与软件内更新。设置 → 软件更新可检查新版。
+同一 Android 9 电视 222 项定向检查通过，包含新增当前页加载、取消与迟到结果、网页解析及播放验证。本轮未重跑全部解码格式、全部电视显示配置和第三方来源；磁力文件发现保留已有文件选择流程。
 
-验证：同一 Android 9 电视 323 项定向检查通过；720p、1080p、4K 不同系统密度和缩小显示区域共六组测试通过。Windows 234 项离线检查及 8 个镜像测试通过。显示配置测试不等于不同品牌实机认证；真实聚合接口成功返回并展开目录，不保证所有外部来源、网盘与视频可用，未重测全部解码格式。
-
-由 Pilipala 开发，GPL-3.0-only。本产品仅为播放工具，不内置任何影视资源或配置源；内容与配置需由用户自行合法获取。
+作者 Pilipala，GPL-3.0-only。本产品仅为工具，不内置影视资源或配置源；内容与配置请自行合法获取。
 </pre></div>
 <p>本产品仅为工具，不内置、不提供、不托管任何影视资源或配置地址。内容与配置请自行合法获取。</p>
 <p>作者：Pilipala · <a href="LICENSE">GPL-3.0-only</a> · <a href="NOTICE">署名与许可</a> · <a href="/">Marco TV</a></p></main></html>
