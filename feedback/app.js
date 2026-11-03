@@ -4,8 +4,11 @@
 const $=id=>document.getElementById(id);
 let report,ready=false,busy=false;
 async function request(path,body){
- const response=await fetch('/api/feedback/'+path,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined,cache:'no-store',credentials:'omit',redirect:'error',signal:AbortSignal.timeout(15000)});
- const data=await response.json();if(!response.ok)throw new Error(data.error==='rate_limited'?'提交较频繁，请稍后再试。':'暂未提交，反馈服务暂不可用，请保留此页稍后重试。');return data;
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+ try{
+  const response=await fetch('/api/feedback/'+path,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined,cache:'no-store',credentials:'omit',redirect:'error',signal:controller.signal});
+  const data=await response.json();if(!response.ok)throw new Error(data.error==='rate_limited'?'提交较频繁，请稍后再试。':'暂未提交，反馈服务暂不可用，请保留此页稍后重试。');return data;
+ }finally{clearTimeout(timer);}
 }
 function update(){ $('submit').disabled=!ready||!report||!$('consent').checked||busy; }
 function showReceipt(id){$('number').textContent=id;$('receipt').hidden=false;$('report').hidden=true;}
@@ -22,16 +25,16 @@ async function init(){
    const stored=JSON.parse(sessionStorage.getItem('marcotv-report')||'null');
    if(stored&&Date.now()-stored.time<1800000)report=stored.report;
   }
-  if(report){$('device').textContent=[report.manufacturer,report.model,'Marco TV '+report.version].join(' · ');$('preview').textContent=JSON.stringify(report,null,2);$('report').hidden=false;}
+  if(report){$('device').textContent=[report.manufacturer,report.model,'Marco TV '+report.version].join(' · ');$('preview').textContent=JSON.stringify(report,null,2);$('symptom').value=report.symptom||'other';$('report').hidden=false;}
   else $('message').textContent='请从电视「维护与帮助 → 本地诊断 → 问题反馈」扫描二维码。';
-  const receipt=sessionStorage.getItem('marcotv-receipt');if(receipt&&/^[a-f0-9]{32}$/.test(receipt))showReceipt(receipt);
+  const receipt=sessionStorage.getItem('marcotv-receipt');if(receipt&&/^[a-f0-9]{32}$/.test(receipt)&&(!report||report.id===receipt))showReceipt(receipt);
  }catch{$('message').textContent='无法读取报告，请回到电视重新生成二维码。';report=null;}
  try{const config=await request('config');ready=config.ready===true&&config.schema===1;$('availability').textContent=ready?'反馈服务可用':'反馈服务尚未就绪。';}
  catch{$('availability').textContent='反馈服务暂不可用，报告尚未提交。';}
  update();
 }
 $('consent').addEventListener('change',update);
-$('symptom').addEventListener('change',()=>{if(report){report.symptom=$('symptom').value;$('preview').textContent=JSON.stringify(report,null,2);}});
+$('symptom').addEventListener('change',()=>{if(report){report.symptom=$('symptom').value;$('preview').textContent=JSON.stringify(report,null,2);sessionStorage.setItem('marcotv-report',JSON.stringify({time:Date.now(),report}));}});
 $('submit').addEventListener('click',async()=>{
  if(!ready||!report||!$('consent').checked||busy)return;
  busy=true;update();$('message').textContent='正在提交…';
