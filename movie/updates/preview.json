@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "versionCode": 29,
-  "versionName": "0.4.16",
+  "versionCode": 30,
+  "versionName": "0.4.17",
   "minSdk": 23,
   "size": 14266469,
-  "sha256": "ca2e62054442a36c4abe20f4b95e2b14e5e57aece83142e53140ca907e66d1cc",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.4.16-preview.apk",
+  "sha256": "224c091516e5371ca6f73515d2da29fa37d17872eacda12dd9a7e64356cde24a",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.4.17-preview.apk",
   "prerelease": true,
-  "notes": "Marco Movie 0.4.16 Preview\r\n\r\n- 新增 Android 手机与平板专属触控界面（MobileShell、MobileDetailScreen），与电视遥控器界面完全解耦：浏览时保留系统状态栏与底部导航栏，彻底去除触屏点击残留的遥控器白色焦点框，手机端直接进入首页不播放电视开屏动画。\r\n- 手机端采用固定底部五栏导航（首页、搜索、直播、我的、设置），平板横屏自动切换为左侧导航栏；首页提供顶部片源胶囊切换、单行横向滑动分类条、紧凑继续观看条与 3 列触控海报网格（平板横屏 5 列）。\r\n- 手机与平板导入配置改为首页内嵌原生输入框、剪贴板一键粘贴导入与本地 JSON 文件选择，全局网址输入直接调起手机系统输入法并支持长按粘贴，彻底移除手机端不必要的二维码扫码提示与电视虚拟字母盘。\r\n- 手机详情页支持可折叠剧情简介、横向滑动线路胶囊、每 50 集自动分组标签、正序/倒序切换与 3 列触控选集网格；点播自动切换横屏全屏播放，支持双击暂停/继续、左右滑动快进快退、左侧上下滑调亮度、右侧上下滑调音量与长按 2 倍速快进，退出播放自动恢复竖屏。\r\n- 新增 flutter/ 跨平台工程与云端自动构建，支持 Windows（x64 .exe）、macOS（.app）与 iOS / iPadOS（.ipa），配置与 marco-movie-backup 备份格式与 Android 端互通。\r\n- 完成结构化诊断日志环（AppLog）、偏好范围守卫（Prefs）、按设备内存动态调整的海报缓存预算（ImageDecodePolicy）及主控制器职责拆分。\r\n\r\n173 项纯 JVM 离线回归测试与 GitHub Actions 多平台构建全部通过。\r\n\r\n作者 Pilipala，GPL-3.0-only。本产品仅为工具，不内置影视资源或配置源，内容与配置请自行合法获取。\r\n"
+  "notes": "Marco Movie 0.4.17 Preview\r\n\r\n- 修复 0.4.16 安装包误用了与正式版不同的签名，导致 0.4.15 在应用内更新时下载到 100% 后签名校验失败、提示“镜像暂不可用”并转 GitHub 后仍失败的问题。0.4.17 恢复与 0.4.15 及更早版本一致的官方签名，可直接在应用内覆盖升级。\r\n- 功能与 0.4.16 相同：Android 手机/平板专属触控界面、剪贴板一键导入（无需扫码）、全屏横屏手势播放、Windows / macOS / iOS 跨平台工程。\r\n- 若曾手动安装过 0.4.16，因签名不同无法覆盖安装；请先在设置中备份配置，卸载 0.4.16 后安装 0.4.17 再还原备份。\r\n\r\n作者 Pilipala，GPL-3.0-only。本产品仅为工具，不内置影视资源或配置源，内容与配置请自行合法获取。\r\n"
 }
