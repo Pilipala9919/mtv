@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "versionCode": 30,
-  "versionName": "0.4.17",
+  "versionCode": 31,
+  "versionName": "0.4.18",
   "minSdk": 23,
   "size": 14266469,
-  "sha256": "224c091516e5371ca6f73515d2da29fa37d17872eacda12dd9a7e64356cde24a",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.4.17-preview.apk",
+  "sha256": "9986be75fd4aaa4beb0f5fac3327454ec7c61cafe23bdde0f78aa845f599b918",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.4.18-preview.apk",
   "prerelease": true,
-  "notes": "Marco Movie 0.4.17 Preview\r\n\r\n- 修复 0.4.16 安装包误用了与正式版不同的签名，导致 0.4.15 在应用内更新时下载到 100% 后签名校验失败、提示“镜像暂不可用”并转 GitHub 后仍失败的问题。0.4.17 恢复与 0.4.15 及更早版本一致的官方签名，可直接在应用内覆盖升级。\r\n- 功能与 0.4.16 相同：Android 手机/平板专属触控界面、剪贴板一键导入（无需扫码）、全屏横屏手势播放、Windows / macOS / iOS 跨平台工程。\r\n- 若曾手动安装过 0.4.16，因签名不同无法覆盖安装；请先在设置中备份配置，卸载 0.4.16 后安装 0.4.17 再还原备份。\r\n\r\n作者 Pilipala，GPL-3.0-only。本产品仅为工具，不内置影视资源或配置源，内容与配置请自行合法获取。\r\n"
+  "notes": "Marco Movie 0.4.18 Preview\n\n- 优化播放页切换剧集体验：一集播放完毕自动连播下一集，或在播放页内点击“下集”、切换选集、切换线路时，不再退回详情选集页、不再来回旋转屏幕，全程保持在当前播放页面内。\n- 播放页内加载新剧集与缓冲准备阶段，在画面中央显示转圈加载动画与“正在加载 剧集名称…”提示，视频就绪后自动隐藏并无缝开播；同步更新返回栈记忆与观看历史。\n- 保持与 0.4.15 / 0.4.17 一致的官方签名，支持在应用内直接覆盖升级。\n\n作者 Pilipala，GPL-3.0-only。本产品仅为工具，不内置影视资源或配置源，内容与配置请自行合法获取。\n"
 }
