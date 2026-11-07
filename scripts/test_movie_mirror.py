@@ -152,4 +152,15 @@ class MirrorTests(unittest.TestCase):
         self.assertIn('MarcoMovie-0.4.12-windows-setup.exe', page)
         self.assertIn('Windows 安装版', page)
 
+    def test_group_section_present_and_showcase_frames_removed(self):
+        self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        self.assertIn('官方交流群', page)
+        self.assertIn('815085102', page)
+        self.assertIn('qun.qq.com/universal-share/share', page)
+        self.assertIn('通用群', page)
+        self.assertNotIn('画面展示', page)
+        self.assertNotIn('界面示意', page)
+        self.assertNotIn('class="shots"', page)
+
 if __name__ == '__main__': unittest.main()

@@ -21,6 +21,10 @@ LIMIT = 25 * 1024 * 1024
 # Desktop and Apple packages may exceed the 25 MiB per-file limit of the Cloudflare Pages host.
 # Those are listed on the mirror page but downloaded from the official GitHub release asset.
 PLATFORM_LIMIT = 300 * 1024 * 1024
+
+# Official QQ group (universal: covers Marco TV and Marco Movie, not one product).
+QQ_GROUP_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=%2FqKQ4IqdIqi2mRxgPr8PBGGEhIo0M5yMI6%2BBNKH7CoOFDczcaEXekgiu8Kbt%2BORc&busi_data=eyJncm91cENvZGUiOiI4MTUwODUxMDIiLCJ0b2tlbiI6Im9CUW4wejI1NlB6UW9uK1EzdGNEMlZXdkgvMExVcGpVdXhOMFVrVXZmcWt0N3ZoaHRLMzNzd2lLVVp6UzZXc2QiLCJ1aW4iOiI5MjYwMDQzIn0%3D&data=VXYI4NkXW1KuR0A5qzeADzpuJOBl7PrdDs8NBNT4RMeKMjrMmev1_pjDDKH3CfTw7VwFoH-5Hkd71EDQ9_qj1w&svctype=4&tempid=h5_group_info'
+QQ_GROUP_CODE = '815085102'
 # (file name pattern, button label, short note). Mirrored only when the release carries the
 # package together with its official .sha256 file.
 PLATFORMS = (
@@ -35,6 +39,7 @@ PLATFORMS = (
 # Page layout (2026-11-07, approved from the local preview): dark background,
 # silver-white accent, rounded cards, no emoji. The two images are the real
 # MarcoMovie repo assets, copied into movie/ (app-icon-512.png, tv-banner-960x540.png).
+# Device showcase frames removed 2026-11-07 at the user's request; official QQ group section added the same day.
 # The "165 Stars" figure is a 2026-11-07 snapshot; the sync does not fetch it.
 PAGE_CSS = """
   :root { --bg:#0b0d10; --card:#15181d; --card2:#1b1f26; --line:#262c35;
@@ -75,29 +80,6 @@ PAGE_CSS = """
   .card h3 { font-size:16px; margin-bottom:8px; }
   .card p, .card li { color:var(--muted); font-size:14px; }
   .card ul { padding-left:18px; }
-  .shots { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:16px; }
-  .shot { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; }
-  .shot .frame { background:#0e1116; border:1px solid var(--line); border-radius:10px; padding:10px; }
-  .shot h4 { font-size:14px; margin:12px 0 2px; }
-  .shot .tag { font-size:12px; color:#f0c674; }
-  .shot p { color:var(--muted); font-size:13px; }
-  .poster-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
-  .poster-grid i { display:block; aspect-ratio:2/3; border-radius:4px;
-    background:linear-gradient(160deg,#3a4150,#232833); }
-  .poster-grid i:nth-child(2n) { background:linear-gradient(160deg,#4a4436,#2b2620); }
-  .phone-frame { max-width:150px; margin:0 auto; }
-  .phone-frame .screen { border:1px solid var(--line); border-radius:12px; padding:8px; }
-  .phone-frame .posters { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-  .phone-frame .posters i { display:block; aspect-ratio:2/3; border-radius:4px;
-    background:linear-gradient(160deg,#3a4150,#232833); }
-  .phone-frame .bottomnav { display:flex; justify-content:space-around; margin-top:8px;
-    border-top:1px solid var(--line); padding-top:7px; font-size:10px; color:var(--muted); }
-  .desk-frame .side { display:flex; gap:8px; }
-  .desk-frame .rail { width:34px; border-right:1px solid var(--line); padding-right:8px;
-    font-size:10px; color:var(--muted); line-height:2; }
-  .desk-frame .main { flex:1; display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
-  .desk-frame .main i { display:block; aspect-ratio:2/3; border-radius:4px;
-    background:linear-gradient(160deg,#3a4150,#232833); }
   ol.feats { list-style:none; counter-reset:f; display:grid; gap:12px; }
   ol.feats li { counter-increment:f; background:var(--card); border:1px solid var(--line);
     border-radius:12px; padding:16px 18px 16px 56px; position:relative; }
@@ -126,7 +108,7 @@ PAGE_CSS = """
   footer { margin-top:48px; padding-top:20px; border-top:1px solid var(--line);
     color:var(--muted); font-size:13px; }
   @media (max-width:760px) {
-    .hero, .shots, .cards, .dl-grid, .steps { grid-template-columns:1fr; }
+    .hero, .cards, .dl-grid, .steps { grid-template-columns:1fr; }
     .hero h1 { font-size:30px; }
     nav.links { display:none; }
   }
@@ -355,7 +337,7 @@ def sync(output):
 <title>Marco Movie · 多端自适应播放器 · Pilipala</title><style>{PAGE_CSS}</style>
 <body><div class="wrap">
 <header class="nav"><div class="brand"><img src="app-icon-512.png" alt="Marco Movie 应用图标">Marco Movie <span class="ver-tag">{version}</span></div>
-<nav class="links"><a href="#download">下载</a><a href="#features">功能</a><a href="#changelog">本次更新</a><a href="https://github.com/{REPO}" target="_blank" rel="noopener">GitHub</a></nav></header>
+<nav class="links"><a href="#download">下载</a><a href="#features">功能</a><a href="#changelog">本次更新</a><a href="#group">交流群</a><a href="https://github.com/{REPO}" target="_blank" rel="noopener">GitHub</a></nav></header>
 <div class="hero"><div>
 <h1>Marco Movie<br>多端自适应播放器</h1>
 <p class="lead">支持 Android 电视大屏遥控、手机与平板 64 位专属触控，以及 Windows / macOS / iOS（iOS 14.0+ 巨魔与自签）多端独立适配的开源播放器。</p>
@@ -363,17 +345,6 @@ def sync(output):
 <p class="meta"><b>165 Stars</b> · GPL-3.0-only · {published_date} 更新 · 作者 Pilipala</p>
 </div><figure><img src="tv-banner-960x540.png" alt="Marco Movie 横幅：银色场记板加播放标志"><figcaption>银色场记板横幅 · 仓库原图</figcaption></figure></div>
 <p class="notice">本产品仅为工具，不内置、不提供、不托管任何影视资源或配置地址。内容与配置请自行合法获取，数据保存在本机。</p>
-<section class="block"><h2>画面展示</h2>
-<p class="sub">仓库里暂无实机截图，以下为界面示意排版；拿到真截图后直接替换。</p>
-<div class="shots">
-<div class="shot"><div class="frame"><div class="poster-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-<h4>电视端 · 海报墙</h4><p>16:9 大屏 · 5–8 列 2:3 海报 · 右侧悬浮 Dock</p><p class="tag">界面示意，非实机截图</p></div>
-<div class="shot"><div class="frame phone-frame"><div class="screen"><div class="posters"><i></i><i></i><i></i><i></i></div>
-<div class="bottomnav"><span>首页</span><span>搜索</span><span>直播</span><span>我的</span><span>设置</span></div></div></div>
-<h4>手机端 · 底部导航</h4><p>竖屏触控 · 底部固定 5 栏导航</p><p class="tag">界面示意，非实机截图</p></div>
-<div class="shot"><div class="frame desk-frame"><div class="side"><div class="rail">首页<br>搜索<br>直播<br>设置</div><div class="main"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
-<h4>桌面端 · 侧边导航</h4><p>横屏 · 左侧边栏导航 · 自适应布局</p><p class="tag">界面示意，非实机截图</p></div>
-</div></section>
 <section class="block" id="features"><h2>文字介绍与功能</h2>
 <p class="sub">同一版本，三端各自独立适配，不是简单拉伸。</p>
 <div class="cards">
@@ -392,6 +363,10 @@ def sync(output):
 <div class="step"><b>第二步 · 安装</b><span>电视 / 手机直接安装；Windows 运行安装向导或解压绿色版；macOS 拖入应用程序。</span></div>
 <div class="step"><b>第三步 · 导入配置</b><span>按应用内提示导入自己的配置，自行合法获取内容与配置。</span></div>
 </div></section>
+<section class="block" id="group"><h2>官方交流群</h2>
+<p class="sub">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。</p>
+<div class="card"><h3>官方交流群 1️⃣：Marco！</h3><p>群号 815085102 · 点开下面的按钮会跳到 QQ 加群。</p>
+<a class="btn primary" href="{escaped(QQ_GROUP_URL)}">加入 QQ 群</a></div></section>
 <footer>作者：Pilipala · <a href="LICENSE">GPL-3.0-only</a> · <a href="NOTICE">署名与许可</a> · <a href="https://github.com/{REPO}/blob/main/docs/USER_GUIDE.md">使用指南</a> · <a href="/">Marco TV</a></footer>
 </div></body></html>'''
     files = {apk_name: apk, apk_name + '.sha256': (sha + '  ' + apk_name + '\n').encode(),
