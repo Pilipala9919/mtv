@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "versionCode": 49,
+  "versionName": "0.4.36",
+  "minSdk": 23,
+  "size": 14360677,
+  "sha256": "055b5903afcd6437b437b4db680fc73132eed89dcee6e2e8501d962d59cbb548",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.4.36-preview.apk",
+  "prerelease": false,
+  "notes": "﻿### Marco Movie 0.4.36 正式版更新内容\n\n1. **搜索弹窗与搜索结果驻留保持（全平台）**：\n   - 从全局搜索结果点击进入影视详情页后，按返回键退出详情页时**搜索弹窗/搜索页、关键词、已检索结果列表与滚动位置完整驻留**，无需重新回首页再点搜索即可直接换源选片。\n2. **跳片头 / 跳片尾支持手动拖拽精准时间节点（全平台）**：\n   - 在播放器控制栏与设置页新增 **0~300 秒（1 秒精度）手动拖拽滑块**、-5s / -1s / +1s / +5s 微调按钮，以及播放器内「设为当前播放位置」一键捕获时间节点。\n3. **非直播影视进度条跳动与无总时长显示修复（全平台）**：\n   - 修复网盘与分片代理 Content-Range / Content-Length 传递及 HLS/TS 流 maxKnownDurationMs 时长稳定化，彻底消除点播视频播放中进度条反复跳动或缺少总时长显示的问题。\n4. **播放页片名旁新增视频详情角标（全平台）**：\n   - 在播放器顶部标题旁实时展示当前视频规格胶囊（如 4K UHD · 3840×2160 · HEVC · HDR · MKV）。\n5. **网盘 .mkv 格式视频加载与扩展片源稳定性增强**：\n   - 为本地代理 LocalProxy 实现多段流式自动续接（Chunk-Chaining）与 .mkv 原画直连优先，修复网盘内 .mkv 视频加载不出或卡缓冲问题；为扩展源 playerContent 增加 IOException 自动重试与多线路自动回退。\n6. **方向键交互式字幕调节、弹幕自动加载与手机端无 Emoji 二级设置页重构**：\n   - 字幕调整升级为全透明实时预览 HUD（上下键调高低位置、左右键调大小、确认键切换全透明描边/半透底样式）；手机端设置重构为无 Emoji 矢量图标二级分组菜单并原地刷新消除高刷屏重影；修复横屏右侧工具栏文字排版与顶栏长源名挤压搜索按钮问题。\n7. **Windows 安装向导程序（MarcoMovie-0.4.36-windows-setup.exe）与后续版本一键更新**：\n   - 新增 Windows 安装程序（内置 VC++ 运行库、桌面与开始菜单快捷方式、启动即显窗口）并修复 Windows 与电视端掉帧问题，支持在设置内直接检测并自动下载安装新版。",
+  "mobile": {
+    "size": 19775764,
+    "sha256": "966ef5bce3b746beade82cd248edcec6d10e94b9dc8ec538355fb348ec82ce58",
+    "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.4.36-mobile.apk"
+  },
+  "windows": {
+    "size": 26517106,
+    "sha256": "0c169b2f735980f034c087c56f1a861b7e263138f38280c60b64bcc646ca758c",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.4.36-preview/MarcoMovie-0.4.36-windows-setup.exe"
+  }
+}
