@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "platform": "windows",
+  "versionName": "0.5.1",
+  "prerelease": false,
+  "notes": "## Windows 0.5.1\n\n此版本只更新 Windows，不要求其他平台同步升级。\n\n1. 双击播放画面进入或退出原生真全屏，隐藏系统标题栏并覆盖任务栏区域。\n2. 全屏按钮、F/F11 使用相同切换逻辑；Esc 先退出全屏，再按一次离开播放页。\n3. 退出全屏或返回详情时恢复原来的窗口大小、位置或最大化状态；全屏按钮显示实际窗口状态。\n4. 按当前平台独立检查更新，避免其他平台发版导致错误升级提示。\n5. 保留来源返回的真实剧集信息；换源搜索保留尚未适配的线路并准确显示状态。\n\n### 验证与范围\n\n构建代码：`56b2eb80b93bae98b8754952d779bff1b7a9582a`。83 项 Flutter 测试通过，Windows 安装版和便携版构建通过。\n\n[Windows 构建与测试记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42356451432)。Windows 11 已实际验证普通窗口与最大化窗口的双击进入、双击退出、Esc、F11 及离开播放页后的恢复，使用本地生成视频和实际播放器页面。\n\n33 条 Guard / Android 插件线路跨平台移植仍未完成，不属于本版已修复内容。\n\n提供安装版和便携 ZIP，均附 SHA-256 校验及对应源码。0.5.0 客户端请从[下载页](https://marcotv.wlj9919.top/movie/)手动安装这次平台独立更新；从 0.5.1 起使用平台独立更新清单。\n",
+  "packages": {
+    "MarcoMovie-0.5.1-windows-setup.exe": {
+      "size": 49092638,
+      "sha256": "3ea06352e58db5d2f5d592fc9b947b5603b2f929e4a9f561ce628d5fc16a5f5b",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.1/MarcoMovie-0.5.1-windows-setup.exe"
+    },
+    "MarcoMovie-0.5.1-windows-x64.zip": {
+      "size": 70846961,
+      "sha256": "d3578f190482fad8b42aaf9fb1eb4283be88a66c7bf57d74500fce0f4b2cf7fa",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.1/MarcoMovie-0.5.1-windows-x64.zip"
+    }
+  },
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.1",
+  "windows": {
+    "size": 49092638,
+    "sha256": "3ea06352e58db5d2f5d592fc9b947b5603b2f929e4a9f561ce628d5fc16a5f5b",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.1/MarcoMovie-0.5.1-windows-setup.exe"
+  }
+}
