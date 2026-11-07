@@ -26,10 +26,111 @@ PLATFORM_LIMIT = 300 * 1024 * 1024
 PLATFORMS = (
     ('MarcoMovie-{version}-mobile.apk', 'Android 手机 / 平板版 (64位)', 'Android 6.0+ · 原生 64 位 (arm64-v8a) 与 32 位双架构 · 竖屏触控 UI'),
     ('MarcoMovie-{version}-ios-unsigned.ipa', 'iPhone / iPad 版 (IPA)', 'iOS / iPadOS 14.0+ · 支持巨魔 (TrollStore) 直接安装或自签安装'),
-    ('MarcoMovie-{version}-windows-x64.zip', 'Windows 版', 'Windows 10 / 11 · 64 位 · 解压后运行 marco_movie.exe'),
+    ('MarcoMovie-{version}-windows-setup.exe', 'Windows 安装版（推荐）', 'Windows 10 / 11 · 64 位安装向导 · 内置运行库与快捷方式，支持后续一键更新'),
+    ('MarcoMovie-{version}-windows-x64.zip', 'Windows 绿色版（ZIP）', 'Windows 10 / 11 · 64 位便携压缩包 · 解压后运行 marco_movie.exe'),
     ('MarcoMovie-{version}-macos.zip', 'macOS 版', 'macOS · 解压后拖入“应用程序”；未公证，首次打开请右键选择“打开”'),
     ('MarcoMovie-{version}-lite.apk', 'Android 4.0+ 轻量版', 'Android 4.0+ (API 14+) · 适配老旧电视/盒子/老手机 · 独立包名可共存'),
 )
+
+# Page layout (2026-11-07, approved from the local preview): dark background,
+# silver-white accent, rounded cards, no emoji. The two images are the real
+# MarcoMovie repo assets, copied into movie/ (app-icon-512.png, tv-banner-960x540.png).
+# The "165 Stars" figure is a 2026-11-07 snapshot; the sync does not fetch it.
+PAGE_CSS = """
+  :root { --bg:#0b0d10; --card:#15181d; --card2:#1b1f26; --line:#262c35;
+          --text:#e8eaed; --muted:#9aa3ad; --silver:#c9ced6; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; line-height:1.7; }
+  a { color:var(--text); }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 20px 64px; }
+  header.nav { display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:18px 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .brand { display:flex; align-items:center; gap:12px; font-size:20px; font-weight:700; }
+  .brand img { width:40px; height:40px; border-radius:10px; }
+  .ver-tag { font-size:12px; font-weight:600; color:#0b0d10; background:var(--silver);
+    border-radius:20px; padding:2px 10px; }
+  nav.links { display:flex; gap:20px; font-size:14px; color:var(--muted); flex-wrap:wrap; }
+  nav.links a { color:var(--muted); text-decoration:none; }
+  nav.links a:hover { color:var(--text); }
+  .hero { display:grid; grid-template-columns:1.05fr 1fr; gap:28px; padding:44px 0 8px; align-items:center; }
+  .hero h1 { font-size:40px; line-height:1.25; letter-spacing:.5px; }
+  .hero p.lead { color:var(--muted); margin:14px 0 22px; font-size:16px; }
+  .btn-row { display:flex; gap:12px; flex-wrap:wrap; }
+  .btn { display:inline-block; padding:11px 22px; border-radius:10px; font-size:15px; font-weight:600;
+    text-decoration:none; border:1px solid var(--silver); }
+  .btn.primary { background:var(--text); color:#0b0d10; }
+  .btn.ghost { background:transparent; color:var(--text); }
+  .meta { margin-top:18px; color:var(--muted); font-size:13px; }
+  .meta b { color:var(--silver); }
+  .hero figure { background:#fff; border-radius:16px; padding:14px; }
+  .hero figure img { width:100%; display:block; border-radius:8px; }
+  .hero figure figcaption { color:#666; font-size:12px; text-align:center; padding-top:10px; }
+  .notice { margin:30px 0 0; padding:14px 18px; background:var(--card); border:1px solid var(--line);
+    border-left:3px solid var(--silver); border-radius:10px; color:var(--muted); font-size:14px; }
+  section.block { padding:44px 0 0; }
+  section.block h2 { font-size:24px; margin-bottom:6px; }
+  section.block .sub { color:var(--muted); font-size:14px; margin-bottom:20px; }
+  .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; }
+  .card h3 { font-size:16px; margin-bottom:8px; }
+  .card p, .card li { color:var(--muted); font-size:14px; }
+  .card ul { padding-left:18px; }
+  .shots { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:16px; }
+  .shot { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; }
+  .shot .frame { background:#0e1116; border:1px solid var(--line); border-radius:10px; padding:10px; }
+  .shot h4 { font-size:14px; margin:12px 0 2px; }
+  .shot .tag { font-size:12px; color:#f0c674; }
+  .shot p { color:var(--muted); font-size:13px; }
+  .poster-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+  .poster-grid i { display:block; aspect-ratio:2/3; border-radius:4px;
+    background:linear-gradient(160deg,#3a4150,#232833); }
+  .poster-grid i:nth-child(2n) { background:linear-gradient(160deg,#4a4436,#2b2620); }
+  .phone-frame { max-width:150px; margin:0 auto; }
+  .phone-frame .screen { border:1px solid var(--line); border-radius:12px; padding:8px; }
+  .phone-frame .posters { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .phone-frame .posters i { display:block; aspect-ratio:2/3; border-radius:4px;
+    background:linear-gradient(160deg,#3a4150,#232833); }
+  .phone-frame .bottomnav { display:flex; justify-content:space-around; margin-top:8px;
+    border-top:1px solid var(--line); padding-top:7px; font-size:10px; color:var(--muted); }
+  .desk-frame .side { display:flex; gap:8px; }
+  .desk-frame .rail { width:34px; border-right:1px solid var(--line); padding-right:8px;
+    font-size:10px; color:var(--muted); line-height:2; }
+  .desk-frame .main { flex:1; display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .desk-frame .main i { display:block; aspect-ratio:2/3; border-radius:4px;
+    background:linear-gradient(160deg,#3a4150,#232833); }
+  ol.feats { list-style:none; counter-reset:f; display:grid; gap:12px; }
+  ol.feats li { counter-increment:f; background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:16px 18px 16px 56px; position:relative; }
+  ol.feats li::before { content:counter(f); position:absolute; left:16px; top:16px;
+    width:26px; height:26px; border-radius:50%; background:var(--silver); color:#0b0d10;
+    font-weight:700; font-size:14px; text-align:center; line-height:26px; }
+  ol.feats li b { display:block; font-size:15px; margin-bottom:2px; }
+  ol.feats li span { color:var(--muted); font-size:14px; }
+  ol.feats li ul { margin-top:6px; padding-left:18px; color:var(--muted); font-size:14px; }
+  ol.feats li ul li { background:none; border:none; border-radius:0; padding:0; position:static; }
+  ol.feats li ul li::before { content:none; }
+  pre { white-space:pre-wrap; overflow-wrap:anywhere; font:inherit; margin:0;
+    background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
+  code { overflow-wrap:anywhere; }
+  .dl-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .dl { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; }
+  .dl h3 { font-size:16px; }
+  .dl p { color:var(--muted); font-size:13px; margin:6px 0 12px; min-height:40px; }
+  .dl code { display:block; font-size:11px; color:var(--muted); word-break:break-all;
+    background:#0e1116; border:1px solid var(--line); border-radius:8px; padding:8px; margin-top:10px; }
+  .dl .btn { padding:8px 16px; font-size:14px; }
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:16px; }
+  .step { background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .step b { display:block; margin-bottom:4px; }
+  .step span { color:var(--muted); font-size:13px; }
+  footer { margin-top:48px; padding-top:20px; border-top:1px solid var(--line);
+    color:var(--muted); font-size:13px; }
+  @media (max-width:760px) {
+    .hero, .shots, .cards, .dl-grid, .steps { grid-template-columns:1fr; }
+    .hero h1 { font-size:30px; }
+    nav.links { display:none; }
+  }
+"""
 
 
 def fetch(url, limit=LIMIT):
@@ -102,6 +203,50 @@ def choose(releases):
     return max(valid, key=lambda r: tuple(map(int, r['tag_name'][1:-8].split('.'))))
 
 
+def _plain_md(text):
+    text = re.sub(r'\*\*(.+?)\*\*', r'\1', text)
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+    return text.strip()
+
+
+def render_changelog(notes):
+    """Render a release body as a numbered list; fall back to escaped <pre> text.
+
+    Release bodies are Markdown like "### Marco Movie 0.4.36 ..." followed by
+    numbered items with a bold title and "- " sub-bullets. Anything that does
+    not parse as numbered items is shown escaped, never as raw HTML.
+    """
+    items = []
+    current = None
+    for raw_line in (notes or '').splitlines():
+        line = raw_line.strip().lstrip('\ufeff')
+        if not line or line.startswith('#'):
+            continue
+        numbered = re.match(r'(\d+)\.\s+(.*)$', line)
+        if numbered:
+            current = {'title': _plain_md(numbered.group(2)).rstrip(':：'), 'points': []}
+            items.append(current)
+            continue
+        if line.startswith('- ') and current is not None:
+            current['points'].append(_plain_md(line[2:]))
+            continue
+        if current is not None and current['points']:
+            current['points'][-1] += ' ' + _plain_md(line)
+        elif current is not None:
+            current['title'] += ' ' + _plain_md(line)
+    if not items:
+        return '<pre>' + html.escape(notes or '') + '</pre>'
+    parts = ['<ol class="feats">']
+    for item in items:
+        parts.append('<li><b>' + html.escape(item['title']) + '</b>')
+        if item['points']:
+            parts.append('<ul>' + ''.join('<li>' + html.escape(point) + '</li>'
+                                          for point in item['points']) + '</ul>')
+        parts.append('</li>')
+    parts.append('</ol>')
+    return ''.join(parts)
+
+
 def asset(release, name, output, limit=LIMIT):
     matches = [a for a in release['assets'] if a['name'] == name and a['state'] == 'uploaded']
     if len(matches) != 1:
@@ -152,6 +297,8 @@ def platform_asset(release, name, output):
 def sync(output):
     release = choose(json.loads(fetch(f'https://api.github.com/repos/{REPO}/releases?per_page=100', 4 * 1024 * 1024)))
     version = release['tag_name'][1:-8]
+    release_tag = release['tag_name']
+    published_date = (release.get('published_at') or '')[:10]
     apk_name, source_name = f'MarcoMovie-{version}-preview.apk', f'MarcoMovie-{version}-source.zip'
     apk, sha = asset(release, apk_name, output)
     source, source_sha = asset(release, source_name, output)
@@ -179,30 +326,74 @@ def sync(output):
         if previous['versionCode'] == feed['versionCode'] and previous['sha256'] != sha:
             raise ValueError('Refusing to replace a published version')
     escaped = html.escape
-    platform_card = ''
+    mobile_href = next((p[3] for p in platforms if p[0] == f'MarcoMovie-{version}-mobile.apk'), None)
+    mobile_button = (f'<a class="btn ghost" href="{escaped(mobile_href)}">下载手机版</a>' if mobile_href else '')
+    download_cards = []
+    download_cards.append(
+        f'<div class="dl"><h3>Android 电视版</h3><p>Android 6.0+ 电视 / 盒子 / 投影仪大屏专享版 · ARM 32 位（内置 FFmpeg / AV1 / VP9 扩展）· {len(apk)/1024/1024:.1f} MB</p>'
+        f'<a class="btn primary" href="{escaped(apk_name)}">下载</a>'
+        f'<p><a href="{escaped(apk_name)}.sha256">校验文件</a></p><code>SHA-256：{sha}</code></div>')
+    for name, label, note, href, size, digest, body in platforms:
+        download_cards.append(
+            f'<div class="dl"><h3>{escaped(label)}</h3><p>{escaped(note)} · {size/1024/1024:.1f} MB</p>'
+            f'<a class="btn primary" href="{escaped(href)}">下载</a>'
+            f'<p><a href="{escaped(href)}.sha256">校验文件</a></p><code>SHA-256：{digest}</code></div>')
+    download_cards.append(
+        f'<div class="dl"><h3>同版本源码</h3><p>与发布包同一版本 · {len(source)/1024/1024:.1f} MB</p>'
+        f'<a class="btn primary" href="{escaped(source_name)}">下载</a>'
+        f'<p><a href="{escaped(source_name)}.sha256">校验文件</a></p><code>SHA-256：{source_sha}</code></div>')
     if platforms:
-        rows = ''.join(
-            f'<div class="box"><h3>{escaped(label)}</h3><p class="muted">{escaped(note)} · {size/1024/1024:.1f} MB</p>'
-            f'<a class="button" href="{escaped(href)}">下载{escaped(label)}</a>'
-            f'<p class="muted"><a href="{escaped(href)}.sha256">校验文件</a> · SHA-256<br><code>{digest}</code></p></div>'
-            for name, label, note, href, size, digest, body in platforms)
-        platform_card = ('<div class="card"><h2>其他平台</h2><p class="muted">与 Android 版同一版本，由 GitHub Actions 云端构建；'
-                         '尚未在每台设备上实机验证。</p><div class="grid">' + rows + '</div></div>\n')
+        other_platforms = ('<p class="sub"><b>其他平台</b> · 与 Android 版同一版本，由 GitHub Actions 云端构建；'
+                           '尚未在每台设备上实机验证。</p>')
+        fallback_link = ''
+    else:
+        other_platforms = ''
+        fallback_link = (f'<p><a class="btn ghost" href="https://github.com/{REPO}/releases/tag/{release_tag}">'
+                         'Windows / macOS / iOS 多平台下载</a></p>')
+    changelog = render_changelog(feed['notes'])
     page = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Marco Movie · 多端自适应播放器 · Pilipala</title><style>body{{margin:0;background:#101013;color:#f5f5f7;font:16px/1.8 system-ui,sans-serif}}main{{max-width:920px;margin:auto;padding:56px 24px}}h1{{font-size:48px;letter-spacing:-2px;margin:10px 0 8px}}h2{{margin-top:0}}h3{{margin:0 0 8px;color:#fff}}.muted{{color:#a1a1aa}}.card{{background:#232329;border:1px solid #37373f;border-radius:28px;padding:28px;margin:24px 0}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:24px 0}}.box{{background:#1a1b22;border:1px solid #31333d;border-radius:22px;padding:22px}}a{{color:#9ac6ff}}.button{{display:inline-block;background:#f5f5f7;color:#111;padding:12px 24px;border-radius:18px;text-decoration:none;font-weight:600;margin:6px 12px 6px 0}}.button-ghost{{display:inline-block;border:1px solid #52525b;color:#f5f5f7;padding:11px 22px;border-radius:18px;text-decoration:none;margin:6px 12px 6px 0}}pre{{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;margin:0}}code{{overflow-wrap:anywhere}}</style>
-<main><p class="muted">PILIPALA · ANDROID 电视 / 手机 / 平板 · WINDOWS · APPLE</p><h1>Marco Movie</h1><p>支持 Android 电视大屏遥控、手机与平板 64 位专属触控，以及 Windows / macOS / iOS (iOS 14.0+ 巨魔与自签) 多端独立适配的开源播放器。</p>
-<div class="card"><h2>{version}</h2><p>Android 6.0+ 电视 / 盒子 / 投影仪大屏专享版 · ARM 32 位（内置 FFmpeg / AV1 / VP9 扩展）· {len(apk)/1024/1024:.1f} MB</p>
-<a class="button" href="{apk_name}">下载 Android 电视版</a>{f'<a class="button" href="MarcoMovie-{version}-mobile.apk">下载 Android 手机版 (64位)</a>' if any(p[0] == f'MarcoMovie-{version}-mobile.apk' for p in platforms) else ''}<a class="button-ghost" href="{source_name}">下载同版本源码</a>{'' if any(p[0].endswith(('.zip', '.ipa')) for p in platforms) else f'<a class="button-ghost" href="https://github.com/{REPO}/releases/tag/{release['tag_name']}">Windows / macOS / iOS 多平台下载</a>'}
-<p><a href="{apk_name}.sha256">校验文件</a> · <a href="https://github.com/{REPO}/releases/tag/{release['tag_name']}">GitHub 发布页</a> · <a href="https://github.com/{REPO}/blob/main/docs/USER_GUIDE.md">使用指南</a></p>
-<p class="muted">SHA-256<br><code>{sha}</code></p></div>
-{platform_card}<div class="grid">
-<div class="box"><h3>📺 Android 电视端</h3><p class="muted">专为遥控器与 10 英尺大屏打造：5–8 列 2:3 海报墙、右侧悬浮图标 Dock、内置遥控全拼/首拼搜索、左固定海报 + 右独立滚动选集、小屏返回续播、局域网扫码导入配置。</p></div>
-<div class="box"><h3>📱 Android 手机 / 平板端</h3><p class="muted">完全独立的移动端触控 UI：底部固定 5 栏导航（首页、搜索、直播、我的、设置；平板横屏自动变左侧导航栏），保留系统状态栏、去除遥控白框；首页直接支持剪贴板一键粘贴与原生输入法导入（无需扫码）；支持 50 集分组触控选集与全屏横屏手势播放（双击暂停、左右滑快进、左半屏亮度、右半屏音量、长按 2 倍速）。</p></div>
-<div class="box"><h3>💻 Windows &amp; Apple 端</h3><p class="muted">提供跨平台客户端工程（覆盖 Windows x64、macOS、iPhone 与 iPad），自适应桌面侧边导航与移动端底部导航，内置硬件加速播放内核，支持与 Android 端互通备份文件。</p></div>
-</div>
-<div class="card"><h2>本次更新</h2><pre>{escaped(feed['notes'])}</pre></div>
-<p>本产品仅为工具，不内置、不提供、不托管任何影视资源或配置地址。内容与配置请自行合法获取。</p>
-<p>作者：Pilipala · <a href="LICENSE">GPL-3.0-only</a> · <a href="NOTICE">署名与许可</a> · <a href="/">Marco TV</a></p></main></html>'''
+<title>Marco Movie · 多端自适应播放器 · Pilipala</title><style>{PAGE_CSS}</style>
+<body><div class="wrap">
+<header class="nav"><div class="brand"><img src="app-icon-512.png" alt="Marco Movie 应用图标">Marco Movie <span class="ver-tag">{version}</span></div>
+<nav class="links"><a href="#download">下载</a><a href="#features">功能</a><a href="#changelog">本次更新</a><a href="https://github.com/{REPO}" target="_blank" rel="noopener">GitHub</a></nav></header>
+<div class="hero"><div>
+<h1>Marco Movie<br>多端自适应播放器</h1>
+<p class="lead">支持 Android 电视大屏遥控、手机与平板 64 位专属触控，以及 Windows / macOS / iOS（iOS 14.0+ 巨魔与自签）多端独立适配的开源播放器。</p>
+<div class="btn-row"><a class="btn primary" href="{apk_name}">下载电视版</a>{mobile_button}<a class="btn ghost" href="#download">全部平台</a></div>
+<p class="meta"><b>165 Stars</b> · GPL-3.0-only · {published_date} 更新 · 作者 Pilipala</p>
+</div><figure><img src="tv-banner-960x540.png" alt="Marco Movie 横幅：银色场记板加播放标志"><figcaption>银色场记板横幅 · 仓库原图</figcaption></figure></div>
+<p class="notice">本产品仅为工具，不内置、不提供、不托管任何影视资源或配置地址。内容与配置请自行合法获取，数据保存在本机。</p>
+<section class="block"><h2>画面展示</h2>
+<p class="sub">仓库里暂无实机截图，以下为界面示意排版；拿到真截图后直接替换。</p>
+<div class="shots">
+<div class="shot"><div class="frame"><div class="poster-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+<h4>电视端 · 海报墙</h4><p>16:9 大屏 · 5–8 列 2:3 海报 · 右侧悬浮 Dock</p><p class="tag">界面示意，非实机截图</p></div>
+<div class="shot"><div class="frame phone-frame"><div class="screen"><div class="posters"><i></i><i></i><i></i><i></i></div>
+<div class="bottomnav"><span>首页</span><span>搜索</span><span>直播</span><span>我的</span><span>设置</span></div></div></div>
+<h4>手机端 · 底部导航</h4><p>竖屏触控 · 底部固定 5 栏导航</p><p class="tag">界面示意，非实机截图</p></div>
+<div class="shot"><div class="frame desk-frame"><div class="side"><div class="rail">首页<br>搜索<br>直播<br>设置</div><div class="main"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
+<h4>桌面端 · 侧边导航</h4><p>横屏 · 左侧边栏导航 · 自适应布局</p><p class="tag">界面示意，非实机截图</p></div>
+</div></section>
+<section class="block" id="features"><h2>文字介绍与功能</h2>
+<p class="sub">同一版本，三端各自独立适配，不是简单拉伸。</p>
+<div class="cards">
+<div class="card"><h3>Android 电视端</h3><p>专为遥控器与 10 英尺大屏打造：5–8 列 2:3 海报墙、右侧悬浮图标 Dock、内置遥控全拼 / 首拼搜索、左固定海报 + 右独立滚动选集、小屏返回续播、局域网扫码导入配置。</p></div>
+<div class="card"><h3>Android 手机 / 平板端</h3><p>完全独立的移动端触控 UI：底部固定 5 栏导航（首页、搜索、直播、我的、设置；平板横屏自动变左侧导航栏），保留系统状态栏、去除遥控白框；首页直接支持剪贴板一键粘贴与原生输入法导入（无需扫码）；支持 50 集分组触控选集与全屏横屏手势播放（双击暂停、左右滑快进、左半屏亮度、右半屏音量、长按 2 倍速）。</p></div>
+<div class="card"><h3>Windows 与 Apple 端</h3><p>提供跨平台客户端工程（覆盖 Windows x64、macOS、iPhone 与 iPad），自适应桌面侧边导航与移动端底部导航，内置硬件加速播放内核，支持与 Android 端互通备份文件。</p></div>
+</div></section>
+<section class="block" id="changelog"><h2>版本特性 · {version}</h2>
+<p class="sub">{published_date} 发布 · 更新内容来自 GitHub Release 原文，改写为列表。</p>
+{changelog}</section>
+<section class="block" id="download"><h2>下载与安装</h2>
+<p class="sub">校验值以 GitHub Release 为准；超过 Pages 单文件 25 MB 上限的大包只挂 GitHub 下载链接。</p>
+{other_platforms}<div class="dl-grid">{''.join(download_cards)}</div>{fallback_link}
+<div class="steps">
+<div class="step"><b>第一步 · 下载核对</b><span>按设备选对应安装包，下载后核对 SHA-256 再安装。</span></div>
+<div class="step"><b>第二步 · 安装</b><span>电视 / 手机直接安装；Windows 运行安装向导或解压绿色版；macOS 拖入应用程序。</span></div>
+<div class="step"><b>第三步 · 导入配置</b><span>按应用内提示导入自己的配置，自行合法获取内容与配置。</span></div>
+</div></section>
+<footer>作者：Pilipala · <a href="LICENSE">GPL-3.0-only</a> · <a href="NOTICE">署名与许可</a> · <a href="https://github.com/{REPO}/blob/main/docs/USER_GUIDE.md">使用指南</a> · <a href="/">Marco TV</a></footer>
+</div></body></html>'''
     files = {apk_name: apk, apk_name + '.sha256': (sha + '  ' + apk_name + '\n').encode(),
              source_name: source, source_name + '.sha256': (source_sha + '  ' + source_name + '\n').encode(),
              'LICENSE': license_text, 'NOTICE': notice, 'index.html': page.encode()}

@@ -129,4 +129,27 @@ class MirrorTests(unittest.TestCase):
         self.sync()
         self.assertIn('Windows / macOS / iOS 多平台下载', (self.out/'index.html').read_text(encoding='utf-8'))
 
+    def test_changelog_numbered_items_render_as_list(self):
+        body = ('\ufeff### Marco Movie 0.4.12 正式版更新内容\n\n'
+                '1. **搜索结果驻留保持（全平台）**：\n'
+                '   - 从搜索结果进详情页再返回，关键词与滚动位置完整保留。\n'
+                '2. **跳片头 / 跳片尾支持手动拖拽**：\n'
+                '   - 新增 0~300 秒拖拽滑块。\n')
+        self.assertIn('<ol class="feats">', m.render_changelog(body))
+        self.assertIn('搜索结果驻留保持', m.render_changelog(body))
+        self.assertIn('从搜索结果进详情页再返回', m.render_changelog(body))
+        self.assertNotIn('<script>', m.render_changelog(body + '<script>example</script>'))
+
+    def test_changelog_without_numbered_items_escapes_html(self):
+        rendered = m.render_changelog('<script>example</script>')
+        self.assertIn('&lt;script&gt;', rendered)
+        self.assertNotIn('<script>', rendered)
+
+    def test_windows_setup_platform_listed_when_published(self):
+        self.add_asset('MarcoMovie-0.4.12-windows-setup.exe', b'setup fixture')
+        self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        self.assertIn('MarcoMovie-0.4.12-windows-setup.exe', page)
+        self.assertIn('Windows 安装版', page)
+
 if __name__ == '__main__': unittest.main()
