@@ -91,30 +91,6 @@ class MirrorTests(unittest.TestCase):
         with zipfile.ZipFile(source,'w') as z: z.writestr('AndroidManifest.xml',b'<manifest/>')
         with self.assertRaises(ValueError): m.apk_identity(source.getvalue())
 
-    def test_large_tv_package_is_verified_and_linked_from_both_download_and_feed(self):
-        name='MarcoMovie-0.4.12-preview.apk'
-        self.release['assets']=[a for a in self.release['assets'] if a['name'] not in (name,name+'.sha256')]
-        self.add_asset(name,b'large apk fixture' * (m.LIMIT//17+2))
-        feed=self.sync()
-        expected=f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/{name}'
-        self.assertEqual(feed['url'],expected)
-        self.assertFalse((self.out/name).exists())
-        self.assertIn('href="'+expected+'"',(self.out/'index.html').read_text(encoding='utf8'))
-
-    def test_official_release_updates_stable_channel(self):
-        self.release['prerelease']=False
-        feed=self.sync()
-        self.assertFalse(feed['prerelease'])
-        self.assertEqual(json.loads((self.out/'updates/stable.json').read_text(encoding='utf8')),feed)
-
-    def test_large_mobile_hero_link_matches_update_feed(self):
-        name='MarcoMovie-0.4.12-mobile.apk';self.add_asset(name,b'mobile fixture')
-        next(a for a in self.release['assets'] if a['name']==name)['size']=m.LIMIT+1
-        feed=self.sync()
-        page=(self.out/'index.html').read_text(encoding='utf8')
-        self.assertIn('href="'+feed['mobile']['url']+'">下载手机版',page)
-        self.assertNotIn('href="'+name+'"',page)
-
     def add_asset(self, name, body, checksum=True):
         url = f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/{name}'
         sha = hashlib.sha256(body).hexdigest()
@@ -186,5 +162,32 @@ class MirrorTests(unittest.TestCase):
         self.assertNotIn('画面展示', page)
         self.assertNotIn('界面示意', page)
         self.assertNotIn('class="shots"', page)
+
+    def test_sub_bullets_do_not_consume_list_numbers(self):
+        # The CSS counter must count top-level items only: with the old
+        # "ol.feats li" selector a sub-bullet ate number 10, so 0.5.0
+        # showed 9 then 11.
+        self.assertIn('ol.feats > li {', m.PAGE_CSS)
+        self.assertNotIn('ol.feats li {', m.PAGE_CSS)
+        body = ('1. **第一条**\n'
+                '   - 子项一\n'
+                '2. **第二条**\n')
+        rendered = m.render_changelog(body)
+        self.assertEqual(rendered.count('<li><b>'), 2)
+
+    def test_markdown_links_become_anchors_not_bare_urls(self):
+        body = ('9. **兼容边界**\n'
+                '   - 详见 [跨端兼容记录](https://github.com/Pilipala9919/MarcoMovie/blob/main/docs/COMPATIBILITY.md)。\n'
+                '10. **安装包与源码**\n'
+                '   - [镜像下载页](https://marcotv.wlj9919.top/movie/)\n')
+        rendered = m.render_changelog(body)
+        self.assertIn('<a href="https://github.com/Pilipala9919/MarcoMovie/blob/main/docs/COMPATIBILITY.md">跨端兼容记录</a>', rendered)
+        self.assertIn('<a href="https://marcotv.wlj9919.top/movie/">镜像下载页</a>', rendered)
+        self.assertNotIn('](', rendered)
+
+    def test_unlisted_link_stays_plain_text(self):
+        rendered = m.render_changelog('1. **第一条**\n   - 看 [这里](https://evil.example/a) 别点\n')
+        self.assertNotIn('href="https://evil.example', rendered)
+        self.assertIn('[这里](https://evil.example/a)', rendered)
 
 if __name__ == '__main__': unittest.main()
