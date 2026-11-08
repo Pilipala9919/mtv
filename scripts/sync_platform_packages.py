@@ -1,8 +1,8 @@
-"""Update independently released desktop/Apple packages without rendering the site.
+"""Update independently released platform packages without rendering the site.
 
 The existing page is the template: package URLs, sizes and checksums inside
 matching download cards change, and the existing changelog section receives
-version-specific release notes. CSS and Android's update channels stay intact.
+version-specific release notes. CSS and legacy Android update channels stay intact.
 """
 import argparse
 import html
@@ -12,6 +12,7 @@ import re
 from urllib.parse import urlsplit
 
 from sync_movie_mirror import BASE, REPO, fetch, platform_asset
+from platform_package_names import ALIASES as CLEAR_NAMES
 
 SUFFIXES = {
     'ios': ('ios-unsigned.ipa',),
@@ -24,11 +25,14 @@ PLATFORM_LABELS = {
     'android-lite': 'Android Lite',
 }
 NOTE_SUFFIXES = {
+    'android-tv.apk': 'android-tv', 'android-mobile.apk': 'android-mobile',
+    'android-lite.apk': 'android-lite',
     'preview.apk': 'android-tv', 'mobile.apk': 'android-mobile',
     'lite.apk': 'android-lite', 'ios-unsigned.ipa': 'ios',
     'windows-setup.exe': 'windows', 'windows-x64.zip': 'windows',
     'macos.zip': 'macos',
 }
+NOTE_SUFFIXES.update({new: NOTE_SUFFIXES[old] for old, new in CLEAR_NAMES.items()})
 
 
 def note_record(release):
@@ -187,7 +191,12 @@ def choose_platform(releases, platform):
 
 
 def patch_card(page, suffix, package):
-    name_pattern = r'MarcoMovie-\d+\.\d+\.\d+-' + re.escape(suffix)
+    aliases = {'android-tv.apk': 'preview.apk', 'android-mobile.apk': 'mobile.apk',
+               'android-lite.apk': 'lite.apk'}
+    aliases.update(CLEAR_NAMES)
+    aliases.update({new: old for old, new in CLEAR_NAMES.items()})
+    endings = [suffix] + ([aliases[suffix]] if suffix in aliases else [])
+    name_pattern = r'MarcoMovie-\d+\.\d+\.\d+-(?:' + '|'.join(map(re.escape, endings)) + ')'
     cards = list(re.finditer(r'<div class="dl"(?:\s+[^>]*)?>.*?</div>', page, re.S))
     matches = [card for card in cards if re.search(name_pattern, card[0])]
     if len(matches) != 1:
@@ -218,7 +227,10 @@ def sync(output, releases=None):
     page = original.decode('utf-8')
     if releases is None:
         releases = json.loads(fetch(f'https://api.github.com/repos/{REPO}/releases?per_page=100', 4 * 1024 * 1024))
-    files, versions = {}, {}
+    from android_update_packages import plan as android_plan
+    files, versions, android_cards = android_plan(output, releases)
+    for platform, package in android_cards.items():
+        page = patch_card(page, platform + '.apk', package)
     for platform, suffixes in SUFFIXES.items():
         release = choose_platform(releases, platform)
         if release is None:
@@ -227,8 +239,12 @@ def sync(output, releases=None):
             raise ValueError('Published platform release is missing update notes: ' + platform)
         version = release['tag_name'].split('-v', 1)[1]
         packages = {}
+        names = {asset.get('name') for asset in release.get('assets', [])}
         for suffix in suffixes:
-            name = f'MarcoMovie-{version}-{suffix}'
+            preferred = CLEAR_NAMES.get(suffix, suffix)
+            name = f'MarcoMovie-{version}-{preferred}'
+            if name not in names:
+                name = f'MarcoMovie-{version}-{suffix}'
             href, size, digest, body = platform_asset(release, name, output)
             package = dict(size=size, sha256=digest, url=href if href.startswith('https://') else BASE + name)
             packages[name] = package
@@ -240,7 +256,24 @@ def sync(output, releases=None):
                     notes=release.get('body') or '', packages=packages,
                     release_url=f'https://github.com/{REPO}/releases/tag/{release["tag_name"]}')
         if platform == 'windows':
-            feed['windows'] = packages[f'MarcoMovie-{version}-windows-setup.exe']
+            # Installed 0.5.x clients require this exact legacy filename. The
+            # public card can use the clearer name, but the update channel must
+            # retain a verified, byte-identical alias until those clients migrate.
+            legacy_name = f'MarcoMovie-{version}-windows-setup.exe'
+            setup = next(package for name, package in packages.items()
+                         if name.endswith(('-windows-x64-setup.exe', '-windows-setup.exe')))
+            if legacy_name not in packages:
+                if legacy_name not in names:
+                    raise ValueError('Missing Windows updater compatibility alias')
+                href, size, digest, body = platform_asset(release, legacy_name, output)
+                if size != setup['size'] or digest != setup['sha256']:
+                    raise ValueError('Windows updater alias differs from the public installer')
+                packages[legacy_name] = dict(size=size, sha256=digest,
+                                            url=href if href.startswith('https://') else BASE + legacy_name)
+                if body is not None:
+                    files[legacy_name] = body
+                    files[legacy_name + '.sha256'] = (digest + '  ' + legacy_name + '\n').encode('ascii')
+            feed['windows'] = packages[legacy_name]
         path = f'updates/{platform}.json'
         previous_path = output / path
         if previous_path.exists():
@@ -259,7 +292,7 @@ def sync(output, releases=None):
     # the complete snapshot; never rewrite a previously published binary.
     for name, body in files.items():
         target = output / name
-        if target.exists() and target.suffix in ('.ipa', '.exe', '.zip') and target.read_bytes() != body:
+        if target.exists() and target.suffix in ('.ipa', '.exe', '.zip', '.apk') and target.read_bytes() != body:
             raise ValueError('Immutable package differs: ' + name)
     for name, body in files.items():
         target = output / name
