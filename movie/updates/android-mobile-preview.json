@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.5.4",
-  "versionCode": 54,
+  "versionName": "0.5.5",
+  "versionCode": 55,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Android 手机 / 平板 0.5.4\n\n- **平台**：Android 手机 / 平板（`android-mobile`，ARM64 + ARMv7A，Android 6.0+）\n- **版本**：`0.5.4`（`versionCode 54`）\n- **发布日期**：2026-11-08\n- **构建提交**：`d014a7add909237da1b2d8ee95d2a81962a10ff9`\n\n## 本次修复与改进\n\n1. **播放界面去蒙版与横屏显示区域对齐**：\n   - 移除手机端播放控制层上下大块深色矩形遮罩（`topShade` / `bottomShade`），消除像半透明黑盒蒙版压在画面上的问题。\n   - 修复从竖屏选集进入横屏全屏播放时，系统状态栏/挖孔屏历史 `WindowInsets` 导致控制层向右下错位的问题；横屏旋转完成后自动刷新安全区并将上下内边距归零。\n   - 横屏播放工具栏由右侧竖列统一改为底部居中横向胶囊条，紧凑适配手机横屏高度。\n2. **选集页单一换源入口**：\n   - 移除选集页主播放按钮下方的重复“默认播放线路”按钮，仅保留右上角独立的换源胶囊按钮（`⇄ 线路名 ⌄`），并在右上角切换线路时自动记住首选线路。\n3. **设置页与三级子菜单状态栏防重叠**：\n   - 新增基于 `WindowInsets`、`DisplayCutout` 与系统资源的统一状态栏安全高度计算，修复设置页及三级子页面（软件更新、运行诊断、高级设置、首页与壁纸、播放与字幕、搜索与数据等）顶部顶到手机时间/状态栏上的问题，并为三级设置页面补充顶部圆形返回按钮与标题栏。\n4. **选集页高清海报自动升级**：\n   - 修复豆瓣多节点图片（`img1`/`img2`/`img9.doubanio.com`）升级 `/l_ratio_poster/` 大图时因域名被强行改写为 `img3` 导致回退低清缩略图的问题。\n   - 修复选集页隐藏海报钩子尺寸被设为 `1x1` 导致解码降采样的问题，并接入官方高清竖版海报自动检索升级（豆瓣 `subject_suggest` / Rexxar 原图与 Bilibili PGC 竖版封面），加载完成后自动同步刷新选集页背景海报与剧集预览卡。\n5. **选集页播放按钮文案精简**：\n   - 选集页主播放按钮仅单行显示“▶ 播放 · 第 X 集”（或精简剧集名），不再在按钮内拼接冗长的资源文件名与“续播 XX:XX”；续播时间节点与线路信息统一由按钮下方小字展示。\n\n## 验证范围\n\n- 通过 `check_public_content.py` 公开仓库合规检查与 Java 源码格式化检查。\n- 通过离线单元测试（`PrefsTest`、`PlaybackTest`、`SubtitleTest`、`TvLayoutPolicyTest`、`CmsTest`）与设备真机探针回归。\n- 核对正式签名 APK（`MarcoMovie-v0.5.4-android-mobile.apk`）及 SHA-256 校验值。\n\n## 已知限制\n\n- 播放与画质取决于用户自行导入的合法片源配置、网络环境及设备硬件解码能力。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.4/MarcoMovie-0.5.4-android-mobile.apk",
-  "size": 61227666,
-  "sha256": "97612ea7cbbab5e422cc4713503ae59b366202b3ae98685b45f65abd67eda9e5",
-  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.4/MarcoMovie-0.5.4-android-mobile.apk",
+  "notes": "# Android 手机 / 平板 0.5.5\n\n- 发布平台：Android 手机 / 平板（`android-mobile`）\n- 版本：`0.5.5`（`versionCode 55`）\n- 发布日期：2026-11-08\n- 构建提交：`0fea7f35a403b7d59c9d33fdbdf20c259db15f9e`\n- 安装包：`MarcoMovie-0.5.5-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.5-mobile.apk`）\n\n## 本次修复与改进\n\n1. **播放界面右侧竖置滑动工具条**：将手机播放界面工具条移至画面右侧竖向居中排列，支持上下滑动浏览全部操作按钮；底部进度条自动避让右侧工具栏区域，彻底消除整块蒙版感与控件遮挡。\n2. **选集详情页新增豆瓣与烂番茄双评分**：在选集详情页信息区新增豆瓣评分（`豆瓣 ★ X.X`）与烂番茄新鲜度（`烂番茄 XX%`）徽章展示，优先解析片源元数据与豆瓣高分信息。\n3. **选集页海报从片名位置渐进模糊**：重构选集页竖版背景画布，片名上方的封面人物区域保持 100% 原画锐利度，从片名所在纵向坐标开始向下平滑叠加磨砂模糊与暗色阅读遮罩，兼顾高清视觉与文字可读性。\n4. **设置页自定义项全面改为底部抽屉选择**：将设置页及子页面中所有可自定义配置（含画质/缩放/倍速/解码/柱数/开关等）统一改为底部抽屉卡片选择器，取消点击直接循环切换模式。\n5. **设置页单击即触发与卡片呼吸感优化**：移除设置页及子页面卡片冗余的触屏焦点拦截（`focusableInTouchMode`），确保触屏单击立即响应，无需像电视端那样先选中再进入；同步加大各级设置卡片内边距与行间距，提升视觉呼吸感。\n6. **手机端全屏触控字幕调试（双指缩放 + 按住拖拽 + 中轴线指引）**：点击字幕调节直接进入全屏实时预览调试界面，支持双指捏合手势无级缩放字号、单指按住任意拖拽水平与垂直位置，拖动时实时显示水平/垂直中轴线辅助指引并在中心点自动磁吸对齐；底部集成字号滑轨、字体粗细滑轨与 8 款样式抽屉菜单。\n7. **滑动快进双进度条与线性速度变化**：播放页左右滑动快进/快退时同步展示顶部手势胶囊进度条与底部纯净进度条，且快进/快退倍率随手指滑动速度（`px/s`）线性加速。\n\n## 验证范围\n\n- 通过 `ReviewFixChecks`、`SeekGestureChecks`、`UpdateControllerChecks`、`TvInputControllerChecks` 与 `Checks` 本地回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 16KB 页对齐及 V1/V2/V3 正式签名校验。\n\n## 已知限制\n\n- 33 项待移植 Guard 插件路由及原生 Python 完整运行时仍在推进中，iPhone 正式版发布继续保持挂起状态。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.5/MarcoMovie-0.5.5-android-mobile.apk",
+  "size": 61239954,
+  "sha256": "32369e70722bddb7619004c88a30c3bc563036e9138ca49191d6844f8e6e75b5",
+  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.5/MarcoMovie-0.5.5-android-mobile.apk",
   "packages": {
-    "MarcoMovie-0.5.4-android-mobile.apk": {
-      "size": 61227666,
-      "sha256": "97612ea7cbbab5e422cc4713503ae59b366202b3ae98685b45f65abd67eda9e5",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.4/MarcoMovie-0.5.4-android-mobile.apk"
+    "MarcoMovie-0.5.5-android-mobile.apk": {
+      "size": 61239954,
+      "sha256": "32369e70722bddb7619004c88a30c3bc563036e9138ca49191d6844f8e6e75b5",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.5/MarcoMovie-0.5.5-android-mobile.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.4"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.5"
 }

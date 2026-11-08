@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.4",
-  "versionCode": 54,
+  "versionName": "0.5.5",
+  "versionCode": 55,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Android 电视 / 盒子 0.5.4\n\n- **平台**：Android 电视 / 盒子（`android-tv`，ARMv7A 32 位兼容包，Android 6.0+）\n- **版本**：`0.5.4`（`versionCode 54`）\n- **发布日期**：2026-11-08\n- **构建提交**：`d014a7add909237da1b2d8ee95d2a81962a10ff9`\n\n## 本次修复与改进\n\n1. **豆瓣多节点高清海报升级修复**：\n   - 修复豆瓣图片节点（`img1`/`img2`/`img9.doubanio.com`）在升级 `/l_ratio_poster/` 与 `/m_ratio_poster/` 高清海报时因域名被改写为 `img3` 导致请求失败并回退至低清缩略图的问题，提升首页海报墙与选集详情页海报清晰度。\n2. **多端版本基线同步**：\n   - 与 Android 手机/平板端 `0.5.4`（`versionCode 54`）保持统一代码基线，完整包含 0.5.3 的杜比视界/HDR 播放工具条零掉帧呼出、快进纯进度条模式、字幕四向调节（上下高度/左右字号/确认键换色）及首页分类导航焦点自动切换与大小自定义能力。\n\n## 验证范围\n\n- 通过 `check_public_content.py` 公开仓库合规检查与 Java 源码格式化检查。\n- 通过离线单元测试与 Android TV 真机探针验证。\n- 核对正式签名 APK（`MarcoMovie-v0.5.4-android-tv.apk`）及 SHA-256 校验值。\n\n## 已知限制\n\n- 杜比视界 / 4K 高码率视频的实际解码表现仍取决于电视芯片硬件解码器能力与片源封装格式。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.4/MarcoMovie-0.5.4-android-tv.apk",
-  "size": 35450968,
-  "sha256": "630e581b8b20ba2a477b5fdb704a6e5dbe0a1b6db398cb5e8e5a058f81c6a58a",
-  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.4/MarcoMovie-0.5.4-android-tv.apk",
+  "notes": "# Android 电视 / 盒子 0.5.5\n\n- 发布平台：Android 电视 / 盒子（`android-tv`）\n- 版本：`0.5.5`（`versionCode 55`）\n- 发布日期：2026-11-08\n- 构建提交：`0fea7f35a403b7d59c9d33fdbdf20c259db15f9e`\n- 安装包：`MarcoMovie-0.5.5-android-tv.apk`（兼容旧名：`MarcoMovie-0.5.5-tv-arm32.apk`）\n\n## 本次修复与改进\n\n1. **电视端全屏预览字幕调校系统**：字幕调节升级为全屏实时预览模式，配备画面中心十字中轴线指引与多行字幕实时渲染：\n   - **方向键位置调整**：聚焦“遥控方向键调整位置”进入四向位置微调模式，上下方向键调节底部高度（`0..180dp`），左右方向键调节水平偏移（`-100..100`），确认键一键归中水平中轴线。\n   - **独立滑轨调节字幕大小与粗细**：提供独立的“字幕大小”滑轨（`SeekBar`，`25..65`）与独立的“字体粗细”滑轨（`SeekBar`，`0..100` 描边与字重连续调节），遥控器左右键即可丝滑滑动。\n   - **右侧抽屉菜单选择字幕颜色与样式**：点击“字幕颜色与样式（抽屉菜单）”从右侧滑出电视端专属抽屉面板，内置 8 款高对比度字幕配色与底衬样式（经典纯白、影院鹅黄、柔和青蓝、护眼嫩绿、琥珀暖金、半透黑底白字、半透黑底黄字、极简纯白细边），实时预览并落盘保存。\n2. **保持播放性能与海报清晰度基线**：延续杜比视界 / HDR 硬解播放时呼出工具条零掉帧、左右快进纯进度条模式、分类导航栏焦点自动切换及豆瓣多节点高清海报加载优化。\n\n## 验证范围\n\n- 通过 `ReviewFixChecks`、`SeekGestureChecks`、`UpdateControllerChecks`、`TvInputControllerChecks` 与 `Checks` 本地回归测试。\n- 通过 Android TV 实机 `HomeProbe` 与 `LayoutProbe` 布局及焦点导航验收。\n\n## 已知限制\n\n- 33 项待移植 Guard 插件路由及原生 Python 完整运行时仍在推进中，iPhone 正式版发布继续保持挂起状态。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.5/MarcoMovie-0.5.5-android-tv.apk",
+  "size": 35467352,
+  "sha256": "3ed61edc033b26f00fe31e83991d214c714f834abf2f0ac4b96422da4c6bfb36",
+  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.5/MarcoMovie-0.5.5-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.4-android-tv.apk": {
-      "size": 35450968,
-      "sha256": "630e581b8b20ba2a477b5fdb704a6e5dbe0a1b6db398cb5e8e5a058f81c6a58a",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.4/MarcoMovie-0.5.4-android-tv.apk"
+    "MarcoMovie-0.5.5-android-tv.apk": {
+      "size": 35467352,
+      "sha256": "3ed61edc033b26f00fe31e83991d214c714f834abf2f0ac4b96422da4c6bfb36",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.5/MarcoMovie-0.5.5-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.4"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.5"
 }

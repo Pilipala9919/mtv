@@ -2,6 +2,30 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "android-tv-v0.5.5",
+      "version": "0.5.5",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-08T12:17:45Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Android 电视 / 盒子 0.5.5\n\n- 发布平台：Android 电视 / 盒子（`android-tv`）\n- 版本：`0.5.5`（`versionCode 55`）\n- 发布日期：2026-11-08\n- 构建提交：`0fea7f35a403b7d59c9d33fdbdf20c259db15f9e`\n- 安装包：`MarcoMovie-0.5.5-android-tv.apk`（兼容旧名：`MarcoMovie-0.5.5-tv-arm32.apk`）\n\n## 本次修复与改进\n\n1. **电视端全屏预览字幕调校系统**：字幕调节升级为全屏实时预览模式，配备画面中心十字中轴线指引与多行字幕实时渲染：\n   - **方向键位置调整**：聚焦“遥控方向键调整位置”进入四向位置微调模式，上下方向键调节底部高度（`0..180dp`），左右方向键调节水平偏移（`-100..100`），确认键一键归中水平中轴线。\n   - **独立滑轨调节字幕大小与粗细**：提供独立的“字幕大小”滑轨（`SeekBar`，`25..65`）与独立的“字体粗细”滑轨（`SeekBar`，`0..100` 描边与字重连续调节），遥控器左右键即可丝滑滑动。\n   - **右侧抽屉菜单选择字幕颜色与样式**：点击“字幕颜色与样式（抽屉菜单）”从右侧滑出电视端专属抽屉面板，内置 8 款高对比度字幕配色与底衬样式（经典纯白、影院鹅黄、柔和青蓝、护眼嫩绿、琥珀暖金、半透黑底白字、半透黑底黄字、极简纯白细边），实时预览并落盘保存。\n2. **保持播放性能与海报清晰度基线**：延续杜比视界 / HDR 硬解播放时呼出工具条零掉帧、左右快进纯进度条模式、分类导航栏焦点自动切换及豆瓣多节点高清海报加载优化。\n\n## 验证范围\n\n- 通过 `ReviewFixChecks`、`SeekGestureChecks`、`UpdateControllerChecks`、`TvInputControllerChecks` 与 `Checks` 本地回归测试。\n- 通过 Android TV 实机 `HomeProbe` 与 `LayoutProbe` 布局及焦点导航验收。\n\n## 已知限制\n\n- 33 项待移植 Guard 插件路由及原生 Python 完整运行时仍在推进中，iPhone 正式版发布继续保持挂起状态。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.5"
+    },
+    {
+      "tag": "android-mobile-v0.5.5",
+      "version": "0.5.5",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-08T12:16:07Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Android 手机 / 平板 0.5.5\n\n- 发布平台：Android 手机 / 平板（`android-mobile`）\n- 版本：`0.5.5`（`versionCode 55`）\n- 发布日期：2026-11-08\n- 构建提交：`0fea7f35a403b7d59c9d33fdbdf20c259db15f9e`\n- 安装包：`MarcoMovie-0.5.5-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.5-mobile.apk`）\n\n## 本次修复与改进\n\n1. **播放界面右侧竖置滑动工具条**：将手机播放界面工具条移至画面右侧竖向居中排列，支持上下滑动浏览全部操作按钮；底部进度条自动避让右侧工具栏区域，彻底消除整块蒙版感与控件遮挡。\n2. **选集详情页新增豆瓣与烂番茄双评分**：在选集详情页信息区新增豆瓣评分（`豆瓣 ★ X.X`）与烂番茄新鲜度（`烂番茄 XX%`）徽章展示，优先解析片源元数据与豆瓣高分信息。\n3. **选集页海报从片名位置渐进模糊**：重构选集页竖版背景画布，片名上方的封面人物区域保持 100% 原画锐利度，从片名所在纵向坐标开始向下平滑叠加磨砂模糊与暗色阅读遮罩，兼顾高清视觉与文字可读性。\n4. **设置页自定义项全面改为底部抽屉选择**：将设置页及子页面中所有可自定义配置（含画质/缩放/倍速/解码/柱数/开关等）统一改为底部抽屉卡片选择器，取消点击直接循环切换模式。\n5. **设置页单击即触发与卡片呼吸感优化**：移除设置页及子页面卡片冗余的触屏焦点拦截（`focusableInTouchMode`），确保触屏单击立即响应，无需像电视端那样先选中再进入；同步加大各级设置卡片内边距与行间距，提升视觉呼吸感。\n6. **手机端全屏触控字幕调试（双指缩放 + 按住拖拽 + 中轴线指引）**：点击字幕调节直接进入全屏实时预览调试界面，支持双指捏合手势无级缩放字号、单指按住任意拖拽水平与垂直位置，拖动时实时显示水平/垂直中轴线辅助指引并在中心点自动磁吸对齐；底部集成字号滑轨、字体粗细滑轨与 8 款样式抽屉菜单。\n7. **滑动快进双进度条与线性速度变化**：播放页左右滑动快进/快退时同步展示顶部手势胶囊进度条与底部纯净进度条，且快进/快退倍率随手指滑动速度（`px/s`）线性加速。\n\n## 验证范围\n\n- 通过 `ReviewFixChecks`、`SeekGestureChecks`、`UpdateControllerChecks`、`TvInputControllerChecks` 与 `Checks` 本地回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 16KB 页对齐及 V1/V2/V3 正式签名校验。\n\n## 已知限制\n\n- 33 项待移植 Guard 插件路由及原生 Python 完整运行时仍在推进中，iPhone 正式版发布继续保持挂起状态。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.5"
+    },
+    {
       "tag": "android-tv-v0.5.4",
       "version": "0.5.4",
       "platforms": [
