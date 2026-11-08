@@ -25,6 +25,8 @@ PLATFORM_LIMIT = 300 * 1024 * 1024
 # Official QQ group (universal: covers Marco TV and Marco Movie, not one product).
 QQ_GROUP_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=%2FqKQ4IqdIqi2mRxgPr8PBGGEhIo0M5yMI6%2BBNKH7CoOFDczcaEXekgiu8Kbt%2BORc&busi_data=eyJncm91cENvZGUiOiI4MTUwODUxMDIiLCJ0b2tlbiI6Im9CUW4wejI1NlB6UW9uK1EzdGNEMlZXdkgvMExVcGpVdXhOMFVrVXZmcWt0N3ZoaHRLMzNzd2lLVVp6UzZXc2QiLCJ1aW4iOiI5MjYwMDQzIn0%3D&data=VXYI4NkXW1KuR0A5qzeADzpuJOBl7PrdDs8NBNT4RMeKMjrMmev1_pjDDKH3CfTw7VwFoH-5Hkd71EDQ9_qj1w&svctype=4&tempid=h5_group_info'
 QQ_GROUP_CODE = '815085102'
+QQ_GROUP2_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=4nZ%2F26D%2BhMLo6lpV1MQfM69dkpOz2TvHsfIf9bRWMtZA0gKGiIqgH2vzgqcaIvPT&busi_data=eyJncm91cENvZGUiOiIxMDM2NDA0MjM4IiwidG9rZW4iOiIvdWRhVUc5WjRpQkZkZkdvYTNZa1ViVlhGVmVGOGsxTUVYZUJHV0lVOWZ2aUxSM2pQUHNBRTVMMS9sb01ETHVNIiwidWluIjoiOTI2MDA0MyJ9&data=9yPnjsGlyhnKtpk8QK9noXL2QkiODxOBsmKZ3IaeJyiux1GGkQ133sh8-szNRlS_L3LkjShSMyXMaH3uiyyH3w&svctype=4&tempid=h5_group_info'
+QQ_GROUP2_CODE = '1036404238'
 # (file name pattern, button label, short note). Mirrored only when the release carries the
 # package together with its official .sha256 file.
 PLATFORMS = (
@@ -396,7 +398,9 @@ def sync(output):
 <section class="block" id="group"><h2>官方交流群</h2>
 <p class="sub">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。</p>
 <div class="card"><h3>官方交流群 1️⃣：Marco！</h3><p>群号 815085102 · 点开下面的按钮会跳到 QQ 加群。</p>
-<a class="btn primary" href="{escaped(QQ_GROUP_URL)}">加入 QQ 群</a></div></section>
+<a class="btn primary" href="{escaped(QQ_GROUP_URL)}">加入 QQ 群</a></div>
+<div class="card"><h3>官方交流群 2️⃣：Marco！1</h3><p>群号 1036404238 · 点开下面的按钮会跳到 QQ 加群。</p>
+<a class="btn primary" href="{escaped(QQ_GROUP2_URL)}">加入 QQ 群</a></div></section>
 <footer>作者：Pilipala · <a href="LICENSE">GPL-3.0-only</a> · <a href="NOTICE">署名与许可</a> · <a href="https://github.com/{REPO}/blob/main/docs/USER_GUIDE.md">使用指南</a> · <a href="/">Marco TV</a></footer>
 </div></body></html>'''
     files = {apk_name + '.sha256': (sha + '  ' + apk_name + '\n').encode(),
