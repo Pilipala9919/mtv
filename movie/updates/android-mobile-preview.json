@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.5.1",
-  "versionCode": 51,
+  "versionName": "0.5.2",
+  "versionCode": 52,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 手机 / 平板 0.5.1\n\n发布日期：2026-11-08。适用于 Android 6.0 及以上的 ARM 手机和平板。\n\n## 重点修复\n\n- 横屏播放控制区根据实际可用画面、刘海和系统导航区自动调整，处理进度条或按钮超出屏幕边界的问题，无需手动设置偏移。\n- 缩小播放区域时调整标题和控制区布局；覆盖正反横屏、手势导航和三键导航。\n- 合并重复的“继续播放”和历史入口，历史记录首位继续观看；按影片名称处理目录跳转，避免把影片编号填入搜索框。\n- 修复 Android 6 字幕选项与播放设置回调的兼容问题。\n\nAndroid 16 模拟器通过 122 项源检查；自适应播放布局通过 54 项检查。\n\n## 订阅与运行兼容\n\n- 改进 JS 模块、Python 会话与本地包读取，减少自带 Python 模块反复编译造成的启动超时。\n- 新增通用 HTTP T4 请求适配；完善 TVBox 直播目录引用、插件直播目录及请求头传递。\n- 更新本机 CatPaw 运行组件，支持 Android 6 所需接口，并验证手机版 64 位原生库的 16KB 内存页打包。\n- 手机和电视使用独立更新通道，下载失败时保持同一设备版本重试，并校验安装包摘要、版本、设备类型和签名。\n\n## 安装与范围\n\n沿用原签名，可覆盖安装。**0.5.0 请先从[下载页](https://marcotv.wlj9919.top/movie/)手动选择对应设备安装一次**；升级后使用独立更新通道。手机包与电视包请勿混装。\n\n本版先交付已验证的修复，不等待全部跨端插件移植。33 条原始插件线路的完整跨端验收、完整 CPython/原生扩展支持仍未完成；第三方源本身的失效、验证要求和设备播放能力仍可能影响使用。iPhone、macOS、Windows 和 Lite 的安装包本次不更新。\n\n## 验证记录\n\n构建代码：`c10becae6aea8506858a8076b7938a196d6300b8`（Android 0.5.1，版本代码 51）。\n\n[完整构建与回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42449618961)；[本机运行组件与 16KB 打包检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42449705860)。正式安装包经原签名重新签署、逐文件内容核对和摘要校验，附对应源码。验证范围为自动回归、模拟器和完整包检查，不代表全部机型或全部第三方源已完成真机播放验收。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.1/MarcoMovie-0.5.1-android-mobile.apk",
-  "size": 61223415,
-  "sha256": "141b9b1124f25faa5839cf4d8e524a979e313408ad29f6ab735d17c32bac3391",
-  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.1/MarcoMovie-0.5.1-android-mobile.apk",
+  "notes": "# Marco Movie Android 手机 / 平板 0.5.2\n\n发布日期：2026-11-08。适用于 Android 6.0 及以上的 ARM 手机和平板。\n\n## 重点升级与修复\n\n- **海报二级磁盘缓存与并发去重**：新增海报二级磁盘缓存（`posters_v2`）与同图并发请求合流，提升首页与详情页海报显示速度，降低重复网络请求。\n- **断电续播与进度持久化强化**：播放进度每 2 秒同步落盘，切后台或退出前立即提交保存，提升异常退出的续播可靠性。\n- **播放换源与解析回退增强**：播放器换源菜单支持画质切换、线路切换及一键跨源检索同名影片；新增配置 `parses` 解析接口回退支持。\n- **保留自适应横竖屏播放控制**：完整保留 0.5.1 手机横屏安全区自适应控制栏、手势快进/亮度/音量调节及 16KB 内存页兼容打包。\n\n## 订阅与运行兼容\n\n- 增强 TVBox / 影视仓配置解析兼容：支持图片隐写（`**` Base64）、`2423` Hex-AES 加密配置、JSON 注释与尾随逗号清理、MacCMS XML（`type=0`）接口解析，以及 Base64 直播源文本识别。\n- 保留 0.5.1 的 JS/Python/HTTP T4/CatPaw 本机运行组件（含 64 位 16KB 对齐校验）、子仓库切换与独立更新通道。\n\n## 安装与范围\n\n沿用原签名，可覆盖安装。**0.5.0 请先从[下载页](https://marcotv.wlj9919.top/movie/)手动选择对应设备安装一次**；升级后使用独立更新通道。手机包与电视包请勿混装。\n\n本版先交付已验证的修复与兼容增强，不等待全部跨端插件移植。33 条原始插件线路的完整跨端验收、完整 CPython/原生扩展支持仍未完成；第三方源本身的失效、验证要求和设备播放能力仍可能影响使用。iPhone、macOS、Windows 和 Lite 的安装包本次不更新。\n\n## 验证记录\n\n构建代码：`5039665cccc344f635fd2730c8c5fcc9f7d6de66`（Android 0.5.2，版本代码 52）。\n\n24 套本地 JVM 与字节码回归检查（含 Android 6 / API 23 回调兼容检查、整包 16KB 页对齐校验）全部通过。正式安装包经原签名签署、逐文件内容核对和摘要校验，附对应源码。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.2/MarcoMovie-0.5.2-android-mobile.apk",
+  "size": 61219474,
+  "sha256": "4880e0f57544e8358982b98afb3e661327870d67576ac8aa7cf5cfd7ceeadb49",
+  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.2/MarcoMovie-0.5.2-android-mobile.apk",
   "packages": {
-    "MarcoMovie-0.5.1-android-mobile.apk": {
-      "size": 61223415,
-      "sha256": "141b9b1124f25faa5839cf4d8e524a979e313408ad29f6ab735d17c32bac3391",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.1/MarcoMovie-0.5.1-android-mobile.apk"
+    "MarcoMovie-0.5.2-android-mobile.apk": {
+      "size": 61219474,
+      "sha256": "4880e0f57544e8358982b98afb3e661327870d67576ac8aa7cf5cfd7ceeadb49",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.2/MarcoMovie-0.5.2-android-mobile.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.1"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.2"
 }

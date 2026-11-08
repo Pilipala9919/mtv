@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.1",
-  "versionCode": 51,
+  "versionName": "0.5.2",
+  "versionCode": 52,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视 / 盒子 0.5.1\n\n发布日期：2026-11-08。适用于 Android 6.0 及以上的 ARM 电视和盒子。\n\n## 重点修复\n\n- 修复 Android 6 点击设置或播放器字幕选项时，因旧系统缺少回调接口而崩溃的问题。\n- 移除独立且重复的“继续播放”区域，保留统一历史列表，最新记录在首位并保留播放进度。\n- 改进目录转搜索时的影片名称提取，避免把目录编号当作搜索词。\n- 改进来源筛选结果、脚本实例保留和直播目录读取，保留来源实际返回的空结果与错误状态。\n\nAndroid 6 电视模拟器通过 122 项源、25 项字幕和 96 项首页/历史记录检查。\n\n## 订阅与运行兼容\n\n- 改进 JS 模块、Python 会话与本地包读取，减少自带 Python 模块反复编译造成的启动超时。\n- 新增通用 HTTP T4 请求适配；完善 TVBox 直播目录引用、插件直播目录及请求头传递。\n- 更新本机 CatPaw 运行组件，支持 Android 6 所需接口，并验证手机版 64 位原生库的 16KB 内存页打包。\n- 手机和电视使用独立更新通道，下载失败时保持同一设备版本重试，并校验安装包摘要、版本、设备类型和签名。\n\n## 安装与范围\n\n沿用原签名，可覆盖安装。**0.5.0 请先从[下载页](https://marcotv.wlj9919.top/movie/)手动选择对应设备安装一次**；升级后使用独立更新通道。手机包与电视包请勿混装。\n\n本版先交付已验证的修复，不等待全部跨端插件移植。33 条原始插件线路的完整跨端验收、完整 CPython/原生扩展支持仍未完成；第三方源本身的失效、验证要求和设备播放能力仍可能影响使用。iPhone、macOS、Windows 和 Lite 的安装包本次不更新。\n\n## 验证记录\n\n构建代码：`c10becae6aea8506858a8076b7938a196d6300b8`（Android 0.5.1，版本代码 51）。\n\n[完整构建与回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42449618961)；[本机运行组件与 16KB 打包检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42449705860)。正式安装包经原签名重新签署、逐文件内容核对和摘要校验，附对应源码。验证范围为自动回归、模拟器和完整包检查，不代表全部机型或全部第三方源已完成真机播放验收。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.1/MarcoMovie-0.5.1-android-tv.apk",
-  "size": 35446717,
-  "sha256": "e234f6a07e6d4293e15e62cc1a0bceedcf95c14bcfc724fca686a7d822cb8e5e",
-  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.1/MarcoMovie-0.5.1-android-tv.apk",
+  "notes": "# Marco Movie Android 电视 / 盒子 0.5.2\n\n发布日期：2026-11-08。适用于 Android 6.0 及以上的 ARM 电视和盒子。\n\n## 重点升级与修复\n\n- **大屏沉浸式海报选集页**：采用全幅背景海报融合暗色渐变的剧集详情布局，左侧固定影片信息与快捷操作，右侧独立滚动线路与选集网格；进入选集页时若有后台小窗播放，自动收起为顶部紧凑播放胶囊条，避免遮挡选集区域。\n- **电视播放工具条常显 9 项核心控制**：底部工具条常显“下一集、选集、换源、倍速、音轨、解码、片头、片尾、更多”，无需层层翻找菜单；换源菜单支持同片源多画质/多线路切换与一键跨源搜索同名影片。\n- **海报与选集并发提速及磁盘缓存**：新增海报二级磁盘缓存（`posters_v2`）与并发合流去重，首页支持磁盘快照秒开（`home_snap_v1`）与焦点悬停预取详情，海报加载与剧集解析互不阻塞。\n- **断电续播与历史记录统一**：移除首页冗余的“继续播放”横栏，统一为 4 卡历史记录行；播放进度每 2 秒同步落盘并在退回桌面/断电前强制写入，点击历史卡片即可直接断电续播。\n- **全局遥控器焦点防裁切**：解除详情页、首页、顶栏、弹窗及滚动容器的父级边缘裁切（`clipChildren=false` / `clipToPadding=false`），修复返回、收藏等按钮放大发光时边缘被切掉的问题。\n\n## 订阅与运行兼容\n\n- 增强 TVBox / 影视仓配置解析兼容：支持图片隐写（`**` Base64）、`2423` Hex-AES 加密配置、JSON 注释与尾随逗号清理、MacCMS XML（`type=0`）接口解析，以及 `parses` 外部解析列表回退。\n- 保留 0.5.1 的 JS/Python/HTTP T4/CatPaw 本机运行组件、子仓库切换与独立更新通道；电视包保持 ARM 32 位。\n\n## 安装与范围\n\n沿用原签名，可覆盖安装。**0.5.0 请先从[下载页](https://marcotv.wlj9919.top/movie/)手动选择对应设备安装一次**；升级后使用独立更新通道。手机包与电视包请勿混装。\n\n本版先交付已验证的电视端体验升级与兼容修复，不等待全部跨端插件移植。33 条原始插件线路的完整跨端验收、完整 CPython/原生扩展支持仍未完成；第三方源本身的失效、验证要求和设备播放能力仍可能影响使用。iPhone、macOS、Windows 和 Lite 的安装包本次不更新。\n\n## 验证记录\n\n构建代码：`5039665cccc344f635fd2730c8c5fcc9f7d6de66`（Android 0.5.2，版本代码 52）。\n\n24 套本地 JVM 与字节码回归检查（含 Android 6 / API 23 回调兼容检查、152 项 Guard 源检查、22 项传输检查）全部通过，并在小米电视真机（`MiTV_ASTP0`）完成覆盖安装与运行验证。正式安装包经原签名签署、逐文件内容核对和摘要校验，附对应源码。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.2/MarcoMovie-0.5.2-android-tv.apk",
+  "size": 35442776,
+  "sha256": "a73d1e9da743099dfe59d6eb598f25675e14d1a5ec4d8273b192bd5fb430ef07",
+  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.2/MarcoMovie-0.5.2-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.1-android-tv.apk": {
-      "size": 35446717,
-      "sha256": "e234f6a07e6d4293e15e62cc1a0bceedcf95c14bcfc724fca686a7d822cb8e5e",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.1/MarcoMovie-0.5.1-android-tv.apk"
+    "MarcoMovie-0.5.2-android-tv.apk": {
+      "size": 35442776,
+      "sha256": "a73d1e9da743099dfe59d6eb598f25675e14d1a5ec4d8273b192bd5fb430ef07",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.2/MarcoMovie-0.5.2-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.1"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.2"
 }
