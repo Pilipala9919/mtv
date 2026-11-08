@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.2",
-  "versionCode": 52,
+  "versionName": "0.5.3",
+  "versionCode": 53,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视 / 盒子 0.5.2\n\n发布日期：2026-11-08。适用于 Android 6.0 及以上的 ARM 电视和盒子。\n\n## 重点升级与修复\n\n- **大屏沉浸式海报选集页**：采用全幅背景海报融合暗色渐变的剧集详情布局，左侧固定影片信息与快捷操作，右侧独立滚动线路与选集网格；进入选集页时若有后台小窗播放，自动收起为顶部紧凑播放胶囊条，避免遮挡选集区域。\n- **电视播放工具条常显 9 项核心控制**：底部工具条常显“下一集、选集、换源、倍速、音轨、解码、片头、片尾、更多”，无需层层翻找菜单；换源菜单支持同片源多画质/多线路切换与一键跨源搜索同名影片。\n- **海报与选集并发提速及磁盘缓存**：新增海报二级磁盘缓存（`posters_v2`）与并发合流去重，首页支持磁盘快照秒开（`home_snap_v1`）与焦点悬停预取详情，海报加载与剧集解析互不阻塞。\n- **断电续播与历史记录统一**：移除首页冗余的“继续播放”横栏，统一为 4 卡历史记录行；播放进度每 2 秒同步落盘并在退回桌面/断电前强制写入，点击历史卡片即可直接断电续播。\n- **全局遥控器焦点防裁切**：解除详情页、首页、顶栏、弹窗及滚动容器的父级边缘裁切（`clipChildren=false` / `clipToPadding=false`），修复返回、收藏等按钮放大发光时边缘被切掉的问题。\n\n## 订阅与运行兼容\n\n- 增强 TVBox / 影视仓配置解析兼容：支持图片隐写（`**` Base64）、`2423` Hex-AES 加密配置、JSON 注释与尾随逗号清理、MacCMS XML（`type=0`）接口解析，以及 `parses` 外部解析列表回退。\n- 保留 0.5.1 的 JS/Python/HTTP T4/CatPaw 本机运行组件、子仓库切换与独立更新通道；电视包保持 ARM 32 位。\n\n## 安装与范围\n\n沿用原签名，可覆盖安装。**0.5.0 请先从[下载页](https://marcotv.wlj9919.top/movie/)手动选择对应设备安装一次**；升级后使用独立更新通道。手机包与电视包请勿混装。\n\n本版先交付已验证的电视端体验升级与兼容修复，不等待全部跨端插件移植。33 条原始插件线路的完整跨端验收、完整 CPython/原生扩展支持仍未完成；第三方源本身的失效、验证要求和设备播放能力仍可能影响使用。iPhone、macOS、Windows 和 Lite 的安装包本次不更新。\n\n## 验证记录\n\n构建代码：`5039665cccc344f635fd2730c8c5fcc9f7d6de66`（Android 0.5.2，版本代码 52）。\n\n24 套本地 JVM 与字节码回归检查（含 Android 6 / API 23 回调兼容检查、152 项 Guard 源检查、22 项传输检查）全部通过，并在小米电视真机（`MiTV_ASTP0`）完成覆盖安装与运行验证。正式安装包经原签名签署、逐文件内容核对和摘要校验，附对应源码。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.2/MarcoMovie-0.5.2-android-tv.apk",
-  "size": 35442776,
-  "sha256": "a73d1e9da743099dfe59d6eb598f25675e14d1a5ec4d8273b192bd5fb430ef07",
-  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.2/MarcoMovie-0.5.2-android-tv.apk",
+  "notes": "# Marco Movie Android 电视 / 盒子 0.5.3\n\n发布日期：2026-11-08。适用于 Android 6.0 及以上的 ARM 电视和盒子。\n\n## 重点升级与修复\n\n- **杜比视界 / HDR 硬件解码呼出工具条零卡顿**：彻底移除播放控制层对 `GlassworkSurface`（`PixelCopy` 截帧与全树 CPU 模糊合成）的调用，改用零 GPU 离屏拷贝的硬件矢量半透图层（`chromeSurface`）；移除 `1920×1080` 全屏透明硬件层切换与字幕 `requestLayout()` 重排，解决海信 VIDAA 等电视在播放杜比视界/高码率硬解片源时按上下方向键或菜单键拉起控制栏掉帧卡顿的问题。\n- **快进 / 快退仅展示纯净进度条 HUD**：播放中按左右方向键快进或快退时，隐藏顶部标题栏、底部按钮工具条及中央状态卡，仅保留进度条、时间节点与倍速快进提示；按上/下方向键或菜单键可随时展开完整工具条。\n- **遥控器字幕调节交互重构**：保持上下方向键调节字幕高度（`0..180dp` 实时预览不被工具栏遮挡）、左右方向键调节字号大小，按确认键循环切换 6 种字体颜色与底衬样式（纯白、暖黄、天青、翠绿、珊瑚粉、纯白半透底）；移除电视端无法点击的触控“完成”按钮条，每次调节实时保存，按返回键或长按确认键即可完成退出。\n- **分类导航栏聚焦自动切换**：首页分类标签（推荐、电影、电视剧、综艺等）支持遥控器焦点移动到位后自动切换下方片单内容，无需二次按确认键，并内置首屏内存缓存（`categoryCache`）实现切回秒显。\n- **导航栏字体与按钮大小自定义及自适应排版**：在“设置 → 画面与外观”新增“导航栏字体与按钮大小”调节（`85%` / `100%` / `115%` / `130%` / `140%`），首页分类胶囊栏、片源切换胶囊与侧边/底部导航 Dock 自动按比例缩放并自适应留白与海报网格宽度。\n\n## 订阅与运行兼容\n\n- 保留 0.5.2 的 TVBox / 影视仓图片隐写、`2423` Hex-AES、MacCMS XML（`type=0`）与 `parses` 解析回退，以及 JS/Python/HTTP T4/CatPaw 本机运行组件；电视包保持 ARM 32 位。\n\n## 安装与范围\n\n沿用原签名，可覆盖安装。**0.5.0 请先从[下载页](https://marcotv.wlj9919.top/movie/)手动选择对应设备安装一次**；升级后使用独立更新通道。手机包与电视包请勿混装。\n\n本版先交付已验证的电视端播放性能与交互升级，不等待全部跨端插件移植。33 条原始插件线路的完整跨端验收、完整 CPython/原生扩展支持仍未完成；第三方源本身的失效、验证要求和设备播放能力仍可能影响使用。iPhone、macOS、Windows 和 Lite 的安装包本次不更新。\n\n## 验证记录\n\n构建代码：`1a148080511978fe39d02cf349acbeab914b6ce6`（Android 0.5.3，版本代码 53）。\n\n本地 JVM 与字节码回归检查全部通过，并在电视真机（`192.168.1.28:5555`）完成 `HomeProbe`、`InteractionProbe` 与 `LayoutProbe` 全项真机验证。正式安装包经原签名签署、逐文件内容核对和摘要校验，附对应源码。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.3/MarcoMovie-0.5.3-android-tv.apk",
+  "size": 35446872,
+  "sha256": "eb8625ad92d11ea463e5d08bb3103ed3b6f885bb78747bdf0760331e70394244",
+  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.3/MarcoMovie-0.5.3-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.2-android-tv.apk": {
-      "size": 35442776,
-      "sha256": "a73d1e9da743099dfe59d6eb598f25675e14d1a5ec4d8273b192bd5fb430ef07",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.2/MarcoMovie-0.5.2-android-tv.apk"
+    "MarcoMovie-0.5.3-android-tv.apk": {
+      "size": 35446872,
+      "sha256": "eb8625ad92d11ea463e5d08bb3103ed3b6f885bb78747bdf0760331e70394244",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.3/MarcoMovie-0.5.3-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.2"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.3"
 }
