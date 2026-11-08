@@ -2,6 +2,18 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "macos-v0.5.1",
+      "version": "0.5.1",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-08T13:53:34Z",
+      "prerelease": false,
+      "target_commitish": "5c586d576103d23abb0c381b2e45acfa2d31e39d",
+      "notes": "## macOS 0.5.1 — 2026-11-08\n\n此版本为 macOS 桌面端独立更新，同步桌面端原生全屏播放修复及各类订阅源、直播源、TVBox 源与影视仓源适配。其他平台保持各自版本独立推进。\n\n1. **桌面端原生真全屏播放**：双击播放画面、按 `F`/`F11` 或点击全屏按钮统一切换无标题栏真全屏；`Esc` 键先退出全屏，再次按下离开播放页，退出全屏或返回详情页时自动恢复原窗口大小与位置。\n2. **订阅源与多仓兼容增强**：支持 GZIP 压缩配置、图片隐写（`**`+Base64）、`2423`（`$#...#$`）Hex-AES 加密配置、顶层 `jar` 与 `parses` JSON 解析列表回退、站点 `ua` 与 `ext.header`/`ext.headers` 请求头提取，以及本地 `.zip` 离线订阅包导入。\n3. **脚本与扩展片源适配**：支持 HTTP T4（`type: 4`）远端接口、本地 DRPY 规则引擎（保留规则声明编码）、CatVod JS Spider（ES Module 与 CommonJS 依赖预载）、Python Spider 会话保持与本机回环代理，以及已移植 Guard 源（`Dm84`、`Auete`、`Bttwoo`、`T4`、`FY` 与图形验证码验证弹窗）。\n4. **直播目录与直播源增强**：新增 `LiveCatalogParser`，支持 TVBox `proxy://?do=live&type=txt&ext=` 直播目录引用解包、`lives[].api` 脚本直播源（`liveContent`）与播放会话保持、嵌套 `groups`/`channels` JSON 直播结构、`#EXTVLCOPT:` / `#EXTGRP:` / `|Referer=...` 频道级请求头，以及 Base64 / `**`+Base64 / Hex-AES 编码直播列表。\n5. **平台独立更新与请求取消**：切换为按 macOS 独立更新清单（`updates/macos.json`）检查更新，避免其他平台发版导致错误升级提示；切换分类筛选、直播源或离开详情页时主动取消过期请求。\n\n### 验证与范围\n\n- 构建提交：`5c586d576103d23abb0c381b2e45acfa2d31e39d`，[GitHub Actions 构建与验证记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42482977553)。\n- 通过公开内容守卫、DRPY/CatVod/Python/Guard 本地宿主回归检查、Flutter 跨端单测以及 GitHub Actions macOS 应用包完整构建与签名校验。\n- 已知限制：其余尚未完成跨平台移植的 33 条 Android 专属 Guard / JAR 插件线路及通用实机播放未纳入本版已完成范围。\n- 0.5.0 客户端首次升级请从[下载页](https://marcotv.wlj9919.top/movie/)手动下载安装 macOS 0.5.1 应用包；自 0.5.1 起使用 macOS 平台独立更新通道。",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.1"
+    },
+    {
       "tag": "ios-v0.5.1-preview",
       "version": "0.5.1",
       "platforms": [
@@ -12,6 +24,18 @@
       "target_commitish": "5505c54fc2b77070c037d09d4258f63a39ff21c2",
       "notes": "# Marco Movie iPhone / iPad 0.5.1 验证版\n\n发布日期：2026-11-08。仅适用于 iPhone / iPad，版本 0.5.1（51），最低目标 iOS / iPadOS 14.0。\n\n本次按用户要求同步现有验证包；这是预发布测试版，不表示全部订阅和插件线路已完成适配，不替换正式版自动更新通道。其他系统安装包不随本次发布更新。\n\n## 下载与安装\n\n- [下载 iPhone / iPad 未签名 IPA](https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.1-preview/MarcoMovie-0.5.1-ios-iphone-ipad-unsigned.ipa)\n- [IPA SHA-256 校验文件](https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.1-preview/MarcoMovie-0.5.1-ios-iphone-ipad-unsigned.ipa.sha256)\n- IPA 需要自行签名，或使用设备系统支持的安装方式；不承诺所有系统均可使用 TrollStore。\n- 包大小：65,205,842 字节。SHA-256：`45a89f48b91273e6829bfa594fb230a84b3b1e03ce33df1726a1a417b94a07a2`。\n\n## 本次新增与修复\n\n- 补充 iOS 本机 Python 的 Crypto、lxml 依赖及常用文本、JSON、分页、HTML/XPath 辅助接口。\n- 保留 DRPY 规则声明的页面编码，内置 GBK、GB18030、Big5 解码支持，修复无 ICU 环境下部分目录乱码或为空的问题。\n- 修复 JavaScript 模块依赖识别，避免把注释、字符串及正则中的 require 文本误判成真实依赖。\n- Auete 增加手动验证码与验证后搜索重试，保留来源会话和含特殊字符的搜索词。\n- 夸克扫码接通真实账户验证，移除占位登录凭据；二维码本机生成，避免刷新、关闭或切换账号后旧请求写入登录结果。\n- 新增夸克账户内视频目录、分页与原画/转码解析，完善账号隔离和横屏长名称显示。\n- iPhone 横屏播放控制区完整避让左右安全区域，修复快速退出全屏后系统栏被再次隐藏的问题。\n- 隐私密码弹窗支持横屏滚动，阻止退出弹窗后的延迟解锁。\n\n## 已完成验证\n\n- [iOS 构建 42483330484](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42483330484) 成功，393 项 Flutter 测试通过。\n- ARM64 与 x86_64 iOS 模拟器各通过 202 项原生运行检查；对应 53 项运行输入与本包源码一致。\n- 核对 2,987 个包内运行库文件、16 项源码输入、152 个 ARM64 原生二进制，以及 41 个 Crypto、3 个 lxml 组件。\n- 夸克匿名二维码创建与等待轮询成功；未完成真实账号确认、分享转存和实机媒体播放验证。\n\n## 已知限制\n\n- 夸克分享文件转存及 WoGG/Pan 分享接线仍未完成。\n- 33 条待验收插件线路尚未全部移植：26 条未移植、6 条已接入但未验收、1 条实验入口未开放。\n- 不保证任意 TXT、JS、JSON、Python、PHP 或本地包订阅均可用；文件格式可导入不等于其中每条插件都可在 iPhone 独立运行。\n- iPhone 真机登录、起播、解码、拖动进度及旧系统安装仍需验证。iOS 14.5 巨魔启动问题按用户要求留待新版实测。\n\n## 构建来源\n\n安装包构建提交：`5505c54fc2b77070c037d09d4258f63a39ff21c2`。随发布附上该提交的源码 ZIP 及 SHA-256 文件。后续文档和构建缓存更新不改变本 IPA 内容。\n",
       "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.1-preview"
+    },
+    {
+      "tag": "windows-v0.5.2",
+      "version": "0.5.2",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-08T13:28:35Z",
+      "prerelease": false,
+      "target_commitish": "5c586d576103d23abb0c381b2e45acfa2d31e39d",
+      "notes": "## Windows 0.5.2 — 2026-11-08\n\n此版本为 Windows 桌面端（x64）独立更新，同步各类订阅源、直播源、TVBox 源与影视仓源适配。其他平台保持各自版本独立推进。\n\n1. **订阅源与多仓兼容增强**：支持 GZIP 压缩配置、图片隐写（`**`+Base64）、`2423`（`$#...#$`）Hex-AES 加密配置、顶层 `jar` 与 `parses` JSON 解析列表回退、站点 `ua` 与 `ext.header`/`ext.headers` 请求头提取，以及本地 `.zip` 离线订阅包导入。\n2. **脚本与扩展片源适配**：支持 HTTP T4（`type: 4`）远端接口、本地 DRPY 规则引擎（保留规则声明编码）、CatVod JS Spider（ES Module 与 CommonJS 依赖预载）、Python Spider 会话保持与本机回环代理，以及已移植 Guard 源（`Dm84`、`Auete`、`Bttwoo`、`T4`、`FY` 与图形验证码验证弹窗）。\n3. **直播目录与直播源增强**：新增 `LiveCatalogParser`，支持 TVBox `proxy://?do=live&type=txt&ext=` 直播目录引用解包、`lives[].api` 脚本直播源（`liveContent`）与播放会话保持、嵌套 `groups`/`channels` JSON 直播结构、`#EXTVLCOPT:` / `#EXTGRP:` / `|Referer=...` 频道级请求头，以及 Base64 / `**`+Base64 / Hex-AES 编码直播列表。\n4. **并发请求取消与选集优先**：切换首页分类筛选、切换直播源或离开详情页时主动取消已过期的后台请求，优先保障当前详情页选集加载。\n5. **原生真全屏与独立更新**：延续 0.5.1 原生无边框真全屏播放（双击播放画面、`F`/`F11`、全屏按钮统一切换，`Esc` 优先退出全屏并恢复原窗口状态）与 Windows 独立更新通道（`updates/windows.json`）。\n\n### 验证与范围\n\n- 构建提交：`5c586d576103d23abb0c381b2e45acfa2d31e39d`，[GitHub Actions 构建与验证记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42482977553)。\n- 通过公开内容守卫、DRPY/CatVod/Python/Guard 本地宿主回归检查、Flutter 跨端单测以及 GitHub Actions Windows x64 安装包（`.exe`）与便携包（`.zip`）完整构建校验。\n- 已知限制：其余尚未完成跨平台移植的 33 条 Android 专属 Guard / JAR 插件线路及通用实机播放未纳入本版已完成范围。\n- 提供 Windows x64 安装版与便携版 ZIP，均附 SHA-256 校验值及对应源码归档。",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.2"
     },
     {
       "tag": "android-tv-v0.5.5",
