@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.5.5",
-  "versionCode": 55,
+  "versionName": "0.5.6",
+  "versionCode": 56,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Android 手机 / 平板 0.5.5\n\n- 发布平台：Android 手机 / 平板（`android-mobile`）\n- 版本：`0.5.5`（`versionCode 55`）\n- 发布日期：2026-11-08\n- 构建提交：`0fea7f35a403b7d59c9d33fdbdf20c259db15f9e`\n- 安装包：`MarcoMovie-0.5.5-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.5-mobile.apk`）\n\n## 本次修复与改进\n\n1. **播放界面右侧竖置滑动工具条**：将手机播放界面工具条移至画面右侧竖向居中排列，支持上下滑动浏览全部操作按钮；底部进度条自动避让右侧工具栏区域，彻底消除整块蒙版感与控件遮挡。\n2. **选集详情页新增豆瓣与烂番茄双评分**：在选集详情页信息区新增豆瓣评分（`豆瓣 ★ X.X`）与烂番茄新鲜度（`烂番茄 XX%`）徽章展示，优先解析片源元数据与豆瓣高分信息。\n3. **选集页海报从片名位置渐进模糊**：重构选集页竖版背景画布，片名上方的封面人物区域保持 100% 原画锐利度，从片名所在纵向坐标开始向下平滑叠加磨砂模糊与暗色阅读遮罩，兼顾高清视觉与文字可读性。\n4. **设置页自定义项全面改为底部抽屉选择**：将设置页及子页面中所有可自定义配置（含画质/缩放/倍速/解码/柱数/开关等）统一改为底部抽屉卡片选择器，取消点击直接循环切换模式。\n5. **设置页单击即触发与卡片呼吸感优化**：移除设置页及子页面卡片冗余的触屏焦点拦截（`focusableInTouchMode`），确保触屏单击立即响应，无需像电视端那样先选中再进入；同步加大各级设置卡片内边距与行间距，提升视觉呼吸感。\n6. **手机端全屏触控字幕调试（双指缩放 + 按住拖拽 + 中轴线指引）**：点击字幕调节直接进入全屏实时预览调试界面，支持双指捏合手势无级缩放字号、单指按住任意拖拽水平与垂直位置，拖动时实时显示水平/垂直中轴线辅助指引并在中心点自动磁吸对齐；底部集成字号滑轨、字体粗细滑轨与 8 款样式抽屉菜单。\n7. **滑动快进双进度条与线性速度变化**：播放页左右滑动快进/快退时同步展示顶部手势胶囊进度条与底部纯净进度条，且快进/快退倍率随手指滑动速度（`px/s`）线性加速。\n\n## 验证范围\n\n- 通过 `ReviewFixChecks`、`SeekGestureChecks`、`UpdateControllerChecks`、`TvInputControllerChecks` 与 `Checks` 本地回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 16KB 页对齐及 V1/V2/V3 正式签名校验。\n\n## 已知限制\n\n- 33 项待移植 Guard 插件路由及原生 Python 完整运行时仍在推进中，iPhone 正式版发布继续保持挂起状态。\n",
+  "notes": "# Android 手机 / 平板 0.5.6\n\n- 发布平台：Android 手机 / 平板（`android-mobile`）\n- 版本：`0.5.6`（`versionCode 56`）\n- 发布日期：2026-11-08\n- 构建提交：`95121d25c30972170a3e1d94e7dcc73b5cced690`\n- 安装包：`MarcoMovie-0.5.6-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.6-mobile.apk`）\n\n## 本次修复与改进\n\n1. **首页换源弹窗多列紧凑网格排版**：重构 `SourcePicker` 换源弹窗，竖屏采用双列高密度胶囊网格（横屏与平板采用三列网格），并将顶部标题、“XX 个片源”计数徽章与“默认偏好源”快捷按钮整合于同一导航行，彻底消除单列超宽卡片的大片空白，同屏可见片源数翻倍。\n2. **播放页右侧工具条收窄拉长与进度条左右等距对齐**：将手机播放界面右侧竖置工具条宽度收窄至 `48dp`（横屏）/ `52dp`（竖屏），拉长纵向可视高度并上移至底部进度条上方；底部进度条与时间轴实现左右边距严格一致的居中对称布局。\n3. **修复横竖屏旋转后无法恢复竖屏 UI 布局**：在 `MainActivity.onConfigurationChanged` 与 `MobileShell` 根视图布局监听中实时同步屏幕方向与视口尺寸，彻底解决从竖屏旋转为横屏再转回竖屏时卡在横屏布局（5 列海报 + 右侧导航栏）的问题。\n4. **修复设置页抽屉选择器显示异常**：修正 `MobileShell.showDrawerPicker` 及播放页字幕抽屉在 `Dialog.show()` 之后显式声明 `MATCH_PARENT` 窗口宽高的时序，解决抽屉坍缩为屏幕中央窄条的问题。\n5. **设置页布尔开关升级为 iOS 胶囊拨杆样式**：针对仅有“开启 / 关闭”两种状态的设置项（第三方扩展、4K HDR 隧道模式、自动连播下一集、减少透明效果、精简界面动画等），采用 iOS 风格胶囊开关（`IosSwitchView`）原地平滑切换，不再弹出抽屉。\n6. **优化设置页卡片点击反馈**：将设置卡片触控反馈升级为毛玻璃表面高亮与微缩放（`0.986x`）动效，消除旧版整卡半透明闪烁与整页重绘跳变。\n7. **软件更新优先拉取镜像站资源**：`UpdatePolicy` 与 `UpdateManager` 在检查更新源与下载 APK 安装包时均优先连接高速镜像站（`marcotv.wlj9919.top`），遇到 404 或网络异常时立即无缝回退 GitHub。\n8. **iOS 系统更新风格软件更新页与各平台版号独立推进**：参考 iOS `通用 -> 软件更新` 页面重构 `UpdateScreen`（圆角图标徽章、版本号与包体积头卡、线性进度条、分组版本说明与自动更新策略卡片），并引入 `android/edition-versions.json` 支持各平台版号独立推进。\n9. **修复网盘配置片源交互与插件 Activity 同步**：支持在手机端完整展示并触发“我的云盘┃配置”片源下的登录与清除凭据动作卡片，同步修复插件弹窗 Activity 绑定与后台详情预取隔离。\n\n## 验证范围\n\n- 通过 `ReviewFixChecks`、`SeekGestureChecks`、`UpdateControllerChecks`、`UpdateEditionChecks`、`TvInputControllerChecks` 与 `Checks` 本地回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 16KB 页对齐及 V1/V2/V3 正式签名校验。\n\n## 已知限制\n\n- 33 项待移植 Guard 插件路由及原生 Python 完整运行时仍在推进中，iPhone 正式版发布继续保持挂起状态。\n",
   "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.5/MarcoMovie-0.5.5-android-mobile.apk",
-  "size": 61239954,
-  "sha256": "32369e70722bddb7619004c88a30c3bc563036e9138ca49191d6844f8e6e75b5",
-  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.5/MarcoMovie-0.5.5-android-mobile.apk",
+  "size": 61252242,
+  "sha256": "fd0f004c96fd3b31da27a23664c5128cd89b0e7f428f9fd7c427e0363a23f93c",
+  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.6/MarcoMovie-0.5.6-android-mobile.apk",
   "packages": {
     "MarcoMovie-0.5.5-android-mobile.apk": {
       "size": 61239954,
