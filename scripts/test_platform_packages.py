@@ -129,6 +129,17 @@ class PackageTests(unittest.TestCase):
         self.assertNotIn('href="javascript:', result)
         self.assertIn('&lt;script&gt;', result)
 
+    def test_official_groups_present_in_mirror_page(self):
+        # movie/index.html is the template now: the platform sync only
+        # patches package cards and notes, so the group section must be
+        # kept in the page itself. Guard both groups against edits.
+        page = (Path(__file__).resolve().parent.parent / 'movie' / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('官方交流群 1️⃣', page)
+        self.assertIn('815085102', page)
+        self.assertIn('官方交流群 2️⃣', page)
+        self.assertIn('Marco！1', page)
+        self.assertIn('1036404238', page)
+
     def test_visible_package_version_changes_with_download(self):
         page = self.page.replace('<h3>ios-unsigned.ipa</h3>', '<h3>iPhone</h3><span class="package-version">0.5.0</span>')
         package = dict(url='https://example.invalid/MarcoMovie-0.5.2-ios-unsigned.ipa', size=123, sha256='b'*64)
