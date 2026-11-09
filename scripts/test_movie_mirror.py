@@ -191,6 +191,31 @@ class MirrorTests(unittest.TestCase):
         self.assertNotIn('界面示意', page)
         self.assertNotIn('class="shots"', page)
 
+    def test_quark_asset_keys(self):
+        self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.9-android-tv.apk'), None)
+        self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.9-mobile.apk'), 'android-mobile')
+        self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.5-ios-unsigned.ipa'), 'ios')
+        self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.3-windows-x64-setup.exe'), 'windows-setup')
+        self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.3-windows-x64-portable.zip'), 'windows-zip')
+        self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.2-macos.zip'), 'macos')
+        self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.0-lite.apk'), 'android-lite')
+        self.assertEqual(m.quark_button('android-tv', {}), '')
+        self.assertIn('夸克网盘下载', m.quark_button('android-tv', {'android-tv': 'https://pan.quark.cn/s/abc'}))
+
+    def test_quark_buttons_render_from_manifest(self):
+        links = {'android-tv': 'https://pan.quark.cn/s/tv123',
+                 'android-mobile': 'https://pan.quark.cn/s/mo456'}
+        with patch.object(m, 'load_quark_links', return_value=links):
+            self.sync()
+        page = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('https://pan.quark.cn/s/tv123', page)
+        self.assertIn('夸克网盘下载', page)
+
+    def test_no_quark_buttons_without_manifest(self):
+        self.sync()
+        page = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertNotIn('夸克网盘下载', page)
+
     def test_sub_bullets_do_not_consume_list_numbers(self):
         # The CSS counter must count top-level items only: with the old
         # "ol.feats li" selector a sub-bullet ate number 10, so 0.5.0

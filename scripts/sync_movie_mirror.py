@@ -25,8 +25,13 @@ PLATFORM_LIMIT = 300 * 1024 * 1024
 # Official QQ group (universal: covers Marco TV and Marco Movie, not one product).
 QQ_GROUP_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=%2FqKQ4IqdIqi2mRxgPr8PBGGEhIo0M5yMI6%2BBNKH7CoOFDczcaEXekgiu8Kbt%2BORc&busi_data=eyJncm91cENvZGUiOiI4MTUwODUxMDIiLCJ0b2tlbiI6Im9CUW4wejI1NlB6UW9uK1EzdGNEMlZXdkgvMExVcGpVdXhOMFVrVXZmcWt0N3ZoaHRLMzNzd2lLVVp6UzZXc2QiLCJ1aW4iOiI5MjYwMDQzIn0%3D&data=VXYI4NkXW1KuR0A5qzeADzpuJOBl7PrdDs8NBNT4RMeKMjrMmev1_pjDDKH3CfTw7VwFoH-5Hkd71EDQ9_qj1w&svctype=4&tempid=h5_group_info'
 QQ_GROUP_CODE = '815085102'
+# Second official QQ group, same universal scope (added 2026-11-08).
 QQ_GROUP2_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=4nZ%2F26D%2BhMLo6lpV1MQfM69dkpOz2TvHsfIf9bRWMtZA0gKGiIqgH2vzgqcaIvPT&busi_data=eyJncm91cENvZGUiOiIxMDM2NDA0MjM4IiwidG9rZW4iOiIvdWRhVUc5WjRpQkZkZkdvYTNZa1ViVlhGVmVGOGsxTUVYZUJHV0lVOWZ2aUxSM2pQUHNBRTVMMS9sb01ETHVNIiwidWluIjoiOTI2MDA0MyJ9&data=9yPnjsGlyhnKtpk8QK9noXL2QkiODxOBsmKZ3IaeJyiux1GGkQ133sh8-szNRlS_L3LkjShSMyXMaH3uiyyH3w&svctype=4&tempid=h5_group_info'
 QQ_GROUP2_CODE = '1036404238'
+# Quark Drive share links, written by scripts/sync_quark.py (one permanent
+# folder link per platform). Absent on first run: cards render without the
+# Quark button until the first Quark sync writes the manifest.
+QUARK_MANIFEST = Path(__file__).resolve().parent / 'quark.json'
 # (file name pattern, button label, short note). Mirrored only when the release carries the
 # package together with its official .sha256 file.
 PLATFORMS = (
@@ -117,6 +122,44 @@ PAGE_CSS = """
 """
 
 
+def load_quark_links(path=None):
+    """Return {platform key: share URL} from scripts/quark.json, or {}."""
+    manifest = Path(path) if path else QUARK_MANIFEST
+    if not manifest.exists():
+        return {}
+    try:
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return {}
+    return {k: v.get("share_url") for k, v in data.items()
+            if isinstance(v, dict) and v.get("share_url")}
+
+
+def quark_key_for_asset(name):
+    """Map a release asset filename to its Quark manifest key, or None."""
+    for suffix, key in (
+            ("-mobile.apk", "android-mobile"),
+            ("-ios-unsigned.ipa", "ios"),
+            ("-windows-x64-setup.exe", "windows-setup"),
+            ("-windows-setup.exe", "windows-setup"),
+            ("-windows-x64-portable.zip", "windows-zip"),
+            ("-windows-x64.zip", "windows-zip"),
+            ("-macos.zip", "macos"),
+            ("-lite.apk", "android-lite")):
+        if name.endswith(suffix):
+            return key
+    return None
+
+
+def quark_button(key, links):
+    """A Quark download button for one card, or '' when no link exists yet."""
+    url = links.get(key) if links else None
+    if not url:
+        return ""
+    return (f' <a class="btn" href="{html.escape(url, quote=True)}" '
+            f'target="_blank" rel="noopener">夸克网盘下载</a>')
+
+
 def fetch(url, limit=LIMIT):
     headers = {'User-Agent': 'MarcoMovie-Mirror', 'Accept-Encoding': 'identity'}
     if url.startswith('https://api.github.com/') and os.environ.get('GITHUB_TOKEN'):
@@ -137,7 +180,7 @@ def apk_identity(apk):
         data = z.read(entry)
     if struct.unpack_from('<H', data)[0] != 3:
         raise ValueError('Expected binary Android manifest')
-    strings, values, editions, elements = [], {}, [], []
+    strings, values = [], {}
     offset = 8
     while offset < len(data):
         kind, header, size = struct.unpack_from('<HHI', data, offset)
@@ -166,29 +209,16 @@ def apk_identity(apk):
             start, stride, count = struct.unpack_from('<HHH', data, offset + 24)
             if stride < 20 or 16 + start + stride * count > size:
                 raise ValueError('Invalid attributes')
-            if name in ('manifest', 'uses-sdk', 'meta-data'):
-                attributes = {}
+            if name in ('manifest', 'uses-sdk'):
                 for i in range(count):
                     pos = offset + 16 + start + i * stride
                     _, key, raw, _, _, value_type, value = struct.unpack_from('<IIIHBBI', data, pos)
-                    attributes[strings[key]] = strings[raw] if raw != 0xffffffff else strings[value] if value_type == 3 else value
-                    values[(name, strings[key])] = attributes[strings[key]]
-                if name == 'meta-data' and elements == ['manifest', 'application'] and attributes.get('name') == 'com.pilipala.marcomovie.EDITION':
-                    editions.append(attributes.get('value'))
-            elements.append(name)
-        elif kind == 0x103:
-            name = strings[struct.unpack_from('<I', data, offset + 20)[0]]
-            if not elements or elements.pop() != name:
-                raise ValueError('Unbalanced Android manifest')
+                    values[(name, strings[key])] = strings[raw] if raw != 0xffffffff else strings[value] if value_type == 3 else value
         offset += size
     result = {'package': values[('manifest', 'package')], 'versionName': values[('manifest', 'versionName')],
               'versionCode': int(values[('manifest', 'versionCode')]), 'minSdk': int(values[('uses-sdk', 'minSdkVersion')])}
     if result['package'] != 'com.pilipala.marcomovie' or result['minSdk'] < 23 or result['versionCode'] <= 0:
         raise ValueError('Wrong application identity')
-    if editions:
-        if len(editions) != 1 or editions[0] not in ('tv', 'mobile'):
-            raise ValueError('Invalid application edition')
-        result['edition'] = editions[0]
     return result
 
 
@@ -353,17 +383,18 @@ def sync(output):
             if previous['versionCode'] == feed['versionCode'] and previous['sha256'] != sha:
                 raise ValueError('Refusing to replace a published version')
     escaped = html.escape
+    quark_links = load_quark_links()
     mobile_href = next((p[3] for p in platforms if p[0] == f'MarcoMovie-{version}-mobile.apk'), None)
     mobile_button = (f'<a class="btn ghost" href="{escaped(mobile_href)}">下载手机版</a>' if mobile_href else '')
     download_cards = []
     download_cards.append(
         f'<div class="dl"><h3>Android 电视版</h3><p>Android 6.0+ 电视 / 盒子 / 投影仪大屏专享版 · ARM 32 位（内置 FFmpeg / AV1 / VP9 扩展）· {len(apk)/1024/1024:.1f} MB</p>'
-        f'<a class="btn primary" href="{escaped(apk_href)}">下载</a>'
+        f'<a class="btn primary" href="{escaped(apk_href)}">下载</a>{quark_button("android-tv", quark_links)}'
         f'<p><a href="{escaped(apk_href)}.sha256">校验文件</a></p><code>SHA-256：{sha}</code></div>')
     for name, label, note, href, size, digest, body in platforms:
         download_cards.append(
             f'<div class="dl"><h3>{escaped(label)}</h3><p>{escaped(note)} · {size/1024/1024:.1f} MB</p>'
-            f'<a class="btn primary" href="{escaped(href)}">下载</a>'
+            f'<a class="btn primary" href="{escaped(href)}">下载</a>{quark_button(quark_key_for_asset(name), quark_links)}'
             f'<p><a href="{escaped(href)}.sha256">校验文件</a></p><code>SHA-256：{digest}</code></div>')
     download_cards.append(
         f'<div class="dl"><h3>同版本源码</h3><p>与发布包同一版本 · {len(source)/1024/1024:.1f} MB</p>'
