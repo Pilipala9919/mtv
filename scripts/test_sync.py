@@ -115,7 +115,7 @@ class OfficialApkChecks(unittest.TestCase):
                 return json.dumps(release)
             raise AssertionError(address)
         root = Path(sync.__file__).resolve().parent.parent
-        with tempfile.TemporaryDirectory() as directory, patch.object(sync, 'ROOT', Path(directory)), patch.object(sync, 'fetch', fetch):
+        with tempfile.TemporaryDirectory() as directory, patch.object(sync, 'ROOT', Path(directory)), patch.object(sync, 'INDEX', Path(directory) / 'index.html'), patch.object(sync, 'fetch', fetch):
             (Path(directory) / 'index.html').write_text((root / 'index.html').read_text(encoding='utf-8'), encoding='utf-8')
             self.assertEqual(sync.main(), 0)
             self.assertEqual((Path(directory) / 'MarcoTV-0.15.0.apk').read_bytes(), official)
