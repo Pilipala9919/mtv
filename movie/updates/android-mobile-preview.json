@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.5.8",
-  "versionCode": 58,
+  "versionName": "0.5.9",
+  "versionCode": 59,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Android 手机 / 平板 0.5.8\r\n\r\n- 发布平台：Android 手机 / 平板（`android-mobile`）\r\n- 版本：`0.5.8`（`versionCode 58`）\r\n- 发布日期：2026-11-09\r\n- 构建提交：`43084c56dc6b42c56884566f7792090268c18d71`\r\n- 安装包：`MarcoMovie-0.5.8-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.8-mobile.apk`）\r\n\r\n## 本次修复与改进\r\n\r\n1. **设置页全量专属矢量图标体系重构（告别同页单一重复图标）**：\r\n   - 重构 `MobileShell.SettingIconView` 与各级设置子菜单（`片源与直播配置`、`播放、解码与字幕`、`界面外观与偏好`、`备份、更新与诊断` 及高级设置页 `SettingsScreen`），为全部 22 类设置项绘制专属语义化矢量图标与独立色彩徽章：\r\n     - **片源与直播配置**：剪贴板夹板（`ICON_CLIPBOARD`）、代码括号 `</>`（`ICON_LINK_CODE`）、本地文件夹（`ICON_FOLDER_FILE`）、双天线电视直播屏（`ICON_LIVE_TV`）、双向切换箭头（`ICON_SWITCH_SOURCE`）、模块化扩展积木（`ICON_PLUGIN_EXT`）。\r\n     - **播放、解码与字幕**：播放核心圆环（`ICON_ENGINE_CORE`）、多引脚硬件解码芯片（`ICON_DECODER_CHIP`）、HDR 柔光显示屏（`ICON_HDR_TUNNEL`）、双三角下一集连播（`ICON_AUTO_NEXT`）、时间轴弧形跃迁箭头（`ICON_SKIP_TIMELINE`）、字幕双轨视窗（`ICON_SUBTITLE`）。\r\n     - **界面外观与偏好**：四角外扩缩放框（`ICON_UI_SCALE`）、`Aa` 导航排版字标（`ICON_NAV_FONT`）、双层毛玻璃圆片（`ICON_GLASS_BLUR`）、动态闪电（`ICON_MOTION_SPARK`）、清空回收桶（`ICON_TRASH_CLEAR`）。\r\n     - **更新、备份与诊断**：环形更新云标（`ICON_UPDATE_CLOUD`）、心电脉冲诊断屏（`ICON_DIAGNOSTIC_LOG`）、备份保险箱（`ICON_BACKUP_SAFE`）及壁纸画框、海报网格、音频均衡波、画幅比例、仪表盘与历史循环图标。\r\n\r\n## 验证范围\r\n\r\n- 通过 `ReviewFixChecks`、`SeekGestureChecks`、`UpdateControllerChecks`、`UpdateEditionChecks`、`TvInputControllerChecks` 与 `Checks` 本地回归测试。\r\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 16KB 页对齐及 V1/V2/V3 正式签名校验。\r\n\r\n## 已知限制\r\n\r\n- 33 项待移植 Guard 插件路由及原生 Python 完整运行时仍在推进中，iPhone 正式版发布继续保持挂起状态。\r\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.8/MarcoMovie-0.5.8-android-mobile.apk",
-  "size": 61264530,
-  "sha256": "ef19f910480fd71b3e3285ddbbabdee5567b061b2d8af374d20466eb510a1ed2",
-  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.8/MarcoMovie-0.5.8-android-mobile.apk",
+  "notes": "# Android 手机 / 平板 0.5.9\r\n\r\n- 发布平台：Android 手机 / 平板（`android-mobile`）\r\n- 版本：`0.5.9`（`versionCode 59`）\r\n- 发布日期：2026-11-09\r\n- 构建提交：`3b8a60c13a900cb8177f513e04b60449a08d1fe6`\r\n- 安装包：`MarcoMovie-0.5.9-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.9-mobile.apk`）\r\n\r\n## 本次修复与改进\r\n\r\n1. **修复网盘配置中心（`csp_PanConfigGuard` / `csp_PanConfig`）点击网盘扫码与配置卡片无反应的问题**：\r\n   - 在 `SourceController.isConfigOrNetdiskActionCard` 与 `sourceAction` 中完整识别专用配置中心片源下的全部操作卡片；当扩展 `Spider.action(id)` 返回空串时自动回退调用 `detailContent(id)` 触发插件内置的各网盘扫码登录弹窗、手动输入 Cookie/Token 弹窗、清理凭据、网页配置中心及代理加速开关。\r\n   - 过滤配置中心占位详情返回（`设置成功后刷新配置中心`），防止覆盖插件二维码弹窗，并在扫码弹窗关闭或切换配置开关后自动刷新当前网盘分类列表状态。\r\n   - 顶栏“网盘”胶囊面板（`AccountPanel` + `SettingsScreen.accountAction`）新增 `PanConfig` 全网盘扫码抽屉菜单、网页配置中心推送与网盘线路排序直接联动；进入配置中心片源时自动定位首个分类并隐藏无关筛选按钮。\r\n\r\n2. **增强双层 `DexClassLoader`（`InitOrigin`）扩展稳定性与生命周期同步**：\r\n   - 在 `CspEngine` 中递归穿透 `Init.loader()` 内层类加载器，自动同步 `InitOrigin.get().d` 活跃 `Activity` 引用，将 `Application.mActivityLifecycleCallbacks` 包装注册及首次生命周期回放移至主线程，并在 `MainActivity.requestPermissions` 中拦截后台线程权限请求，杜绝点击网盘配置时偶发闪退。\r\n\r\n## 验证范围\r\n\r\n- 通过 `UpdateLayoutChecks` 与 `UpdateEditionChecks` 本地回归测试。\r\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 16KB 页对齐及 V1/V2/V3 正式签名校验。\r\n\r\n## 已知限制\r\n\r\n- 33 项待移植 Guard 插件路由及原生 Python 完整运行时仍在推进中，iPhone 正式版发布继续保持挂起状态。\r\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.9/MarcoMovie-0.5.9-android-mobile.apk",
+  "size": 61268626,
+  "sha256": "36694eee5b097fd92569499e9318e09c61223f86af9d564d2207eec7064afc14",
+  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.9/MarcoMovie-0.5.9-android-mobile.apk",
   "packages": {
-    "MarcoMovie-0.5.8-android-mobile.apk": {
-      "size": 61264530,
-      "sha256": "ef19f910480fd71b3e3285ddbbabdee5567b061b2d8af374d20466eb510a1ed2",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.8/MarcoMovie-0.5.8-android-mobile.apk"
+    "MarcoMovie-0.5.9-android-mobile.apk": {
+      "size": 61268626,
+      "sha256": "36694eee5b097fd92569499e9318e09c61223f86af9d564d2207eec7064afc14",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.9/MarcoMovie-0.5.9-android-mobile.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.8"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.9"
 }
