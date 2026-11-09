@@ -384,7 +384,18 @@ def asset(release, name, output, limit=LIMIT):
     checksums = [a for a in release['assets'] if a['name'] == name + '.sha256' and a['state'] == 'uploaded' and a['browser_download_url'] == sha_url]
     if len(checksums) != 1:
         raise ValueError('Missing official checksum')
-    checksum = fetch(sha_url, 4096).decode('ascii').strip().split()
+    local_sha = output / (name + '.sha256')
+    if local_sha.exists():
+        raw_sha = local_sha.read_bytes()
+    else:
+        try:
+            raw_sha = fetch(sha_url, 4096)
+        except urllib.error.HTTPError:
+            if (info.get('digest') or '').startswith('sha256:'):
+                raw_sha = f"{info['digest'][7:]}  {name}\n".encode('ascii')
+            else:
+                raise
+    checksum = raw_sha.decode('ascii').strip().split()
     if len(checksum) != 2 or checksum[1].lstrip('*') != name or not re.fullmatch('[0-9a-f]{64}', checksum[0]):
         raise ValueError('Invalid checksum file')
     local = output / name
@@ -411,7 +422,18 @@ def platform_asset(release, name, output):
     if len([a for a in release['assets'] if a['name'] == name + '.sha256' and a['state'] == 'uploaded'
             and a['browser_download_url'] == sha_url]) != 1:
         raise ValueError('Missing official checksum')
-    checksum = fetch(sha_url, 4096).decode('ascii').strip().split()
+    local_sha = output / (name + '.sha256')
+    if local_sha.exists():
+        raw_sha = local_sha.read_bytes()
+    else:
+        try:
+            raw_sha = fetch(sha_url, 4096)
+        except urllib.error.HTTPError:
+            if (info[0].get('digest') or '').startswith('sha256:'):
+                raw_sha = f"{info[0]['digest'][7:]}  {name}\n".encode('ascii')
+            else:
+                raise
+    checksum = raw_sha.decode('ascii').strip().split()
     if len(checksum) != 2 or checksum[1].lstrip('*') != name or not re.fullmatch('[0-9a-f]{64}', checksum[0]):
         raise ValueError('Invalid checksum file')
     if info[0].get('digest') not in (None, 'sha256:' + checksum[0]):
@@ -430,8 +452,28 @@ def sync(output):
     # still hosted in the repo for the in-app update feeds and the edge proxy.
     def _gh(name):
         return f'https://github.com/{REPO}/releases/download/{release_tag}/{name}'
-    apk, sha = asset(release, apk_name, output, limit=PLATFORM_LIMIT)
-    apk_href = apk_name if len(apk) <= LIMIT else f'https://github.com/{REPO}/releases/download/{release_tag}/{apk_name}'
+    cached_prev = None
+    if not (output / apk_name).exists() and (output / 'updates/preview.json').exists():
+        try:
+            cand = json.loads((output / 'updates/preview.json').read_text(encoding='utf-8'))
+            if cand.get('versionName') == version and cand.get('size', 0) > LIMIT:
+                cached_prev = cand
+        except (ValueError, OSError):
+            pass
+    if cached_prev is not None:
+        apk = None
+        apk_size = cached_prev['size']
+        sha = cached_prev['sha256']
+        identity = {
+            'versionCode': cached_prev['versionCode'],
+            'versionName': cached_prev['versionName'],
+            'minSdk': cached_prev['minSdk'],
+        }
+    else:
+        apk, sha = asset(release, apk_name, output, limit=PLATFORM_LIMIT)
+        apk_size = len(apk)
+        identity = apk_identity(apk)
+    apk_href = apk_name if apk_size <= LIMIT else f'https://github.com/{REPO}/releases/download/{release_tag}/{apk_name}'
     source, source_sha = asset(release, source_name, output)
     platforms = []
     for pattern, label, note in PLATFORMS:
@@ -439,7 +481,6 @@ def sync(output):
         if any(a['name'] == name for a in release['assets']):
             href, size, digest, body = platform_asset(release, name, output)
             platforms.append((name, label, note, href, size, digest, body))
-    identity = apk_identity(apk)
     if identity['versionName'] != version:
         raise ValueError('APK version does not match release')
     with zipfile.ZipFile(io.BytesIO(source)) as archive:
@@ -448,7 +489,7 @@ def sync(output):
         license_text = archive.read(f'MarcoMovie-{version}/LICENSE')
         notice = archive.read(f'MarcoMovie-{version}/NOTICE')
     feed = dict(schema=1, versionCode=identity['versionCode'], versionName=version, minSdk=identity['minSdk'],
-                size=len(apk), sha256=sha, url=apk_href if apk_href.startswith('https://') else BASE + apk_name,
+                size=apk_size, sha256=sha, url=apk_href if apk_href.startswith('https://') else BASE + apk_name,
                 prerelease=bool(release.get('prerelease',True)), notes=(release.get('body') or '')[:8000])
     for name, _, _, href, size, digest, _ in platforms:
         for suffix, key in (('-mobile.apk','mobile'),('-windows-setup.exe','windows')):
@@ -466,7 +507,7 @@ def sync(output):
     escaped = html.escape
     quark_links = load_quark_links()
     tv_override = platform_feed_override(output, "android-tv")
-    tv_card_href, tv_card_size, tv_card_sha, tv_card_ver = tv_override or (_gh(apk_name), len(apk), sha, None)
+    tv_card_href, tv_card_size, tv_card_sha, tv_card_ver = tv_override or (_gh(apk_name), apk_size, sha, None)
     tv_ver_note = f' · v{tv_card_ver}' if tv_card_ver else ''
     mobile_override = platform_feed_override(output, "android-mobile")
     mobile_href = (mobile_override[0] if mobile_override else
@@ -540,7 +581,7 @@ def sync(output):
     files = {apk_name + '.sha256': (sha + '  ' + apk_name + '\n').encode(),
              source_name: source, source_name + '.sha256': (source_sha + '  ' + source_name + '\n').encode(),
              'LICENSE': license_text, 'NOTICE': notice, 'index.html': page.encode()}
-    if len(apk) <= LIMIT:
+    if apk is not None and len(apk) <= LIMIT:
         files[apk_name] = apk
     for name, _, _, _, _, digest, body in platforms:
         if body is None:
@@ -559,7 +600,7 @@ def sync(output):
         temporary = channel.with_suffix('.tmp')
         temporary.write_text(json.dumps(feed, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
         temporary.replace(channel)
-    print(f'Synced {version}: {len(apk)} bytes, SHA-256 {sha}; deployment must be verified separately.')
+    print(f'Synced {version}: {apk_size} bytes, SHA-256 {sha}; deployment must be verified separately.')
     return feed
 
 
