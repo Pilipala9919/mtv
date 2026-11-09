@@ -2,16 +2,64 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "macos-v0.5.4",
+      "version": "0.5.4",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-09T05:02:51Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# macOS 0.5.4 (`macos-v0.5.4`)\n\n- **Platform:** macOS (`macos-v0.5.4`)\n- **Version:** `0.5.4` (build `54`)\n- **Release Date:** 2026-11-09\n\n## Additions & Fixes\n\n- **Universal TVBox / 影视仓 `csp_*` & 4K / 四盘 Site Adaptation (`玩偶哥哥`、`聚剧┃四盘`、`王二小放牛娃` 全量线路可用):**\n  - Restored and adapted `👽玩偶哥哥┃4K弹幕` (`csp_WoGGGuard` / `csp_AiNewWoggGuard`), `💡聚剧┃四盘` (`csp_SeedhubGuard`), `🎈盘搜┃四盘` (`csp_S_zpsGuard`), `🦋易搜┃四盘` (`csp_S_zpsGuard`), `🐌盘她┃夸父` (`csp_YpanSoGuard`), `🐞盘他┃嘟嘟` (`csp_BpanSoGuard`), `🌶️抠抠┃搜搜` (`csp_KkSsGuard`), `🌈优汐┃搜搜` (`csp_UuSsGuard`), and `🧲新6V┃磁力` (`csp_SixVGuard`) so they appear in `切换片源` as available (`可用`) and pull full VOD catalogs, categories, search, and direct playable lines.\n  - Expanded `CspBridge` to cover `csp_AiNew*` (`花卷┃4K`, `观影┃4K`, `七味┃4K`, `盘库┃4K`, `虎斑┃4K`, `木偶┃4K`, `多多┃4K`, `快影┃4K`, `蜡笔┃4K`, `闪电┃4K`, `剧透┃4K`, `立播┃4K`, `原盘┃4K`, `蜗牛┃4K`, `盘迷┃4K`, `逸动┃4K`), `csp_Wex*` (`韩剧/瓜子/独播/闪电/文才/小枫/贱片/下饭/师兄/粉猪/咸鱼/追剧/柚子/柠檬/太奇/零七/柿子/黄人/伊影/热播/伯伯/爱看┃秒播`), `csp_ManJuAi*` / `csp_DuanJuAi*` (`漫短/漫剧/短剧`), `csp_Anime*` (`共和/稀饭/次元/魔都┃动漫`), `csp_Book*` (`小红/小马/悦庭/爱上┃听书`), `csp_Children*` (`宝宝/贝贝/兔兔┃儿歌`), `csp_Music*` (`跳舞┃教学`, `戏曲┃秒播`, `蜻蜓┃电台`, `KTV/小酷/易听/酷听/轮回┃音乐`), `csp_Sport*` (`飞球/瓜子/球通/八八/咖啡/WWE┃体育`), `csp_LiveAi*` (`虎牙/斗鱼/哔哩┃直播`), and `csp_So*` (`盘搜/九七/爱盘/卡卡/全盘┃综合`).\n  - Filtered non-content configuration/push placeholders (`csp_MyPanGuard`, `csp_PanConfigGuard`, `csp_MyDriveGuard`, `csp_PushGuard`, unconfigured `csp_AListGuard`/`csp_WebDAVGuard`/`csp_EmbyGuard`) out of the source picker.\n\n## Test Scope & Remaining Limitations\n\n- Passed `scripts/check_public_content.py`, `scripts/test_drpy_assets.py`, `flutter/test_*.py`, and all 327 Flutter unit & widget tests on macOS.\n- Unconfigured local DIY storage mounts (`AList` / `WebDAV` / `Emby` without a server URL) remain hidden until configured.\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.4"
+    },
+    {
+      "tag": "windows-v0.5.5",
+      "version": "0.5.5",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-09T04:47:41Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Windows 0.5.5 (`windows-v0.5.5`)\n\n- **Platform:** Windows x64 (`windows-v0.5.5`)\n- **Version:** `0.5.5` (build `55`)\n- **Release Date:** 2026-11-09\n\n## Additions & Fixes\n\n- **Universal TVBox / 影视仓 `csp_*` & 4K / 四盘 Site Adaptation (`玩偶哥哥`、`聚剧┃四盘`、`王二小放牛娃` 全量线路可用):**\n  - Restored and adapted `👽玩偶哥哥┃4K弹幕` (`csp_WoGGGuard` / `csp_AiNewWoggGuard`), `💡聚剧┃四盘` (`csp_SeedhubGuard`), `🎈盘搜┃四盘` (`csp_S_zpsGuard`), `🦋易搜┃四盘` (`csp_S_zpsGuard`), `🐌盘她┃夸父` (`csp_YpanSoGuard`), `🐞盘他┃嘟嘟` (`csp_BpanSoGuard`), `🌶️抠抠┃搜搜` (`csp_KkSsGuard`), `🌈优汐┃搜搜` (`csp_UuSsGuard`), and `🧲新6V┃磁力` (`csp_SixVGuard`) so they appear in `切换片源` as available (`可用`) and pull full VOD catalogs, categories, search, and direct playable lines.\n  - Expanded `CspBridge` to cover `csp_AiNew*` (`花卷┃4K`, `观影┃4K`, `七味┃4K`, `盘库┃4K`, `虎斑┃4K`, `木偶┃4K`, `多多┃4K`, `快影┃4K`, `蜡笔┃4K`, `闪电┃4K`, `剧透┃4K`, `立播┃4K`, `原盘┃4K`, `蜗牛┃4K`, `盘迷┃4K`, `逸动┃4K`), `csp_Wex*` (`韩剧/瓜子/独播/闪电/文才/小枫/贱片/下饭/师兄/粉猪/咸鱼/追剧/柚子/柠檬/太奇/零七/柿子/黄人/伊影/热播/伯伯/爱看┃秒播`), `csp_ManJuAi*` / `csp_DuanJuAi*` (`漫短/漫剧/短剧`), `csp_Anime*` (`共和/稀饭/次元/魔都┃动漫`), `csp_Book*` (`小红/小马/悦庭/爱上┃听书`), `csp_Children*` (`宝宝/贝贝/兔兔┃儿歌`), `csp_Music*` (`跳舞┃教学`, `戏曲┃秒播`, `蜻蜓┃电台`, `KTV/小酷/易听/酷听/轮回┃音乐`), `csp_Sport*` (`飞球/瓜子/球通/八八/咖啡/WWE┃体育`), `csp_LiveAi*` (`虎牙/斗鱼/哔哩┃直播`), and `csp_So*` (`盘搜/九七/爱盘/卡卡/全盘┃综合`).\n  - Filtered non-content configuration/push placeholders (`csp_MyPanGuard`, `csp_PanConfigGuard`, `csp_MyDriveGuard`, `csp_PushGuard`, unconfigured `csp_AListGuard`/`csp_WebDAVGuard`/`csp_EmbyGuard`) out of the source picker.\n\n## Test Scope & Remaining Limitations\n\n- Passed `scripts/check_public_content.py`, `scripts/test_drpy_assets.py`, `flutter/test_*.py`, and all 327 Flutter unit & widget tests on Windows x64.\n- Unconfigured local DIY storage mounts (`AList` / `WebDAV` / `Emby` without a server URL) remain hidden until configured.\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.5"
+    },
+    {
       "tag": "ios-v0.5.6-preview",
-      "platform": "ios-preview",
       "version": "0.5.6",
-      "versionCode": 56,
-      "date": "2026-11-09",
-      "channel": "preview",
-      "notePath": "updates/history/ios-v0.5.6-preview.md",
-      "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.6-preview",
-      "sha256": "e8f77c2465b716465367da78a87193b5d3352497135ffa47d5f3bb12724f1cb8",
-      "summary": "全量兼容 TVBox/影视仓 csp_* 4K/点播源，修复换源弹窗双列排版，新增液态玻璃线性调节滑轨、原生 iOS 设置分组布局与呼吸式流光壁纸。"
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-09T04:07:34Z",
+      "prerelease": true,
+      "target_commitish": "13a6918d3fec247b5a3de2520f15164c0fbb4133",
+      "notes": "Marco Movie iOS / iPadOS v0.5.6 Preview (Unsigned IPA)\n\n1. 全面兼容 TVBox / 影视仓各类 csp_* 4K/点播源（花卷｜4K、观影｜4K、七味｜4K、盘库｜4K、虎斑｜4K、木偶｜4K、多多｜4K、快影｜4K 等全量桥接可用）。\n2. 修复换源弹窗卡片排版：手机竖屏固定双列宽卡片布局，优化标题行空间，解决【免费分享】、【更新日期】等片源竖排单字换行问题。\n3. 设置新增 Glasswork 液态玻璃光学折射 0%–100% 连续线性调节滑轨（CupertinoSlider），实时响应折射深度与边缘高光。\n4. 设置页分类布局全面对齐原生 iOS 系统设置（Inset Grouped 分组卡片、30x30 超椭圆实色图标徽章、清爽右侧状态文案）。\n5. 新增呼吸式动态流光氛围壁纸（约 8 秒周期三层极光柔光呼吸律动）。",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.6-preview"
+    },
+    {
+      "tag": "macos-v0.5.3",
+      "version": "0.5.3",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-09T04:05:17Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# macOS 0.5.3 (`macos-v0.5.3`)\n\n- **Platform:** macOS (`macos-v0.5.3`)\n- **Version:** `0.5.3` (build `53`)\n- **Release Date:** 2026-11-09\n\n## Additions & Fixes\n\n- **Full TVBox / 影视仓 `csp_*` VOD & Live Site Adaptation (`饭太硬` 36/36 Non-Netdisk Sites Supported):**\n  - Synchronized the expanded cross-platform `CspBridge` site adapter pool (`16` verified MacCMS VOD backends) for mainstream `csp_*` sites (`厂长┃不卡`, `海绵┃不卡`, `立播┃不卡`, `瓜子┃不卡`, `糯米┃秒播`, `文采┃秒播`, `热播┃多线`, `茉莉┃多线`, `剧圈┃多线`, `荐片┃多线`, `AI剧┃弹幕`, `韩圈┃韩剧`, `漫国┃动漫`, `巴士┃动漫`, etc.).\n  - Added `Bili` / audio / sports / live adapters for `🎙️易听┃音乐` (`csp_MusicGuard`), `🎧有声┃小说` (`csp_YueTingGuard`), `🎧听书┃音频` (`csp_TingShu`), `⚽八八┃看球` (`csp_KanqiuGuard`), `🏀多多┃回放` (`csp_DoubaoGuard`), `⚽吃瓜┃看球` (`csp_LiveGz`), and `📺一直播┃直播` (`csp_AllliveGuard`).\n  - Added automatic `CspBridge` fallback when a `GuardSource` script fails or returns empty listings.\n- **Remote `drpy2.min.js` & `assets://js/lib/` Module Support:**\n  - Automatically routes remote `drpy2.min.js` rule extensions (`ext`) and `assets://js/lib/cheerio.min.js` scripts through the built-in `DrpySource` runtime with `muban` template injection.\n  - Resolves `assets://js/lib/cheerio.min.js`, `assets://js/lib/crypto-js.js`, `assets://js/lib/cat.js`, and relative `assets://js/lib/*` modules inside `JsSourceHost`.\n- **Source Picker (`切换片源`) & UI Refinements:**\n  - Automatically hides netdisk-only (`玩偶`, `立播┃四盘`, `聚剧┃四盘`, `二小`, `木偶`, `蜡笔`, `至臻`, `闪电`, `云盘`, `盘他`, `夸克`, `UC`, `阿里`, `百度`, `123`) and placeholder (`csp_MyDrive`, `csp_SixV`, empty `csp_XPathGuard`) entries from `切换片源`, and collapses any remaining unsupported plugins into a compact expandable footer (`当前设备未适配`).\n  - Upgraded the source picker (`SourceChoiceSliver`) to a responsive 2/3-column grid with search and clean Glasswork visual styling.\n  - Improved cross-source playable detail matching (`playableDetail`) with normalized title matching and a 12-second per-batch timeout.\n\n## Test Scope & Remaining Limitations\n\n- Passed `scripts/check_public_content.py`, `scripts/test_drpy_assets.py`, `flutter/test_*.py`, and the `flutter test` suite on macOS.\n- Android-only native `.jar` Spider plugins without a cross-platform `CspBridge` / `GuardSource` / `DrpySource` adapter remain unsupported on desktop.\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.3"
+    },
+    {
+      "tag": "windows-v0.5.4",
+      "version": "0.5.4",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-09T03:50:18Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Windows 0.5.4 (`windows-v0.5.4`)\n\n- **Platform:** Windows x64 (`windows-v0.5.4`)\n- **Version:** `0.5.4` (build `54`)\n- **Release Date:** 2026-11-09\n\n## Additions & Fixes\n\n- **Full TVBox / 影视仓 `csp_*` VOD & Live Site Adaptation (`饭太硬` 36/36 Non-Netdisk Sites Supported):**\n  - Synchronized the expanded cross-platform `CspBridge` site adapter pool (`16` verified MacCMS VOD backends) for mainstream `csp_*` sites (`厂长┃不卡`, `海绵┃不卡`, `立播┃不卡`, `瓜子┃不卡`, `糯米┃秒播`, `文采┃秒播`, `热播┃多线`, `茉莉┃多线`, `剧圈┃多线`, `荐片┃多线`, `AI剧┃弹幕`, `韩圈┃韩剧`, `漫国┃动漫`, `巴士┃动漫`, etc.).\n  - Added `Bili` / audio / sports / live adapters for `🎙️易听┃音乐` (`csp_MusicGuard`), `🎧有声┃小说` (`csp_YueTingGuard`), `🎧听书┃音频` (`csp_TingShu`), `⚽八八┃看球` (`csp_KanqiuGuard`), `🏀多多┃回放` (`csp_DoubaoGuard`), `⚽吃瓜┃看球` (`csp_LiveGz`), and `📺一直播┃直播` (`csp_AllliveGuard`).\n  - Added automatic `CspBridge` fallback when a `GuardSource` script fails or returns empty listings.\n- **Remote `drpy2.min.js` & `assets://js/lib/` Module Support:**\n  - Automatically routes remote `drpy2.min.js` rule extensions (`ext`) and `assets://js/lib/cheerio.min.js` scripts through the built-in `DrpySource` runtime with `muban` template injection.\n  - Resolves `assets://js/lib/cheerio.min.js`, `assets://js/lib/crypto-js.js`, `assets://js/lib/cat.js`, and relative `assets://js/lib/*` modules inside `JsSourceHost`.\n- **Source Picker (`切换片源`) & UI Refinements:**\n  - Automatically hides netdisk-only (`玩偶`, `立播┃四盘`, `聚剧┃四盘`, `二小`, `木偶`, `蜡笔`, `至臻`, `闪电`, `云盘`, `盘他`, `夸克`, `UC`, `阿里`, `百度`, `123`) and placeholder (`csp_MyDrive`, `csp_SixV`, empty `csp_XPathGuard`) entries from `切换片源`, and collapses any remaining unsupported plugins into a compact expandable footer (`当前设备未适配`).\n  - Upgraded the source picker (`SourceChoiceSliver`) to a responsive 2/3-column grid with search and clean Glasswork visual styling.\n  - Improved cross-source playable detail matching (`playableDetail`) with normalized title matching and a 12-second per-batch timeout.\n\n## Test Scope & Remaining Limitations\n\n- Passed `scripts/check_public_content.py`, `scripts/test_drpy_assets.py`, `flutter/test_*.py`, and the `flutter test` suite on Windows x64.\n- Android-only native `.jar` Spider plugins without a cross-platform `CspBridge` / `GuardSource` / `DrpySource` adapter remain unsupported on desktop.\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.4"
     },
     {
       "tag": "android-mobile-v0.5.9",
