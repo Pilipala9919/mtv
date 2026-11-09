@@ -1,4 +1,4 @@
-name: Sync Marco Movie platform packages
+name: Sync Marco Movie preview
 on:
   schedule:
     - cron: '7,22,37,52 * * * *'
@@ -17,18 +17,38 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verify mirror sync
-        run: python scripts/test_platform_packages.py
+        run: python scripts/test_movie_mirror.py
       - name: Sync published release
         env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: python scripts/sync_platform_packages.py --output movie
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/sync_movie_mirror.py --output movie
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install quark-cli
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/jinhuang712/quark-cli/main/install.sh -o /tmp/quark-install.sh
+          bash /tmp/quark-install.sh --no-skill
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Sync packages to Quark Drive
+        continue-on-error: true
+        env:
+          QUARK_COOKIES_JSON: ${{ secrets.QUARK_COOKIES_JSON }}
+        run: |
+          mkdir -p ~/.quark-cli
+          printf '%s' "$QUARK_COOKIES_JSON" > ~/.quark-cli/profile.cookies.json
+          chmod 600 ~/.quark-cli/profile.cookies.json
+          quark whoami
+          python scripts/sync_quark.py --movie
+      - name: Re-render mirror page with Quark links
+        run: python scripts/sync_movie_mirror.py --output movie
       - name: Publish changed Movie files
         run: |
           git config user.name 'movie-sync'
           git config user.email 'movie-sync@users.noreply.github.com'
-          git add movie/
+          git add movie/ scripts/quark.json
           if ! git diff --cached --quiet; then
-            git commit -m 'Sync Marco Movie platform packages'
+            git commit -m 'Sync Marco Movie published preview'
             git pull --rebase origin main
             git push origin HEAD:main
           fi
