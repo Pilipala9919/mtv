@@ -3,6 +3,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import re
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -277,6 +278,34 @@ class MirrorTests(unittest.TestCase):
         self.assertIn('https://pan.quark.cn/s/mo456', page)
         self.assertTrue((self.out / 'MarcoMovie-0.4.12-preview.apk').exists())
         self.assertTrue((self.out / 'MarcoMovie-0.4.12-mobile.apk').exists())
+
+    def test_no_mirror_package_links_on_page(self):
+        # Mirror files stay hosted for the in-app feeds, but the rendered
+        # page must not offer any manually clickable mirror package
+        # download: every package href is GitHub or Quark.
+        self.add_asset('MarcoMovie-0.4.12-mobile.apk', b'mobile fixture')
+        links = {'android-tv': 'https://pan.quark.cn/s/tv123',
+                 'android-mobile': 'https://pan.quark.cn/s/mo456'}
+        with patch.object(m, 'load_quark_links', return_value=links):
+            feed = self.sync()
+        page = (self.out / 'index.html').read_text(encoding='utf-8')
+        for href in re.findall(r'href="([^"]+)"', page):
+            bare = href.split('?')[0].split('#')[0].lower()
+            if bare.endswith(('.apk', '.ipa', '.zip', '.exe')):
+                self.assertTrue(href.startswith('https://github.com/') or
+                                href.startswith('https://pan.quark.cn/'), href)
+        self.assertTrue(feed['url'].startswith('https://marcotv.wlj9919.top/movie/'))
+
+    def test_mirror_package_link_in_changelog_stays_plain_text(self):
+        # A release note may link the mirror download page, but never a
+        # mirror package file: that would be a manual mirror download.
+        body = ('9. **安装包与源码**\n'
+                '   - [电视安装包](https://marcotv.wlj9919.top/movie/MarcoMovie-0.4.12-preview.apk)\n'
+                '   - [镜像下载页](https://marcotv.wlj9919.top/movie/)\n')
+        rendered = m.render_changelog(body)
+        self.assertNotIn('href="https://marcotv.wlj9919.top/movie/MarcoMovie-0.4.12-preview.apk"', rendered)
+        self.assertIn('[电视安装包](https://marcotv.wlj9919.top/movie/MarcoMovie-0.4.12-preview.apk)', rendered)
+        self.assertIn('<a href="https://marcotv.wlj9919.top/movie/">镜像下载页</a>', rendered)
 
     def test_sub_bullets_do_not_consume_list_numbers(self):
         # The CSS counter must count top-level items only: with the old

@@ -83,9 +83,10 @@ def main():
         html = html.replace(f"版本信息以 {old_version} 稳定版为准", f"版本信息以 {version} 稳定版为准")
         changed = True
     # Main download button: GitHub + Quark. The mirror APK stays hosted in
-    # the repo (feeds and the update section still use it), but the page's
-    # main button points at GitHub. Only the local-form button is rewritten;
-    # the update-section mirror link below is left alone.
+    # the repo for the in-app update feeds, but no visible button on the
+    # page links to it: the main button points at GitHub, and the update
+    # section below (render_channels) links the GitHub release asset too.
+    # Only the local-form button is rewritten here.
     html, n = re.subn(
         r'<a class="btn" href="MarcoTV-[0-9]+\.[0-9]+\.[0-9]+\.apk"(?: download)?>下载 MarcoTV-[0-9]+\.[0-9]+\.[0-9]+\.apk</a>',
         f'<a class="btn" href="{apk_url}">去 GitHub 下载</a>', html)
@@ -126,9 +127,9 @@ def render_channels(html, version):
     label = "体验版" if preview else "正式版"
     status = "体验版仍在验证中，日常使用默认推荐上方稳定版。" if preview else "体验渠道与稳定渠道当前提供同一正式版，原 RC 用户可直接覆盖升级。"
     section = f'''<h2>电视在线更新</h2>
-<p>当前提供 <a href="MarcoTV-{version}.apk">{version} {label}</a>。{status} 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
+<p>当前提供 <a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk">{version} {label}</a>。{status} 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
 <p>安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。镜像优先，失败后尝试 GitHub；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
-<p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}-source-and-apk.zip">对应源码</a> · <a href="MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
+<p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}-source-and-apk.zip">对应源码</a> · <a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
 '''
     result, count = re.subn(r"<h2>(?:体验版与)?电视在线更新</h2>.*?(?=<h2>先核对你的电视能不能装</h2>)", lambda _: section, html, flags=re.S)
     if count != 1: raise ValueError("Update section missing or duplicated")

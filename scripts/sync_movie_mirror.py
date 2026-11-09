@@ -287,6 +287,10 @@ def _linkify_md(text):
     linked; anything else stays plain text, so a release note can never
     inject an arbitrary link. Without this, a long bare URL is one
     unbreakable token that forces the page wider than a phone screen.
+    Mirror package files are never linked either: the mirror hosts them
+    for the in-app update feeds, and manual downloads go through GitHub
+    or Quark, so a changelog link to a mirror APK/IPA/ZIP/EXE stays
+    plain text.
     """
     parts = []
     last = 0
@@ -294,6 +298,9 @@ def _linkify_md(text):
         url = m.group(2)
         if not (url.startswith('https://github.com/Pilipala9919/') or
                 url.startswith('https://marcotv.wlj9919.top/')):
+            continue
+        bare = url.split('?')[0].split('#')[0].lower()
+        if url.startswith('https://marcotv.wlj9919.top/') and bare.endswith(('.apk', '.ipa', '.zip', '.exe')):
             continue
         parts.append(html.escape(text[last:m.start()]))
         parts.append('<a href="' + html.escape(url, quote=True) + '">' +
