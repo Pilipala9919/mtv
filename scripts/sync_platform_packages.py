@@ -280,8 +280,11 @@ def sync(output, releases=None):
             previous = json.loads(previous_path.read_text(encoding='utf-8'))
             if version_key(previous['versionName']) > version_key(version):
                 raise ValueError('Refusing platform rollback: ' + platform)
-            if previous['versionName'] == version and previous['packages'] != packages:
-                raise ValueError('Refusing to replace a published package: ' + platform)
+            if previous['versionName'] == version:
+                if any(previous['packages'].get(k) != v for k, v in packages.items()):
+                    raise ValueError('Refusing to replace a published package: ' + platform)
+                versions[platform] = version
+                continue
         files[path] = (json.dumps(feed, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
         versions[platform] = version
     history, note_files = release_history(output, releases)
