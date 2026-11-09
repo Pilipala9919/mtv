@@ -186,7 +186,17 @@ def choose_platform(releases, platform):
     for release in releases:
         match = re.fullmatch(re.escape(platform) + r'-v(\d+\.\d+\.\d+)', release.get('tag_name', ''))
         if match and not release.get('draft') and not release.get('prerelease') and release.get('published_at'):
-            candidates.append((version_key(match[1]), release))
+            version = match[1]
+            names = {a.get('name') for a in release.get('assets', []) if a.get('state') == 'uploaded'}
+            complete = True
+            for suffix in SUFFIXES.get(platform, ()):
+                preferred = CLEAR_NAMES.get(suffix, suffix)
+                cands = (f'MarcoMovie-{version}-{preferred}', f'MarcoMovie-{version}-{suffix}')
+                if not any(n in names and (n + '.sha256') in names for n in cands):
+                    complete = False
+                    break
+            if complete:
+                candidates.append((version_key(version), release))
     return max(candidates, key=lambda item: item[0])[1] if candidates else None
 
 

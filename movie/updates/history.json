@@ -2,6 +2,30 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "android-mobile-v0.5.14",
+      "version": "0.5.14",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-09T16:45:41Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Android 手机 / 平板 0.5.14\n\n- 发布平台：Android 手机 / 平板（`android-mobile`）\n- 版本：`0.5.14`（`versionCode 65`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.14-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.14-mobile.apk`）\n\n## 本次修复与优化\n\n1. **修复夸克网盘（夸父）等网盘分享线路播放后不生成观看历史与收藏异常的问题**：\n   - 在 `SourceController.loadDetail`、`MobileDetailScreen` 与 `PlaybackController.playerPage` 中自动继承并回填列表项 `vod_id`，并在剧集播放完成回调（`OnCompletionListener`）中立即持久化完整播放进度，解决部分网盘扩展详情返回空 `vod_id` 导致看完后无历史记录的问题。\n\n2. **修复「网盘与账号」与云盘配置选项提示 `JsonSyntaxException` 无法进入的问题**：\n   - 修复 `MyDriveGuard`（`我的云盘 | 配置`）等扩展在响应 `LoginShow`、`pushCkShow`、`panSortShow`、`panSourceSortShow` 动作时因 `BaseSpiderGuard` 包装识别或空返回值二次触发 `detailContent` 导致抛出 `JsonSyntaxException` 的问题。\n   - 增加 `detailAction` / `detail` 对 `JsonSyntaxException` 的 `action(String)` 自动回退，并同步 `Application.mActivityLifecycleCallbacks` 内层 JNI 插件 `ClassLoader` 的 `Activity` 上下文，确保网盘扫码、Cookie 推送与排序弹窗正常打开。\n\n3. **内置播放器新增 TVBox 同款 `Exo (Media3)` 与 `IJK (FFmpeg)` 双内核切换**：\n   - 在手机端「设置 -> 播放、解码与字幕 -> 播放器内核」及播放页顶栏「播放器与解码」菜单中支持直接切换 `Exo (Media3)`、`IJK (FFmpeg)` 与 `系统播放器`。\n   - `IJK (FFmpeg)` 模式启用内置 FFmpeg 扩展优先解码、快速起播缓冲、宽松 TS/MP4 提取器容错及 HLS/直链双向回退，并支持按扩展源返回的 `playerType` 自动选择对应播放器内核。\n\n## 验证范围\n\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 正式签名与对齐校验。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.14"
+    },
+    {
+      "tag": "android-tv-v0.5.12",
+      "version": "0.5.12",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-09T16:38:46Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Android 电视 / 盒子 0.5.12\n\n- 发布平台：Android 电视 / 盒子（`android-tv`）\n- 版本：`0.5.12`（`versionCode 64`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.12-android-tv.apk`（兼容旧名：`MarcoMovie-0.5.12-preview.apk`）\n\n## 本次修复与优化\n\n1. **首页分类标签遥控器聚焦直接切换（无需二次按确认键）**：\n   - 修复 `HomeScreen.navigationKey` 拦截方向键焦点跳转时未更新分类切换时间戳导致聚焦自动切换未触发的问题（`HomeScreen.addTab`）。\n   - 现在在电视端首页将焦点移动到「推荐」「热门电影」「热播剧集」等任意分类胶囊时，停留 120ms 即自动切换并加载对应分类内容，无需再次按遥控器确认键。\n\n2. **修复夸克网盘（夸父）等网盘分享线路播放后不生成历史记录的问题**：\n   - 部分网盘分享扩展（如 `Wogg`、`Wobg`、`PanHj`、`Panku`、`AiMacPanSite` 等）在 `detailContent` 返回的详情对象中未回填 `vod_id`（返回空字符串 `\"\"`），导致播放页写入历史记录时 `id` 为空并在读取时被过滤丢弃。\n   - 在 `SourceController.loadDetail`、`DetailScreen`、`MobileDetailScreen` 及 `PlaybackController.playerPage` 中自动回填列表项 `id`（并在极端缺失时回退剧集地址或标题作为唯一标识），同时在播放结束回调（`OnCompletionListener`）中强制落盘完整播放进度，确保网盘线路起播、中途退出与完整看完均能正常生成和更新观看历史与收藏状态。\n\n3. **修复网盘登录与「网盘与账号」选项弹出 `JsonSyntaxException` 的问题**：\n   - 修复 `MyDriveGuard`（`我的云盘 | 配置`）等支持 `action(String)` 的扩展在成功弹出原生登录窗口并返回空串后，被二次调用 `detailContent` 触发 `JsonSyntaxException` 异常提示的问题。\n   - 完善 `CspEngine.supportsCustomAction` 对 `BaseSpiderGuard` 包装类的识别及 `detailAction` / `detail` 对 `JsonSyntaxException` 的 `action(String)` 兜底回退，并同步 `Application.mActivityLifecycleCallbacks` 内层 JNI 插件 `ClassLoader` 的 `Activity` 上下文。\n\n4. **内置播放器新增 TVBox 同款 `Exo (Media3)` 与 `IJK (FFmpeg)` 双内核切换**：\n   - 在设置页「播放、解码与字幕 -> 播放器内核」及播放页控制栏「播放器与解码」菜单中支持直接切换 `Exo (Media3)`、`IJK (FFmpeg)` 与 `系统播放器`。\n   - `IJK (FFmpeg)` 模式内置 FFmpeg 软解扩展优先、快速起播缓冲、非关键帧跳转及 TS/HLS/MP4 双向容错回退，并支持根据扩展源返回的 `playerType` 自动匹配内核。\n\n## 验证范围\n\n- 通过 `check_public_content.py` 公开内容合规扫描與 `build_android.py` 正式签名与对齐校验。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.12"
+    },
+    {
       "tag": "ios-v0.5.11",
       "version": "0.5.11",
       "platforms": [
@@ -9,9 +33,21 @@
       ],
       "published_at": "2026-11-09T15:48:08Z",
       "prerelease": false,
-      "target_commitish": "fix/plugin-ports-16kb-20261107",
+      "target_commitish": "main",
       "notes": "# iOS / iPadOS 0.5.11\n\n- 发布平台：iOS / iPadOS（`ios`，iOS / iPadOS 14.0+，支持巨魔 TrollStore 直接安装与自签安装）\n- 版本：`0.5.11`（`build 61`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.11-ios-iphone-ipad-unsigned.ipa`（兼容名：`MarcoMovie-0.5.11-ios-unsigned.ipa`）\n\n## 本次新增与改进\n\n1. **新增 iOS 软件内拉取更新、应用内下载 IPA 与巨魔 (TrollStore) 一键覆盖安装**：\n   - 在 `AppUpdate` 与「设置 → 软件更新与版本」弹窗中完整打通 iOS 端版本检测与安装包校验（自动请求国内镜像源 `updates/ios.json` 与 GitHub Releases 备用源）。\n   - **巨魔 (TrollStore) 一键安装更新**：新增「巨魔 (TrollStore) 一键安装」主按钮（通过 `apple-magnifier://install?url=...` 协议直连国内镜像加速直链），点击直接拉起 TrollStore 自动下载并覆盖安装新版，无需跳转浏览器手动下载。\n   - **应用内拉取 IPA 更新包（含进度条与 SHA-256 校验）**：支持在软件内直接下载新版 `.ipa` 并校验 SHA-256 完整性，自动存入系统「文件 (Files) → 我的 iPhone / iPad → Marco Movie」目录，方便轻松签、全能签、SideStore、AltStore 或巨魔直接导入安装。\n   - **浏览器直链下载**：同步提供一键拉起 Safari 直链下载新版 `.ipa`。\n\n2. **包含 0.5.10 全部修复**：\n   - 修复夸克、百度、UC、阿里云盘扫码提示“已过期”的问题，支持 iPhone 本机一键跳转网盘 App 授权与返回前台自动登录。\n   - 修复 iPhone 播放网盘资源仅显示 `01:40`（1 分 40 秒试看流）及夸克播放失败的问题。\n   - 恢复 `玩偶哥哥` 等源的 4K 网盘线路（`优汐智1`、`夸父智1`、`嘟嘟无限2`、`阿狸原画`）与详情页横向播放线路选择栏，移除首页顶部网盘大卡片。\n",
       "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.11"
+    },
+    {
+      "tag": "windows-v0.5.7",
+      "version": "0.5.7",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-09T15:19:49Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "### Marco Movie Windows 桌面版 0.5.7 更新说明\n\n- **修复大量线路提示播放失败**：清洗并重排跨源 VOD 资源池（优先调度爱坤、360、电影天堂、极速、豪华、最大、魔都等高可用直连 CDN，剔除 403/断连/5秒防盗链异常节点），保留当前片源原生直连线路优先权。\n- **新增智能自动切线容错**：播放异常或检测到 ≤12 秒防盗链短片时，自动无缝切换至下一条可用线路并保持播放进度。\n- **修复 4K 资源播放降级显示为 1080P**：夸克网盘转码流按 4K → 2K → 超清 → 高清从高到低排序并默认优选原画/4K；4K 网盘线路与 4K 剧集顶部规格徽章保持 `4K 3840 × 2160 · HDR · HEVC`。\n- **优化覆盖安装体验**：安装程序覆盖升级时自动清理旧版 `app.so`、`*.dll` 与 `flutter_assets`。",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.7"
     },
     {
       "tag": "ios-v0.5.10",
@@ -19,9 +55,9 @@
       "platforms": [
         "ios"
       ],
-      "published_at": "2026-11-09T15:09:01Z",
+      "published_at": "2026-11-09T15:08:58Z",
       "prerelease": false,
-      "target_commitish": "fix/plugin-ports-16kb-20261107",
+      "target_commitish": "main",
       "notes": "# iOS / iPadOS 0.5.10\n\n- 发布平台：iOS / iPadOS（`ios`，iOS / iPadOS 14.0+，支持巨魔 TrollStore 直接安装与自签安装）\n- 版本：`0.5.10`（`build 60`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.10-ios-iphone-ipad-unsigned.ipa`（兼容名：`MarcoMovie-0.5.10-ios-unsigned.ipa`）\n\n## 本次修复与改进\n\n1. **修复网盘扫码登录提示“已过期”的问题，并新增 iPhone 本机一键跳转授权**：\n   - 修复夸克网盘（`我的夸父`）二维码创建（`client_id=532`）与轮询票据接口参数不一致导致扫码确认时报登录请求已过期的问题，对齐官方 `pan.quark.cn` 网页端扫码参数。\n   - 修复百度网盘（`我的嘟嘟`）二维码 `qrlogin` 链接参数格式与服务端挑战激活流程，同步服务端时间戳，解决扫码即提示二维码已过期的问题。\n   - 完善 UC 网盘（`我的优汐`）与阿里云盘（`我的阿狸`）扫码确认后的 Cookie / RefreshToken 提取，并在扫码面板新增「本机跳转授权」按钮与从后台返回应用时自动检查登录状态。\n\n2. **修复 iPhone 播放网盘资源仅显示 `01:40`（1 分 40 秒试看流）及夸克播放失败的问题**：\n   - 在 `CspBridge.upgradeNetdiskVideoWithCrossLines` 与 `DetailScreen._loadDetail` 中，针对百度、夸克等非直链网盘剧集（未携带 SVIP 时百度返回 100 秒 `01:40` 试看流、夸克报播放失败），自动按集数精准关联全网完整正片源，并对同目录内多分辨率重复剧集自动去重。\n   - 在 `PlayerScreen` 播放器层新增实时试看流时长拦截与自动恢复机制（`_recoverFromNetdiskTrialOrFailure`）：一旦检测到网盘流时长处于 `01:40` 试看区间或解析失败，自动清洗历史记录中的 `01:40` 残留时长并无缝切换至完整正片流。\n\n3. **恢复 4K 网盘线路（优汐、夸父、嘟嘟、阿狸）与详情页横向播放线路选择栏**：\n   - 在 `CspBridge.buildNetdisk4KLines` 中恢复 `玩偶哥哥`、`木偶`、`多多`、`花卷｜4K`、`观影｜4K` 等源的 `优汐智1`、`夸父智1`、`嘟嘟无限2`、`优汐无限1`、`夸父无限1`、`阿狸原画` 4K 线路。\n   - 在 `DetailScreen` 剧集列表上方新增横向可滑动的播放线路选择栏与快捷 `网盘扫码` 入口。\n\n4. **移除 iOS 首页网盘大卡片**：\n   - 移除 `AdaptiveShell` 首页顶部的网盘配置横幅大卡片，保持首页视觉清爽。\n",
       "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.10"
     },
