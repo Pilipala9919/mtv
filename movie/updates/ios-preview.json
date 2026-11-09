@@ -3,18 +3,18 @@
   "app": "MarcoMovie",
   "platform": "ios-preview",
   "channel": "preview",
-  "releaseTag": "ios-v0.5.8-preview",
-  "version": "0.5.8",
-  "versionCode": 58,
+  "releaseTag": "ios-v0.5.9-preview",
+  "version": "0.5.9",
+  "versionCode": 59,
   "publishedAt": "2026-11-09",
-  "sourceCommit": "61c8043",
+  "sourceCommit": "458d375",
   "package": {
-    "name": "MarcoMovie-0.5.8-ios-iphone-ipad-unsigned.ipa",
-    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.8-preview/MarcoMovie-0.5.8-ios-iphone-ipad-unsigned.ipa",
-    "sha256": "15a52bfe228a5b86a2e0e1f7d5844ef71b37b92cf19947f496094f89f425498c",
-    "size": 65130064
+    "name": "MarcoMovie-0.5.9-ios-iphone-ipad-unsigned.ipa",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.9-preview/MarcoMovie-0.5.9-ios-iphone-ipad-unsigned.ipa",
+    "sha256": "13d439519ef6cb36f1d2d03be57cb0fb24adb8b2d66be86e6d13bfc85b62f6ad",
+    "size": 61369722
   },
-  "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.8-preview",
-  "historyNote": "updates/history/ios-v0.5.8-preview.md",
-  "notes": "iOS / iPadOS 0.5.8 验证版：观看历史记录卡片全面加入圆角电影海报照片与进度条；首页影视卡片（20dp）与今日首推卡片（30dp）圆角加润并通过外置双段高光描边彻底消除圆角交界处锯齿；全站搜索弹窗线路筛选移至左侧垂直上下滑动栏；全局新增 iOS 弹簧阻尼点击动效。"
+  "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.9-preview",
+  "historyNote": "updates/history/ios-v0.5.9-preview.md",
+  "notes": "iOS / iPadOS 0.5.9 ???????? (TrollStore) ???? 175 (ldid: Unsupported Mach-O type)???? HTTP 200 ??? 10 ??? HLS ?????????????????????????????????????????????????????????????????????????????????"
 }
