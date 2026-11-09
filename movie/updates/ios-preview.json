@@ -3,18 +3,18 @@
   "app": "MarcoMovie",
   "platform": "ios-preview",
   "channel": "preview",
-  "releaseTag": "ios-v0.5.7-preview",
-  "version": "0.5.7",
-  "versionCode": 57,
+  "releaseTag": "ios-v0.5.8-preview",
+  "version": "0.5.8",
+  "versionCode": 58,
   "publishedAt": "2026-11-09",
-  "sourceCommit": "1e8f53d",
+  "sourceCommit": "61c8043",
   "package": {
-    "name": "MarcoMovie-0.5.7-ios-iphone-ipad-unsigned.ipa",
-    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.7-preview/MarcoMovie-0.5.7-ios-iphone-ipad-unsigned.ipa",
-    "sha256": "3007ad5856aaefc96da7be2c599226d106328b29231db66be8c2200d7094aa7f",
-    "size": 65127865
+    "name": "MarcoMovie-0.5.8-ios-iphone-ipad-unsigned.ipa",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.8-preview/MarcoMovie-0.5.8-ios-iphone-ipad-unsigned.ipa",
+    "sha256": "15a52bfe228a5b86a2e0e1f7d5844ef71b37b92cf19947f496094f89f425498c",
+    "size": 65130064
   },
-  "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.7-preview",
-  "historyNote": "updates/history/ios-v0.5.7-preview.md",
-  "notes": "iOS / iPadOS 0.5.7 验证版：恢复并兼容全部隐藏线路（玩偶哥哥/聚剧四盘/盘库4K/新6V磁力/夸父/优汐/盘她/易搜/盘搜等）；搜索页新增横向线路筛选胶囊栏；设置页液态玻璃滑轨 120fps 纯内存实时调节丝滑跟手；设置页各级界面切换与抽屉展开零掉帧优化。"
+  "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.8-preview",
+  "historyNote": "updates/history/ios-v0.5.8-preview.md",
+  "notes": "iOS / iPadOS 0.5.8 验证版：观看历史记录卡片全面加入圆角电影海报照片与进度条；首页影视卡片（20dp）与今日首推卡片（30dp）圆角加润并通过外置双段高光描边彻底消除圆角交界处锯齿；全站搜索弹窗线路筛选移至左侧垂直上下滑动栏；全局新增 iOS 弹簧阻尼点击动效。"
 }
