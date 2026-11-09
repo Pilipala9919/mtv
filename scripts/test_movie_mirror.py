@@ -30,10 +30,15 @@ class MirrorTests(unittest.TestCase):
                                                    size=len(payload), digest='sha256:'+hashlib.sha256(payload).hexdigest()))
                 self.data[url+suffix] = payload
         self.identity = dict(package='com.pilipala.marcomovie', versionName='0.4.12', versionCode=25, minSdk=23)
+        self.block_downloads = False
 
-    def fetch(self, url, limit=m.LIMIT):
+    def fetch(self, url, limit=m.PLATFORM_LIMIT):
         if url.startswith('https://api.github.com/'):
             return json.dumps([self.release]).encode()
+        if self.block_downloads and url in (
+                f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-preview.apk',
+                f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-source.zip'):
+            raise AssertionError('download must be skipped for an already verified version: ' + url)
         return self.data[url]
 
     def sync(self):
@@ -52,18 +57,45 @@ class MirrorTests(unittest.TestCase):
         unrelated.write_text('Marco TV')
         feed = self.sync()
         self.assertEqual(feed['versionCode'], 25)
-        self.assertEqual(feed['url'], m.BASE+'MarcoMovie-0.4.12-preview.apk')
+        expected = f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-preview.apk'
+        self.assertEqual(feed['url'], expected)
         self.assertEqual(json.loads((self.out/'updates/preview.json').read_text(encoding='utf-8')), feed)
         self.assertIn('&lt;script&gt;', (self.out/'index.html').read_text(encoding='utf-8'))
         self.assertEqual(unrelated.read_text(), 'Marco TV')
+        # Nothing is mirrored: no APK, source zip or checksum files in the output.
+        self.assertFalse((self.out/'MarcoMovie-0.4.12-preview.apk').exists())
+        self.assertFalse((self.out/'MarcoMovie-0.4.12-source.zip').exists())
+        self.assertFalse((self.out/'MarcoMovie-0.4.12-preview.apk.sha256').exists())
         self.assertEqual(self.sync(), feed)
+
+    def test_repeat_sync_reuses_feed_without_downloading(self):
+        self.sync()
+        self.block_downloads = True
+        feed = self.sync()
+        self.assertEqual(feed['versionCode'], 25)
+
+    def test_legacy_mirrored_files_removed(self):
+        self.out.mkdir(parents=True)
+        for name in ('MarcoMovie-0.4.11-preview.apk', 'MarcoMovie-0.4.12-lite.apk',
+                     'MarcoMovie-0.4.12-ios-unsigned.ipa', 'MarcoMovie-0.4.12-windows-x64.zip',
+                     'MarcoMovie-0.4.12-preview.apk.sha256'):
+            (self.out/name).write_bytes(b'stale')
+        (self.out/'app-icon-512.png').write_bytes(b'keep me')
+        self.sync()
+        for name in ('MarcoMovie-0.4.11-preview.apk', 'MarcoMovie-0.4.12-lite.apk',
+                     'MarcoMovie-0.4.12-ios-unsigned.ipa', 'MarcoMovie-0.4.12-windows-x64.zip',
+                     'MarcoMovie-0.4.12-preview.apk.sha256'):
+            self.assertFalse((self.out/name).exists(), name)
+        self.assertEqual((self.out/'app-icon-512.png').read_bytes(), b'keep me')
 
     def test_wrong_release_checksum_leaves_feed_unchanged(self):
         self.sync()
         before = (self.out/'updates/preview.json').read_bytes()
-        name='MarcoMovie-0.4.12-preview.apk'
-        (self.out/name).write_bytes(b'bad')
-        with self.assertRaises(ValueError): self.sync()
+        name = 'MarcoMovie-0.4.12-preview.apk'
+        url = f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/{name}.sha256'
+        self.data[url] = (('0'*64) + '  ' + name).encode()
+        with self.assertRaises(ValueError):
+            self.sync()
         self.assertEqual((self.out/'updates/preview.json').read_bytes(), before)
 
     def test_wrong_asset_host(self):
@@ -78,12 +110,17 @@ class MirrorTests(unittest.TestCase):
 
     def test_reject_rollback(self):
         self.sync()
-        self.identity['versionCode']=24
-        with self.assertRaises(ValueError): self.sync()
-        self.assertEqual(json.loads((self.out/'updates/preview.json').read_text(encoding='utf-8'))['versionCode'],25)
+        feed_path = self.out/'updates/preview.json'
+        newer = dict(schema=1, versionCode=99, versionName='0.4.12', minSdk=23,
+                     size=11, sha256='0'*64, url='https://example.invalid/x.apk',
+                     prerelease=True, notes='')
+        feed_path.write_text(json.dumps(newer), encoding='utf-8')
+        with self.assertRaises(ValueError):
+            self.sync()
+        self.assertEqual(json.loads(feed_path.read_text(encoding='utf-8'))['versionCode'], 99)
 
-    def test_pages_size_limit(self):
-        self.release['assets'][0]['size']=m.LIMIT+1
+    def test_oversize_asset_rejected(self):
+        self.release['assets'][0]['size'] = m.PLATFORM_LIMIT+1
         with self.assertRaises(ValueError): self.sync()
 
     def test_invalid_manifest_rejected(self):
@@ -91,15 +128,14 @@ class MirrorTests(unittest.TestCase):
         with zipfile.ZipFile(source,'w') as z: z.writestr('AndroidManifest.xml',b'<manifest/>')
         with self.assertRaises(ValueError): m.apk_identity(source.getvalue())
 
-    def test_large_tv_package_is_verified_and_linked_from_both_download_and_feed(self):
-        name='MarcoMovie-0.4.12-preview.apk'
-        self.release['assets']=[a for a in self.release['assets'] if a['name'] not in (name,name+'.sha256')]
-        self.add_asset(name,b'large apk fixture' * (m.LIMIT//17+2))
-        feed=self.sync()
-        expected=f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/{name}'
-        self.assertEqual(feed['url'],expected)
+    def test_tv_package_links_github_and_is_not_mirrored(self):
+        name = 'MarcoMovie-0.4.12-preview.apk'
+        feed = self.sync()
+        expected = f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/{name}'
+        self.assertEqual(feed['url'], expected)
         self.assertFalse((self.out/name).exists())
-        self.assertIn('href="'+expected+'"',(self.out/'index.html').read_text(encoding='utf8'))
+        self.assertIn('href="'+expected+'"', (self.out/'index.html').read_text(encoding='utf8'))
+        self.assertIn('去 GitHub 下载', (self.out/'index.html').read_text(encoding='utf8'))
 
     def test_official_release_updates_stable_channel(self):
         self.release['prerelease']=False
@@ -107,13 +143,14 @@ class MirrorTests(unittest.TestCase):
         self.assertFalse(feed['prerelease'])
         self.assertEqual(json.loads((self.out/'updates/stable.json').read_text(encoding='utf8')),feed)
 
-    def test_large_mobile_hero_link_matches_update_feed(self):
-        name='MarcoMovie-0.4.12-mobile.apk';self.add_asset(name,b'mobile fixture')
-        next(a for a in self.release['assets'] if a['name']==name)['size']=m.LIMIT+1
-        feed=self.sync()
-        page=(self.out/'index.html').read_text(encoding='utf8')
-        self.assertIn('href="'+feed['mobile']['url']+'">下载手机版',page)
-        self.assertNotIn('href="'+name+'"',page)
+    def test_mobile_hero_link_matches_update_feed(self):
+        name = 'MarcoMovie-0.4.12-mobile.apk'
+        self.add_asset(name, b'mobile fixture')
+        feed = self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf8')
+        self.assertEqual(feed['mobile']['url'], f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/{name}')
+        self.assertIn('href="'+feed['mobile']['url']+'">下载手机版', page)
+        self.assertFalse((self.out/name).exists())
 
     def add_asset(self, name, body, checksum=True):
         url = f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/{name}'
@@ -124,30 +161,38 @@ class MirrorTests(unittest.TestCase):
                                                size=len(payload), digest='sha256:'+hashlib.sha256(payload).hexdigest()))
             self.data[url+suffix] = payload
 
-    def test_platform_packages_mirrored_when_published(self):
+    def test_platform_packages_linked_not_mirrored(self):
         self.add_asset('MarcoMovie-0.4.12-windows-x64.zip', b'windows fixture')
         self.add_asset('MarcoMovie-0.4.12-ios-unsigned.ipa', b'ios fixture')
         self.sync()
-        self.assertEqual((self.out/'MarcoMovie-0.4.12-windows-x64.zip').read_bytes(), b'windows fixture')
-        self.assertTrue((self.out/'MarcoMovie-0.4.12-ios-unsigned.ipa.sha256').exists())
+        self.assertFalse((self.out/'MarcoMovie-0.4.12-windows-x64.zip').exists())
+        self.assertFalse((self.out/'MarcoMovie-0.4.12-windows-x64.zip.sha256').exists())
+        self.assertFalse((self.out/'MarcoMovie-0.4.12-ios-unsigned.ipa').exists())
         self.assertFalse((self.out/'MarcoMovie-0.4.12-macos.zip').exists())
         page = (self.out/'index.html').read_text(encoding='utf-8')
-        self.assertIn('MarcoMovie-0.4.12-windows-x64.zip', page)
+        self.assertIn('https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-windows-x64.zip', page)
         self.assertIn('其他平台', page)
+
+    def test_platform_card_shows_github_button_and_checksum_link(self):
+        self.add_asset('MarcoMovie-0.4.12-windows-x64.zip', b'windows fixture')
+        self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        self.assertIn('去 GitHub 下载', page)
+        self.assertIn('https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-windows-x64.zip.sha256', page)
 
     def test_platform_package_without_checksum_rejected(self):
         self.add_asset('MarcoMovie-0.4.12-macos.zip', b'mac fixture', checksum=False)
         with self.assertRaises(ValueError): self.sync()
         self.assertFalse(self.out.exists())
 
-    def test_large_platform_package_links_github_not_copied(self):
+    def test_large_platform_package_still_links_github(self):
         self.add_asset('MarcoMovie-0.4.12-windows-x64.zip', b'windows fixture')
         big = [a for a in self.release['assets'] if a['name'] == 'MarcoMovie-0.4.12-windows-x64.zip'][0]
-        big['size'] = m.LIMIT + 1
+        big['size'] = m.PLATFORM_LIMIT - 1
         self.sync()
         self.assertFalse((self.out/'MarcoMovie-0.4.12-windows-x64.zip').exists())
         page = (self.out/'index.html').read_text(encoding='utf-8')
-        self.assertIn(f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-windows-x64.zip', page)
+        self.assertIn('https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-windows-x64.zip', page)
 
     def test_without_platform_packages_links_release_page(self):
         self.sync()
@@ -214,7 +259,8 @@ class MirrorTests(unittest.TestCase):
     def test_no_quark_buttons_without_manifest(self):
         self.sync()
         page = (self.out / 'index.html').read_text(encoding='utf-8')
-        self.assertNotIn('夸克网盘下载', page)
+        self.assertNotIn('pan.quark.cn', page)
+        self.assertNotIn('>夸克网盘下载</a>', page)
 
     def test_sub_bullets_do_not_consume_list_numbers(self):
         # The CSS counter must count top-level items only: with the old
