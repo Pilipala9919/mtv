@@ -9,9 +9,9 @@
   "android-mobile": {
     "folder": "/MarcoMovie/手机版",
     "share_url": "https://pan.quark.cn/s/370912cb6556",
-    "file": "MarcoMovie-0.5.9-android-mobile.apk",
-    "version": "0.5.9",
-    "sha256": "36694eee5b097fd92569499e9318e09c61223f86af9d564d2207eec7064afc14"
+    "file": "MarcoMovie-0.5.10-android-mobile.apk",
+    "version": "0.5.10",
+    "sha256": "6fcf8c0b1c9c30e941a7419ba63ce8c4421220156549cb70f63edf49c515124d"
   },
   "ios": {
     "folder": "/MarcoMovie/iOS",
@@ -23,30 +23,30 @@
   "windows-setup": {
     "folder": "/MarcoMovie/Windows安装版",
     "share_url": "https://pan.quark.cn/s/340eb49a4242",
-    "file": "MarcoMovie-0.5.3-windows-x64-setup.exe",
-    "version": "0.5.3",
-    "sha256": "3fad9141b054d54636aca74da13f499c28d5f82cf811b4e983a767e3b3963d54"
+    "file": "MarcoMovie-0.5.5-windows-x64-setup.exe",
+    "version": "0.5.5",
+    "sha256": "66a5d004fb431838a6ba06fe9be4163e03642dc05c49705e0be0c174c47922fc"
   },
   "windows-zip": {
     "folder": "/MarcoMovie/Windows绿色版",
     "share_url": "https://pan.quark.cn/s/097b525e7317",
-    "file": "MarcoMovie-0.5.3-windows-x64-portable.zip",
-    "version": "0.5.3",
-    "sha256": "c25bd44981ea8a39513b2ad136c3b66bc4591d40ff9545eafd5a0c07e3aa0b3c"
+    "file": "MarcoMovie-0.5.5-windows-x64-portable.zip",
+    "version": "0.5.5",
+    "sha256": "bff759efe0ca4234f7fd2c8525f31af393c9e68ffa7fd29cef3fc1a9fbde8a75"
   },
   "macos": {
     "folder": "/MarcoMovie/macOS",
     "share_url": "https://pan.quark.cn/s/c7be45d7a4b5",
-    "file": "MarcoMovie-0.5.2-macos-desktop.zip",
-    "version": "0.5.2",
-    "sha256": "f21a03b84ebd9a318ac5d32504f64c7762dc4e2a50126e04edfb72f59643dee3"
+    "file": "MarcoMovie-0.5.4-macos-desktop.zip",
+    "version": "0.5.4",
+    "sha256": "c8c5bb623954011dc30172c743ea1f097d92c0aaee557e903c52e5d9ad70e768"
   },
   "android-lite": {
     "folder": "/MarcoMovie/轻量版",
     "share_url": "https://pan.quark.cn/s/6d0af5ae83ab",
-    "file": "MarcoMovie-0.5.0-lite.apk",
-    "version": "0.5.0",
-    "sha256": "cb291597b164180636285037c13ea725448a0d653d01869f27189b5740c290a7"
+    "file": "MarcoMovie-0.5.1-android-lite.apk",
+    "version": "0.5.1",
+    "sha256": "62565610800133f51fa10401d5fcb4e1f8e518eba3da5c27ec709931c167c433"
   },
   "tv": {
     "folder": "/MarcoTV/电视版",
