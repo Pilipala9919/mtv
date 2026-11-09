@@ -251,7 +251,10 @@ def sync_platform(key, folder, source, manifest, tmpdir, dry_run):
     stale = [n for n in names if n != name]
     if stale:
         print(f"  removing previous version(s): {', '.join(stale)}")
-        remove_files(folder, stale)
+        try:
+            remove_files(folder, stale)
+        except QuarkError as exc:
+            print(f"  warning: remove stale failed: {exc}")
     share_url = entry.get("share_url")
     if not share_url:
         share_url = share_folder(folder)
@@ -284,7 +287,7 @@ def main(argv=None):
             except (QuarkError, OSError) as exc:
                 print(f"[{key}] FAILED: {exc}")
                 errors.append(key)
-    if not args.dry_run and not errors:
+    if not args.dry_run:
         MANIFEST.parent.mkdir(parents=True, exist_ok=True)
         tmp = MANIFEST.with_suffix(".tmp")
         tmp.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
