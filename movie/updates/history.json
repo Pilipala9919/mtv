@@ -2,6 +2,18 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "ios-v0.5.10",
+      "version": "0.5.10",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-09T15:09:01Z",
+      "prerelease": false,
+      "target_commitish": "fix/plugin-ports-16kb-20261107",
+      "notes": "# iOS / iPadOS 0.5.10\n\n- 发布平台：iOS / iPadOS（`ios`，iOS / iPadOS 14.0+，支持巨魔 TrollStore 直接安装与自签安装）\n- 版本：`0.5.10`（`build 60`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.10-ios-iphone-ipad-unsigned.ipa`（兼容名：`MarcoMovie-0.5.10-ios-unsigned.ipa`）\n\n## 本次修复与改进\n\n1. **修复网盘扫码登录提示“已过期”的问题，并新增 iPhone 本机一键跳转授权**：\n   - 修复夸克网盘（`我的夸父`）二维码创建（`client_id=532`）与轮询票据接口参数不一致导致扫码确认时报登录请求已过期的问题，对齐官方 `pan.quark.cn` 网页端扫码参数。\n   - 修复百度网盘（`我的嘟嘟`）二维码 `qrlogin` 链接参数格式与服务端挑战激活流程，同步服务端时间戳，解决扫码即提示二维码已过期的问题。\n   - 完善 UC 网盘（`我的优汐`）与阿里云盘（`我的阿狸`）扫码确认后的 Cookie / RefreshToken 提取，并在扫码面板新增「本机跳转授权」按钮与从后台返回应用时自动检查登录状态。\n\n2. **修复 iPhone 播放网盘资源仅显示 `01:40`（1 分 40 秒试看流）及夸克播放失败的问题**：\n   - 在 `CspBridge.upgradeNetdiskVideoWithCrossLines` 与 `DetailScreen._loadDetail` 中，针对百度、夸克等非直链网盘剧集（未携带 SVIP 时百度返回 100 秒 `01:40` 试看流、夸克报播放失败），自动按集数精准关联全网完整正片源，并对同目录内多分辨率重复剧集自动去重。\n   - 在 `PlayerScreen` 播放器层新增实时试看流时长拦截与自动恢复机制（`_recoverFromNetdiskTrialOrFailure`）：一旦检测到网盘流时长处于 `01:40` 试看区间或解析失败，自动清洗历史记录中的 `01:40` 残留时长并无缝切换至完整正片流。\n\n3. **恢复 4K 网盘线路（优汐、夸父、嘟嘟、阿狸）与详情页横向播放线路选择栏**：\n   - 在 `CspBridge.buildNetdisk4KLines` 中恢复 `玩偶哥哥`、`木偶`、`多多`、`花卷｜4K`、`观影｜4K` 等源的 `优汐智1`、`夸父智1`、`嘟嘟无限2`、`优汐无限1`、`夸父无限1`、`阿狸原画` 4K 线路。\n   - 在 `DetailScreen` 剧集列表上方新增横向可滑动的播放线路选择栏与快捷 `网盘扫码` 入口。\n\n4. **移除 iOS 首页网盘大卡片**：\n   - 移除 `AdaptiveShell` 首页顶部的网盘配置横幅大卡片，保持首页视觉清爽。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.10"
+    },
+    {
       "tag": "android-mobile-v0.5.13",
       "version": "0.5.13",
       "platforms": [
