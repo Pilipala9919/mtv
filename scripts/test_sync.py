@@ -78,4 +78,50 @@ class InstallWizardChecks(unittest.TestCase):
         self.assertIn('https://raw.githubusercontent.com/Pilipala9919/mtv/main/MarcoTV-Installer-1.0.0-Windows.exe',self.app)
         self.assertIn('https://raw.githubusercontent.com/Pilipala9919/mtv/main/MarcoTV-Installer-1.0.0-Android.apk',self.app)
 
+class OfficialApkChecks(unittest.TestCase):
+    def test_choose_apk_ignores_restricted(self):
+        assets = {'MarcoTV-0.15.0-Restricted.apk': {}, 'MarcoTV-0.15.0.apk': {}}
+        self.assertEqual(sync.choose_apk(assets, '0.15.0'), 'MarcoTV-0.15.0.apk')
+        with self.assertRaises(ValueError):
+            sync.choose_apk({'MarcoTV-0.15.0-Restricted.apk': {}}, '0.15.0')
+    def test_main_syncs_official_apk_and_homepage_sha(self):
+        # End to end with the real homepage as fixture: the release carries
+        # both the official APK and the Restricted variant; the sync must
+        # download the official one and stamp its SHA on the homepage.
+        official = b'official apk fixture'
+        osha = hashlib.sha256(official).hexdigest()
+        ourl = f'https://github.com/{sync.SOURCE_REPO}/releases/download/v0.15.0/MarcoTV-0.15.0.apk'
+        rurl = f'https://github.com/{sync.SOURCE_REPO}/releases/download/v0.15.0/MarcoTV-0.15.0-Restricted.apk'
+        feed = dict(schema=1, versionCode=40, versionName='0.15.0', minSdk=23,
+                    size=len(official), sha256=osha, url=ourl, prerelease=False)
+        release = dict(draft=False, prerelease=False, assets=[
+            dict(name='MarcoTV-0.15.0.apk', browser_download_url=ourl, size=len(official), digest='sha256:' + osha),
+            dict(name='MarcoTV-0.15.0.apk.sha256', browser_download_url=ourl + '.sha256')])
+        latest = dict(tag_name='v0.15.0', published_at='2026-11-03T00:00:00Z', assets=[
+            dict(name='MarcoTV-0.15.0.apk', browser_download_url=ourl, size=len(official)),
+            dict(name='MarcoTV-0.15.0-Restricted.apk', browser_download_url=rurl, size=1788190),
+            dict(name='MarcoTV-0.15.0.apk.sha256', browser_download_url=ourl + '.sha256'),
+            dict(name='MarcoTV-0.15.0-source-and-apk.zip', browser_download_url=ourl.replace('.apk', '-source-and-apk.zip'))])
+        def fetch(address, binary=False):
+            if address == sync.API:
+                return json.dumps(latest)
+            if address == ourl:
+                return official
+            if address == ourl + '.sha256':
+                return osha + '  MarcoTV-0.15.0.apk'
+            if address.endswith('/stable.json') or address.endswith('/preview.json'):
+                return json.dumps(feed)
+            if '/releases/tags/' in address:
+                return json.dumps(release)
+            raise AssertionError(address)
+        root = Path(sync.__file__).resolve().parent.parent
+        with tempfile.TemporaryDirectory() as directory, patch.object(sync, 'ROOT', Path(directory)), patch.object(sync, 'fetch', fetch):
+            (Path(directory) / 'index.html').write_text((root / 'index.html').read_text(encoding='utf-8'), encoding='utf-8')
+            self.assertEqual(sync.main(), 0)
+            self.assertEqual((Path(directory) / 'MarcoTV-0.15.0.apk').read_bytes(), official)
+            self.assertFalse((Path(directory) / 'MarcoTV-0.15.0-Restricted.apk').exists())
+            html = (Path(directory) / 'index.html').read_text(encoding='utf-8')
+            self.assertIn(osha, html)
+            self.assertNotIn('ef6fd9257e7c0364198e13c3021932fd35902919ee9a8f9ddd1b4a64977bf672', html)
+
 if __name__=='__main__':unittest.main()

@@ -36,17 +36,31 @@ def fetch(url, binary=False):
     return data if binary else data.decode("utf-8")
 
 
+def choose_apk(assets, version):
+    """Pick the official stable APK: exactly MarcoTV-<version>.apk.
+
+    A release may also carry experimental variants (e.g.
+    MarcoTV-0.15.0-Restricted.apk); those must never be treated as the
+    stable download, and picking by alphabetical order would do exactly
+    that ('-' sorts before '.'). A missing official APK fails loudly.
+    """
+    name = f"MarcoTV-{version}.apk"
+    if name not in assets:
+        raise ValueError("Official APK missing from latest release: " + name)
+    return name
+
+
 def main():
     release = json.loads(fetch(API))
     tag = release["tag_name"]
     version = tag[1:] if tag.startswith("v") else tag
     published = datetime.fromisoformat(release["published_at"].replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=8))).date()
     assets = {a["name"]: a for a in release.get("assets", [])}
-    apk_names = [n for n in assets if n.endswith(".apk")]
-    if not apk_names:
-        print("no APK asset in latest release", file=sys.stderr)
+    try:
+        apk_name = choose_apk(assets, version)
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
         return 1
-    apk_name = sorted(apk_names)[0]
     apk_url = assets[apk_name]["browser_download_url"]
     print(f"latest stable release: {tag} ({published}), apk: {apk_name}")
 
