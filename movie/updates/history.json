@@ -2,28 +2,88 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "android-mobile-v0.5.11",
+      "version": "0.5.11",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-09T10:52:23Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Android 手机 / 平板 0.5.11\n\n- 发布平台：Android 手机 / 平板（`android-mobile`）\n- 版本：`0.5.11`（`versionCode 61`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.11-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.11-mobile.apk`）\n\n## 本次修复与改进\n\n1. **修复云盘配置中心点击登录或顶栏「网盘」按钮时弹出 `JsonSyntaxException` 或 `IOException` 错误框的问题**：\n   - 在 `CspEngine` 中精确检测内层 `Spider` 是否覆写 `action(String)`（`supportsCustomAction()`），对 `MyDrive` 等原生支持 `action` 的扩展不再回退调用 `detailContent`，并为 `PanConfig`、`Wexconfig`、`Config` 等扩展提供不强制要求返回非空 JSON 的 `detailAction(String)` 接口与首次调用 `homeContent(true)` 自动预热。\n\n2. **修复非 `MyDrive` 配置源下点击「网盘」面板弹出 `LoginShow`、`panSortShow`、`panSourceSortShow` 字符串提示框的问题**：\n   - 在 `SettingsScreen.accountAction` 中为 `Wexconfig`/`Wexokconfig` 映射真实网盘扫码与排序动作码（`quarkcookie`、`ucpancookie`、`aliyuntoken`、`panpaixu` 等），为 `csp_Config` 等通用配置源通过底部抽屉动态加载网盘分类与操作卡片列表，并在 `SourceController.sourceAction` 中过滤内部动作码回显。\n\n3. **修复 `MyDrive` 已登录网盘目录中 JSON `vod_id`（`{...}`）视频文件的详情与播放路由**。\n\n## 验证范围\n\n- 通过 `CompatChecks`、`UpdateLayoutChecks` 与 `UpdateEditionChecks` 本地回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 正式签名校验。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.11"
+    },
+    {
+      "tag": "android-tv-v0.5.11",
+      "version": "0.5.11",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-09T10:49:30Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Android 电视 / 盒子 0.5.11\n\n- 发布平台：Android 电视 / 盒子（`android-tv`）\n- 版本：`0.5.11`（`versionCode 61`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.11-android-tv.apk`（兼容旧名：`MarcoMovie-0.5.11-preview.apk`）\n\n## 本次修复与改进\n\n1. **修复云盘配置中心（`csp_MyDriveGuard` / `csp_MyDrive`）点击「登入自己网盘」或右侧导航栏「网盘」按钮时弹出 `JsonSyntaxException` 或 `IOException` 错误框的问题**：\n   - **精确识别自定义 `action` 实现（`CspEngine.supportsCustomAction` + `SourceController.sourceAction`）**：通过解包 `BaseSpiderGuard` 内层 `Spider` 实例并检测是否覆写 `Spider.action(String)`，对原生实现 `action` 的网盘扩展（如 `MyDrive`、`Wexokconfig`）仅调用 `action(String)`，不再于其正常返回空串并弹出原生登录框后误调用用于解析云盘目录 JSON 的 `detailContent(List)`（消除在原生弹窗上方叠加 `扩展来源请求失败：JsonSyntaxException` 的问题）。\n   - **首次调用自动预热（`CspEngine.ensureConfigHomeWarmed`）**：当用户直接从普通点播首页点击右侧导航栏「网盘」按钮（尚未进入配置中心分类页）时，在执行 `action` 或 `detailAction` 前自动静默预热一次 `homeContent(true)`，确保扩展内部网盘列表与上下文完成初始化。\n   - **新增免 JSON 校验的交互通道（`CspEngine.detailAction`）**：对通过 `detailContent` 响应配置动作的扩展（如 `PanConfig`、`Wexconfig`、`Config`），调用专用 `detailAction` 而不触发 `CspEngine.detail` 的非空与 JSON 格式强制校验，彻底消除 `扩展来源请求失败：IOException`。\n\n2. **修复在 `Wexconfig`、`Config` 等配置源下点击「网盘」面板弹出 `LoginShow`、`panSortShow`、`panSourceSortShow` 字符串提示框的问题**：\n   - **多配置源动作适配（`SettingsScreen.accountAction`）**：精准区分 `MyDrive`、`PanConfig`、`Wexconfig`/`Wexokconfig` 与通用 `csp_Config` 配置中心；为 `Wexconfig`/`Wexokconfig` 接入真实网盘动作码（`quarkcookie`、`ucpancookie`、`uctvpancookie`、`aliyuntoken`、`baidupanlogin`、`115pancookie`、`tianyilogin`、`ydyuncookie`、`pan123login`、`panxunleiuser`、`bilicookie`、`pankaiguan` 及排序码 `panpaixu`），并为 `csp_Config` 等通用配置中心动态读取分类与操作项列表（或自动匹配 `pan_order` 排序卡）。\n   - **拦截内部动作码回显（`SourceController.isInternalActionCode`）**：当扩展原样返回传入的动作标识符时不再将其作为提示消息弹窗。\n\n3. **修复 `MyDrive` 网盘文件卡片识别（`SourceController.isConfigOrNetdiskActionCard`）**：\n   - 在 `MyDrive` 已登录的网盘目录分类下，保留以 `{` 开头的 JSON `vod_id` 视频条目进入详情与播放流程，不再误判为配置动作卡。\n\n## 验证范围\n\n- 通过 `CompatChecks`、`UpdateLayoutChecks` 与 `UpdateEditionChecks` 本地回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 正式签名校验。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.11"
+    },
+    {
       "tag": "android-lite-v0.5.1",
       "version": "0.5.1",
       "platforms": [
         "android-lite"
       ],
-      "published_at": "2026-11-09T09:07:50Z",
+      "published_at": "2026-11-09T09:07:52Z",
       "prerelease": false,
       "target_commitish": "3d84a2c20e1ea28a6b0ab3eeccdb4c5d4f1b9b85",
       "notes": "# Android 4.0+ 轻量版 0.5.1\n\n- 发布平台：Android 4.0+ 轻量版（`android-lite`，目标 API 14+ 老旧电视 / 盒子）\n- 版本：`0.5.1`（`versionCode 51`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.1-android-lite.apk`（兼容旧名：`MarcoMovie-0.5.1-lite.apk`）\n\n## 本次新增与改进\n\n1. **电视大屏多列网格布局与高对比度遥控器焦点体系**：\n   - 新增统一顶部导航栏（`首页片源`、`当前源`、`搜索`、`直播`、`历史`、`收藏`、`配置`），支持遥控器 `MENU` 键一键回首页、`SEARCH` 键直达搜索、快速连按 `UP` 键回顶部。\n   - 为所有卡片、操作按钮与横向分类/线路/选集分组胶囊统一配备琥珀金高对比度焦点边框（`#FFF5B83D`），解决旧版横向分类胶囊无遥控器焦点指示的问题。\n   - 电视与横屏模式下片源列表采用 2～3 列网格，影视目录、搜索结果、观看历史与收藏采用 4～5 列海报网格；新增适配 API 14 的 `LiteImageLoader`（两阶段 `inSampleSize` 采样 + `RGB_565` 解码 + 内存 `LruCache` 与本地磁盘缓存）。\n\n2. **电视详情页、多线路切换、剧集区间分组与跨源换源**：\n   - 重构详情页顶部横幅卡片，展示封面海报、年份/地区/类型/评分徽章、主演、导演及剧情简介，提供 `▶ 立即播放 / 续播`、`♥ 加入收藏 / ★ 已收藏`、`⇅ 正序 / 倒序`、`默认播放线路` 与 `跨源换源`。\n   - 新增横向播放线路标签栏与剧集区间分组标签栏（`1-40集`、`41-80集`……）配合多列选集网格，解除旧版单线路 150 集截断限制。\n\n3. **遥控器屏幕字母/数字键盘、全站聚合搜索、观看历史与电视直播**：\n   - 内置适配遥控器方向键的 `A-Z` / `0-9` / `退格` / `清空` 屏幕键盘网格与历史搜索词胶囊，支持搜索当前源与跨源并发聚合搜索。\n   - 新增 `LiteStore` 持久化观看历史（跨重启记录片源、线路、集数与毫秒级播放进度）与收藏夹管理。\n   - 新增电视直播页面，自动解析导入配置中的 `lives`（支持 `TXT` `#genre#` 分组、`M3U` `#EXTINF` 与 `proxy://` Base64 内联直播源）及自定义直播地址，支持直播播放时按遥控器上下方向键直接换台。\n\n4. **电视播放器 OSD 控制栏、MacCMS XML 支持与本地回环媒体代理**：\n   - 新增 4.5 秒无操作自动隐藏的播放器 OSD 顶栏与底栏；按确认键暂停/继续，按上/下方向键或菜单键聚焦底部控制栏（`暂停/播放`、`下一集`、`选集`、`换线路`、`比例：适应/铺满/16:9/4:3`、`代理：自动/始终开启/关闭`），按左右方向键支持单击 `±15s` 与长按阶梯加速快进/快退（`15s -> 25s -> 45s -> 75s -> 120s`），并支持播完自动连播下一集。\n   - 扩展 `LiteCatalog` 支持 MacCMS XML（`type=0`）、`GZIP` 压缩配置、`2423` Hex-AES-128-CBC 加密配置及片源自定义 `User-Agent` / `Referer` 请求头。\n   - 新增 `LiteMediaProxy` 本地 `127.0.0.1` 回环 HTTP 媒体代理：通过 Conscrypt TLS 1.2 为旧系统播放器桥接现代 HTTPS 媒体流、注入片源自定义请求头、转发 MP4 `Range` 字节范围请求（`206 Partial Content`），并自动重写 `.m3u8` HLS 播放列表中的分片与密钥相对地址。\n\n## 验证范围\n\n- 通过真实 API 14 `android.jar` 编译、`D8 --min-api 14` 单 DEX 校验与 V1/V2/V3 正式签名校验。\n- 通过 `LiteProbe` API 14 编译/字节码校验与 `LiteJvmChecks` 53 项电视端 Lite 自动化回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描。\n\n## 已知限制\n\n- Lite 版坚持零动态代码执行原则，`type=3` 等需要运行外部 JAR / JS / Python 爬虫的扩展源仅保留标识，不支持在 Lite 版内运行。\n- 底层音视频解码仍受旧电视硬件解码器编码格式支持范围限制。\n",
       "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.1"
     },
     {
+      "tag": "ios-v0.5.8-preview",
+      "version": "0.5.8",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-09T06:54:38Z",
+      "prerelease": true,
+      "target_commitish": "main",
+      "notes": "## Marco Movie iOS & iPadOS v0.5.8 Preview (Build 58)\n\n- **历史记录卡片展示海报照片**：在首页「查看全部」历史弹窗、「我的片库 → 观看历史」以及首页历史记录横滑卡片中全面配备圆角电影海报缩略图、播放角标、分集观看进度条与百分比。\n- **首页影视卡片与今日首推卡片圆角与抗锯齿优化**：新增 AppleSmoothClipCard，先裁剪内部海报/毛玻璃图层，再于裁剪边缘外侧绘制双段抗锯齿高光描边；今日首推卡片外圆角提升至 30dp（内嵌海报 18dp），首页影视卡片圆角提升至 20dp，彻底消除圆角交界处锯齿。\n- **搜索弹窗左侧垂直滑动线路筛选栏**：将全站搜索弹窗中的线路筛选移至左侧独立上下滑动列表，支持实时显示各线路命中数量角标并快速切换。\n- **全局 iOS 弹簧点击动效优化**：新增 ApplePressableScale 阻尼按压与弹簧回弹动效（配合轻触觉反馈），覆盖影视卡片、今日首推、历史记录卡片、分类胶囊与片源卡片。",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.8-preview"
+    },
+    {
+      "tag": "android-mobile-v0.5.10",
+      "version": "0.5.10",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-09T05:43:32Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Android 手机 / 平板 0.5.10\n\n- 发布平台：Android 手机 / 平板（`android-mobile`）\n- 版本：`0.5.10`（`versionCode 60`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.10-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.10-mobile.apk`）\n\n## 本次修复与改进\n\n1. **新增搜索页线路/片源筛选能力（`MobileShell.renderSearchTab`）**：\n   - 在搜索页状态栏与结果列表之间新增横向可滑动的片源筛选胶囊栏，展示 `全部 (N)` 及各返回结果的片源标签 `片源名 (k)`，随并发搜索流式返回实时更新各线路计数。\n   - 当命中片源达到 2 个及以上时，左侧提供 `筛选线路 ▾` 快捷按钮，点击可拉起底部抽屉菜单从全部命中线路中快速点选过滤；从搜索结果进入详情页再返回时自动保留当前筛选状态。\n\n2. **修复多个扩展片源（如饭太硬、王二小、玩偶等）弹幕无法正常获取与显示的问题**：\n   - **代理端口探测与 UTF-8 参数解码（`LocalProxy` + `CspEngine` + `ProxyAddress`）**：在 `LocalProxy` 中响应 `/proxy?do=ck` 端口健康检查（返回 HTTP 200 `ok`）并将 HTTP 请求行解码升级为 `UTF-8`，解决扩展内部 `Proxy.adjustPort()` 探测失败落回 `-1` 端口以及中文片名参数（如 `vodName`）被按 Latin-1 解码导致弹幕搜索无结果的问题；同时在 `CspEngine` 实例化 Spider 后立即向内层 `DexClassLoader` 同步宿主代理端口。\n   - **异步弹幕事件桥接（`com.fongmi.android.tv.event.RefreshEvent` + `PlaybackControls`）**：新增 `RefreshEvent.danmaku(String)` 宿主回调桥接，接收扩展在 `playerContent` 返回后通过后台线程异步推送的弹幕地址，自动完成本机代理重写并实时加载至播放器弹幕层。\n   - **弹幕网络与 XML/JSON 容错解析（`DanmakuView` + `DanmakuData`）**：支持跨协议 301/302/307/308 重定向与代理鉴权头注入，清理 XML 非法控制字符，并在扩展拼装的 `<d p=\"...\">` 弹幕包含未转义 `&` 或 `<` 触发 DOM 异常时自动回退正则容错提取。\n\n3. **修复部分电视直播频道提示“需要解析或使用了特殊协议”及无法起播的问题**：\n   - **代理重写前置与协议扩展（`PlaybackController` + `LiveController` + `Cms`）**：在 `PlaybackController.openPlayer` 校验 `Cms.isMedia` 之前先行调用 `ensureProxy` 与 `LocalProxy.rewrite`，解决 `proxy://` 直播流被误判为不支持协议的问题；扩展支持 `rtmps://`、`rtsps://`、`mmsh://`、`mmst://`、`srt://`、`rist://`、`webrtc://` 及 `webview://` 网页嗅探直播流，并在多源频道首条线路不可播或播放报错时自动切换备用线路。\n   - **直播地址 `$线路名` 剥离与无后缀 HLS 嗅探（`LiveCatalog` + `MoviePlayer`）**：修复带 `?` 查询参数的直播地址未能剥离末尾 `$线路名` 标签以及 `host:port/path` 缺省协议头的解析问题；在 `MoviePlayer` 中为无 `.m3u8` 后缀的直播地址开启 `sniffMime` 头部探测与容器报错自动回退 `HlsMediaSource` 重试。\n\n## 验证范围\n\n- 通过 `CompatChecks`、`UpdateLayoutChecks` 与 `UpdateEditionChecks` 本地回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 正式签名校验。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.10"
+    },
+    {
+      "tag": "android-tv-v0.5.10",
+      "version": "0.5.10",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-09T05:35:51Z",
+      "prerelease": false,
+      "target_commitish": "main",
+      "notes": "# Android 电视 / 盒子 0.5.10\n\n- 发布平台：Android 电视 / 盒子（`android-tv`）\n- 版本：`0.5.10`（`versionCode 60`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.10-android-tv.apk`（兼容旧名：`MarcoMovie-0.5.10-preview.apk`）\n\n## 本次修复与改进\n\n1. **修复多个扩展片源（如饭太硬、王二小、玩偶等）弹幕无法正常获取与显示的问题**：\n   - **代理端口探测与 UTF-8 参数解码（`LocalProxy` + `CspEngine` + `ProxyAddress`）**：在 `LocalProxy` 中响应 `/proxy?do=ck` 端口健康检查（返回 HTTP 200 `ok`）并将 HTTP 请求行解码升级为 `UTF-8`，解决扩展内部 `Proxy.adjustPort()` 探测失败落回 `-1` 端口以及中文片名参数（如 `vodName`）被按 Latin-1 解码导致弹幕搜索无结果的问题；同时在 `CspEngine` 实例化 Spider 后立即向内层 `DexClassLoader` 同步宿主代理端口。\n   - **异步弹幕事件桥接（`com.fongmi.android.tv.event.RefreshEvent` + `PlaybackControls`）**：新增 `RefreshEvent.danmaku(String)` 宿主回调桥接，接收扩展在 `playerContent` 返回后通过后台线程异步推送的弹幕地址，自动完成本机代理重写并实时加载至播放器弹幕层。\n   - **弹幕网络与 XML/JSON 容错解析（`DanmakuView` + `DanmakuData`）**：支持跨协议 301/302/307/308 重定向与代理鉴权头注入，清理 XML 非法控制字符，并在扩展拼装的 `<d p=\"...\">` 弹幕包含未转义 `&` 或 `<` 触发 DOM 异常时自动回退正则容错提取。\n\n2. **修复部分电视直播频道提示“需要解析或使用了特殊协议”及无法起播的问题**：\n   - **代理重写前置与协议扩展（`PlaybackController` + `LiveController` + `Cms`）**：在 `PlaybackController.openPlayer` 校验 `Cms.isMedia` 之前先行调用 `ensureProxy` 与 `LocalProxy.rewrite`，解决 `proxy://` 直播流被误判为不支持协议的问题；扩展支持 `rtmps://`、`rtsps://`、`mmsh://`、`mmst://`、`srt://`、`rist://`、`webrtc://` 及 `webview://` 网页嗅探直播流，并在多源频道首条线路不可播或播放报错时自动切换备用线路。\n   - **直播地址 `$线路名` 剥离与无后缀 HLS 嗅探（`LiveCatalog` + `MoviePlayer`）**：修复带 `?` 查询参数的直播地址未能剥离末尾 `$线路名` 标签以及 `host:port/path` 缺省协议头的解析问题；在 `MoviePlayer` 中为无 `.m3u8` 后缀的直播地址开启 `sniffMime` 头部探测与容器报错自动回退 `HlsMediaSource` 重试。\n\n## 验证范围\n\n- 通过 `CompatChecks`、`UpdateLayoutChecks` 与 `UpdateEditionChecks` 本地回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 正式签名校验。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.10"
+    },
+    {
       "tag": "ios-v0.5.7-preview",
-      "platform": "ios-preview",
       "version": "0.5.7",
-      "versionCode": 57,
-      "date": "2026-11-09",
-      "channel": "preview",
-      "notePath": "updates/history/ios-v0.5.7-preview.md",
-      "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.7-preview",
-      "sha256": "3007ad5856aaefc96da7be2c599226d106328b29231db66be8c2200d7094aa7f",
-      "summary": "恢复玩偶哥哥/聚剧四盘等全部隐藏线路，搜索页新增线路筛选胶囊栏，设置页滑轨与分级页面切换 120fps 零掉帧优化。"
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-09T05:33:04Z",
+      "prerelease": true,
+      "target_commitish": "fix/plugin-ports-16kb-20261107",
+      "notes": "Marco Movie iOS / iPadOS v0.5.7 (Build 57) Preview\n\n1. 恢复并兼容全部隐藏线路：玩偶哥哥｜4K弹幕、聚剧｜四盘、盘库｜4K、新6V｜磁力、夸父、优汐、盘她/盘他、易搜/盘搜等全量显示并接入 16 节点高清资源池与横幅源兼容。\n2. 搜索页新增线路筛选胶囊栏：支持按「全部 (N)」或单个片源线路筛选搜索结果，并优先检索所选线路。\n3. 设置页液态玻璃滑轨 120fps 丝滑跟手：滑动过程纯内存实时驱动 Glasswork 折射强度，松手落盘保存，消除拖动卡顿。\n4. 设置页各级界面切换与抽屉展开零掉帧：采用高帧率 AppleSettingsGlassCard 光学容器与静态过渡边界，彻底消除二级页面推入/返回与三级抽屉展开掉帧。",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.7-preview"
     },
     {
       "tag": "macos-v0.5.4",

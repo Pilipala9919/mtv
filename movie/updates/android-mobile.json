@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.5.10",
-  "versionCode": 60,
+  "versionName": "0.5.11",
+  "versionCode": 61,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Android 手机 / 平板 0.5.10\r\n\r\n- 发布平台：Android 手机 / 平板（`android-mobile`）\r\n- 版本：`0.5.10`（`versionCode 60`）\r\n- 发布日期：2026-11-09\r\n- 构建提交：`3df4c628fc1183585fb6cd673dd12ea3093fc2f3`\r\n- 安装包：`MarcoMovie-0.5.10-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.10-mobile.apk`）\r\n\r\n## 本次修复与改进\r\n\r\n1. **新增搜索页线路/片源筛选能力（`MobileShell.renderSearchTab`）**：\r\n   - 在搜索结果上方新增横向可滑动的片源筛选胶囊栏（`全部 (N)` + 各命中片源 `片源名 (k)`）以及 `筛选线路 ▾` 底部抽屉快捷按钮，随并发搜索流式返回实时刷新各线路计数，点击任意片源即可过滤仅查看该线路结果，从详情页返回自动保持筛选状态。\r\n\r\n2. **修复多个扩展片源（如饭太硬、王二小、玩偶等）弹幕无法正常获取与显示的问题**：\r\n   - 在 `LocalProxy` 中响应 `/proxy?do=ck` 端口健康检查（返回 HTTP 200 `ok`）并将 HTTP 请求行解码升级为 `UTF-8`，解决扩展内部 `Proxy.adjustPort()` 探测失败及中文片名参数乱码问题；同时向内层 `DexClassLoader` 实时同步宿主代理端口。\r\n   - 新增 `com.fongmi.android.tv.event.RefreshEvent.danmaku(String)` 宿主回调桥接，接收扩展后台异步推送的弹幕地址并自动加载；增强弹幕跨协议重定向与 XML/JSON 容错解析。\r\n\r\n3. **修复部分电视直播频道提示“需要解析或使用了特殊协议”及无法起播的问题**：\r\n   - 在 `PlaybackController.openPlayer` 校验 `Cms.isMedia` 之前先行调用 `LocalProxy.rewrite`，扩展支持 `rtmps://`、`rtsps://`、`mmsh://`、`srt://`、`webrtc://` 及 `webview://` 网页嗅探直播流，支持多源频道自动择优与报错回退；修复带查询参数直播 URL 的 `$线路名` 剥离，并为无 `.m3u8` 后缀的直播地址开启 `sniffMime` 探测与 `HlsMediaSource` 自动回退重试。\r\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.10/MarcoMovie-0.5.10-android-mobile.apk",
-  "size": 61272722,
-  "sha256": "6fcf8c0b1c9c30e941a7419ba63ce8c4421220156549cb70f63edf49c515124d",
-  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.10/MarcoMovie-0.5.10-android-mobile.apk",
+  "notes": "# Android 手机 / 平板 0.5.11\n\n- 发布平台：Android 手机 / 平板（`android-mobile`）\n- 版本：`0.5.11`（`versionCode 61`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.11-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.11-mobile.apk`）\n\n## 本次修复与改进\n\n1. **修复云盘配置中心点击登录或顶栏「网盘」按钮时弹出 `JsonSyntaxException` 或 `IOException` 错误框的问题**：\n   - 在 `CspEngine` 中精确检测内层 `Spider` 是否覆写 `action(String)`（`supportsCustomAction()`），对 `MyDrive` 等原生支持 `action` 的扩展不再回退调用 `detailContent`，并为 `PanConfig`、`Wexconfig`、`Config` 等扩展提供不强制要求返回非空 JSON 的 `detailAction(String)` 接口与首次调用 `homeContent(true)` 自动预热。\n\n2. **修复非 `MyDrive` 配置源下点击「网盘」面板弹出 `LoginShow`、`panSortShow`、`panSourceSortShow` 字符串提示框的问题**：\n   - 在 `SettingsScreen.accountAction` 中为 `Wexconfig`/`Wexokconfig` 映射真实网盘扫码与排序动作码（`quarkcookie`、`ucpancookie`、`aliyuntoken`、`panpaixu` 等），为 `csp_Config` 等通用配置源通过底部抽屉动态加载网盘分类与操作卡片列表，并在 `SourceController.sourceAction` 中过滤内部动作码回显。\n\n3. **修复 `MyDrive` 已登录网盘目录中 JSON `vod_id`（`{...}`）视频文件的详情与播放路由**。\n\n## 验证范围\n\n- 通过 `CompatChecks`、`UpdateLayoutChecks` 与 `UpdateEditionChecks` 本地回归测试。\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 正式签名校验。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.11/MarcoMovie-0.5.11-android-mobile.apk",
+  "size": 61276818,
+  "sha256": "969f2c5861e72823509904365c4fb8538f5fe58df5fbd92e491ac20d443c627d",
+  "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.11/MarcoMovie-0.5.11-android-mobile.apk",
   "packages": {
-    "MarcoMovie-0.5.10-android-mobile.apk": {
-      "size": 61272722,
-      "sha256": "6fcf8c0b1c9c30e941a7419ba63ce8c4421220156549cb70f63edf49c515124d",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.10/MarcoMovie-0.5.10-android-mobile.apk"
+    "MarcoMovie-0.5.11-android-mobile.apk": {
+      "size": 61276818,
+      "sha256": "969f2c5861e72823509904365c4fb8538f5fe58df5fbd92e491ac20d443c627d",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.11/MarcoMovie-0.5.11-android-mobile.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.10"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.11"
 }
