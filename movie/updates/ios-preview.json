@@ -3,18 +3,18 @@
   "app": "MarcoMovie",
   "platform": "ios-preview",
   "channel": "preview",
-  "releaseTag": "ios-v0.5.6-preview",
-  "version": "0.5.6",
-  "versionCode": 56,
+  "releaseTag": "ios-v0.5.7-preview",
+  "version": "0.5.7",
+  "versionCode": 57,
   "publishedAt": "2026-11-09",
-  "sourceCommit": "13a6918d3fec247b5a3de2520f15164c0fbb4133",
+  "sourceCommit": "1e8f53d",
   "package": {
-    "name": "MarcoMovie-0.5.6-ios-iphone-ipad-unsigned.ipa",
-    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.6-preview/MarcoMovie-0.5.6-ios-iphone-ipad-unsigned.ipa",
-    "sha256": "e8f77c2465b716465367da78a87193b5d3352497135ffa47d5f3bb12724f1cb8",
-    "size": 65121228
+    "name": "MarcoMovie-0.5.7-ios-iphone-ipad-unsigned.ipa",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.7-preview/MarcoMovie-0.5.7-ios-iphone-ipad-unsigned.ipa",
+    "sha256": "3007ad5856aaefc96da7be2c599226d106328b29231db66be8c2200d7094aa7f",
+    "size": 65127865
   },
-  "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.6-preview",
-  "historyNote": "updates/history/ios-v0.5.6-preview.md",
-  "notes": "iOS / iPadOS 0.5.6 验证版：全量兼容 TVBox / 影视仓 csp_* 4K/点播源（花卷/观影/七味/盘库/虎斑/木偶/多多/快影等）；修复换源弹窗手机竖屏双列卡片排版；设置新增液态玻璃 0%–100% 连续线性调节滑轨；设置分类布局全面对齐原生 iOS 系统设置；新增呼吸式动态流光氛围壁纸。"
+  "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.7-preview",
+  "historyNote": "updates/history/ios-v0.5.7-preview.md",
+  "notes": "iOS / iPadOS 0.5.7 验证版：恢复并兼容全部隐藏线路（玩偶哥哥/聚剧四盘/盘库4K/新6V磁力/夸父/优汐/盘她/易搜/盘搜等）；搜索页新增横向线路筛选胶囊栏；设置页液态玻璃滑轨 120fps 纯内存实时调节丝滑跟手；设置页各级界面切换与抽屉展开零掉帧优化。"
 }

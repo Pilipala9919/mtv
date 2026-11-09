@@ -2,6 +2,18 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "ios-v0.5.7-preview",
+      "platform": "ios-preview",
+      "version": "0.5.7",
+      "versionCode": 57,
+      "date": "2026-11-09",
+      "channel": "preview",
+      "notePath": "updates/history/ios-v0.5.7-preview.md",
+      "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.7-preview",
+      "sha256": "3007ad5856aaefc96da7be2c599226d106328b29231db66be8c2200d7094aa7f",
+      "summary": "恢复玩偶哥哥/聚剧四盘等全部隐藏线路，搜索页新增线路筛选胶囊栏，设置页滑轨与分级页面切换 120fps 零掉帧优化。"
+    },
+    {
       "tag": "macos-v0.5.4",
       "version": "0.5.4",
       "platforms": [
