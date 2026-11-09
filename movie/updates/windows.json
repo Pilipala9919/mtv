@@ -1,30 +1,30 @@
 {
   "schema": 1,
   "platform": "windows",
-  "versionName": "0.5.6",
+  "versionName": "0.5.7",
   "prerelease": false,
-  "notes": "### Marco Movie Windows 桌面版 0.5.6 更新说明\n\n- **网盘扫码与账号中心全面恢复**：主页顶部栏新增「网盘」直达按钮、设置页与详情页同步提供「我的云盘 · 网盘扫码与账号中心」入口，支持夸克（我的夸父）、UC（我的优汐）、百度（我的嘟嘟）、阿里（我的阿狸）本地二维码扫码授权与 Cookie 绑定；`🗂我的云盘┃配置` 与 `👑我的┃网盘👑` 站点点击卡片即可唤起对应网盘扫码。\n- **玩偶哥哥 / 聚剧四盘 / 4K 网盘线路完整适配**：针对 `csp_Wogg`（玩偶哥哥）、`csp_S_zps`（聚剧四盘）、`csp_Seedhub`、`csp_Pansou`、`csp_AiNew4K` 等网盘站点，在详情页优先生成 `夸父智1`、`夸父无限1`、`优汐智1`、`优汐无限1`、`嘟嘟无限2`、`阿狸原画` 等 4K 原画线路与规范剧集命名，配合优选画质策略自动匹配已登录网盘。\n- **设置页排版与 DirectWrite 中文字体优化**：针对 Windows 桌面端 DirectWrite 渲染重构 `Microsoft YaHei UI` 字重与正字距（`0.1` ~ `0.3`），限制桌面端设置列表最大阅读宽度（`860px` 居中），精简全部设置项文案并净化版本更新日志展示。\n- **搜索框输入与覆盖安装修复**：替换全局搜索、直播搜索与片源筛选输入框为桌面端焦点增强组件，并在 Windows 安装程序（`setup.exe`）中加入覆盖安装前自动关闭旧进程与清理旧版 `data\\flutter_assets` 机制，彻底解决覆盖升级导致的资源残留问题。",
+  "notes": "### Marco Movie Windows 桌面版 0.5.7 更新说明\n\n- **修复夸克网盘扫码直接显示已过期**：补齐夸克移动端扫码短链 `uc_param_str` 与 `uc_biz_str` 参数，统一 `getServiceTicketByQrcodeToken` 的 `client_id=532`，并对齐二维码绘制像素边界。\n- **支持王二小 `.js.md5` (CatVodSpiderios) 本机接口**：内置 CatPaw 运行时自动兼容 `/config` 与 `/spider/<key>/<type>` 协议，完整支持王二小放牛娃等 `.js.md5` 订阅源的首页、分类、搜索、详情与播放解析。\n- **修复饭太硬等接口播放源错乱与无限加载/自动切线**：修复跨站 `vod_id` 碰撞导致的剧集播放源错乱，过滤非直连网页解析包装组（`jsyun`/`hhyun`/`subyun`/`xlyun`），修复 `media_kit` 播放队列初始化事件丢失及 HLS 分片时长误触发切线问题。\n- **大幅降低全站搜索超时率**：合并 Bili 类同名搜索请求避免触发频控，为慢速插件与自定义站点设置 4s 快速回退策略。\n- **新增 EXO / IJK / MPV 三大播放内核切换**：支持在播放器工具栏与设置页随时切换 `EXO 超速内核`、`IJK 兼容内核` 与 `MPV 原画内核`。\n- **大屏窗口播放控制栏自适应放大**：桌面端窗口拉大或全屏时，自动按比例放大右侧工具栏、底部进度条、顶部标题栏与中央控制按钮。\n- **优化覆盖安装体验**：安装程序覆盖升级时自动清理旧版 `app.so`、`*.dll` 与 `flutter_assets`。",
   "packages": {
-    "MarcoMovie-0.5.6-windows-x64-setup.exe": {
-      "size": 49693516,
-      "sha256": "a89ed6b642ab0a742643f32439e146a59748dd745c584f00fc1dc7521824c6de",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.6/MarcoMovie-0.5.6-windows-x64-setup.exe"
+    "MarcoMovie-0.5.7-windows-x64-setup.exe": {
+      "size": 49706023,
+      "sha256": "42ef64abc3af40fb4b43073dd9582f6e25417c5332284061ba61f9d5b8525a6e",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.7/MarcoMovie-0.5.7-windows-x64-setup.exe"
     },
-    "MarcoMovie-0.5.6-windows-x64-portable.zip": {
-      "size": 71754689,
-      "sha256": "5e6467027fb10008a992459ec40e80fde6770d63f019613e6ef19fdc7ccbfd90",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.6/MarcoMovie-0.5.6-windows-x64-portable.zip"
+    "MarcoMovie-0.5.7-windows-x64-portable.zip": {
+      "size": 71773191,
+      "sha256": "5de75aa0efcbb1bb9fb97e0f235b668a241eb4ce20d92dddc9b40826426cf5a7",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.7/MarcoMovie-0.5.7-windows-x64-portable.zip"
     },
-    "MarcoMovie-0.5.6-windows-setup.exe": {
-      "size": 49693516,
-      "sha256": "a89ed6b642ab0a742643f32439e146a59748dd745c584f00fc1dc7521824c6de",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.6/MarcoMovie-0.5.6-windows-setup.exe"
+    "MarcoMovie-0.5.7-windows-setup.exe": {
+      "size": 49706023,
+      "sha256": "42ef64abc3af40fb4b43073dd9582f6e25417c5332284061ba61f9d5b8525a6e",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.7/MarcoMovie-0.5.7-windows-setup.exe"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.6",
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.7",
   "windows": {
-    "size": 49693516,
-    "sha256": "a89ed6b642ab0a742643f32439e146a59748dd745c584f00fc1dc7521824c6de",
-    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.6/MarcoMovie-0.5.6-windows-setup.exe"
+    "size": 49706023,
+    "sha256": "42ef64abc3af40fb4b43073dd9582f6e25417c5332284061ba61f9d5b8525a6e",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.7/MarcoMovie-0.5.7-windows-setup.exe"
   }
 }
