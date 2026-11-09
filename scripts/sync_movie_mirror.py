@@ -164,6 +164,44 @@ def quark_button(key, links):
             f'target="_blank" rel="noopener">夸克网盘下载</a>')
 
 
+def platform_feed_override(output, key):
+    """Return (href, size, sha256, version) from output/updates/<platform>.json if present."""
+    mapping = {
+        "android-tv": ("android-tv", ".apk"),
+        "android-mobile": ("android-mobile", ".apk"),
+        "ios": ("ios", ".ipa"),
+        "windows-setup": ("windows", "-setup.exe"),
+        "windows-zip": ("windows", ".zip"),
+        "macos": ("macos", ".zip"),
+    }
+    if key not in mapping:
+        return None
+    feed_name, suffix = mapping[key]
+    updates = Path(output) / "updates"
+    path = updates / f"{feed_name}.json"
+    if not path.exists():
+        path = updates / f"{feed_name}-preview.json"
+    if not path.exists():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        ver = data.get("versionName") or data.get("version")
+        single = data.get("package") or {}
+        if single.get("url") and single.get("size") and single.get("sha256"):
+            return single["url"], single["size"], single["sha256"], ver
+        packages = data.get("packages") or {}
+        candidates = [n for n in packages if n.endswith(suffix)]
+        if not candidates:
+            return None
+        candidates.sort(key=lambda n: ("x64" not in n, "portable" not in n, n))
+        info = packages[candidates[0]]
+        if info.get("url") and info.get("size") and info.get("sha256"):
+            return info["url"], info["size"], info["sha256"], ver
+    except (ValueError, OSError, KeyError, TypeError):
+        return None
+    return None
+
+
 def fetch(url, limit=PLATFORM_LIMIT):
     headers = {'User-Agent': 'MarcoMovie-Mirror', 'Accept-Encoding': 'identity'}
     if url.startswith('https://api.github.com/') and os.environ.get('GITHUB_TOKEN'):
@@ -397,18 +435,27 @@ def sync(output):
                 raise ValueError('Refusing to replace a published version')
     escaped = html.escape
     quark_links = load_quark_links()
-    mobile_href = next((p[3] for p in platforms if p[0] == f'MarcoMovie-{version}-mobile.apk'), None)
+    tv_override = platform_feed_override(output, "android-tv")
+    tv_card_href, tv_card_size, tv_card_sha, tv_card_ver = tv_override or (apk_href, apk_size, sha, None)
+    tv_ver_note = f' · v{tv_card_ver}' if tv_card_ver else ''
+    mobile_override = platform_feed_override(output, "android-mobile")
+    mobile_href = (mobile_override[0] if mobile_override else
+                   next((p[3] for p in platforms if p[0] == f'MarcoMovie-{version}-mobile.apk'), None))
     mobile_button = (f'<a class="btn ghost" href="{escaped(mobile_href)}">下载手机版</a>' if mobile_href else '')
     download_cards = []
     download_cards.append(
-        f'<div class="dl"><h3>Android 电视版</h3><p>Android 6.0+ 电视 / 盒子 / 投影仪大屏专享版 · ARM 32 位（内置 FFmpeg / AV1 / VP9 扩展）· {apk_size/1024/1024:.1f} MB</p>'
-        f'<a class="btn primary" href="{escaped(apk_href)}">去 GitHub 下载</a>{quark_button("android-tv", quark_links)}'
-        f'<p><a href="{escaped(apk_href)}.sha256">校验文件</a></p><code>SHA-256：{sha}</code></div>')
+        f'<div class="dl"><h3>Android 电视版{escaped(tv_ver_note)}</h3><p>Android 6.0+ 电视 / 盒子 / 投影仪大屏专享版 · ARM 32 位（内置 FFmpeg / AV1 / VP9 扩展）· {tv_card_size/1024/1024:.1f} MB</p>'
+        f'<a class="btn primary" href="{escaped(tv_card_href)}">去 GitHub 下载</a>{quark_button("android-tv", quark_links)}'
+        f'<p><a href="{escaped(tv_card_href)}.sha256">校验文件</a></p><code>SHA-256：{tv_card_sha}</code></div>')
     for name, label, note, href, size, digest in platforms:
+        qkey = quark_key_for_asset(name)
+        p_override = platform_feed_override(output, qkey)
+        c_href, c_size, c_digest, c_ver = p_override or (href, size, digest, None)
+        c_ver_note = f' · v{c_ver}' if c_ver else ''
         download_cards.append(
-            f'<div class="dl"><h3>{escaped(label)}</h3><p>{escaped(note)} · {size/1024/1024:.1f} MB</p>'
-            f'<a class="btn primary" href="{escaped(href)}">去 GitHub 下载</a>{quark_button(quark_key_for_asset(name), quark_links)}'
-            f'<p><a href="{escaped(href)}.sha256">校验文件</a></p><code>SHA-256：{digest}</code></div>')
+            f'<div class="dl"><h3>{escaped(label)}{escaped(c_ver_note)}</h3><p>{escaped(note)} · {c_size/1024/1024:.1f} MB</p>'
+            f'<a class="btn primary" href="{escaped(c_href)}">去 GitHub 下载</a>{quark_button(qkey, quark_links)}'
+            f'<p><a href="{escaped(c_href)}.sha256">校验文件</a></p><code>SHA-256：{c_digest}</code></div>')
     download_cards.append(
         f'<div class="dl"><h3>同版本源码</h3><p>与发布包同一版本 · {source_size/1024/1024:.1f} MB</p>'
         f'<a class="btn primary" href="{escaped(source_href)}">去 GitHub 下载</a>'
