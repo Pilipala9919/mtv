@@ -57,7 +57,10 @@ PLATFORMS = (
 # silver-white accent, rounded cards, no emoji. The two images are the real
 # MarcoMovie repo assets, copied into movie/ (app-icon-512.png, tv-banner-960x540.png).
 # Device showcase frames removed 2026-11-07 at the user's request; official QQ group section added the same day.
-# The "165 Stars" figure is a 2026-11-07 snapshot; the sync does not fetch it.
+# Stars shown on the page are fetched live from the repo API on every sync;
+# if the API is unreachable, keep the number already on the page, else the
+# last verified count below. Never fail the sync over a star count.
+STARS_FALLBACK = 602  # verified 2026-11-09 (was a stale 165 snapshot from 2026-11-07)
 PAGE_CSS = """
   :root { --bg:#0b0d10; --card:#15181d; --card2:#1b1f26; --line:#262c35;
           --text:#e8eaed; --muted:#9aa3ad; --silver:#c9ced6; }
@@ -217,6 +220,26 @@ def fetch(url, limit=LIMIT):
     if len(data) > limit:
         raise ValueError('Download exceeds limit')
     return data
+
+
+def fetch_stars():
+    """Live star count from the repo API; None when it cannot be read."""
+    try:
+        repo = json.loads(fetch(f'https://api.github.com/repos/{REPO}'))
+        count = int(repo['stargazers_count'])
+    except (ValueError, OSError, KeyError, TypeError):
+        return None
+    return count if count > 0 else None
+
+
+def _previous_stars(output):
+    page = output / 'index.html'
+    try:
+        text = page.read_text(encoding='utf-8')
+    except OSError:
+        return None
+    match = re.search(r'<b>(\d+) Stars</b>', text)
+    return int(match.group(1)) if match else None
 
 
 def apk_identity(apk):
@@ -403,6 +426,7 @@ def sync(output):
     version = release['tag_name'][1:-8]
     release_tag = release['tag_name']
     published_date = (release.get('published_at') or '')[:10]
+    stars = fetch_stars() or _previous_stars(output) or STARS_FALLBACK
     apk_name, source_name = f'MarcoMovie-{version}-preview.apk', f'MarcoMovie-{version}-source.zip'
     # Page buttons always point at GitHub (plus Quark); the mirror files are
     # still hosted in the repo for the in-app update feeds and the edge proxy.
@@ -488,7 +512,7 @@ def sync(output):
 <h1>Marco Movie<br>多端自适应播放器</h1>
 <p class="lead">支持 Android 电视大屏遥控、手机与平板 64 位专属触控，以及 Windows / macOS / iOS（iOS 14.0+ 巨魔与自签）多端独立适配的开源播放器。</p>
 <div class="btn-row"><a class="btn primary" href="{escaped(_gh(apk_name))}">下载电视版</a>{mobile_button}<a class="btn ghost" href="#download">全部平台</a></div>
-<p class="meta"><b>165 Stars</b> · GPL-3.0-only · {published_date} 更新 · 作者 Pilipala</p>
+<p class="meta"><b>{stars} Stars</b> · GPL-3.0-only · {published_date} 更新 · 作者 Pilipala</p>
 </div><figure><img src="tv-banner-960x540.png" alt="Marco Movie 横幅：银色场记板加播放标志"><figcaption>银色场记板横幅 · 仓库原图</figcaption></figure></div>
 <p class="notice">本产品仅为工具，不内置、不提供、不托管任何影视资源或配置地址。内容与配置请自行合法获取，数据保存在本机。</p>
 <section class="block" id="features"><h2>文字介绍与功能</h2>

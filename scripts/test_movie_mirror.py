@@ -31,8 +31,14 @@ class MirrorTests(unittest.TestCase):
                                                    size=len(payload), digest='sha256:'+hashlib.sha256(payload).hexdigest()))
                 self.data[url+suffix] = payload
         self.identity = dict(package='com.pilipala.marcomovie', versionName='0.4.12', versionCode=25, minSdk=23)
+        self.stars = 602
+        self.stars_error = False
 
     def fetch(self, url, limit=m.LIMIT):
+        if url == f'https://api.github.com/repos/{m.REPO}':
+            if self.stars_error:
+                raise OSError('stars API unreachable')
+            return json.dumps({'stargazers_count': self.stars}).encode()
         if url.startswith('https://api.github.com/'):
             return json.dumps([self.release]).encode()
         return self.data[url]
@@ -194,6 +200,22 @@ class MirrorTests(unittest.TestCase):
         self.assertNotIn('画面展示', page)
         self.assertNotIn('界面示意', page)
         self.assertNotIn('class="shots"', page)
+
+    def test_stars_rendered_from_repo_api(self):
+        self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        self.assertIn('<b>602 Stars</b>', page)
+        self.assertNotIn('165 Stars', page)
+
+    def test_stars_fallback_when_api_fails(self):
+        self.stars_error = True
+        self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        self.assertIn('<b>602 Stars</b>', page)
+        (self.out/'index.html').write_text(page.replace('<b>602 Stars</b>', '<b>599 Stars</b>'), encoding='utf-8')
+        self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        self.assertIn('<b>599 Stars</b>', page)
 
     def test_quark_asset_keys(self):
         self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.9-android-tv.apk'), None)
