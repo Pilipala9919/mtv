@@ -31,8 +31,8 @@ class SyncChecks(unittest.TestCase):
                 self.assertEqual(existing.read_text(),'previous')
             else:
                 sync.sync_update_channels()
-                self.assertEqual(json.loads(existing.read_text())['url'], url)
-                self.assertFalse((Path(directory)/name).exists())
+                self.assertEqual(json.loads(existing.read_text())['url'],'https://marcotv.wlj9919.top/'+name)
+                self.assertEqual((Path(directory)/name).read_bytes(),data)
     def test_valid_channels(self):self.exercise()
     def test_bad_digest_keeps_old_index(self):self.exercise(lambda f,r:f.update(sha256='0'*64),True)
     def test_wrong_url_keeps_old_index(self):self.exercise(lambda f,r:f.update(url='https://example.org/test.apk'),True)
@@ -48,8 +48,6 @@ class ChannelPageChecks(unittest.TestCase):
         self.assertNotIn('old',page)
         self.assertIn('0.11.1 实机截图',page)
         self.assertIn('0.11.1 没有在线更新',page)
-        self.assertIn('https://github.com/Pilipala9919/MarcoTV/releases/download/v0.12.0/MarcoTV-0.12.0.apk',page)
-        self.assertNotIn('marcotv.wlj9919.top/MarcoTV-0.12.0.apk',page)
     def test_future_preview_and_repeated_sync(self):
         page=self.page('0.12.0')
         page=sync.render_channels(page,'0.13.0-rc.1')

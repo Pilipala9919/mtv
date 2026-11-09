@@ -3,10 +3,12 @@
 Copyright (C) 2026 Pilipala. SPDX-License-Identifier: GPL-3.0-only.
 Only official release assets are accepted; all downloads are checked before writing the feed.
 
-The mirror hosts no packages: every download card links to the official
-GitHub release asset, plus a Quark Drive folder link for domestic users.
-The update feeds likewise point at GitHub. Legacy mirrored package files
-left in the output directory are removed on each run.
+Packages are mirrored in the repo (files up to the 25 MiB Pages limit) so
+the in-app update feeds and the edge download proxy keep working; larger
+packages stay on GitHub. Every download card links to the official GitHub
+release asset, plus a Quark Drive folder link for domestic users. Per-platform
+feeds (movie/updates/<platform>.json) may override a card with that platform's
+latest version.
 """
 import argparse
 import hashlib
@@ -21,7 +23,10 @@ import urllib.request
 import zipfile
 
 REPO = 'Pilipala9919/MarcoMovie'
-# Sanity cap for a single release asset; nothing is stored on Pages.
+BASE = 'https://marcotv.wlj9919.top/movie/'
+LIMIT = 25 * 1024 * 1024
+# Desktop and Apple packages may exceed the 25 MiB per-file limit of the Cloudflare Pages host.
+# Those are listed on the mirror page but downloaded from the official GitHub release asset.
 PLATFORM_LIMIT = 300 * 1024 * 1024
 
 # Official QQ group (universal: covers Marco TV and Marco Movie, not one product).
@@ -34,10 +39,8 @@ QQ_GROUP2_CODE = '1036404238'
 # folder link per platform). Absent on first run: cards render without the
 # Quark button until the first Quark sync writes the manifest.
 QUARK_MANIFEST = Path(__file__).resolve().parent / 'quark.json'
-# (file name pattern, button label, short note). Packages are never
-# mirrored: each card links to the official GitHub release asset plus a
-# Quark Drive folder link. Only assets carrying an official .sha256 file
-# are accepted.
+# (file name pattern, button label, short note). Mirrored only when the release carries the
+# package together with its official .sha256 file.
 PLATFORMS = (
     ('MarcoMovie-{version}-mobile.apk', 'Android 手机 / 平板版 (64位)', 'Android 6.0+ · 原生 64 位 (arm64-v8a) 与 32 位双架构 · 竖屏触控 UI'),
     ('MarcoMovie-{version}-ios-unsigned.ipa', 'iPhone / iPad 版 (IPA)', 'iOS / iPadOS 14.0+ · 支持巨魔 (TrollStore) 直接安装或自签安装'),
@@ -202,7 +205,7 @@ def platform_feed_override(output, key):
     return None
 
 
-def fetch(url, limit=PLATFORM_LIMIT):
+def fetch(url, limit=LIMIT):
     headers = {'User-Agent': 'MarcoMovie-Mirror', 'Accept-Encoding': 'identity'}
     if url.startswith('https://api.github.com/') and os.environ.get('GITHUB_TOKEN'):
         headers['Authorization'] = 'Bearer ' + os.environ['GITHUB_TOKEN']
@@ -338,18 +341,13 @@ def render_changelog(notes):
     return ''.join(parts)
 
 
-def release_asset(release, name):
-    """Verify one release asset and return (github_url, size, sha256).
-
-    Nothing is stored: the checksum file and the API digest are checked
-    against each other, and the download URL must be the official one.
-    """
+def asset(release, name, output, limit=LIMIT):
     matches = [a for a in release['assets'] if a['name'] == name and a['state'] == 'uploaded']
     if len(matches) != 1:
         raise ValueError('Missing or duplicate asset: ' + name)
     info = matches[0]
     expected = f'https://github.com/{REPO}/releases/download/{release["tag_name"]}/{name}'
-    if info['browser_download_url'] != expected or not 0 < info['size'] <= PLATFORM_LIMIT:
+    if info['browser_download_url'] != expected or not 0 < info['size'] <= limit:
         raise ValueError('Unexpected asset URL or size')
     sha_url = expected + '.sha256'
     checksums = [a for a in release['assets'] if a['name'] == name + '.sha256' and a['state'] == 'uploaded' and a['browser_download_url'] == sha_url]
@@ -358,21 +356,36 @@ def release_asset(release, name):
     checksum = fetch(sha_url, 4096).decode('ascii').strip().split()
     if len(checksum) != 2 or checksum[1].lstrip('*') != name or not re.fullmatch('[0-9a-f]{64}', checksum[0]):
         raise ValueError('Invalid checksum file')
-    if info.get('digest') not in (None, 'sha256:' + checksum[0]):
+    local = output / name
+    body = local.read_bytes() if local.exists() else fetch(expected, limit)
+    digest = hashlib.sha256(body).hexdigest()
+    if len(body) != info['size'] or digest != checksum[0] or info.get('digest') not in (None, 'sha256:' + digest):
         raise ValueError('Release digest mismatch: ' + name)
-    return expected, info['size'], checksum[0]
+    return body, digest
 
 
-def remove_legacy_packages(output):
-    """Delete package files this mirror used to host; keep images, LICENSE, NOTICE."""
-    removed = []
-    for path in output.glob('MarcoMovie-*'):
-        if path.is_file() and path.suffix in ('.apk', '.ipa', '.zip', '.sha256'):
-            path.unlink()
-            removed.append(path.name)
-    if removed:
-        print(f"removed legacy mirrored files: {', '.join(sorted(removed))}")
-    return removed
+def platform_asset(release, name, output):
+    """Return (href, size, sha256, body-or-None). Large packages stay on GitHub, never on Pages."""
+    info = [a for a in release['assets'] if a['name'] == name and a['state'] == 'uploaded']
+    if len(info) != 1:
+        raise ValueError('Missing or duplicate asset: ' + name)
+    size = info[0]['size']
+    if size <= LIMIT:
+        body, digest = asset(release, name, output)
+        return name, size, digest, body
+    expected = f'https://github.com/{REPO}/releases/download/{release["tag_name"]}/{name}'
+    if info[0]['browser_download_url'] != expected or size > PLATFORM_LIMIT:
+        raise ValueError('Unexpected asset URL or size')
+    sha_url = expected + '.sha256'
+    if len([a for a in release['assets'] if a['name'] == name + '.sha256' and a['state'] == 'uploaded'
+            and a['browser_download_url'] == sha_url]) != 1:
+        raise ValueError('Missing official checksum')
+    checksum = fetch(sha_url, 4096).decode('ascii').strip().split()
+    if len(checksum) != 2 or checksum[1].lstrip('*') != name or not re.fullmatch('[0-9a-f]{64}', checksum[0]):
+        raise ValueError('Invalid checksum file')
+    if info[0].get('digest') not in (None, 'sha256:' + checksum[0]):
+        raise ValueError('Release digest mismatch: ' + name)
+    return expected, size, checksum[0], None
 
 
 def sync(output):
@@ -381,50 +394,35 @@ def sync(output):
     release_tag = release['tag_name']
     published_date = (release.get('published_at') or '')[:10]
     apk_name, source_name = f'MarcoMovie-{version}-preview.apk', f'MarcoMovie-{version}-source.zip'
-    apk_href, apk_size, sha = release_asset(release, apk_name)
-    source_href, source_size, source_sha = release_asset(release, source_name)
+    # Page buttons always point at GitHub (plus Quark); the mirror files are
+    # still hosted in the repo for the in-app update feeds and the edge proxy.
+    def _gh(name):
+        return f'https://github.com/{REPO}/releases/download/{release_tag}/{name}'
+    apk, sha = asset(release, apk_name, output, limit=PLATFORM_LIMIT)
+    apk_href = apk_name if len(apk) <= LIMIT else f'https://github.com/{REPO}/releases/download/{release_tag}/{apk_name}'
+    source, source_sha = asset(release, source_name, output)
     platforms = []
     for pattern, label, note in PLATFORMS:
         name = pattern.format(version=version)
         if any(a['name'] == name for a in release['assets']):
-            href, size, digest = release_asset(release, name)
-            platforms.append((name, label, note, href, size, digest))
-    # Reuse the recorded identity when this exact version is already
-    # published; otherwise download the APK and source once to verify.
-    feed_path = output / 'updates/preview.json'
-    previous = None
-    if feed_path.exists():
-        try:
-            previous = json.loads(feed_path.read_text(encoding='utf-8'))
-        except ValueError:
-            previous = None
-    license_text = notice = None
-    if (previous and previous.get('versionName') == version
-            and previous.get('sha256') == sha):
-        identity = dict(versionCode=previous['versionCode'], minSdk=previous['minSdk'])
-        print(f'{version} already verified, reusing recorded identity')
-    else:
-        apk = fetch(apk_href, PLATFORM_LIMIT)
-        if len(apk) != apk_size or hashlib.sha256(apk).hexdigest() != sha:
-            raise ValueError('APK digest mismatch: ' + apk_name)
-        identity = apk_identity(apk)
-        if identity['versionName'] != version:
-            raise ValueError('APK version does not match release')
-        source = fetch(source_href, PLATFORM_LIMIT)
-        if len(source) != source_size or hashlib.sha256(source).hexdigest() != source_sha:
-            raise ValueError('Source digest mismatch: ' + source_name)
-        with zipfile.ZipFile(io.BytesIO(source)) as archive:
-            if archive.testzip() is not None:
-                raise ValueError('Source ZIP failed CRC')
-            license_text = archive.read(f'MarcoMovie-{version}/LICENSE')
-            notice = archive.read(f'MarcoMovie-{version}/NOTICE')
+            href, size, digest, body = platform_asset(release, name, output)
+            platforms.append((name, label, note, href, size, digest, body))
+    identity = apk_identity(apk)
+    if identity['versionName'] != version:
+        raise ValueError('APK version does not match release')
+    with zipfile.ZipFile(io.BytesIO(source)) as archive:
+        if archive.testzip() is not None:
+            raise ValueError('Source ZIP failed CRC')
+        license_text = archive.read(f'MarcoMovie-{version}/LICENSE')
+        notice = archive.read(f'MarcoMovie-{version}/NOTICE')
     feed = dict(schema=1, versionCode=identity['versionCode'], versionName=version, minSdk=identity['minSdk'],
-                size=apk_size, sha256=sha, url=apk_href,
-                prerelease=bool(release.get('prerelease', True)), notes=(release.get('body') or '')[:8000])
-    for name, _, _, href, size, digest in platforms:
-        for suffix, key in (('-mobile.apk', 'mobile'), ('-windows-setup.exe', 'windows')):
+                size=len(apk), sha256=sha, url=apk_href if apk_href.startswith('https://') else BASE + apk_name,
+                prerelease=bool(release.get('prerelease',True)), notes=(release.get('body') or '')[:8000])
+    for name, _, _, href, size, digest, _ in platforms:
+        for suffix, key in (('-mobile.apk','mobile'),('-windows-setup.exe','windows')):
             if name == f'MarcoMovie-{version}{suffix}':
-                feed[key] = dict(size=size, sha256=digest, url=href)
+                feed[key] = dict(size=size, sha256=digest, url=href if href.startswith('https://') else BASE + name)
+    feed_path = output / 'updates/preview.json'
     feed_paths = [feed_path] + ([] if feed['prerelease'] else [output/'updates/stable.json'])
     for channel in feed_paths:
         if channel.exists():
@@ -436,30 +434,32 @@ def sync(output):
     escaped = html.escape
     quark_links = load_quark_links()
     tv_override = platform_feed_override(output, "android-tv")
-    tv_card_href, tv_card_size, tv_card_sha, tv_card_ver = tv_override or (apk_href, apk_size, sha, None)
+    tv_card_href, tv_card_size, tv_card_sha, tv_card_ver = tv_override or (_gh(apk_name), len(apk), sha, None)
     tv_ver_note = f' · v{tv_card_ver}' if tv_card_ver else ''
     mobile_override = platform_feed_override(output, "android-mobile")
     mobile_href = (mobile_override[0] if mobile_override else
                    next((p[3] for p in platforms if p[0] == f'MarcoMovie-{version}-mobile.apk'), None))
-    mobile_button = (f'<a class="btn ghost" href="{escaped(mobile_href)}">下载手机版</a>' if mobile_href else '')
+    mobile_btn_href = (mobile_override[0] if mobile_override else
+                       (_gh(f'MarcoMovie-{version}-mobile.apk') if mobile_href else None))
+    mobile_button = (f'<a class="btn ghost" href="{escaped(mobile_btn_href)}">下载手机版</a>' if mobile_btn_href else '')
     download_cards = []
     download_cards.append(
         f'<div class="dl"><h3>Android 电视版{escaped(tv_ver_note)}</h3><p>Android 6.0+ 电视 / 盒子 / 投影仪大屏专享版 · ARM 32 位（内置 FFmpeg / AV1 / VP9 扩展）· {tv_card_size/1024/1024:.1f} MB</p>'
         f'<a class="btn primary" href="{escaped(tv_card_href)}">去 GitHub 下载</a>{quark_button("android-tv", quark_links)}'
         f'<p><a href="{escaped(tv_card_href)}.sha256">校验文件</a></p><code>SHA-256：{tv_card_sha}</code></div>')
-    for name, label, note, href, size, digest in platforms:
+    for name, label, note, href, size, digest, body in platforms:
         qkey = quark_key_for_asset(name)
         p_override = platform_feed_override(output, qkey)
-        c_href, c_size, c_digest, c_ver = p_override or (href, size, digest, None)
+        c_href, c_size, c_digest, c_ver = p_override or (_gh(name), size, digest, None)
         c_ver_note = f' · v{c_ver}' if c_ver else ''
         download_cards.append(
             f'<div class="dl"><h3>{escaped(label)}{escaped(c_ver_note)}</h3><p>{escaped(note)} · {c_size/1024/1024:.1f} MB</p>'
             f'<a class="btn primary" href="{escaped(c_href)}">去 GitHub 下载</a>{quark_button(qkey, quark_links)}'
             f'<p><a href="{escaped(c_href)}.sha256">校验文件</a></p><code>SHA-256：{c_digest}</code></div>')
     download_cards.append(
-        f'<div class="dl"><h3>同版本源码</h3><p>与发布包同一版本 · {source_size/1024/1024:.1f} MB</p>'
-        f'<a class="btn primary" href="{escaped(source_href)}">去 GitHub 下载</a>'
-        f'<p><a href="{escaped(source_href)}.sha256">校验文件</a></p><code>SHA-256：{source_sha}</code></div>')
+        f'<div class="dl"><h3>同版本源码</h3><p>与发布包同一版本 · {len(source)/1024/1024:.1f} MB</p>'
+        f'<a class="btn primary" href="{escaped(_gh(source_name))}">去 GitHub 下载</a>'
+        f'<p><a href="{escaped(_gh(source_name))}.sha256">校验文件</a></p><code>SHA-256：{source_sha}</code></div>')
     if platforms:
         other_platforms = ('<p class="sub"><b>其他平台</b> · 与 Android 版同一版本，由 GitHub Actions 云端构建；'
                            '尚未在每台设备上实机验证。</p>')
@@ -477,7 +477,7 @@ def sync(output):
 <div class="hero"><div>
 <h1>Marco Movie<br>多端自适应播放器</h1>
 <p class="lead">支持 Android 电视大屏遥控、手机与平板 64 位专属触控，以及 Windows / macOS / iOS（iOS 14.0+ 巨魔与自签）多端独立适配的开源播放器。</p>
-<div class="btn-row"><a class="btn primary" href="{escaped(apk_href)}">下载电视版</a>{mobile_button}<a class="btn ghost" href="#download">全部平台</a></div>
+<div class="btn-row"><a class="btn primary" href="{escaped(_gh(apk_name))}">下载电视版</a>{mobile_button}<a class="btn ghost" href="#download">全部平台</a></div>
 <p class="meta"><b>165 Stars</b> · GPL-3.0-only · {published_date} 更新 · 作者 Pilipala</p>
 </div><figure><img src="tv-banner-960x540.png" alt="Marco Movie 横幅：银色场记板加播放标志"><figcaption>银色场记板横幅 · 仓库原图</figcaption></figure></div>
 <p class="notice">本产品仅为工具，不内置、不提供、不托管任何影视资源或配置地址。内容与配置请自行合法获取，数据保存在本机。</p>
@@ -492,7 +492,7 @@ def sync(output):
 <p class="sub">{published_date} 发布 · 更新内容来自 GitHub Release 原文，改写为列表。</p>
 {changelog}</section>
 <section class="block" id="download"><h2>下载与安装</h2>
-<p class="sub">安装包不在本站托管：去 GitHub 下载，或用夸克网盘下载（国内推荐）。校验值以 GitHub Release 为准。</p>
+<p class="sub">安装包同时托管在本站镜像；下载请走 GitHub，或用夸克网盘下载（国内推荐）。校验值以 GitHub Release 为准。</p>
 {other_platforms}<div class="dl-grid">{''.join(download_cards)}</div>{fallback_link}
 <div class="steps">
 <div class="step"><b>第一步 · 下载核对</b><span>按设备选对应安装包，下载后核对 SHA-256 再安装。</span></div>
@@ -507,19 +507,29 @@ def sync(output):
 <a class="btn primary" href="{escaped(QQ_GROUP2_URL)}">加入 QQ 群</a></div></section>
 <footer>作者：Pilipala · <a href="LICENSE">GPL-3.0-only</a> · <a href="NOTICE">署名与许可</a> · <a href="https://github.com/{REPO}/blob/main/docs/USER_GUIDE.md">使用指南</a> · <a href="/">Marco TV</a></footer>
 </div></body></html>'''
+    files = {apk_name + '.sha256': (sha + '  ' + apk_name + '\n').encode(),
+             source_name: source, source_name + '.sha256': (source_sha + '  ' + source_name + '\n').encode(),
+             'LICENSE': license_text, 'NOTICE': notice, 'index.html': page.encode()}
+    if len(apk) <= LIMIT:
+        files[apk_name] = apk
+    for name, _, _, _, _, digest, body in platforms:
+        if body is None:
+            continue
+        files[name] = body
+        files[name + '.sha256'] = (digest + '  ' + name + '\n').encode()
     # Versions are immutable and written before the channel pointer; Git/Pages publishes one complete snapshot.
     output.mkdir(parents=True, exist_ok=True)
-    remove_legacy_packages(output)
-    (output / 'index.html').write_text(page, encoding='utf-8')
-    if license_text is not None:
-        (output / 'LICENSE').write_bytes(license_text)
-        (output / 'NOTICE').write_bytes(notice)
+    for name, data in files.items():
+        target = output / name
+        if target.exists() and target.suffix in ('.apk', '.zip', '.ipa') and target.read_bytes() != data:
+            raise ValueError('Immutable asset already differs')
+        target.write_bytes(data)
     for channel in feed_paths:
         channel.parent.mkdir(exist_ok=True)
         temporary = channel.with_suffix('.tmp')
         temporary.write_text(json.dumps(feed, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
         temporary.replace(channel)
-    print(f'Synced {version}: {apk_size} bytes, SHA-256 {sha}; deployment must be verified separately.')
+    print(f'Synced {version}: {len(apk)} bytes, SHA-256 {sha}; deployment must be verified separately.')
     return feed
 
 

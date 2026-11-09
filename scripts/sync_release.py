@@ -2,14 +2,10 @@
 """Sync the MarcoTV mirror site with the latest stable GitHub release.
 
 Reads https://api.github.com/repos/Pilipala9919/MarcoTV/releases/latest
-(which excludes drafts and prereleases), verifies the APK checksum and
-size from the release metadata, downloads the four showcase screenshots,
-and updates index.html in place: version, release date, download link,
-size and SHA256. The mirror hosts no packages: the download button links
-to the official GitHub release asset, and the update feeds keep their
-upstream GitHub URLs. Legacy mirrored files are removed on each run.
-Exits 0 with no changes when the mirror already matches the latest
-stable release.
+(which excludes drafts and prereleases), downloads the APK and the four
+showcase screenshots, and updates index.html in place: version, release
+date, APK filename, size and SHA256. Exits 0 with no changes when the
+mirror already matches the latest stable release.
 """
 import hashlib
 import json
@@ -61,20 +57,9 @@ def main():
         old_version = re.search(r"([0-9]+\.[0-9]+\.[0-9]+)", m.group(0)).group(1)
     old_apk = m.group(0) if m else None
 
-    # Verify without hosting: the API size, the published checksum file
-    # and GitHub's own asset digest must all agree. No APK is stored.
-    sha_asset = assets.get(apk_name + '.sha256')
-    if sha_asset is None:
-        print('no checksum asset for ' + apk_name, file=sys.stderr)
-        return 1
-    sha = fetch(sha_asset['browser_download_url']).split()[0]
-    if not re.fullmatch('[0-9a-f]{64}', sha):
-        print('invalid checksum file', file=sys.stderr)
-        return 1
-    if assets[apk_name].get('digest') not in (None, 'sha256:' + sha):
-        print('GitHub digest mismatch', file=sys.stderr)
-        return 1
-    size_mb = assets[apk_name]['size'] / 1024 / 1024
+    apk_data = fetch(apk_url, binary=True)
+    sha = hashlib.sha256(apk_data).hexdigest()
+    size_mb = len(apk_data) / 1024 / 1024
 
     # Download screenshots (best effort: keep old ones if a download fails).
     for src, dst in SCREENSHOTS.items():
@@ -86,12 +71,9 @@ def main():
 
     changed = False
     if old_apk and old_apk != apk_name:
+        # Keep versioned APKs: older clients and preview feeds may still need them.
         changed = True
-    # Main download button: GitHub only. The Quark button next to it is
-    # patched by scripts/sync_quark.py from the manifest and left alone.
-    html, n = re.subn(r'<a class="btn" href="MarcoTV-[0-9]+\.[0-9]+\.[0-9]+\.apk" download>下载 MarcoTV-[0-9]+\.[0-9]+\.[0-9]+\.apk</a>',
-                      f'<a class="btn" href="{apk_url}">去 GitHub 下载</a>', html)
-    changed = changed or n > 0
+    (ROOT / apk_name).write_bytes(apk_data)
     if old_version and old_version != version:
         # Only update release links and labels; screenshot provenance and old-version
         # upgrade instructions must retain their historical version.
@@ -100,6 +82,14 @@ def main():
         html = html.replace(f"当前稳定版：{old_version}", f"当前稳定版：{version}")
         html = html.replace(f"版本信息以 {old_version} 稳定版为准", f"版本信息以 {version} 稳定版为准")
         changed = True
+    # Main download button: GitHub + Quark. The mirror APK stays hosted in
+    # the repo (feeds and the update section still use it), but the page's
+    # main button points at GitHub. Only the local-form button is rewritten;
+    # the update-section mirror link below is left alone.
+    html, n = re.subn(
+        r'<a class="btn" href="MarcoTV-[0-9]+\.[0-9]+\.[0-9]+\.apk"(?: download)?>下载 MarcoTV-[0-9]+\.[0-9]+\.[0-9]+\.apk</a>',
+        f'<a class="btn" href="{apk_url}">去 GitHub 下载</a>', html)
+    changed = changed or n > 0
     html, n = re.subn(r"发布于 \d{4} 年 \d{1,2} 月 \d{1,2} 日",
                       f"发布于 {published.year} 年 {published.month} 月 {published.day} 日", html)
     changed = changed or n > 0
@@ -122,14 +112,7 @@ def main():
 
     INDEX.write_text(html, encoding="utf-8")
     print(f"apk sha256: {sha}")
-    print(f"apk size: {assets[apk_name]['size']} bytes ({size_mb:.1f} MB)")
-    removed = []
-    for path in ROOT.glob('MarcoTV-*'):
-        if path.is_file() and path.suffix in ('.apk', '.exe', '.sha256'):
-            path.unlink()
-            removed.append(path.name)
-    if removed:
-        print(f"removed legacy mirrored files: {', '.join(sorted(removed))}")
+    print(f"apk size: {len(apk_data)} bytes ({size_mb:.1f} MB)")
     preview_version=sync_update_channels()
     html=render_channels(INDEX.read_text(encoding="utf-8"), preview_version)
     INDEX.write_text(html,encoding="utf-8")
@@ -143,9 +126,9 @@ def render_channels(html, version):
     label = "体验版" if preview else "正式版"
     status = "体验版仍在验证中，日常使用默认推荐上方稳定版。" if preview else "体验渠道与稳定渠道当前提供同一正式版，原 RC 用户可直接覆盖升级。"
     section = f'''<h2>电视在线更新</h2>
-<p>当前提供 <a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk">{version} {label}</a>。{status} 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
-<p>安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。直接从 GitHub 下载；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
-<p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}-source-and-apk.zip">对应源码</a> · <a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
+<p>当前提供 <a href="MarcoTV-{version}.apk">{version} {label}</a>。{status} 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
+<p>安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。镜像优先，失败后尝试 GitHub；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
+<p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}-source-and-apk.zip">对应源码</a> · <a href="MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
 '''
     result, count = re.subn(r"<h2>(?:体验版与)?电视在线更新</h2>.*?(?=<h2>先核对你的电视能不能装</h2>)", lambda _: section, html, flags=re.S)
     if count != 1: raise ValueError("Update section missing or duplicated")
@@ -155,7 +138,6 @@ def render_channels(html, version):
 def sync_update_channels():
     """Pilipala: mirror only published upstream feeds after release digest validation."""
     staged = {}
-    verified = {}
     for channel in ("stable", "preview"):
         feed = json.loads(fetch(f"https://raw.githubusercontent.com/{SOURCE_REPO}/main/docs/updates/{channel}.json"))
         version = feed["versionName"]
@@ -175,14 +157,16 @@ def sync_update_channels():
         assets={a["name"]:a for a in release["assets"]}
         asset=assets[name]
         if asset["browser_download_url"]!=official or asset["size"]!=feed["size"]:raise ValueError("Release mismatch")
-        if official not in verified:
-            verified[official] = fetch(official, binary=True)
-        data = verified[official]
+        local=ROOT/name
+        data=local.read_bytes() if local.exists() else b""
+        if len(data)!=feed["size"] or hashlib.sha256(data).hexdigest()!=feed["sha256"]:data=fetch(official,binary=True)
         if len(data)!=feed["size"] or hashlib.sha256(data).hexdigest()!=feed["sha256"]:raise ValueError("APK digest mismatch")
         if asset.get("digest") and asset["digest"]!="sha256:"+feed["sha256"]:raise ValueError("GitHub digest mismatch")
         checksum=fetch(assets[name+".sha256"]["browser_download_url"]).split()[0]
         if checksum!=feed["sha256"]:raise ValueError("Published checksum mismatch")
-        # The feed keeps its upstream GitHub URL; nothing is stored locally.
+        staged[name]=data
+        staged[name+".sha256"]=(feed["sha256"]+"  "+name+"\n").encode()
+        feed["url"]=f"https://marcotv.wlj9919.top/{name}"
         staged[f"updates/{channel}.json"]=(json.dumps(feed,ensure_ascii=False,indent=2)+"\n").encode("utf-8")
     # All checks finish before replacing public channel files. Pages deploys one Git commit.
     for name,data in staged.items():
