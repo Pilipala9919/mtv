@@ -47,5 +47,19 @@
     "file": "MarcoMovie-0.5.0-lite.apk",
     "version": "0.5.0",
     "sha256": "cb291597b164180636285037c13ea725448a0d653d01869f27189b5740c290a7"
+  },
+  "tv": {
+    "folder": "/MarcoTV/电视版",
+    "share_url": "https://pan.quark.cn/s/df36e65bca44",
+    "file": "MarcoTV-0.15.0.apk",
+    "version": "0.15.0",
+    "sha256": "f2d4a55617ec4fc1407764c11aab61c6ea3724a068ae64ad36d142ca41ce26de"
+  },
+  "tv-lite": {
+    "folder": "/MarcoTV/Lite版",
+    "share_url": "https://pan.quark.cn/s/9de42641cfa4",
+    "file": "MarcoTV-Lite-0.1.2.apk",
+    "version": "0.1.2",
+    "sha256": "ea06ef9ca03cfd792ec3be37f85e5d4a356f3120cc7a63ea19e7cde98837d576"
   }
 }
