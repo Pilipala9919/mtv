@@ -2,6 +2,18 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "ios-v0.5.6-preview",
+      "platform": "ios-preview",
+      "version": "0.5.6",
+      "versionCode": 56,
+      "date": "2026-11-09",
+      "channel": "preview",
+      "notePath": "updates/history/ios-v0.5.6-preview.md",
+      "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.6-preview",
+      "sha256": "e8f77c2465b716465367da78a87193b5d3352497135ffa47d5f3bb12724f1cb8",
+      "summary": "全量兼容 TVBox/影视仓 csp_* 4K/点播源，修复换源弹窗双列排版，新增液态玻璃线性调节滑轨、原生 iOS 设置分组布局与呼吸式流光壁纸。"
+    },
+    {
       "tag": "android-mobile-v0.5.9",
       "version": "0.5.9",
       "platforms": [

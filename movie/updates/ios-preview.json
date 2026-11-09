@@ -1,16 +1,20 @@
 {
   "schema": 1,
-  "platform": "ios",
-  "versionName": "0.5.5",
-  "prerelease": true,
-  "notes": "### Marco Movie iPhone / iPad 0.5.5 验证版\n\n发布日期：2026-11-09。仅适用于 iPhone / iPad，版本 0.5.5（55），最低目标 iOS / iPadOS 14.0。\n\n本次发布重点扩展 TVBox / 影视仓主流 `csp_*` 点播与直播站点的原生桥接适配（覆盖厂长、海绵、立播、瓜子、糯米、文采、热播、茉莉、剧圈、荐片、比特、天微、风云、光影、奥特、AI短漫剧、咕咕动漫、巴士动漫、易听音乐、有声小说、一直播、八八看球、多多回放等），彻底剔除网盘/磁力未适配占位项，并严格基于 `glasswork.frag` 光学着色器升级全站液态玻璃材质、胶囊组件、折叠抽屉与设置页三级呼吸感布局。\n\n### 下载与安装\n\n- [下载 iPhone / iPad 未签名 IPA](https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.5-preview/MarcoMovie-0.5.5-ios-iphone-ipad-unsigned.ipa)\n- [IPA SHA-256 校验文件](https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.5-preview/MarcoMovie-0.5.5-ios-iphone-ipad-unsigned.ipa.sha256)\n- IPA 需要自行签名，或使用设备系统支持的安装方式；不承诺所有系统均可使用 TrollStore。\n- 包大小：65,115,313 字节（62.1 MB）。SHA-256：`c10bfd66b23917385942ef26dc2c0c7ca9afb03cdf76beb6883159a23a1ea0db`。\n\n### 本次新增与修复\n\n- **全面适配 TVBox / 影视仓主流 `csp_*` 点播、动漫、听书与直播站点**：在 `CspBridge` 中恢复 16 节点直连采集池并建立按站点哈希定锚与故障自动切换机制，使 `厂长┃不卡`、`海绵┃不卡`、`立播┃不卡`、`瓜子┃不卡`、`糯米┃秒播`、`文采┃秒播`、`热播┃多线`、`茉莉┃多线`、`剧圈┃多线`、`荐片┃多线`、`AI┃短漫剧`、`咕咕┃动漫` 等站点在 iOS 端直接可用且各自呈现独立片单；同时为 `风云┃多线`、`光影┃不卡`、`奥特┃多线`、`比特┃秒播`、`天微┃多线`、`巴士┃动漫` 等 Guard 源增加上游受阻时的自动桥接回退，并原生适配 `易听┃音乐`、`有声┃小说`、`一直播┃直播`、`八八┃看球`、`多多┃回放`、`吃瓜┃看球`。\n- **彻底剔除网盘、磁力与推送占位源**：从可用站点与底部“当前设备未适配”列表中统一过滤 `我的云盘┃配置`、`玩偶哥哥`、`聚剧┃四盘`、`盘搜`、`易搜`、`盘她`、`盘他`、`抠抠`、`优汐`、`新6V┃磁力`、`手机┃推送` 等网盘/磁力/工具项，让换源面板保持清爽。\n- **Glasswork 光学液态玻璃材质全面升级**：移除 `LiquidGlass` 与 `AppleGlassSurface` 上层遮挡折射的实色涂层，完整释放 `shaders/glasswork.frag` 的 12 点螺旋采样高斯模糊、四角透镜色散折射（`±0.15`）与 15 点背景亮度自适应调色；将首页顶栏换源胶囊、分类胶囊、筛选胶囊、多维筛选抽屉与底部导航栏镜头全面升级为真实 Glasswork 材质。\n- **设置页三级呼吸感卡片排版重构**：一级设置页拆分为 4 张独立悬浮的 Glasswork 呼吸感卡片（`14dp` 间距、半透明彩色琉璃图标徽章、精简摘要与右侧状态胶囊）；二级页面将每个设置项独立成卡；三级展开抽屉采用圆角胶囊选项卡片与旋转箭头胶囊指示器，层次清晰、舒展通透。\n\n### 已完成验证\n\n- [iOS 构建 42551986810](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42551986810) 成功，全部 393 项 Flutter 单元与组件测试通过。\n- 核对 IPA 压缩包完整性、`Info.plist` 版本号（`0.5.5` / `55`，`MinimumOSVersion 14.0`）及 SHA-256 校验值。\n\n### 已知限制\n\n- 其余未纳入桥接范围的自定义 Android DEX / JAR 爬虫插件仍受限于 iOS 系统安全机制。\n- 不保证任意第三方 TXT、JS、JSON、Python、PHP 或本地包订阅均可用；配置格式可解析不等于其中每条自定义爬虫插件均可在 iOS 独立运行。\n\n### 构建来源\n\n安装包构建提交：`ca9183a4e46db24e7588d385c56f8a64cd0e8f3b`。随发布附上该提交的源码 ZIP 及 SHA-256 文件。\n",
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.5-preview",
-  "build_commit": "ca9183a4e46db24e7588d385c56f8a64cd0e8f3b",
-  "packages": {
-    "MarcoMovie-0.5.5-ios-iphone-ipad-unsigned.ipa": {
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.5-preview/MarcoMovie-0.5.5-ios-iphone-ipad-unsigned.ipa",
-      "size": 65115313,
-      "sha256": "c10bfd66b23917385942ef26dc2c0c7ca9afb03cdf76beb6883159a23a1ea0db"
-    }
-  }
+  "app": "MarcoMovie",
+  "platform": "ios-preview",
+  "channel": "preview",
+  "releaseTag": "ios-v0.5.6-preview",
+  "version": "0.5.6",
+  "versionCode": 56,
+  "publishedAt": "2026-11-09",
+  "sourceCommit": "13a6918d3fec247b5a3de2520f15164c0fbb4133",
+  "package": {
+    "name": "MarcoMovie-0.5.6-ios-iphone-ipad-unsigned.ipa",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.6-preview/MarcoMovie-0.5.6-ios-iphone-ipad-unsigned.ipa",
+    "sha256": "e8f77c2465b716465367da78a87193b5d3352497135ffa47d5f3bb12724f1cb8",
+    "size": 65121228
+  },
+  "releaseUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.6-preview",
+  "historyNote": "updates/history/ios-v0.5.6-preview.md",
+  "notes": "iOS / iPadOS 0.5.6 验证版：全量兼容 TVBox / 影视仓 csp_* 4K/点播源（花卷/观影/七味/盘库/虎斑/木偶/多多/快影等）；修复换源弹窗手机竖屏双列卡片排版；设置新增液态玻璃 0%–100% 连续线性调节滑轨；设置分类布局全面对齐原生 iOS 系统设置；新增呼吸式动态流光氛围壁纸。"
 }
