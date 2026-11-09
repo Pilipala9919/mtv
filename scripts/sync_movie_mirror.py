@@ -180,6 +180,7 @@ def platform_feed_override(output, key):
         "windows-setup": ("windows", "-setup.exe"),
         "windows-zip": ("windows", ".zip"),
         "macos": ("macos", ".zip"),
+        "android-lite": ("android-lite", ".apk"),
     }
     if key not in mapping:
         return None

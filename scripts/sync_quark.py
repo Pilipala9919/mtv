@@ -199,7 +199,10 @@ def movie_sources():
     src["windows-setup"] = feed("windows", "-setup.exe")
     src["windows-zip"] = feed("windows", ".zip")
     src["macos"] = feed("macos", ".zip")
-    src["android-lite"] = local_asset(ROOT / "movie" / "MarcoMovie-0.5.0-lite.apk")
+    if (updates / "android-lite.json").exists() or (updates / "android-lite-preview.json").exists():
+        src["android-lite"] = feed("android-lite", ".apk")
+    else:
+        src["android-lite"] = local_asset(ROOT / "movie" / "MarcoMovie-0.5.0-lite.apk")
     return src
 
 

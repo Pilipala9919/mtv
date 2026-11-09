@@ -272,6 +272,17 @@ class MirrorTests(unittest.TestCase):
         self.assertIn('iPhone / iPad 版 (IPA) · v0.5.6', page)
         self.assertIn('https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.6-preview/MarcoMovie-0.5.6-ios-iphone-ipad-unsigned.ipa', page)
         self.assertIn('b' * 64, page)
+        (self.out / 'updates' / 'android-lite.json').write_text(json.dumps({
+            "versionName": "0.5.1", "packages": {
+                "MarcoMovie-0.5.1-android-lite.apk": {
+                    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-lite-v0.5.1/MarcoMovie-0.5.1-android-lite.apk",
+                    "size": 348928, "sha256": "c" * 64}}}), encoding='utf-8')
+        self.add_asset('MarcoMovie-0.4.12-lite.apk', b'lite fixture')
+        self.sync()
+        page = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('Android 4.0+ 轻量版 · v0.5.1', page)
+        self.assertIn('https://github.com/Pilipala9919/MarcoMovie/releases/download/android-lite-v0.5.1/MarcoMovie-0.5.1-android-lite.apk', page)
+        self.assertIn('c' * 64, page)
 
     def test_platform_feed_override_missing_falls_back(self):
         self.sync()
