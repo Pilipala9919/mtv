@@ -143,7 +143,7 @@ def render_channels(html, version):
     section = f'''<h2>电视在线更新</h2>
 <p>当前提供 <a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk">{version} {label}</a>。{status} 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
 <p>安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。镜像优先，失败后尝试 GitHub；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
-<p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}-source-and-apk.zip">对应源码</a> · <a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
+<p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
 '''
     result, count = re.subn(r"<h2>(?:体验版与)?电视在线更新</h2>.*?(?=<h2>先核对你的电视能不能装</h2>)", lambda _: section, html, flags=re.S)
     if count != 1: raise ValueError("Update section missing or duplicated")

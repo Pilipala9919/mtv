@@ -63,6 +63,12 @@ class ChannelPageChecks(unittest.TestCase):
         self.assertIn('https://github.com/Pilipala9919/MarcoTV/releases/download/v0.12.0/MarcoTV-0.12.0.apk.sha256',page)
         self.assertNotIn('href="MarcoTV-0.12.0.apk"',page)
         self.assertNotIn('href="MarcoTV-0.12.0.apk.sha256"',page)
+    def test_update_section_has_no_source_link(self):
+        # No source download on the mirror site: the update section
+        # links the APK, its checksum and the two update feeds only.
+        page=self.page('0.12.0')
+        self.assertNotIn('对应源码',page)
+        self.assertNotIn('source-and-apk',page)
 
 class InstallWizardChecks(unittest.TestCase):
     def setUp(self):

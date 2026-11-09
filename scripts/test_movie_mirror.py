@@ -206,6 +206,8 @@ class MirrorTests(unittest.TestCase):
         page = (self.out/'index.html').read_text(encoding='utf-8')
         self.assertIn('<b>602 Stars</b>', page)
         self.assertNotIn('165 Stars', page)
+        self.assertNotIn('ver-tag', page)
+        self.assertNotIn('同版本源码', page)
 
     def test_stars_fallback_when_api_fails(self):
         self.stars_error = True

@@ -72,8 +72,6 @@ PAGE_CSS = """
     padding:18px 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
   .brand { display:flex; align-items:center; gap:12px; font-size:20px; font-weight:700; }
   .brand img { width:40px; height:40px; border-radius:10px; }
-  .ver-tag { font-size:12px; font-weight:600; color:#0b0d10; background:var(--silver);
-    border-radius:20px; padding:2px 10px; }
   nav.links { display:flex; gap:20px; font-size:14px; color:var(--muted); flex-wrap:wrap; }
   nav.links a { color:var(--muted); text-decoration:none; }
   nav.links a:hover { color:var(--text); }
@@ -490,10 +488,6 @@ def sync(output):
             f'<div class="dl"><h3>{escaped(label)}{escaped(c_ver_note)}</h3><p>{escaped(note)} · {c_size/1024/1024:.1f} MB</p>'
             f'<a class="btn primary" href="{escaped(c_href)}">去 GitHub 下载</a>{quark_button(qkey, quark_links)}'
             f'<p><a href="{escaped(c_href)}.sha256">校验文件</a></p><code>SHA-256：{c_digest}</code></div>')
-    download_cards.append(
-        f'<div class="dl"><h3>同版本源码</h3><p>与发布包同一版本 · {len(source)/1024/1024:.1f} MB</p>'
-        f'<a class="btn primary" href="{escaped(_gh(source_name))}">去 GitHub 下载</a>'
-        f'<p><a href="{escaped(_gh(source_name))}.sha256">校验文件</a></p><code>SHA-256：{source_sha}</code></div>')
     if platforms:
         other_platforms = ('<p class="sub"><b>其他平台</b> · 与 Android 版同一版本，由 GitHub Actions 云端构建；'
                            '尚未在每台设备上实机验证。</p>')
@@ -506,7 +500,7 @@ def sync(output):
     page = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marco Movie · 多端自适应播放器 · Pilipala</title><style>{PAGE_CSS}</style>
 <body><div class="wrap">
-<header class="nav"><div class="brand"><img src="app-icon-512.png" alt="Marco Movie 应用图标">Marco Movie <span class="ver-tag">{version}</span></div>
+<header class="nav"><div class="brand"><img src="app-icon-512.png" alt="Marco Movie 应用图标">Marco Movie</div>
 <nav class="links"><a href="#download">下载</a><a href="#features">功能</a><a href="#changelog">本次更新</a><a href="#group">交流群</a><a href="https://github.com/{REPO}" target="_blank" rel="noopener">GitHub</a></nav></header>
 <div class="hero"><div>
 <h1>Marco Movie<br>多端自适应播放器</h1>
