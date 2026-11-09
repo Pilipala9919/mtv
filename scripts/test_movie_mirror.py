@@ -257,7 +257,10 @@ class MirrorTests(unittest.TestCase):
         self.assertIn('夸克网盘下载', page)
 
     def test_no_quark_buttons_without_manifest(self):
-        self.sync()
+        # The manifest exists in the repo checkout, so isolate it: without
+        # links the page must not contain a Quark button or URL.
+        with patch.object(m, 'load_quark_links', return_value={}):
+            self.sync()
         page = (self.out / 'index.html').read_text(encoding='utf-8')
         self.assertNotIn('pan.quark.cn', page)
         self.assertNotIn('>夸克网盘下载</a>', page)

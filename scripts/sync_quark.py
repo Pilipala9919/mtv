@@ -143,12 +143,19 @@ def download(url, dest, size=None, sha256=None):
 def feed_asset(feed_path, package_suffix):
     """Read one platform feed; return (filename, url, size, sha256, version).
 
-    Feeds carry their assets in a `packages` dict (name -> {url, size,
-    sha256}); android-tv/mobile additionally repeat the same file at the
-    top level, but the dict is the uniform source.
+    Two feed shapes are accepted: the original `packages` dict (name ->
+    {url, size, sha256}) with `versionName`, and the newer per-platform
+    shape with a single `package` object and `version` (e.g. the iOS
+    feed since 0.5.6, tag ios-v0.5.6-preview).
     """
     feed = json.loads(feed_path.read_text(encoding="utf-8"))
-    version = feed.get("versionName")
+    version = feed.get("versionName") or feed.get("version")
+    single = feed.get("package") or {}
+    if single.get("url"):
+        name = single.get("name") or ""
+        if not name.endswith(package_suffix):
+            raise QuarkError(f"{feed_path}: package {name} does not end {package_suffix}")
+        return name, single["url"], single.get("size"), single.get("sha256"), version
     packages = feed.get("packages") or {}
     candidates = [n for n in packages if n.endswith(package_suffix)]
     if not candidates:
@@ -179,13 +186,20 @@ def fetch_text(url):
         return resp.read().decode("utf-8")
 
 
-def github_release_asset(repo, tag_pattern, suffix):
-    """Latest release whose tag matches, asset ending with suffix.
+def github_release_asset(repo, tag_pattern, suffix, exact_tag=None):
+    """A release asset, verified by its official .sha256 file and API digest.
 
-    Returns (filename, url, size, sha256, version). The official .sha256
-    file is checked against the API digest.
+    Returns (filename, url, size, sha256, version). With exact_tag the
+    release is fetched by tag directly (the per-platform releases push
+    the main vX.Y.Z-preview release out of the first list page); otherwise
+    the newest release whose tag matches tag_pattern is used.
     """
-    releases = github_api(f"https://api.github.com/repos/{repo}/releases?per_page=30")
+    if exact_tag:
+        releases = [github_api(
+            f"https://api.github.com/repos/{repo}/releases/tags/{exact_tag}")]
+    else:
+        releases = github_api(
+            f"https://api.github.com/repos/{repo}/releases?per_page=100")
     for release in releases:
         tag = release.get("tag_name", "")
         if release.get("draft") or not re.fullmatch(tag_pattern, tag):
@@ -228,8 +242,14 @@ def movie_sources():
     src["windows-setup"] = feed("windows", "-setup.exe")
     src["windows-zip"] = feed("windows", ".zip")
     src["macos"] = feed("macos", ".zip")
+    # The lite package lives in the main preview release the page shows
+    # (the per-platform releases push it out of the first list page).
+    page_version = json.loads(
+        (ROOT / "movie" / "updates" / "preview.json").read_text(
+            encoding="utf-8")).get("versionName")
     src["android-lite"] = github_release_asset(
-        "Pilipala9919/MarcoMovie", r"v\d+\.\d+\.\d+-preview", "-lite.apk")
+        "Pilipala9919/MarcoMovie", r"v\d+\.\d+\.\d+-preview", "-lite.apk",
+        exact_tag=f"v{page_version}-preview")
     return src
 
 
