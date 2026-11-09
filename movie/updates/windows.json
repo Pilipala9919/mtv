@@ -1,30 +1,30 @@
 {
   "schema": 1,
   "platform": "windows",
-  "versionName": "0.5.5",
+  "versionName": "0.5.6",
   "prerelease": false,
-  "notes": "# Windows 0.5.5 (`windows-v0.5.5`)\n\n- **Platform:** Windows x64 (`windows-v0.5.5`)\n- **Version:** `0.5.5` (build `55`)\n- **Release Date:** 2026-11-09\n\n## Additions & Fixes\n\n- **Universal TVBox / 影视仓 `csp_*` & 4K / 四盘 Site Adaptation (`玩偶哥哥`、`聚剧┃四盘`、`王二小放牛娃` 全量线路可用):**\n  - Restored and adapted `👽玩偶哥哥┃4K弹幕` (`csp_WoGGGuard` / `csp_AiNewWoggGuard`), `💡聚剧┃四盘` (`csp_SeedhubGuard`), `🎈盘搜┃四盘` (`csp_S_zpsGuard`), `🦋易搜┃四盘` (`csp_S_zpsGuard`), `🐌盘她┃夸父` (`csp_YpanSoGuard`), `🐞盘他┃嘟嘟` (`csp_BpanSoGuard`), `🌶️抠抠┃搜搜` (`csp_KkSsGuard`), `🌈优汐┃搜搜` (`csp_UuSsGuard`), and `🧲新6V┃磁力` (`csp_SixVGuard`) so they appear in `切换片源` as available (`可用`) and pull full VOD catalogs, categories, search, and direct playable lines.\n  - Expanded `CspBridge` to cover `csp_AiNew*` (`花卷┃4K`, `观影┃4K`, `七味┃4K`, `盘库┃4K`, `虎斑┃4K`, `木偶┃4K`, `多多┃4K`, `快影┃4K`, `蜡笔┃4K`, `闪电┃4K`, `剧透┃4K`, `立播┃4K`, `原盘┃4K`, `蜗牛┃4K`, `盘迷┃4K`, `逸动┃4K`), `csp_Wex*` (`韩剧/瓜子/独播/闪电/文才/小枫/贱片/下饭/师兄/粉猪/咸鱼/追剧/柚子/柠檬/太奇/零七/柿子/黄人/伊影/热播/伯伯/爱看┃秒播`), `csp_ManJuAi*` / `csp_DuanJuAi*` (`漫短/漫剧/短剧`), `csp_Anime*` (`共和/稀饭/次元/魔都┃动漫`), `csp_Book*` (`小红/小马/悦庭/爱上┃听书`), `csp_Children*` (`宝宝/贝贝/兔兔┃儿歌`), `csp_Music*` (`跳舞┃教学`, `戏曲┃秒播`, `蜻蜓┃电台`, `KTV/小酷/易听/酷听/轮回┃音乐`), `csp_Sport*` (`飞球/瓜子/球通/八八/咖啡/WWE┃体育`), `csp_LiveAi*` (`虎牙/斗鱼/哔哩┃直播`), and `csp_So*` (`盘搜/九七/爱盘/卡卡/全盘┃综合`).\n  - Filtered non-content configuration/push placeholders (`csp_MyPanGuard`, `csp_PanConfigGuard`, `csp_MyDriveGuard`, `csp_PushGuard`, unconfigured `csp_AListGuard`/`csp_WebDAVGuard`/`csp_EmbyGuard`) out of the source picker.\n\n## Test Scope & Remaining Limitations\n\n- Passed `scripts/check_public_content.py`, `scripts/test_drpy_assets.py`, `flutter/test_*.py`, and all 327 Flutter unit & widget tests on Windows x64.\n- Unconfigured local DIY storage mounts (`AList` / `WebDAV` / `Emby` without a server URL) remain hidden until configured.\n",
+  "notes": "### Marco Movie Windows 桌面版 0.5.6 更新说明\n\n- **网盘扫码与账号中心全面恢复**：主页顶部栏新增「网盘」直达按钮、设置页与详情页同步提供「我的云盘 · 网盘扫码与账号中心」入口，支持夸克（我的夸父）、UC（我的优汐）、百度（我的嘟嘟）、阿里（我的阿狸）本地二维码扫码授权与 Cookie 绑定；`🗂我的云盘┃配置` 与 `👑我的┃网盘👑` 站点点击卡片即可唤起对应网盘扫码。\n- **玩偶哥哥 / 聚剧四盘 / 4K 网盘线路完整适配**：针对 `csp_Wogg`（玩偶哥哥）、`csp_S_zps`（聚剧四盘）、`csp_Seedhub`、`csp_Pansou`、`csp_AiNew4K` 等网盘站点，在详情页优先生成 `夸父智1`、`夸父无限1`、`优汐智1`、`优汐无限1`、`嘟嘟无限2`、`阿狸原画` 等 4K 原画线路与规范剧集命名，配合优选画质策略自动匹配已登录网盘。\n- **设置页排版与 DirectWrite 中文字体优化**：针对 Windows 桌面端 DirectWrite 渲染重构 `Microsoft YaHei UI` 字重与正字距（`0.1` ~ `0.3`），限制桌面端设置列表最大阅读宽度（`860px` 居中），精简全部设置项文案并净化版本更新日志展示。\n- **搜索框输入与覆盖安装修复**：替换全局搜索、直播搜索与片源筛选输入框为桌面端焦点增强组件，并在 Windows 安装程序（`setup.exe`）中加入覆盖安装前自动关闭旧进程与清理旧版 `data\\flutter_assets` 机制，彻底解决覆盖升级导致的资源残留问题。",
   "packages": {
-    "MarcoMovie-0.5.5-windows-x64-setup.exe": {
-      "size": 49547339,
-      "sha256": "66a5d004fb431838a6ba06fe9be4163e03642dc05c49705e0be0c174c47922fc",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.5/MarcoMovie-0.5.5-windows-x64-setup.exe"
+    "MarcoMovie-0.5.6-windows-x64-setup.exe": {
+      "size": 49693516,
+      "sha256": "a89ed6b642ab0a742643f32439e146a59748dd745c584f00fc1dc7521824c6de",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.6/MarcoMovie-0.5.6-windows-x64-setup.exe"
     },
-    "MarcoMovie-0.5.5-windows-x64-portable.zip": {
-      "size": 71542714,
-      "sha256": "bff759efe0ca4234f7fd2c8525f31af393c9e68ffa7fd29cef3fc1a9fbde8a75",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.5/MarcoMovie-0.5.5-windows-x64-portable.zip"
+    "MarcoMovie-0.5.6-windows-x64-portable.zip": {
+      "size": 71754689,
+      "sha256": "5e6467027fb10008a992459ec40e80fde6770d63f019613e6ef19fdc7ccbfd90",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.6/MarcoMovie-0.5.6-windows-x64-portable.zip"
     },
-    "MarcoMovie-0.5.5-windows-setup.exe": {
-      "size": 49547339,
-      "sha256": "66a5d004fb431838a6ba06fe9be4163e03642dc05c49705e0be0c174c47922fc",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.5/MarcoMovie-0.5.5-windows-setup.exe"
+    "MarcoMovie-0.5.6-windows-setup.exe": {
+      "size": 49693516,
+      "sha256": "a89ed6b642ab0a742643f32439e146a59748dd745c584f00fc1dc7521824c6de",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.6/MarcoMovie-0.5.6-windows-setup.exe"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.5",
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.6",
   "windows": {
-    "size": 49547339,
-    "sha256": "66a5d004fb431838a6ba06fe9be4163e03642dc05c49705e0be0c174c47922fc",
-    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.5/MarcoMovie-0.5.5-windows-setup.exe"
+    "size": 49693516,
+    "sha256": "a89ed6b642ab0a742643f32439e146a59748dd745c584f00fc1dc7521824c6de",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.6/MarcoMovie-0.5.6-windows-setup.exe"
   }
 }
