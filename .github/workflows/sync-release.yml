@@ -48,5 +48,6 @@ jobs:
             echo "already up to date, nothing to commit"
           else
             git commit -m "Sync MarcoTV latest stable release"
+            git pull --rebase origin main
             git push
           fi
