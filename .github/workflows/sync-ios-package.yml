@@ -7,6 +7,11 @@ on:
         description: Published iOS version matching the current main feed
         required: true
         type: string
+      restore_version:
+        description: Optional older published iOS version to restore without changing the current feed
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: write
@@ -59,6 +64,8 @@ jobs:
         env:
           QUARK_COOKIES_JSON: ${{ secrets.QUARK_COOKIES_JSON }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EXPECTED_VERSION: ${{ inputs.version }}
+          RESTORE_IOS_VERSION: ${{ inputs.restore_version }}
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -90,6 +97,9 @@ jobs:
           trap 'rm -f -- "$profile_path"' EXIT
           printf '%s' "$QUARK_COOKIES_JSON" > "$profile_path"
           python scripts/sync_quark.py --movie --platform ios --keep-old
+          if [ -n "$RESTORE_IOS_VERSION" ]; then
+            python scripts/restore_ios_package.py "$RESTORE_IOS_VERSION" --current "$EXPECTED_VERSION"
+          fi
       - name: Publish only the verified package manifest
         run: |
           python - <<'PY'

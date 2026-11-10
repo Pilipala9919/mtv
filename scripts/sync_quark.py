@@ -2,7 +2,8 @@
 
 One folder per platform, one permanent share link per folder. The share
 link never changes: a new release only uploads the new file into the
-folder and deletes the previous file this script uploaded.
+folder and deletes the previous file this script uploaded. iOS always retains
+existing files, including when invoked by the scheduled multi-platform sync.
 
 Current package per platform comes from the per-platform feeds the
 mirror already publishes (movie/updates/<platform>.json), or from the
@@ -471,7 +472,7 @@ def sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run):
 
 
 def sync_platform(key, folder, source, manifest, tmpdir, dry_run, keep_old=False):
-    if keep_old:
+    if keep_old or key == "ios":
         return sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run)
     name, url, size, sha256, version = source
     size_mb = f"{size / 1024 / 1024:.1f} MB" if size else "?"

@@ -11,6 +11,7 @@ import unittest
 from unittest.mock import patch
 
 import sync_quark as sync
+import restore_ios_package
 
 
 class ScopedUploadTests(unittest.TestCase):
@@ -126,6 +127,36 @@ class ScopedUploadTests(unittest.TestCase):
         self.no_delete.assert_not_called()
         self.no_mkdir.assert_not_called()
         self.no_share.assert_not_called()
+
+    def test_scheduled_ios_sync_also_preserves_every_existing_file(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            result = sync.sync_platform('ios', self.folder, self.source,
+                                       self.manifest, self.root, False)
+        self.assertEqual(result['version'], self.version)
+        self.assertEqual([c[0] for c in self.commands], ['ls', 'upload', 'ls'])
+        self.no_delete.assert_not_called()
+
+    def test_restore_older_package_keeps_current_feed_and_manifest(self):
+        path = self.root/'movie/updates/ios.json'
+        current = '0.5.16'
+        path.write_text(path.read_text().replace(self.version, current), encoding='utf-8')
+        manifest = copy.deepcopy(self.manifest)
+        manifest['ios'].update(file=self.name.replace(self.version, current),
+                               version=current, sha256=self.digest)
+        self.manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+        before = (path.read_bytes(), self.manifest_path.read_bytes())
+        with contextlib.redirect_stdout(io.StringIO()):
+            restore_ios_package.restore(self.version, current)
+        self.assertEqual(before, (path.read_bytes(), self.manifest_path.read_bytes()))
+        self.assertEqual([c[0] for c in self.commands], ['ls', 'upload', 'ls'])
+        self.no_delete.assert_not_called()
+
+    def test_restore_rejects_current_newer_and_malformed_versions_before_cloud(self):
+        for value in ('0.5.15', '0.5.16', '../0.5.14', '0.5.14; echo unsafe'):
+            with self.subTest(value=value), self.assertRaises(sync.QuarkError):
+                restore_ios_package.restore(value, self.version)
+        self.assertEqual(self.commands, [])
+        sync.published_bytes.assert_not_called()
 
     def test_selector_does_not_read_unselected_platform_feeds(self):
         self.assertEqual(sync.movie_sources("ios"), {"ios": self.source})
