@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.5.14",
-  "versionCode": 65,
+  "versionName": "0.5.15",
+  "versionCode": 67,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Android 手机 / 平板 0.5.14\n\n- 发布平台：Android 手机 / 平板（`android-mobile`）\n- 版本：`0.5.14`（`versionCode 65`）\n- 发布日期：2026-11-09\n- 安装包：`MarcoMovie-0.5.14-android-mobile.apk`（兼容旧名：`MarcoMovie-0.5.14-mobile.apk`）\n\n## 本次修复与优化\n\n1. **修复夸克网盘（夸父）等网盘分享线路播放后不生成观看历史与收藏异常的问题**：\n   - 在 `SourceController.loadDetail`、`MobileDetailScreen` 与 `PlaybackController.playerPage` 中自动继承并回填列表项 `vod_id`，并在剧集播放完成回调（`OnCompletionListener`）中立即持久化完整播放进度，解决部分网盘扩展详情返回空 `vod_id` 导致看完后无历史记录的问题。\n\n2. **修复「网盘与账号」与云盘配置选项提示 `JsonSyntaxException` 无法进入的问题**：\n   - 修复 `MyDriveGuard`（`我的云盘 | 配置`）等扩展在响应 `LoginShow`、`pushCkShow`、`panSortShow`、`panSourceSortShow` 动作时因 `BaseSpiderGuard` 包装识别或空返回值二次触发 `detailContent` 导致抛出 `JsonSyntaxException` 的问题。\n   - 增加 `detailAction` / `detail` 对 `JsonSyntaxException` 的 `action(String)` 自动回退，并同步 `Application.mActivityLifecycleCallbacks` 内层 JNI 插件 `ClassLoader` 的 `Activity` 上下文，确保网盘扫码、Cookie 推送与排序弹窗正常打开。\n\n3. **内置播放器新增 TVBox 同款 `Exo (Media3)` 与 `IJK (FFmpeg)` 双内核切换**：\n   - 在手机端「设置 -> 播放、解码与字幕 -> 播放器内核」及播放页顶栏「播放器与解码」菜单中支持直接切换 `Exo (Media3)`、`IJK (FFmpeg)` 与 `系统播放器`。\n   - `IJK (FFmpeg)` 模式启用内置 FFmpeg 扩展优先解码、快速起播缓冲、宽松 TS/MP4 提取器容错及 HLS/直链双向回退，并支持按扩展源返回的 `playerType` 自动选择对应播放器内核。\n\n## 验证范围\n\n- 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 正式签名与对齐校验。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.14/MarcoMovie-0.5.14-android-mobile.apk",
-  "size": 61280914,
-  "sha256": "19dab4550f3dc5266f8eeebfe3c064b944727d1b20aade3925828d2c3d02aaa3",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.14-android-mobile.apk",
+  "notes": "# Marco Movie Android 手机 / 平板端 0.5.15\n\n- 发布平台：Android 手机 / 平板端（\u0007ndroid-mobile，Android 6.0+ / API 23+，64 位 + 32 位双架构）\n- 版本：\u0000.5.15（\u000bersionCode 67）\n- 发布日期：2026-11-10\n- 安装包：MarcoMovie-0.5.15-android-mobile.apk（兼容名：MarcoMovie-0.5.15-mobile.apk）\n\n## 本次修复与优化\n\n1. **修复 4K 网盘原画资源报错 4003 无法播放的问题**：\n   - 修复硬件解码失败（4003）时软解回退分支被拦截的问题，恢复「硬件解码 → 内置 FFmpeg 软解码 → Android 系统硬件播放器 → 备用画质/线路」多级自动容错。\n   - 修复带音轨标签后缀的 .mp4 / .mkv 剧集（如 4K.mp4【国@@语】）容器识别与时间戳解析兼容性。\n\n2. **修复自建源 dytt / dyttm3u8 报错 3002 无法播放的问题**：\n   - 自动优先排序并选择 .m3u8 / .mp4 直连流媒体线路（如 dyttm3u8），并在命中 /share/ 网页包装线路时自动切换至同名直连兄弟线路或直接提取网页内嵌 .m3u8 流地址播放。\n\n3. **修复切换 ysc 等扩展源反复提示未授予完整文件存储权限的问题**：\n   - 补充完整存储权限声明与插件宿主存储权限状态同步，授权后不再重复弹窗阻断使用。",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.15/MarcoMovie-0.5.15-android-mobile.apk",
+  "size": 61285010,
+  "sha256": "a216881d002bd9773b9a1d9d67f1fd3bd0ccf44e82307a3cf6b8a2b86526aaa7",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.15-android-mobile.apk",
   "packages": {
-    "MarcoMovie-0.5.14-android-mobile.apk": {
-      "size": 61280914,
-      "sha256": "19dab4550f3dc5266f8eeebfe3c064b944727d1b20aade3925828d2c3d02aaa3",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.14/MarcoMovie-0.5.14-android-mobile.apk"
+    "MarcoMovie-0.5.15-android-mobile.apk": {
+      "size": 61285010,
+      "sha256": "a216881d002bd9773b9a1d9d67f1fd3bd0ccf44e82307a3cf6b8a2b86526aaa7",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.15/MarcoMovie-0.5.15-android-mobile.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.14"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.15"
 }
