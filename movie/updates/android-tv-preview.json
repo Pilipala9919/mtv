@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.16",
-  "versionCode": 70,
+  "versionName": "0.5.17",
+  "versionCode": 71,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视 / 盒子 0.5.16\r\n\r\n发布日期：2026-11-10。版本代码：70。\r\n\r\n## 优化与修复\r\n\r\n- 分类目录返回后立即显示电影、剧集等入口，不再等待推荐与兜底片单全部加载；切换分类取消旧首页请求，防止继续发送无用的兜底请求。\r\n- 取消首张海报的自动详情预取。需要串行运行的插件片源不再执行焦点预取；可独立请求的来源最多保留一个预取任务，避免快速移动焦点占满详情线程。\r\n- 保留分类与有效详情缓存；空详情不写入缓存。低性能模式直接使用片单已有剧集，避免重复拉取已具备的播放列表。\r\n- 首页静默刷新可随分类切换取消。补充分类加载阶段计时，区分应用排队、来源请求与界面呈现，不记录片源地址或账号信息。\r\n\r\n## 多次添加源\r\n\r\n- 新增订阅时保留以前的订阅；已有配置会自动保存。同一地址再次导入更新原订阅，本地配置按内容去重。\r\n- 在首页片源选择面板点击“已添加源”切换已保存的订阅，点击“添加新源”继续导入。每份订阅独立保留解析插件、地址、请求头和扩展设置，重启后仍可切换。\r\n- 扫码、地址及本地配置导入共用保存逻辑；损坏或写入失败时保留原有文件。\r\n\r\n## 验证与范围\r\n\r\n- 48 项本地请求调度、分类筛选和订阅存储检查、8 项更新包测试、Android 6 回调依赖检查及云端离线回归通过。\r\n- Android 6 电视模拟器 295 项检查全部通过：首页 105 项、慢加载与多订阅 32 项、字幕 36 项、来源运行 122 项。覆盖慢推荐取消、预取占用、缓存复用、低性能模式已有剧集、重复导入和切回旧订阅。\r\n- 在受控的本地慢请求场景中，分类入口约 502 毫秒可用，聚焦后分类约 350 毫秒呈现，另一预取挂起时当前详情约 21 毫秒返回。这些数字用于验证应用调度，不代表真实片源的网络响应速度。\r\n\r\n本次仅发布 Android 电视 / 盒子版。没有连接物理电视，模拟器检查不代表具体片源网络或实机播放验收；第三方片源自身的响应时间仍取决于其服务。\r\n\r\n构建提交：`e435f461183d6a0db68ef7c3f475190bee10c0e5`。\r\n\r\n[Android 构建与离线检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42841196245) · [Android 6 电视模拟器回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42841196321)。\r\n\r\n安装包、SHA-256 校验文件及对应源码随版本提供。安装包沿用既有签名，签名后的程序内容与通过云端检查的构建产物逐项一致，记录见随包 `build-report.json`。\r\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.16/MarcoMovie-0.5.16-android-tv.apk",
-  "size": 35557464,
-  "sha256": "0429d029c9b27e406cde5c8667739baa5e115e89a2ca8ac14eaa0b6706bb618d",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.16-android-tv.apk",
+  "notes": "# Marco Movie Android 电视 / 盒子 0.5.17\n\n发布日期：2026-11-11。版本代码：71。\n\n## 首页分类与筛选\n\n- 电影、剧集等分类获得焦点后立即切换，取消原有的停留等待；已加载分类继续复用缓存。\n- 分类栏改为单个连续滑动的液态玻璃选中框，快速反向移动时从当前位置继续过渡，不再逐个按钮慢慢淡入淡出。\n- “筛选”按钮直接展开分类栏下方的三行筛选：类型、国家 / 地区、年份；再次点击收起，不再打开筛选弹窗。\n- 筛选支持遥控器左右浏览、上下逐行移动；收起筛选及进入详情再返回时，保留已选条件。\n\n## Dock 与设置\n\n- 在“设置 → 首页与壁纸 → Dock 位置”选择右侧或顶部，保存后返回首页生效；导航大小设置继续有效。\n- Dock 使用连续滑动的液态玻璃选中框，按钮略微放大。六个图标重新绘制为清晰矢量路径，提高线条粗细与对比度。\n- 顶部 Dock 为内容保留独立空间，放大导航后标签仍与内容保持间距；网盘面板适配顶部位置，关闭后焦点回到原图标。\n- 设置页及软件更新页改为小步滚动，限制长按遥控器造成的过量滚动；长更新说明可逐段阅读，按钮进入可见区域后再移动焦点。\n- 减少动态效果时选中框直接到位，分类仍立即切换。\n\n## 加载与多源\n\n- 继续包含 0.5.16 的分类目录提前展示、有效缓存复用、限制详情预取及多订阅独立保存。添加新源保留旧源，在片源面板的“已添加源”中切换；同一地址再次导入更新原订阅。\n- 修复取消请求的并发边界：先标记请求已取消，再中断工作线程，防止旧请求吞掉中断后又发送兜底请求。\n\n## 验证范围\n\n- 构建提交：`fede0b4e832fdc426a4097bc1a785047f4f59a9a`。\n- [Android 构建与离线检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42849589975)的公共检查和 Android 构建任务通过；本版本仅发布 Android TV 安装包。\n- [Android 6 / API 23 电视模拟器回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42849589988)共 337 项通过：首页与遥控器 147 项、加载与多源 32 项、字幕 36 项、来源宿主 122 项。\n- 检查三行筛选、右侧 Dock、顶部 Dock、放大导航及长更新说明截图。取消请求的确定性回归可在旧实现上复现失败，修复后的调度测试共 28 项通过。\n- 发布包来自上述干净提交的 CI 产物，使用既有正式签名，核对包名、版本代码、SHA-256、ZIP 完整性及重新签名后的有效载荷一致性；旧版本资源保留。\n\n## 范围与限制\n\n- 本次未连接实体电视，模拟器结果不代表具体电视的画面流畅度或真实片源速度已验收。\n- 分类页面立即响应焦点；首次片单、详情及海报仍受片源服务和网络响应时间影响。\n- 不变更手机、Lite、Windows、macOS 或 iOS 的已发布安装包与版本。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.17/MarcoMovie-0.5.17-android-tv.apk",
+  "size": 35561560,
+  "sha256": "7c7913fbf3906d4604b7ef5b51e64f5c0688ceebbdd1698895dc790912f4c6d6",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.17-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.16-android-tv.apk": {
-      "size": 35557464,
-      "sha256": "0429d029c9b27e406cde5c8667739baa5e115e89a2ca8ac14eaa0b6706bb618d",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.16/MarcoMovie-0.5.16-android-tv.apk"
+    "MarcoMovie-0.5.17-android-tv.apk": {
+      "size": 35561560,
+      "sha256": "7c7913fbf3906d4604b7ef5b51e64f5c0688ceebbdd1698895dc790912f4c6d6",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.17/MarcoMovie-0.5.17-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.16"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.17"
 }
