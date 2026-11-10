@@ -118,7 +118,7 @@
       "published_at": "2026-11-09T17:59:12Z",
       "prerelease": false,
       "target_commitish": "main",
-      "notes": "### Marco Movie macOS 桌面版 0.5.6 更新说明\n\n- **修复夸克网盘扫码直接显示已过期**：补齐夸克移动端扫码短链 `uc_param_str` 与 `uc_biz_str` 参数，统一 `getServiceTicketByQrcodeToken` 的 `client_id=532`，并对齐二维码绘制像素边界。\n- **支持王二小 `.js.md5` (CatVodSpiderios) 本机接口**：内置 CatPaw 运行时自动兼容 `/config` 与 `/spider/<key>/<type>` 协议，完整支持王二小放牛娃等 `.js.md5` 订阅源的首页、分类、搜索、详情与播放解析。\n- **修复饭太硬等接口播放源错乱与无限加载/自动切线**：修复跨站 `vod_id` 碰撞导致的剧集播放源错乱，过滤非直连网页解析包装组（`jsyun`/`hhyun`/`subyun`/`xlyun`），修复 `media_kit` 播放队列初始化事件丢失及 HLS 分片时长误触发切线问题。\n- **大幅降低全站搜索超时率**：合并 Bili 类同名搜索请求避免触发频控，为慢速插件与自定义站点设置 4s 快速回退策略。\n- **新增 EXO / IJK / MPV 三大播放内核切换**：支持在播放器工具栏与设置页随时切换 `EXO 超速内核`、`IJK 兼容内核` 与 `MPV 原画内核`。\n- **大屏窗口播放控制栏自适应放大**：桌面端窗口拉大或全屏时，自动按比例放大右侧工具栏、底部进度条、顶部标题栏与中央控制按钮。",
+      "notes": "### Marco Movie macOS v0.5.6\n- **真实 4K 网盘流解析与清晰度展示**：修复王二小（CatPaw）与饭太硬（`csp_*`）夸克网盘 4K 线路落入 1080P 采集站及顶部伪造 4K 标识的问题；自动同步已登录夸克/UC/百度网盘凭证并解析真实 4K 云盘转码流（`3840 × 2160`）与 4K 原画 MKV 直连流。\n- **桌面端鼠标滑动自然显现控制栏**：鼠标在播放窗口内滑动时自然唤出顶部信息栏、右侧功能栏与底部进度条，静置后自动隐藏控制栏与鼠标指针。\n",
       "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.6"
     },
     {
@@ -178,7 +178,7 @@
       "published_at": "2026-11-09T15:19:49Z",
       "prerelease": false,
       "target_commitish": "main",
-      "notes": "### Marco Movie Windows 桌面版 0.5.7 更新说明\n\n- **修复夸克网盘扫码直接显示已过期**：补齐夸克移动端扫码短链 `uc_param_str` 与 `uc_biz_str` 参数，统一 `getServiceTicketByQrcodeToken` 的 `client_id=532`，并对齐二维码绘制像素边界。\n- **支持王二小 `.js.md5` (CatVodSpiderios) 本机接口**：内置 CatPaw 运行时自动兼容 `/config` 与 `/spider/<key>/<type>` 协议，完整支持王二小放牛娃等 `.js.md5` 订阅源的首页、分类、搜索、详情与播放解析。\n- **修复饭太硬等接口播放源错乱与无限加载/自动切线**：修复跨站 `vod_id` 碰撞导致的剧集播放源错乱，过滤非直连网页解析包装组（`jsyun`/`hhyun`/`subyun`/`xlyun`），修复 `media_kit` 播放队列初始化事件丢失及 HLS 分片时长误触发切线问题。\n- **大幅降低全站搜索超时率**：合并 Bili 类同名搜索请求避免触发频控，为慢速插件与自定义站点设置 4s 快速回退策略。\n- **新增 EXO / IJK / MPV 三大播放内核切换**：支持在播放器工具栏与设置页随时切换 `EXO 超速内核`、`IJK 兼容内核` 与 `MPV 原画内核`。\n- **大屏窗口播放控制栏自适应放大**：桌面端窗口拉大或全屏时，自动按比例放大右侧工具栏、底部进度条、顶部标题栏与中央控制按钮。\n- **优化覆盖安装体验**：安装程序覆盖升级时自动清理旧版 `app.so`、`*.dll` 与 `flutter_assets`。",
+      "notes": "### Marco Movie Windows v0.5.7\n- **真实 4K 网盘流解析与清晰度展示**：修复王二小（CatPaw）与饭太硬（`csp_*`）夸克网盘 4K 线路落入 1080P 采集站及顶部伪造 4K 标识的问题；自动同步已登录夸克/UC/百度网盘凭证并解析真实 4K 云盘转码流（`3840 × 2160`）与 4K 原画 MKV 直连流。\n- **桌面端鼠标滑动自然显现控制栏**：鼠标在播放窗口内滑动时自然唤出顶部信息栏、右侧功能栏与底部进度条，静置后自动隐藏控制栏与鼠标指针。\n",
       "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.7"
     },
     {
