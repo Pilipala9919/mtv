@@ -16,9 +16,9 @@
   "ios": {
     "folder": "/MarcoMovie/iOS",
     "share_url": "https://pan.quark.cn/s/88f59851a6f7",
-    "file": "MarcoMovie-0.5.15-ios-iphone-ipad-unsigned.ipa",
-    "version": "0.5.15",
-    "sha256": "cadcb46c618234faf8a779ac365e90c7ae977695249ba77e5a19ebfdf487d7bd"
+    "file": "MarcoMovie-0.5.16-ios-iphone-ipad-unsigned.ipa",
+    "version": "0.5.16",
+    "sha256": "5602961d0e9ac7491447d4941c2efb792b80a64078c027fd07262b8eeac703e9"
   },
   "windows-setup": {
     "folder": "/MarcoMovie/Windows安装版",
