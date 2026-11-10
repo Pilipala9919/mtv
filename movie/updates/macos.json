@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "platform": "macos",
-  "versionName": "0.5.9",
+  "versionName": "0.5.10",
   "prerelease": false,
-  "notes": "# Marco Movie macOS 0.5.9\n\n发布日期：2026-11-10。各平台独立推进版本。\n\n## 新增与修复\n\n- 补齐与 iOS 用户反馈相同的百度扫码问题：保留独立二维码会话、字符串状态和长轮询进度，接收真实登录 Cookie，补全网盘会话并通过账号接口验证后才保存。重试不会重复兑换已经使用的一次性票据。\n- 修复玩偶原分享标签与网盘不一致的问题。线路归属以原文件引用为准；夸克或其他网盘播放失败时不再自动跳到另一个网盘／分享而显示错误的登录提示，手动选线仍保留。\n- 修复旧观看记录／收藏中的外站编号导致玩偶详情读取失败：只在同一原站核对唯一匹配条目，重新读取原目录并提示选集。无法唯一匹配时明确提示，不引入同名外站资源，也不把旧进度套到其他文件。\n- 修复连续点击快进／后退 15 秒按钮误触视频背景双击、导致桌面误切全屏的问题。按钮与视频手势分层，保留背景双击全屏功能。\n- 补齐百度原子目录路径与提取码、分享并发及取消、夸克部分目录提示；UC 播放代理在暂停超过五分钟后仍保留，切集、退出、换账号及最长生命周期仍会释放。\n\n## 验证与范围\n\n本平台 GitHub 原生 Release 构建通过，568 项 Flutter 测试通过；共享公开内容检查、运行时回归和 7 项平台生成检查通过。测试包含真实本机 HTTP、Node、QuickJS、百度账号验证成功／失败、旧编号零／唯一／多个匹配、原分享归属、鼠标与触控连续点击。\n\nmacOS 原生 Release 构建通过；包内主程序架构为 `x86_64, arm64`，版本为 `0.5.9`（构建号 `59`）。沿用本地签名分发方式，未进行 Apple 公证。\n\n安装包版本、ZIP 完整性和 SHA-256 已核对；明确命名与旧兼容别名为相同字节。附带对应构建提交的公开源码及校验文件。旧版本发布资产保留。\n\n网盘协议自动化使用合成响应，没有使用用户账号。真实账号、会员文件、Windows / Mac 实机与 HEVC/HDR 播放仍需验证；不代表所有第三方订阅或插件均已兼容。iOS、Android 和 Lite 不随本次桌面版本发布。\n\n构建提交：`a4896e4a24051a682510b4566e76917675f9d4e7`。\n\n[构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42825902587)。\n",
+  "notes": "# Marco Movie macOS 0.5.10\n\n修复 Windows 0.5.10 / macOS 0.5.9 录屏反馈中的插件适配与网盘播放问题。\n\n- 补齐实际桌面订阅携带的另一版插件，恢复对应玩偶、T4、FY、DM84 等适配，保留旧订阅版本。\n- 夸克原画及转码媒体请求补齐账号会话，处理接口与媒体请求中的会话轮换。保留大文件 Range 拖动、同文件切换画质和账号切换取消。\n- 为解析和起播增加等待上限，避免播放停在 00:00 时持续等待。\n- 修复不同订阅的同名插件搜索去重，并在侧栏和提示中区分订阅。\n\nmacOS 原生 Release 构建通过；包内主程序架构为 `x86_64, arm64`，版本为 `0.5.10`（构建号 `60`）。沿用本地签名分发方式，未进行 Apple 公证。\n\n实际订阅在线验证：玩偶首页 120 条，“疯狂动物城”7 条，“精武英雄”1 条。macOS 共 578 项 Flutter 检查通过，包括打包原生解码库读取合成鉴权 HEVC/MKV、播放进度、暂停和定位。\n\n构建提交：`3c2ad0dbf3e9d4074aa35ac022169d702e4de379`。构建记录：https://github.com/Pilipala9919/MarcoMovie/actions/runs/42851117410。\n\n合成测试不等同于用户账号的 72.8 GB 原片实播；物理 Mac 和该片完整 4K/HDR 播放仍未验收。保留原订阅与网盘账号，不替换为其他来源。第三方源的验证码、失效分享或服务故障会按实际结果提示。\n\n安装包、免安装包、对应源码和 SHA-256 校验文件随版本提供。更新前请退出正在运行的旧程序。\n",
   "packages": {
-    "MarcoMovie-0.5.9-macos-desktop.zip": {
-      "size": 117732552,
-      "sha256": "f12022cf72d9268ac79d0ea0300da9a557b69c2c044f2d5136dfce32eefdfb8b",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/macos-v0.5.9/MarcoMovie-0.5.9-macos-desktop.zip"
+    "MarcoMovie-0.5.10-macos-desktop.zip": {
+      "size": 117750160,
+      "sha256": "07679c028d6565de9601293a6e044526dbe1691f45c8ff08bdf3bc8bd582935f",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/macos-v0.5.10/MarcoMovie-0.5.10-macos-desktop.zip"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.9"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.10"
 }
