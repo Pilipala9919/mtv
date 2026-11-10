@@ -1,0 +1,121 @@
+name: Sync verified desktop packages without deleting files
+
+on:
+  workflow_dispatch:
+    inputs:
+      windows_version:
+        description: Published Windows version matching the current feed
+        required: true
+        type: string
+      macos_version:
+        description: Published macOS version matching the current feed
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-movie
+  cancel-in-progress: false
+
+jobs:
+  upload-desktop:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      EXPECTED_WINDOWS: ${{ inputs.windows_version }}
+      EXPECTED_MACOS: ${{ inputs.macos_version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Test existing scoped package upload
+        run: python scripts/test_quark_scoped_sync.py
+      - name: Bind the upload to the requested published desktop packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from sync_quark import movie_sources, validate_published_source
+          versions = {'windows': os.environ['EXPECTED_WINDOWS'], 'macos': os.environ['EXPECTED_MACOS']}
+          selected = {}
+          for key in ['windows-setup', 'windows-zip', 'macos']:
+              source = movie_sources(key)[key]
+              platform = 'windows' if key.startswith('windows-') else key
+              if source[4] != versions[platform]:
+                  raise SystemExit('The current desktop feed does not match the requested version')
+              validate_published_source(key, source)
+              selected[key] = source
+          state = {'sources': selected,
+                   'manifest': json.loads(Path('scripts/quark.json').read_text())}
+          (Path(os.environ['RUNNER_TEMP']) / 'desktop-package-state.json').write_text(json.dumps(state))
+          PY
+      - name: Install the existing Quark CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/jinhuang712/quark-cli/main/install.sh -o /tmp/quark-install.sh
+          bash /tmp/quark-install.sh --no-skill
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Upload only desktop packages and retain every existing file
+        env:
+          QUARK_COOKIES_JSON: ${{ secrets.QUARK_COOKIES_JSON }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, sys
+          sys.path.insert(0, 'scripts')
+          from sync_quark import validate_profile_shape
+          validate_profile_shape(os.environ.get('QUARK_COOKIES_JSON', ''))
+          PY
+          umask 077
+          mkdir -p "$HOME/.quark-cli"
+          profile_path="$HOME/.quark-cli/profile.cookies.json"
+          trap 'rm -f -- "$profile_path"' EXIT
+          printf '%s' "$QUARK_COOKIES_JSON" > "$profile_path"
+          python scripts/sync_quark.py --movie --platform windows-setup --keep-old
+          python scripts/sync_quark.py --movie --platform windows-zip --keep-old
+          python scripts/sync_quark.py --movie --platform macos --keep-old
+      - name: Verify and publish only the desktop upload receipts
+        run: |
+          cat > "$RUNNER_TEMP/verify-desktop-receipts.py" <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, str(Path('scripts').resolve()))
+          from sync_quark import movie_sources
+          state = json.loads((Path(os.environ['RUNNER_TEMP']) / 'desktop-package-state.json').read_text())
+          current = json.loads(Path('scripts/quark.json').read_text())
+          for key, source in state['sources'].items():
+              if list(movie_sources(key)[key]) != source:
+                  raise SystemExit('Desktop package changed during upload; publication stopped')
+              name, url, size, digest, version = source
+              old = state['manifest'][key]
+              expected = {**old, 'file': name, 'sha256': digest, 'version': version}
+              if current[key] != expected:
+                  raise SystemExit('Desktop receipt or permanent share changed; publication stopped')
+          if '--before-rebase' in sys.argv:
+              for key, value in state['manifest'].items():
+                  if key not in state['sources'] and current.get(key) != value:
+                      raise SystemExit('Unrelated manifest changed locally; publication stopped')
+          print('Desktop versions, files, checksums and permanent shares verified')
+          PY
+          python "$RUNNER_TEMP/verify-desktop-receipts.py" --before-rebase
+          git config user.name 'movie-sync'
+          git config user.email 'movie-sync@users.noreply.github.com'
+          git add -- scripts/quark.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Sync verified desktop packages without removing previous files'
+            git pull --rebase origin main
+            python "$RUNNER_TEMP/verify-desktop-receipts.py"
+            git push origin HEAD:main
+          fi
