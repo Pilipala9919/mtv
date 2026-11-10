@@ -74,6 +74,16 @@ jobs:
             echo 'Quark credentials are not configured'
             exit 1
           fi
+          python - <<'PY'
+          import os, sys
+          sys.path.insert(0, 'scripts')
+          from sync_quark import QuarkError, validate_profile_shape
+          try:
+              validate_profile_shape(os.environ.get('QUARK_COOKIES_JSON', ''))
+          except QuarkError:
+              raise SystemExit('Quark profile_format_invalid; no profile written')
+          print('Quark profile format verified')
+          PY
           umask 077
           mkdir -p "$HOME/.quark-cli"
           profile_path="$HOME/.quark-cli/profile.cookies.json"

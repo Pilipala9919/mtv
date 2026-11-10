@@ -308,6 +308,90 @@ class ScopedUploadTests(unittest.TestCase):
 
 
 class WorkflowAndLoggingTests(unittest.TestCase):
+    def test_safe_cli_categories_ignore_sensitive_fields(self):
+        categories = {'not_logged_in': 'auth_required', 'chrome_missing': 'browser_unavailable',
+                      'profile_busy': 'profile_busy', 'not_found': 'path_not_found',
+                      'network': 'network', 'not_a_folder': 'not_a_folder',
+                      'refused': 'provider_refused', 'usage': 'invalid_arguments'}
+        for code, category in categories.items():
+            with self.subTest(code=code):
+                raw = json.dumps({'code': code, 'error': 'account=secret-name',
+                                  'next': 'https://example.invalid/?cookie=secret-cookie',
+                                  'detail': 'secret-token', 'Cookie': 'private-cookie'})
+                result = sync.safe_cli_failure('', raw, 1)
+                self.assertEqual(result, {'category': category, 'exit': 1})
+                self.assertNotIn('secret', json.dumps(result))
+                self.assertNotIn('example.invalid', json.dumps(result))
+
+    def test_pretty_error_after_progress_is_safely_classified(self):
+        raw = 'private progress URL?token=secret\n' + json.dumps(
+            {'code': 'network', 'detail': 'ETIMEDOUT', 'http_status': 503,
+             'error': 'Cookie=secret'}, indent=2)
+        result = sync.safe_cli_failure('', raw, 1)
+        self.assertEqual(result, {'category': 'network', 'exit': 1,
+                                  'http_status': 503, 'network_code': 'ETIMEDOUT'})
+
+    def test_unrecognized_error_tokens_and_http_strings_are_not_copied(self):
+        for raw in ('secret-stdout-cookie', '{secret-broken-json',
+                    json.dumps({'code': 'not_logged_in?token=secret', 'http_status': '403?secret'}),
+                    json.dumps({'code': ['secret'], 'httpStatus': True}),
+                    json.dumps({'code': 'error', 'statusCode': 123456789,
+                                'detail': 'account-secret', 'status': 'token-secret'})):
+            result = sync.safe_cli_failure(raw, raw, 1)
+            self.assertEqual(result, {'category': 'unknown_error', 'exit': 1})
+
+    def test_exit_only_fallback_does_not_claim_missing_or_expired_cookie(self):
+        for exit_code, category in [(1, 'unknown_error'), (2, 'invalid_arguments'),
+                                    (3, 'auth_required'), (4, 'path_not_found'),
+                                    (5, 'provider_refused')]:
+            self.assertEqual(sync.safe_cli_failure('', '', exit_code),
+                             {'category': category, 'exit': exit_code})
+
+    def test_run_quark_reports_safe_category_and_preserves_argument_order(self):
+        response = subprocess.CompletedProcess([], 1, '', json.dumps(
+            {'code': 'chrome_missing', 'detail': 'account-private',
+             'error': 'https://example.invalid/?cookie=private'}))
+        with patch.object(sync.subprocess, 'run', return_value=response) as run:
+            with self.assertRaises(sync.QuarkError) as error:
+                sync.run_quark(['ls', '/MarcoMovie/iOS'])
+        self.assertEqual(run.call_args.args[0], ['quark', 'ls', '/MarcoMovie/iOS', '--json'])
+        self.assertEqual(str(error.exception),
+                         'quark ls failed (category=browser_unavailable, exit=1)')
+
+    def test_profile_shape_accepts_current_cli_container_without_modifying_it(self):
+        profile = {'cookies': [{'name': 'synthetic', 'value': 'secret-cookie',
+                                'domain': '.example.invalid', 'path': '/', 'expires': -1}],
+                   'ua': 'synthetic-user-agent', 'savedAt': 1}
+        raw = json.dumps(profile)
+        with contextlib.redirect_stdout(io.StringIO()) as output:
+            self.assertIsNone(sync.validate_profile_shape(raw))
+        self.assertEqual(output.getvalue(), '')
+        self.assertEqual(json.loads(raw), profile)
+
+    def test_missing_ua_old_cookie_array_and_malformed_entries_fail_without_secrets(self):
+        cookie = {'name': 'secret-name', 'value': 'secret-value',
+                  'domain': 'secret-domain.invalid', 'expires': -1}
+        invalid = [json.dumps([cookie]), json.dumps({'cookies': [cookie]}),
+                   json.dumps({'cookies': [cookie], 'ua': '   '}),
+                   json.dumps({'cookies': [{**cookie, 'expires': 'secret'}], 'ua': 'synthetic'}),
+                   json.dumps({'cookies': [{**cookie, 'expires': float('nan')}], 'ua': 'synthetic'}),
+                   json.dumps({'cookies': [{**cookie, 'domain': None}], 'ua': 'synthetic'}),
+                   json.dumps({'cookies': [{'value': 'secret'}], 'ua': 'synthetic'}),
+                   '{"private-cookie":secret', '', None]
+        for raw in invalid:
+            with self.subTest(rawType=type(raw).__name__):
+                with self.assertRaises(sync.QuarkError) as error:
+                    sync.validate_profile_shape(raw)
+                self.assertEqual(str(error.exception), 'profile_format_invalid')
+
+    def test_profile_optional_fields_are_not_invented_or_required(self):
+        cookie = {'name': 'synthetic-name', 'value': 'secret', 'domain': '.example.invalid'}
+        for cookies in ([], [cookie], [{**cookie, 'expires': -1}], [{**cookie, 'path': '/'}]):
+            raw = json.dumps({'cookies': cookies, 'ua': 'synthetic-user-agent'})
+            with self.subTest(cookieCount=len(cookies)):
+                self.assertIsNone(sync.validate_profile_shape(raw))
+                self.assertEqual(json.loads(raw)['cookies'], cookies)
+
     def test_cli_errors_do_not_repeat_account_or_cookie_output(self):
         for response in (subprocess.CompletedProcess([], 1, "account-secret", "cookie-secret"),
                          subprocess.CompletedProcess([], 0, "cookie-secret", "")):
@@ -339,6 +423,9 @@ class WorkflowAndLoggingTests(unittest.TestCase):
         self.assertLess(before_commit, text.index('git add -- scripts/quark.json'))
         self.assertGreater(after_rebase, text.index('git pull --rebase origin main'))
         self.assertLess(after_rebase, text.index('git push origin HEAD:main'))
+        self.assertLess(text.index("validate_profile_shape(os.environ.get"),
+                        text.index("printf '%s'"))
+        self.assertIn("Quark profile_format_invalid; no profile written", text)
 
 
 if __name__ == "__main__":

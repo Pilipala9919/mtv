@@ -22,6 +22,7 @@ Usage (run from the repo root, inside the GitHub Actions job):
 import argparse
 import hashlib
 import json
+import math
 import os
 import re
 import subprocess
@@ -56,6 +57,82 @@ class QuarkError(Exception):
     pass
 
 
+def validate_profile_shape(raw):
+    """Validate the CLI's JSON container only; never repair or print credentials."""
+    try:
+        profile = json.loads(raw)
+        valid = (isinstance(profile, dict) and isinstance(profile.get("cookies"), list)
+                 and isinstance(profile.get("ua"), str)
+                 and bool(profile["ua"].strip()))
+        if valid:
+            for cookie in profile["cookies"]:
+                valid = (isinstance(cookie, dict)
+                         and all(isinstance(cookie.get(key), str) and bool(cookie[key])
+                                 for key in ("name", "domain"))
+                         and isinstance(cookie.get("value"), str)
+                         and ("expires" not in cookie
+                              or (type(cookie["expires"]) in (int, float)
+                                  and math.isfinite(cookie["expires"])))
+                         and ("path" not in cookie or isinstance(cookie["path"], str)))
+                if not valid:
+                    break
+    except (ValueError, TypeError, OverflowError):
+        valid = False
+    if not valid:
+        raise QuarkError("profile_format_invalid") from None
+
+
+def safe_cli_failure(stdout, stderr, exit_code):
+    """Only documented enum values and HTTP numbers may enter public logs."""
+    categories = {
+        "error": "unknown_error", "not_logged_in": "auth_required",
+        "chrome_missing": "browser_unavailable", "profile_busy": "profile_busy",
+        "network": "network", "not_found": "path_not_found",
+        "local_not_found": "local_file_not_found", "not_a_folder": "not_a_folder",
+        "usage": "invalid_arguments", "unknown_command": "invalid_arguments",
+        "confirmation_required": "confirmation_required", "invalid_name": "invalid_name",
+        "already_exists": "name_conflict", "no_space": "quota_exceeded",
+        "refused": "provider_refused", "share_gone": "share_unavailable",
+        "bad_code": "invalid_share_code", "login_cancelled": "auth_cancelled",
+        "login_timeout": "auth_timeout", "already_logged_in": "already_authenticated",
+    }
+    fields = {}
+    # The current CLI writes pretty-printed error JSON to stderr. A bounded
+    # trailing JSON block also tolerates progress lines without printing them.
+    for raw in (stderr, stdout):
+        text = raw[-65536:] if isinstance(raw, str) else ""
+        for match in reversed(list(re.finditer(r"(?m)^[ \t]*\{", text))):
+            start = text.index("{", match.start())
+            try:
+                candidate, end = json.JSONDecoder().raw_decode(text, start)
+            except (ValueError, RecursionError):
+                continue
+            if isinstance(candidate, dict) and not text[end:].strip():
+                fields = candidate
+                break
+        if fields:
+            break
+    default = {2: "invalid_arguments", 3: "auth_required", 4: "path_not_found",
+               5: "provider_refused"}.get(exit_code, "unknown_error")
+    code = fields.get("code")
+    result = {"category": categories.get(code, "unknown_error")
+              if isinstance(code, str) else default,
+              "exit": exit_code}
+    for key in ("http_status", "httpStatus", "statusCode"):
+        value = fields.get(key)
+        if type(value) is int and 100 <= value <= 599:
+            result["http_status"] = value
+            break
+    network_codes = {"ETIMEDOUT", "ECONNRESET", "ENOTFOUND", "ECONNREFUSED",
+                     "EAI_AGAIN", "EHOSTUNREACH", "ENETUNREACH",
+                     "ERR_TLS_CERT_ALTNAME_INVALID", "CERT_HAS_EXPIRED",
+                     "UNABLE_TO_VERIFY_LEAF_SIGNATURE"}
+    detail = fields.get("detail")
+    if result["category"] == "network" and isinstance(detail, str) and detail in network_codes:
+        result["network_code"] = detail
+    return result
+
+
 # ---------------------------------------------------------------- CLI
 
 def run_quark(args):
@@ -69,7 +146,9 @@ def run_quark(args):
     if proc.returncode != 0:
         # CLI failures may include account/session details. Never copy raw output
         # into a public Actions log.
-        raise QuarkError(f"quark {args[0]} failed (exit {proc.returncode})")
+        diagnostic = safe_cli_failure(proc.stdout, proc.stderr, proc.returncode)
+        summary = ", ".join(f"{key}={value}" for key, value in diagnostic.items())
+        raise QuarkError(f"quark {args[0]} failed ({summary})")
     try:
         return json.loads(proc.stdout)
     except json.JSONDecodeError as exc:
