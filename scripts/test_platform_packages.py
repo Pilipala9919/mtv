@@ -221,6 +221,17 @@ class PackageTests(unittest.TestCase):
         result = m.patch_card(page, 'ios-unsigned.ipa', package)
         self.assertIn('<span class="package-version">0.5.2</span>', result)
 
+    def test_older_heading_version_changes_with_download(self):
+        # The mirror template bakes the version into the heading
+        # (" · vX.Y.Z") with no <span class="package-version">; the label
+        # must still follow the download link (2026-11-10: cards kept the
+        # previous round's labels while their links moved on).
+        page = self.page.replace('<h3>ios-unsigned.ipa</h3>', '<h3>iPhone / iPad 版 (IPA) · v0.5.0</h3>')
+        package = dict(url='https://example.invalid/MarcoMovie-0.5.2-ios-unsigned.ipa', size=123, sha256='b'*64)
+        result = m.patch_card(page, 'ios-unsigned.ipa', package)
+        self.assertIn('<h3>iPhone / iPad 版 (IPA) · v0.5.2</h3>', result)
+        self.assertNotIn('v0.5.0', result)
+
     def test_responsive_card_metadata_survives_future_sync(self):
         page = self.page.replace('<div class="dl"><h3>ios-unsigned.ipa</h3>', '<div class="dl" data-platform="ios"><span class="package-version">0.5.0</span><h3>iPhone</h3>')
         page = page.replace('<code>SHA-256：', '<details class="package-check"><summary>校验</summary><code>SHA-256：').replace('</code>', '</code></details>')

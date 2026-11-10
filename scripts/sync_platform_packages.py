@@ -226,8 +226,14 @@ def patch_card(page, suffix, package):
     # New layout exposes the package version; older templates remain supported.
     version = re.search(r'MarcoMovie-(\d+\.\d+\.\d+)-', package['url'])
     if version:
-        replacement = re.sub(r'(<span class="package-version">)[^<]*(</span>)',
-                             lambda m: m[1] + version[1] + m[2], replacement)
+        replacement, span_hits = re.subn(r'(<span class="package-version">)[^<]*(</span>)',
+                                          lambda m: m[1] + version[1] + m[2], replacement)
+        if not span_hits:
+            # Older template: the version is baked into the card heading as
+            # " · vX.Y.Z"; keep it in step with the download link.
+            replacement = re.sub(r'(<h3>[^<]*?)( · v\d+\.\d+\.\d+)(</h3>)',
+                                 lambda m: m[1] + ' · v' + version[1] + m[3],
+                                 replacement, count=1)
     return page[:card.start()] + replacement + page[card.end():]
 
 
