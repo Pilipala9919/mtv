@@ -68,11 +68,16 @@ function candidateTargets(version, rest, ext, shaSuffix) {
     ];
   }
   if (stem.startsWith('ios')) {
+    const universalFile = MarcoMovie--ios-iphone-ipad-unsigned.ipa;
+    const shortFile = MarcoMovie--ios-unsigned.ipa;
+    const altFile = requested === universalFile ? shortFile : universalFile;
     return [
-      ['ios-v' + version + '-preview', requested],
       ['ios-v' + version, requested],
-      ['v' + version + '-preview', requested],
+      ['ios-v' + version, altFile],
+      ['ios-v' + version + '-preview', requested],
+      ['ios-v' + version + '-preview', altFile],
       ['v' + version, requested],
+      ['v' + version + '-preview', requested],
     ];
   }
   return [
