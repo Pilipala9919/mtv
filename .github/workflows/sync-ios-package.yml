@@ -1,0 +1,110 @@
+name: Sync one iOS package without deleting files
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Published iOS version matching the current main feed
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+# Share the existing sync lock; the scheduled full sync is left unchanged.
+concurrency:
+  group: sync-movie
+  cancel-in-progress: false
+
+jobs:
+  upload-ios:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Test scoped upload
+        run: python scripts/test_quark_scoped_sync.py
+      - name: Verify the requested published iOS feed
+        env:
+          EXPECTED_VERSION: ${{ inputs.version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from sync_quark import capture_ios_publication, feed_asset, validate_published_source
+          version = os.environ['EXPECTED_VERSION']
+          snapshot = capture_ios_publication(Path('.'), version)
+          path = Path('movie/updates/ios.json')
+          validate_published_source('ios', feed_asset(path, '.ipa'))
+          state_path = Path(os.environ['RUNNER_TEMP']) / 'ios-package-publication-state.json'
+          state_path.write_text(json.dumps(snapshot), encoding='utf-8')
+          PY
+      - name: Install the existing Quark CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/jinhuang712/quark-cli/main/install.sh -o /tmp/quark-install.sh
+          bash /tmp/quark-install.sh --no-skill
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Upload only iOS and retain every existing file
+        env:
+          QUARK_COOKIES_JSON: ${{ secrets.QUARK_COOKIES_JSON }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from sync_quark import verify_ios_publication
+          state_path = Path(os.environ['RUNNER_TEMP']) / 'ios-package-publication-state.json'
+          snapshot = json.loads(state_path.read_text(encoding='utf-8'))
+          verify_ios_publication(Path('.'), snapshot, before_upload=True)
+          PY
+          if [ -z "$QUARK_COOKIES_JSON" ]; then
+            echo 'Quark credentials are not configured'
+            exit 1
+          fi
+          umask 077
+          mkdir -p "$HOME/.quark-cli"
+          profile_path="$HOME/.quark-cli/profile.cookies.json"
+          trap 'rm -f -- "$profile_path"' EXIT
+          printf '%s' "$QUARK_COOKIES_JSON" > "$profile_path"
+          python scripts/sync_quark.py --movie --platform ios --keep-old
+      - name: Publish only the verified package manifest
+        run: |
+          python - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from sync_quark import verify_ios_publication
+          state_path = Path(os.environ['RUNNER_TEMP']) / 'ios-package-publication-state.json'
+          snapshot = json.loads(state_path.read_text(encoding='utf-8'))
+          verify_ios_publication(Path('.'), snapshot)
+          PY
+          git config user.name 'movie-sync'
+          git config user.email 'movie-sync@users.noreply.github.com'
+          git add -- scripts/quark.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Sync verified iOS package without removing previous files'
+            git pull --rebase origin main
+            python - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from sync_quark import verify_ios_publication
+          state_path = Path(os.environ['RUNNER_TEMP']) / 'ios-package-publication-state.json'
+          snapshot = json.loads(state_path.read_text(encoding='utf-8'))
+          verify_ios_publication(Path('.'), snapshot)
+          PY
+            git push origin HEAD:main
+          fi

@@ -17,15 +17,18 @@ Usage (run from the repo root, inside the GitHub Actions job):
     python scripts/sync_quark.py --movie
     python scripts/sync_quark.py --tv
     python scripts/sync_quark.py --movie --dry-run   # print the plan only
+    python scripts/sync_quark.py --movie --platform ios --keep-old
 """
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
 import tempfile
 import urllib.request
+from urllib.parse import urlsplit
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -64,16 +67,13 @@ def run_quark(args):
     cmd = ["quark", *args, "--json"]
     proc = subprocess.run(cmd, capture_output=True, text=True)
     if proc.returncode != 0:
-        detail = (proc.stderr or proc.stdout or "").strip().splitlines()
-        raise QuarkError(
-            f"quark {' '.join(args)} failed (exit {proc.returncode}): "
-            + " | ".join(detail[-3:]))
+        # CLI failures may include account/session details. Never copy raw output
+        # into a public Actions log.
+        raise QuarkError(f"quark {args[0]} failed (exit {proc.returncode})")
     try:
         return json.loads(proc.stdout)
     except json.JSONDecodeError as exc:
-        raise QuarkError(
-            f"quark {' '.join(args)} returned non-JSON output: "
-            f"{proc.stdout[:200]}") from exc
+        raise QuarkError(f"quark {args[0]} returned invalid JSON") from exc
 
 
 def ensure_folder(folder):
@@ -89,11 +89,21 @@ def list_folder(folder):
             if isinstance(i, dict) and i.get("name")]
 
 
+def list_folder_entries(folder):
+    """The CLI's ls JSON includes name, type, and file size in bytes."""
+    out = run_quark(["ls", folder])
+    if not isinstance(out, list) or any(
+            not isinstance(row, dict) or not isinstance(row.get("name"), str)
+            or not row["name"] for row in out):
+        raise QuarkError("Quark did not return a valid directory listing")
+    return out
+
+
 def upload_file(local_path, folder):
     out = run_quark(["upload", str(local_path), folder])
     uploaded = out.get("uploaded") or []
     if not uploaded:
-        raise QuarkError(f"quark upload {local_path} -> {folder} reported nothing uploaded: {out!r:.200}")
+        raise QuarkError("Quark did not confirm any uploaded file")
     return uploaded[0]
 
 
@@ -120,10 +130,14 @@ def remove_files(folder, names):
 def download(url, dest, size=None, sha256=None):
     req = urllib.request.Request(url, headers=UA)
     with urllib.request.urlopen(req, timeout=300) as resp, open(dest, "wb") as fh:
+        received = 0
         while True:
             chunk = resp.read(1024 * 1024)
             if not chunk:
                 break
+            received += len(chunk)
+            if size is not None and received > size:
+                raise QuarkError(f"download exceeds the published size for {dest.name}")
             fh.write(chunk)
     digest = hashlib.sha256(dest.read_bytes()).hexdigest()
     if size is not None and dest.stat().st_size != size:
@@ -181,7 +195,7 @@ def local_asset(path):
     return path.name, None, path.stat().st_size, sha, version
 
 
-def movie_sources():
+def movie_sources(platform=None):
     updates = ROOT / "movie" / "updates"
     src = {}
 
@@ -193,16 +207,23 @@ def movie_sources():
             raise QuarkError(f"no feed for {name}: {stable} / {preview}")
         return feed_asset(path, suffix)
 
-    src["android-tv"] = feed("android-tv", ".apk")
-    src["android-mobile"] = feed("android-mobile", ".apk")
-    src["ios"] = feed("ios", ".ipa")
-    src["windows-setup"] = feed("windows", "-setup.exe")
-    src["windows-zip"] = feed("windows", ".zip")
-    src["macos"] = feed("macos", ".zip")
-    if (updates / "android-lite.json").exists() or (updates / "android-lite-preview.json").exists():
-        src["android-lite"] = feed("android-lite", ".apk")
-    else:
-        src["android-lite"] = local_asset(ROOT / "movie" / "MarcoMovie-0.5.0-lite.apk")
+    for key, (name, suffix) in {
+        "android-tv": ("android-tv", ".apk"),
+        "android-mobile": ("android-mobile", ".apk"),
+        "ios": ("ios", ".ipa"),
+        "windows-setup": ("windows", "-setup.exe"),
+        "windows-zip": ("windows", ".zip"),
+        "macos": ("macos", ".zip"),
+        "android-lite": ("android-lite", ".apk"),
+    }.items():
+        if platform is not None and key != platform:
+            continue
+        if key == "android-lite" and not any(
+                (updates / name).exists() for name in
+                ("android-lite.json", "android-lite-preview.json")):
+            src[key] = local_asset(ROOT / "movie" / "MarcoMovie-0.5.0-lite.apk")
+        else:
+            src[key] = feed(name, suffix)
     return src
 
 
@@ -215,7 +236,164 @@ def tv_sources():
 
 # ---------------------------------------------------------------- sync
 
-def sync_platform(key, folder, source, manifest, tmpdir, dry_run):
+def published_bytes(url, limit):
+    """Read public release metadata/checksums without printing credentials."""
+    headers = dict(UA)
+    if url.startswith("https://api.github.com/") and os.environ.get("GITHUB_TOKEN"):
+        headers["Authorization"] = "Bearer " + os.environ["GITHUB_TOKEN"]
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=headers),
+                                    timeout=60) as response:
+            body = response.read(limit + 1)
+    except OSError as exc:
+        raise QuarkError("Cannot verify the published GitHub release") from exc
+    if len(body) > limit:
+        raise QuarkError("Published release response exceeds the size limit")
+    return body
+
+
+def validate_published_source(key, source):
+    """Bind a scoped upload to one immutable, publicly released package."""
+    name, url, size, digest, version = source
+    if (key not in MOVIE_FOLDERS or not isinstance(version, str)
+            or not re.fullmatch(r"\d+\.\d+\.\d+", version)
+            or not isinstance(name, str)
+            or not re.fullmatch(r"MarcoMovie-" + re.escape(version)
+                                + r"-[A-Za-z0-9-]+\.(?:ipa|apk|exe|zip)", name)
+            or type(size) is not int or not 0 < size <= 300 * 1024 * 1024
+            or not isinstance(digest, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", digest)):
+        raise QuarkError("Scoped upload requires a valid version, size and SHA-256")
+    platform = "windows" if key.startswith("windows-") else key
+    allowed_suffixes = {
+        "ios": ("ios-unsigned.ipa", "ios-iphone-ipad-unsigned.ipa"),
+        "android-tv": ("android-tv.apk",),
+        "android-mobile": ("android-mobile.apk",),
+        "android-lite": ("android-lite.apk",),
+        "windows-setup": ("windows-setup.exe", "windows-x64-setup.exe"),
+        "windows-zip": ("windows-x64.zip", "windows-x64-portable.zip"),
+        "macos": ("macos.zip", "macos-desktop.zip"),
+    }
+    if name not in {f"MarcoMovie-{version}-{suffix}" for suffix in allowed_suffixes[key]}:
+        raise QuarkError("Package filename does not match the selected platform")
+    tag = f"{platform}-v{version}"
+    release_url = f"https://github.com/Pilipala9919/MarcoMovie/releases/download/{tag}/{name}"
+    if url not in (release_url, f"https://marcotv.wlj9919.top/movie/{name}"):
+        raise QuarkError("Package URL does not match the official platform release")
+    try:
+        release = json.loads(published_bytes(
+            f"https://api.github.com/repos/Pilipala9919/MarcoMovie/releases/tags/{tag}",
+            4 * 1024 * 1024))
+        if (release.get("tag_name") != tag or release.get("draft")
+                or release.get("prerelease") or not release.get("published_at")):
+            raise QuarkError("The selected platform release is not publicly published")
+        assets = release.get("assets", [])
+        found = [a for a in assets if a.get("name") == name and a.get("state") == "uploaded"]
+        checksums = [a for a in assets if a.get("name") == name + ".sha256"
+                     and a.get("state") == "uploaded"]
+        if (len(found) != 1 or len(checksums) != 1
+                or found[0].get("browser_download_url") != release_url
+                or found[0].get("size") != size
+                or found[0].get("digest") not in (None, "sha256:" + digest)
+                or checksums[0].get("browser_download_url") != release_url + ".sha256"):
+            raise QuarkError("Published package metadata does not match the feed")
+        checksum = published_bytes(release_url + ".sha256", 4096).decode("ascii").split()
+        if len(checksum) != 2 or checksum != [digest, name]:
+            raise QuarkError("Published package checksum does not match the feed")
+    except (ValueError, TypeError, AttributeError) as exc:
+        raise QuarkError("Invalid published release metadata") from exc
+
+
+def checked_remote_file(rows, name, size):
+    matches = [row for row in rows if row["name"] == name]
+    if len(matches) != 1 or matches[0].get("type") != "file":
+        raise QuarkError("Uploaded package was not uniquely confirmed in its directory")
+    remote_size = matches[0].get("size")
+    if type(remote_size) is not int or remote_size != size:
+        raise QuarkError("Uploaded package size was not confirmed")
+
+
+def ios_feed_fingerprint(root, version):
+    """Only release notes may change while a scoped package upload is running."""
+    if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+", version):
+        raise QuarkError("Invalid requested iOS version")
+    path = Path(root) / "movie/updates/ios.json"
+    feed = json.loads(path.read_text(encoding="utf-8"))
+    release_url = "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v" + version
+    if (feed.get("platform") != "ios" or feed.get("versionName") != version
+            or feed.get("prerelease") is not False or feed.get("release_url") != release_url):
+        raise QuarkError("Current iOS feed does not match the requested platform release")
+    name, url, size, digest, source_version = feed_asset(path, ".ipa")
+    return {"platform": feed["platform"], "prerelease": feed["prerelease"],
+            "release_url": feed["release_url"],
+            "package": {"name": name, "url": url, "size": size,
+                        "sha256": digest, "version": source_version}}
+
+
+def ios_manifest_fingerprint(root):
+    manifest = json.loads((Path(root) / "scripts/quark.json").read_text(encoding="utf-8"))
+    entry = manifest.get("ios")
+    if not isinstance(entry, dict):
+        raise QuarkError("Missing existing iOS share manifest")
+    return {key: entry.get(key) for key in ("folder", "share_url", "file", "sha256", "version")}
+
+
+def capture_ios_publication(root, version):
+    feed = ios_feed_fingerprint(root, version)
+    previous = ios_manifest_fingerprint(root)
+    package = feed["package"]
+    return {"version": version, "feed": feed, "beforeManifest": previous,
+            "manifest": {**previous, "file": package["name"],
+                         "sha256": package["sha256"], "version": package["version"]}}
+
+
+def verify_ios_publication(root, snapshot, before_upload=False):
+    """Fail closed on same-version package/share changes before any git push."""
+    if ios_feed_fingerprint(root, snapshot["version"]) != snapshot["feed"]:
+        raise QuarkError("iOS package metadata changed during upload; publication stopped")
+    expected = snapshot["beforeManifest" if before_upload else "manifest"]
+    if ios_manifest_fingerprint(root) != expected:
+        raise QuarkError("iOS share manifest changed during upload; publication stopped")
+
+
+def sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run):
+    name, url, size, digest, version = source
+    validate_published_source(key, source)
+    entry = manifest.get(key, {})
+    share = urlsplit(entry.get("share_url") or "")
+    if (folder != MOVIE_FOLDERS[key] or entry.get("folder") != folder
+            or share.scheme != "https" or share.netloc != "pan.quark.cn"
+            or not re.fullmatch(r"/s/[A-Za-z0-9_-]+", share.path)):
+        raise QuarkError("Keep-old mode requires the existing managed folder and permanent share")
+    if dry_run:
+        print(f"[{key}] verified {version}; would upload without removing any files")
+        return entry
+    local = Path(tmpdir) / name
+    download(url, local, size, digest)
+    # Validate at the upload boundary too, independently of the downloader.
+    if local.stat().st_size != size or hashlib.sha256(local.read_bytes()).hexdigest() != digest:
+        raise QuarkError("Local package failed verification before upload")
+    before = list_folder_entries(folder)
+    if any(row["name"] == name for row in before):
+        if entry.get("file") != name or entry.get("sha256") != digest:
+            raise QuarkError("Same-name package already exists; keep-old mode refuses replacement")
+        checked_remote_file(before, name, size)
+        print(f"[{key}] verified package is already present; no upload or deletion")
+        return entry
+    upload_file(local, folder)
+    after = list_folder_entries(folder)
+    checked_remote_file(after, name, size)
+    for row in before:
+        if not any(all(candidate.get(k) == row.get(k) for k in ("name", "type", "size"))
+                   for candidate in after):
+            raise QuarkError("Existing directory entries changed during upload")
+    print(f"[{key}] uploaded and verified {version}; all existing files retained")
+    return {**entry, "folder": folder, "file": name, "version": version, "sha256": digest}
+
+
+def sync_platform(key, folder, source, manifest, tmpdir, dry_run, keep_old=False):
+    if keep_old:
+        return sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run)
     name, url, size, sha256, version = source
     size_mb = f"{size / 1024 / 1024:.1f} MB" if size else "?"
     print(f"[{key}] {name} ({version or '?'}, {size_mb}) -> {folder}")
@@ -271,26 +449,32 @@ def main(argv=None):
     ap.add_argument("--movie", action="store_true", help="sync MarcoMovie platforms")
     ap.add_argument("--tv", action="store_true", help="sync MarcoTV platforms")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--platform", choices=tuple(MOVIE_FOLDERS),
+                    help="sync only this MarcoMovie platform")
+    ap.add_argument("--keep-old", action="store_true",
+                    help="never remove/replace files; require an existing permanent share")
     args = ap.parse_args(argv)
     if args.movie == args.tv:
         ap.error("pass exactly one of --movie / --tv")
-    folders = MOVIE_FOLDERS if args.movie else TV_FOLDERS
-    sources = movie_sources() if args.movie else tv_sources()
+    if args.platform and not args.movie:
+        ap.error("--platform is only available with --movie")
+    if args.keep_old and not args.platform:
+        ap.error("--keep-old requires --movie --platform")
+    folders = ({args.platform: MOVIE_FOLDERS[args.platform]} if args.platform
+               else MOVIE_FOLDERS if args.movie else TV_FOLDERS)
+    sources = movie_sources(args.platform) if args.movie else tv_sources()
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.exists() else {}
-    if not args.dry_run:
-        who = run_quark(["whoami"])
-        print(f"logged in as {who.get('name')}, used {who.get('used_human')} / "
-              f"{who.get('total_human')}")
     errors = []
     with tempfile.TemporaryDirectory(prefix="quark-sync-") as tmpdir:
         for key, folder in folders.items():
             try:
                 manifest[key] = sync_platform(key, folder, sources[key],
-                                              manifest, tmpdir, args.dry_run)
+                                              manifest, tmpdir, args.dry_run,
+                                              keep_old=args.keep_old)
             except (QuarkError, OSError) as exc:
                 print(f"[{key}] FAILED: {exc}")
                 errors.append(key)
-    if not args.dry_run:
+    if not args.dry_run and (not args.keep_old or not errors):
         MANIFEST.parent.mkdir(parents=True, exist_ok=True)
         tmp = MANIFEST.with_suffix(".tmp")
         tmp.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
