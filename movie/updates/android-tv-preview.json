@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.14",
-  "versionCode": 67,
+  "versionName": "0.5.15",
+  "versionCode": 69,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视 / 盒子 0.5.14\r\n\r\n发布日期：2026-11-10。各平台独立推进版本。\r\n\r\n## 修复\r\n\r\n- 替换网盘账户设置页使用的 Android 6 不支持的回调接口，修复打开相关操作时的兼容风险。\r\n- 同步公共组件维护与下载请求头隔离代码；电视界面不提供手机端下载管理功能。\r\n\r\n## 验证与范围\r\n\r\nAndroid 全部源码编译、既有回归组及下载隔离检查通过；隐私搜索清理经过实际生产代码检查。\r\n\r\n本次发布基于源码、自动化与安装包检查；没有把这些结果当作 iPhone、电视或其他设备的实机播放验收。真实片源、硬件解码和设备体验仍取决于实际设备与服务。\r\n\r\n构建提交：`d26b46302ac038f1749c8cb53916f739f33addba`。\r\n\r\n[构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42755615534)。安装包、校验文件和对应源码一并附在此版本；Android 包使用既有签名，校验结果见随包 build-report.json。\r\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.14/MarcoMovie-0.5.14-android-tv.apk",
-  "size": 35553368,
-  "sha256": "47a743de4e9775dae240a1c00529bc948354fdd5703f2fe4727e6e5c0eae6790",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.14-android-tv.apk",
+  "notes": "# Marco Movie Android 电视 / 盒子 0.5.15\r\n\r\n发布日期：2026-11-10。版本代码：69。\r\n\r\n## 修复\r\n\r\n- 电影、剧集等首页分类获得焦点后自动切换，无需再次按确认键。修复首页提前处理方向键后，分类按键时间记录未更新、自动切换没有触发的问题。\r\n- 保留 120 毫秒防抖；快速移走焦点时取消待执行的切换，旧分类请求不能覆盖当前分类。\r\n- 已选分类再次按确认不会重复加载；筛选、更多分类和来源选择仍由确认键打开。\r\n\r\n## 验证与范围\r\n\r\n- 本地 Android 安装包构建、35 项分类筛选与请求调度检查、Android 6 回调依赖检查通过。\r\n- Android 6 电视模拟器：首页 105 项、字幕 36 项、来源运行 122 项检查全部通过。首页覆盖左右切换、跨行向上切换、无近期按键的聚焦、失焦取消、迟到内容、重复确认、筛选入口及详情返回状态。\r\n- 更新字幕回归测试，使其通过当前全屏调节控件及播放器“更多 → 字幕与显示”入口操作；没有为此改变产品字幕功能。\r\n- 本次仅发布 Android 电视 / 盒子版。没有将自动化、模拟器或安装包检查当作物理电视的遥控器与实机播放验收。\r\n\r\n构建提交：`6b8b73f1098d6bfbae687903becfff0e5b5a6e5c`。\r\n\r\n[Android 构建与离线检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42788208834) · [Android 6 电视模拟器回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42788208610)。\r\n\r\n安装包、SHA-256 校验文件和对应源码随版本提供。安装包使用既有签名，重新签名后的程序内容与通过云端检查的构建产物逐项一致，详细记录见随包 `build-report.json`。\r\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.15/MarcoMovie-0.5.15-android-tv.apk",
+  "size": 35549272,
+  "sha256": "48736c435610b52b054c9e56a82f90a3dab8d9511b7ea48f0eb8e321f796cfd0",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.15-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.14-android-tv.apk": {
-      "size": 35553368,
-      "sha256": "47a743de4e9775dae240a1c00529bc948354fdd5703f2fe4727e6e5c0eae6790",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.14/MarcoMovie-0.5.14-android-tv.apk"
+    "MarcoMovie-0.5.15-android-tv.apk": {
+      "size": 35549272,
+      "sha256": "48736c435610b52b054c9e56a82f90a3dab8d9511b7ea48f0eb8e321f796cfd0",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.15/MarcoMovie-0.5.15-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.14"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.15"
 }
