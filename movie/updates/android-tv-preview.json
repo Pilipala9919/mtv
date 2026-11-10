@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.15",
-  "versionCode": 69,
+  "versionName": "0.5.16",
+  "versionCode": 70,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视 / 盒子 0.5.15\r\n\r\n发布日期：2026-11-10。版本代码：69。\r\n\r\n## 修复\r\n\r\n- 电影、剧集等首页分类获得焦点后自动切换，无需再次按确认键。修复首页提前处理方向键后，分类按键时间记录未更新、自动切换没有触发的问题。\r\n- 保留 120 毫秒防抖；快速移走焦点时取消待执行的切换，旧分类请求不能覆盖当前分类。\r\n- 已选分类再次按确认不会重复加载；筛选、更多分类和来源选择仍由确认键打开。\r\n\r\n## 验证与范围\r\n\r\n- 本地 Android 安装包构建、35 项分类筛选与请求调度检查、Android 6 回调依赖检查通过。\r\n- Android 6 电视模拟器：首页 105 项、字幕 36 项、来源运行 122 项检查全部通过。首页覆盖左右切换、跨行向上切换、无近期按键的聚焦、失焦取消、迟到内容、重复确认、筛选入口及详情返回状态。\r\n- 更新字幕回归测试，使其通过当前全屏调节控件及播放器“更多 → 字幕与显示”入口操作；没有为此改变产品字幕功能。\r\n- 本次仅发布 Android 电视 / 盒子版。没有将自动化、模拟器或安装包检查当作物理电视的遥控器与实机播放验收。\r\n\r\n构建提交：`6b8b73f1098d6bfbae687903becfff0e5b5a6e5c`。\r\n\r\n[Android 构建与离线检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42788208834) · [Android 6 电视模拟器回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42788208610)。\r\n\r\n安装包、SHA-256 校验文件和对应源码随版本提供。安装包使用既有签名，重新签名后的程序内容与通过云端检查的构建产物逐项一致，详细记录见随包 `build-report.json`。\r\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.15/MarcoMovie-0.5.15-android-tv.apk",
-  "size": 35549272,
-  "sha256": "48736c435610b52b054c9e56a82f90a3dab8d9511b7ea48f0eb8e321f796cfd0",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.15-android-tv.apk",
+  "notes": "# Marco Movie Android 电视 / 盒子 0.5.16\r\n\r\n发布日期：2026-11-10。版本代码：70。\r\n\r\n## 优化与修复\r\n\r\n- 分类目录返回后立即显示电影、剧集等入口，不再等待推荐与兜底片单全部加载；切换分类取消旧首页请求，防止继续发送无用的兜底请求。\r\n- 取消首张海报的自动详情预取。需要串行运行的插件片源不再执行焦点预取；可独立请求的来源最多保留一个预取任务，避免快速移动焦点占满详情线程。\r\n- 保留分类与有效详情缓存；空详情不写入缓存。低性能模式直接使用片单已有剧集，避免重复拉取已具备的播放列表。\r\n- 首页静默刷新可随分类切换取消。补充分类加载阶段计时，区分应用排队、来源请求与界面呈现，不记录片源地址或账号信息。\r\n\r\n## 多次添加源\r\n\r\n- 新增订阅时保留以前的订阅；已有配置会自动保存。同一地址再次导入更新原订阅，本地配置按内容去重。\r\n- 在首页片源选择面板点击“已添加源”切换已保存的订阅，点击“添加新源”继续导入。每份订阅独立保留解析插件、地址、请求头和扩展设置，重启后仍可切换。\r\n- 扫码、地址及本地配置导入共用保存逻辑；损坏或写入失败时保留原有文件。\r\n\r\n## 验证与范围\r\n\r\n- 48 项本地请求调度、分类筛选和订阅存储检查、8 项更新包测试、Android 6 回调依赖检查及云端离线回归通过。\r\n- Android 6 电视模拟器 295 项检查全部通过：首页 105 项、慢加载与多订阅 32 项、字幕 36 项、来源运行 122 项。覆盖慢推荐取消、预取占用、缓存复用、低性能模式已有剧集、重复导入和切回旧订阅。\r\n- 在受控的本地慢请求场景中，分类入口约 502 毫秒可用，聚焦后分类约 350 毫秒呈现，另一预取挂起时当前详情约 21 毫秒返回。这些数字用于验证应用调度，不代表真实片源的网络响应速度。\r\n\r\n本次仅发布 Android 电视 / 盒子版。没有连接物理电视，模拟器检查不代表具体片源网络或实机播放验收；第三方片源自身的响应时间仍取决于其服务。\r\n\r\n构建提交：`e435f461183d6a0db68ef7c3f475190bee10c0e5`。\r\n\r\n[Android 构建与离线检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42841196245) · [Android 6 电视模拟器回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42841196321)。\r\n\r\n安装包、SHA-256 校验文件及对应源码随版本提供。安装包沿用既有签名，签名后的程序内容与通过云端检查的构建产物逐项一致，记录见随包 `build-report.json`。\r\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.16/MarcoMovie-0.5.16-android-tv.apk",
+  "size": 35557464,
+  "sha256": "0429d029c9b27e406cde5c8667739baa5e115e89a2ca8ac14eaa0b6706bb618d",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.16-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.15-android-tv.apk": {
-      "size": 35549272,
-      "sha256": "48736c435610b52b054c9e56a82f90a3dab8d9511b7ea48f0eb8e321f796cfd0",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.15/MarcoMovie-0.5.15-android-tv.apk"
+    "MarcoMovie-0.5.16-android-tv.apk": {
+      "size": 35557464,
+      "sha256": "0429d029c9b27e406cde5c8667739baa5e115e89a2ca8ac14eaa0b6706bb618d",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.16/MarcoMovie-0.5.16-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.15"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.16"
 }
