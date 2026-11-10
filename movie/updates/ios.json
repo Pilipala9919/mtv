@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "platform": "ios",
-  "versionName": "0.5.17",
+  "versionName": "0.5.18",
   "prerelease": false,
-  "notes": "# Marco Movie iOS / iPadOS 0.5.17\n\n应用版本：0.5.17（67）。修复百度扫码确认后未完成网盘登录，以及从旧观看记录或收藏进入玩偶影片时读取失败的问题。本次仅更新 iPhone / iPad 安装包。\n\n## 修复\n\n- 百度扫码使用单次编码的授权回跳地址，正确接收授权跳转和 `pan.baidu.com` 下的会话 Cookie，随后完成网盘 Web 登录并验证真实账号身份。\n- 不再仅凭缺少 STOKEN 判定扫码失败；只有官方账号接口确认已登录，且取得有效 BDUSS 时才保存。旧二维码票据仍不能充当账号登录凭据。\n- 授权交换成功后的网络重试沿用该次会话，避免重复使用一次性二维码票据。刷新、关闭、超时及跨域 Cookie 隔离规则继续保留。\n- 旧观看记录或收藏的玩偶编号失效、或指向其他影片时，只在同一原源内按片名和可用年份查找。只有唯一匹配且详情复核一致时才加载原分享；重名、年份冲突或没有结果时明确提示重新选择。\n- 重新匹配条目后显示提示，请重新选择对应原文件播放；不把旧来源的集数或进度直接套到新文件。\n- 优先使用原订阅同一域名的 HTTPS 地址，保留原地址回退。不会拼入其他采集站线路。\n- 保留 0.5.16 的线路归属校正、当前网盘扫码入口和选集区重复按钮清理。\n\n## 验证范围\n\n本机及 Mac 云端完整 Flutter 回归各 **595 项通过**；受影响代码及测试静态分析 **0 error / 0 warning**。回归覆盖网盘会话分阶段返回、域名与路径隔离、重定向、失败重试、无效账号拒绝、超时迟到响应、旧影片编号恢复、同名歧义及错片拒绝。\n\n匿名取得原订阅和原站搜索、详情页面后，用保存的真实页面回放验证了《斗罗大陆2：绝世唐门》的唯一条目匹配及 6 条原始分享提取。该回放中的网盘文件列表是合成数据，不代表已使用真实账号列目录或播放。\n\n协议核对参考固定版本的 [tvbox-silicon 百度扫码实现](https://github.com/jo32/tvbox-silicon/blob/7a6b2a605560d27a403cc84def1a6db235254213/Sources/TVCore/CloudDriveQRLogin.swift)、[BaiduPCS-Rust 网盘会话完成实现](https://github.com/komorebiCarry/BaiduPCS-Rust/blob/f84481595b6ae0ce4824dab5d9c8426f0a42235e/backend/src/netdisk/client.rs)及[账号验证实现](https://github.com/komorebiCarry/BaiduPCS-Rust/blob/f84481595b6ae0ce4824dab5d9c8426f0a42235e/backend/src/auth/qrcode.rs)。本项目独立实现 Dart 适配与回归，不记录或公开用户凭据。\n\nIPA 沿用未签名发布方式。iPhone 升级后的真实扫码、登录保持、网盘文件起播及切集仍待实机验收；自动化回归与安装包构建不等于实机通过。其他平台安装包不在本次发布范围内。\n\n构建提交：`782ca7e83d18d7dda8e84a2c6a3b238ce37525eb`。\n\n[构建与检查记录（42825063184）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42825063184)。下载后的 IPA 验证为 **0.5.17（67）**，两个 IPA 别名内容相同；150 个原生二进制均为 iOS ARM64，无模拟器文件，最低系统版本声明不高于 iOS 14。\n\nIPA SHA-256：`208c8d56440e07e2807826410e577902fae02b7369e33423f8af5c0f00db9725`。\n",
+  "notes": "# Marco Movie iOS / iPadOS 0.5.18\n\n应用版本：0.5.18（68）。本次更新 iPhone / iPad 的更新下载、安装工具交接、分层设置和首页 Logo。\n\n## 更新与安装\n\n- 修复玻璃效果加载、透明度切换时重建弹窗内容、导致正在进行的更新检查丢失界面状态的问题。\n- 本机版本读取与联网检查独立进行。镜像与 GitHub 备用源各有超时，失败后可重试、取消或打开下载站，不会将检查失败显示为已经是最新版。\n- 下载使用更新清单中实际发布的 IPA 地址，不再尝试镜像站上不存在的安装包路径。\n- 选择“下载并用巨魔更新”后，应用自动下载并验证大小和 SHA-256，再通过 TrollStore 的 URL Scheme 请求打开本地 IPA。无法唤起时回退到系统分享；设备须已安装并启用 TrollStore 的 URL Scheme。\n- 选择“下载并自签更新”后，下载与校验完成即打开系统分享菜单。证书自签用户选择签名工具导入、签名并安装。\n- 分享的是下载后的 IPA 文件，包含 iPad 弹出菜单锚点。取消分享后可再次选择“用巨魔更新”或“用其他应用打开”，已验证的同版本文件可复用。\n- 下载进度、连接超时、传输停滞、取消与校验失败均有明确反馈；未完成的临时文件会清理。IPA 同时保存在系统“文件”的 Marco Movie 目录。\n\n## 设置与首页\n\n- 设置首页按外观、浏览、播放、订阅与账号、数据、关于与更新分成六个胶囊入口。\n- 二级分类使用抽屉，壁纸、玻璃、画质、倍速、选集等具体内容进入三级页面。支持返回、路径按钮和胶囊选项，旋转屏幕及切换透明度后保留页面与选择。\n- 首页 Logo 图标由手机端 24 放大至 36 逻辑像素，扩大点击区域。窄屏自动减少字标占用，保留片源、扫码、搜索及原有五次点击入口。\n- 保留 0.5.17 的百度扫码会话完成、旧观看记录或收藏中的玩偶编号恢复等修复。\n\n## 验证范围\n\n本机及 Mac 云端完整 Flutter 回归各 **622 项通过**。新增回归覆盖版本插件不返回、镜像与备用源超时、正文停滞、关闭及重试的迟到响应、玻璃状态变化、IPA 完整性与临时文件清理、巨魔本地文件唤起及失败回退、自签自动下载后分享、取消分享后复用，以及小屏、横屏和 iPad 的设置导航与保存。\n\n实际镜像更新源已通过应用同一 Dart 更新客户端读取；本地渲染用于检查布局，不代表 iPhone 实机画面。安装工具交接参考 [share_plus 10.1.4 文档](https://pub.dev/packages/share_plus/versions/10.1.4)和 [TrollStore 文件接收实现](https://github.com/opa334/TrollStore/blob/main/TrollStore/TSSceneDelegate.m)。\n\nIPA 仍为未签名包。系统分享可用的目标取决于设备已经安装的工具；应用不会替用户签名或声称已完成覆盖安装。iPhone 上真实下载、系统分享与巨魔 / 自签覆盖更新仍需实机验收；其他平台安装包不在本次发布范围内。\n\n构建提交：`7c186bdfc6bea98a368d5a98947696d94a262bae`。\n\n[构建与检查记录（42848120232）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42848120232)。下载后的 IPA 验证为 **0.5.18（68）**，两个 IPA 别名内容相同；151 个原生二进制均为 iOS ARM64，无模拟器文件，最低系统版本声明不高于 iOS 14。系统分享插件和“文件”目录访问配置已随包核对。\n\nIPA SHA-256：`b751d06ab526586cb2987f90d0c235b843b8d76d16c97c4cd78ca60f78e4d8ae`。\n",
   "packages": {
-    "MarcoMovie-0.5.17-ios-iphone-ipad-unsigned.ipa": {
-      "size": 61504831,
-      "sha256": "208c8d56440e07e2807826410e577902fae02b7369e33423f8af5c0f00db9725",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.17/MarcoMovie-0.5.17-ios-iphone-ipad-unsigned.ipa"
+    "MarcoMovie-0.5.18-ios-iphone-ipad-unsigned.ipa": {
+      "size": 61570293,
+      "sha256": "b751d06ab526586cb2987f90d0c235b843b8d76d16c97c4cd78ca60f78e4d8ae",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.18/MarcoMovie-0.5.18-ios-iphone-ipad-unsigned.ipa"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.17"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.18"
 }
