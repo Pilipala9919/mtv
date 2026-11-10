@@ -68,8 +68,8 @@ function candidateTargets(version, rest, ext, shaSuffix) {
     ];
   }
   if (stem.startsWith('ios')) {
-    const universalFile = MarcoMovie--ios-iphone-ipad-unsigned.ipa;
-    const shortFile = MarcoMovie--ios-unsigned.ipa;
+    const universalFile = `MarcoMovie-${version}-ios-iphone-ipad-unsigned.ipa${shaSuffix}`;
+    const shortFile = `MarcoMovie-${version}-ios-unsigned.ipa${shaSuffix}`;
     const altFile = requested === universalFile ? shortFile : universalFile;
     return [
       ['ios-v' + version, requested],

@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "platform": "ios",
-  "versionName": "0.5.13",
+  "versionName": "0.5.14",
   "prerelease": false,
-  "notes": "### Marco Movie iOS / iPadOS v0.5.13 正式版\r\n\r\n1. **彻底修复夸克 / UC 网盘本机跳转与扫码点击「确认登录」提示「登录请求已过期」**：\r\n   - 修复 `su.quark.cn/4_eMHBJ` 与 `qklink://` 深度链接中 `uc_param_str` 为空被夸克 iOS 客户端剥离，导致重定向至 `b.quark.cn` 授权确认页时丢失 `token` 与 `client_id=532` 参数的问题；\r\n   - 新增夸克网盘独立版 App（`qkcloudlink://`）本机跳转兜底支持。\r\n2. **修复 4K 网盘线路播放被降级为 1080P HLS 流的问题**：\r\n   - 新增夸克网盘公开分享目录递归解析与 `0000temp` 临时转存原画/4K转码直链解析（对齐 TVBox `WoGG` 4K 原画流程），按 `4K` 转码、`4K原画` 最高优先级排序并自动清理临时转存文件；\r\n   - 保留已登录网盘的 4K 源解析链路，切换清晰度或恢复播放时优先尝试同集其他高码率档位。\r\n3. **优化 iPhone 横屏播放界面右侧竖向工具栏高度**：\r\n   - 适度加长横屏右侧竖向工具条容器与按钮间距，显示更舒展自然。\r\n4. **修复 iOS 软件内拉取新版本一直加载中 / 404 的问题**：\r\n   - 镜像站边缘代理与客户端更新器同步支持 `MarcoMovie-<ver>-ios-unsigned.ipa` 与 `MarcoMovie-<ver>-ios-iphone-ipad-unsigned.ipa` 双文件名自动映射与超时兜底，流式下载进度更新节流防卡顿。\r\n",
+  "notes": "# Marco Movie iOS / iPadOS 0.5.14\r\n\r\n发布日期：2026-11-10。各平台独立推进版本。\r\n\r\n## 修复\r\n\r\n- 修复连续双击快进或后退 15 秒按钮触发暂停：播放控件与视频背景手势分开处理。\r\n- 取消按 0000temp 目录名批量删除云盘文件，避免误删用户或其他播放会话的文件。\r\n- 旧播放会话的自动恢复结果不再覆盖新选剧集或暂停新媒体；短视频不再仅凭时长被当成试看，短视频进度可以续播。\r\n- 后台不再重新启动二维码轮询，已返回的有效授权结果仍会保存。\r\n- 更新必须有有效地址、大小和 SHA-256；下载完成并实际校验成功后才提示通过。\r\n- 保留真实线路和画质名称，分辨率按实际视频尺寸显示；把内核切换文案改为实际解码策略。\r\n- 同步下载文件隔离、解析配置保留和来源凭据保护；读取实际安装版本。\r\n\r\n## 验证与范围\r\n\r\niOS 分支 408 项 Flutter 测试通过；7 项平台检查和 9 项 Python 打包检查通过。\r\n\r\n本次发布基于源码、自动化与安装包检查；没有把这些结果当作 iPhone、电视或其他设备的实机播放验收。真实片源、硬件解码和设备体验仍取决于实际设备与服务。\r\nIPA 为未签名包，沿用现有安装方式；未完成所有第三方插件路由的实机验收。本版不宣称新增独立 IJK / Exo 内核或保证所有片源可用。\r\n\r\n构建提交：`fcae8434ab31e61281541acbcd6af605d57569b5`。\r\n\r\n[构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42755645003)。安装包、SHA-256 校验文件和对应源码一并附在此版本。\r\n",
   "packages": {
-    "MarcoMovie-0.5.13-ios-iphone-ipad-unsigned.ipa": {
-      "size": 61419403,
-      "sha256": "7e31132c94889493108b8cfed62d0af581ca6ddbaecf5061c791c623c245b235",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.13/MarcoMovie-0.5.13-ios-iphone-ipad-unsigned.ipa"
+    "MarcoMovie-0.5.14-ios-iphone-ipad-unsigned.ipa": {
+      "size": 61417684,
+      "sha256": "0cd981664bdd71b7304511a86ca7938e7daaa16b8f4998fbef2057e02725e1f1",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.14/MarcoMovie-0.5.14-ios-iphone-ipad-unsigned.ipa"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.13"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.14"
 }

@@ -73,7 +73,7 @@ def release_history(output, releases):
         if not re.fullmatch(r'(?:(?:ios|windows|macos|android-tv|android-mobile|android-lite)-)?v\d+\.\d+\.\d+(?:-preview)?', item['tag']):
             raise ValueError('Invalid archived release tag')
         text = item['notes'] if item['notes'].strip() else '该历史版本未提供更新说明。'
-        files[f'updates/history/{item["tag"]}.md'] = (text + '\n').encode('utf-8')
+        files[f'updates/history/{item["tag"]}.md'] = (text if text.endswith('\n') else text + '\n').encode('utf-8')
     if records:
         files['updates/history.json'] = (json.dumps(dict(schema=1, releases=records), ensure_ascii=False, indent=2) + '\n').encode('utf-8')
     return records, files
@@ -234,13 +234,21 @@ def patch_card(page, suffix, package):
 def sync(output, releases=None):
     output = Path(output)
     original = (output / 'index.html').read_bytes()
-    page = original.decode('utf-8')
+    page = original.decode('utf-8').replace('\r\n', '\n')
     if releases is None:
         releases = json.loads(fetch(f'https://api.github.com/repos/{REPO}/releases?per_page=100', 4 * 1024 * 1024))
     from android_update_packages import plan as android_plan
     files, versions, android_cards = android_plan(output, releases)
     for platform, package in android_cards.items():
         page = patch_card(page, platform + '.apk', package)
+        # The top download shortcuts must follow the same verified release as
+        # their cards; leave unrelated links and the archived notes untouched.
+        if platform in ('android-tv', 'android-mobile'):
+            suffixes = 'android-tv|preview' if platform == 'android-tv' else 'android-mobile|mobile'
+            label = '下载电视版' if platform == 'android-tv' else '下载手机版'
+            pattern = (r'(<a\b[^>]*\bhref=")[^"<>]*MarcoMovie-\d+\.\d+\.\d+-(?:'
+                       + suffixes + r')\.apk("[^>]*>' + label + r'</a>)')
+            page = re.sub(pattern, lambda match: match[1] + html.escape(package['url'], quote=True) + match[2], page)
     for platform, suffixes in SUFFIXES.items():
         release = choose_platform(releases, platform)
         if release is None:

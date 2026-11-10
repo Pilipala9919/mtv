@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 import android_update_packages as m
 from android_package_names import package_name, compatibility_alias
-from sync_platform_packages import patch_card
+from sync_platform_packages import patch_card, sync
 
 
 class AndroidUpdates(unittest.TestCase):
@@ -44,6 +44,20 @@ class AndroidUpdates(unittest.TestCase):
         self.assertTrue(json.loads(files['updates/android-mobile-preview.json'])['prerelease'])
     def test_tag_and_channel_cannot_disagree(self):
         with self.assertRaises(ValueError): self.plan([dict(self.release, prerelease=True)])
+    def test_lite_has_an_independent_verified_feed(self):
+        self.release.update(tag_name='android-lite-v0.5.2')
+        self.identity.update(package='com.pilipala.marcomovie.lite', edition='lite', minSdk=14)
+        files, versions, cards = self.plan()
+        self.assertEqual(versions, {'android-lite': '0.5.2'})
+        feed = json.loads(files['updates/android-lite.json'])
+        self.assertEqual(feed['minSdk'], 14)
+        self.assertEqual(feed['versionCode'], 52)
+        self.assertNotIn('updates/android-mobile.json', files)
+        self.assertIn('MarcoMovie-0.5.2-android-lite.apk', files)
+        self.assertEqual(cards['android-lite']['sha256'], feed['sha256'])
+    def test_lite_cannot_publish_a_standard_edition(self):
+        self.release.update(tag_name='android-lite-v0.5.2')
+        with self.assertRaises(ValueError): self.plan()
     def test_apk_identity_not_filename_decides_edition(self):
         for identity in (dict(self.identity, edition='tv'), dict(self.identity, versionName='0.5.9'),
                          {k: v for k, v in self.identity.items() if k != 'edition'}):
@@ -82,6 +96,22 @@ class AndroidUpdates(unittest.TestCase):
             self.assertIn('<style>untouched</style>', result)
             self.assertIn('href="' + package['url'] + '"', result)
             self.assertEqual(patch_card(result, platform + '.apk', package), result)
+
+    def test_top_download_shortcuts_follow_verified_cards(self):
+        for platform, old, label in (('android-tv', 'preview', '下载电视版'),
+                                      ('android-mobile', 'mobile', '下载手机版')):
+            name = f'MarcoMovie-0.5.0-{old}.apk'
+            page = (f'<style>unchanged</style><a class="btn primary" href="{name}">{label}</a>'
+                    f'<div class="dl"><a href="{name}">下载</a><a href="{name}.sha256">校验</a>'
+                    f'<code>SHA-256：{"a"*64}</code><span>12.0 MB</span></div>')
+            (self.out / 'index.html').write_text(page, encoding='utf-8')
+            package = dict(url=m.BASE + f'MarcoMovie-0.5.2-{platform}.apk', size=100, sha256='b'*64)
+            with patch.object(m, 'plan', return_value=({}, {}, {platform: package})):
+                sync(self.out, [])
+            result = (self.out / 'index.html').read_text(encoding='utf-8')
+            self.assertIn('<style>unchanged</style>', result)
+            self.assertIn('href="' + package['url'] + '">' + label + '</a>', result)
+            self.assertNotIn(name, result)
 
 
 if __name__ == '__main__':

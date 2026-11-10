@@ -15,4 +15,3 @@
 
 - Passed `scripts/check_public_content.py`, `scripts/test_drpy_assets.py`, `flutter/test_*.py`, and all 327 Flutter unit & widget tests on Windows x64.
 - Unconfigured local DIY storage mounts (`AList` / `WebDAV` / `Emby` without a server URL) remain hidden until configured.
-

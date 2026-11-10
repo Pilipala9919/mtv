@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "platform": "macos",
-  "versionName": "0.5.6",
+  "versionName": "0.5.7",
   "prerelease": false,
-  "notes": "### Marco Movie macOS 桌面版 0.5.6 更新说明\n\n- **修复夸克网盘扫码直接显示已过期**：补齐夸克移动端扫码短链 `uc_param_str` 与 `uc_biz_str` 参数，统一 `getServiceTicketByQrcodeToken` 的 `client_id=532`，并对齐二维码绘制像素边界。\n- **支持王二小 `.js.md5` (CatVodSpiderios) 本机接口**：内置 CatPaw 运行时自动兼容 `/config` 与 `/spider/<key>/<type>` 协议，完整支持王二小放牛娃等 `.js.md5` 订阅源的首页、分类、搜索、详情与播放解析。\n- **修复饭太硬等接口播放源错乱与无限加载/自动切线**：修复跨站 `vod_id` 碰撞导致的剧集播放源错乱，过滤非直连网页解析包装组（`jsyun`/`hhyun`/`subyun`/`xlyun`），修复 `media_kit` 播放队列初始化事件丢失及 HLS 分片时长误触发切线问题。\n- **大幅降低全站搜索超时率**：合并 Bili 类同名搜索请求避免触发频控，为慢速插件与自定义站点设置 4s 快速回退策略。\n- **新增 EXO / IJK / MPV 三大播放内核切换**：支持在播放器工具栏与设置页随时切换 `EXO 超速内核`、`IJK 兼容内核` 与 `MPV 原画内核`。\n- **大屏窗口播放控制栏自适应放大**：桌面端窗口拉大或全屏时，自动按比例放大右侧工具栏、底部进度条、顶部标题栏与中央控制按钮。",
+  "notes": "# Marco Movie macOS 0.5.7\r\n\r\n发布日期：2026-11-10。各平台独立推进版本。\r\n\r\n## 修复\r\n\r\n- 下载按任务分别保存，修复同名影片相互覆盖和删除的问题。\r\n- 下载、解析接口、重定向及 HLS 子请求按来源隔离登录信息，恢复 HTTPS 证书校验。\r\n- 保留完整片源解析配置；服务器拒绝续传时重新下载或报告失败。\r\n- 读取实际安装版本，纠正播放策略名称，修复后台登录轮询。\r\n\r\n## 验证与范围\r\n\r\n桌面共享逻辑 371 项 Flutter 测试通过；本次对应原生功能另有编译和回归检查。\r\n\r\n本次发布基于源码、自动化与安装包检查；没有把这些结果当作 iPhone、电视或其他设备的实机播放验收。真实片源、硬件解码和设备体验仍取决于实际设备与服务。\r\nmacOS 沿用现有本地签名分发方式，未新增 Apple 公证承诺。\r\n\r\n构建提交：`d26b46302ac038f1749c8cb53916f739f33addba`。\r\n\r\n[构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42755615534)。安装包、SHA-256 校验文件和对应源码一并附在此版本。\r\n",
   "packages": {
-    "MarcoMovie-0.5.6-macos-desktop.zip": {
-      "size": 117502347,
-      "sha256": "3483507bfb515940368177d906d65c70543e19e2efe13ca1fa6f1795271a9025",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/macos-v0.5.6/MarcoMovie-0.5.6-macos-desktop.zip"
+    "MarcoMovie-0.5.7-macos-desktop.zip": {
+      "size": 117567887,
+      "sha256": "88acd47600517086fa5f9be9a5d191a3bc19027c1580898a8d6a9c080346a285",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/macos-v0.5.7/MarcoMovie-0.5.7-macos-desktop.zip"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.6"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.7"
 }

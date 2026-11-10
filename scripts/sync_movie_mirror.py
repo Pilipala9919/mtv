@@ -241,7 +241,7 @@ def _previous_stars(output):
     return int(match.group(1)) if match else None
 
 
-def apk_identity(apk):
+def apk_identity(apk, *, lite=False):
     """Read literal package/version/minSdk from the actual binary APK manifest."""
     with zipfile.ZipFile(io.BytesIO(apk)) as z:
         entry = z.getinfo('AndroidManifest.xml')
@@ -296,8 +296,14 @@ def apk_identity(apk):
         offset += size
     result = {'package': values[('manifest', 'package')], 'versionName': values[('manifest', 'versionName')],
               'versionCode': int(values[('manifest', 'versionCode')]), 'minSdk': int(values[('uses-sdk', 'minSdkVersion')])}
-    if result['package'] != 'com.pilipala.marcomovie' or result['minSdk'] < 23 or result['versionCode'] <= 0:
+    expected_package = 'com.pilipala.marcomovie.lite' if lite else 'com.pilipala.marcomovie'
+    minimum_sdk = 14 if lite else 23
+    if result['package'] != expected_package or result['minSdk'] < minimum_sdk or result['versionCode'] <= 0:
         raise ValueError('Wrong application identity')
+    if lite:
+        if editions:
+            raise ValueError('Lite package must not claim a standard edition')
+        result['edition'] = 'lite'
     if editions:
         if len(editions) != 1 or editions[0] not in ('tv', 'mobile'):
             raise ValueError('Invalid application edition')

@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.13",
-  "versionCode": 66,
+  "versionName": "0.5.14",
+  "versionCode": 67,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视端 0.5.13\n\n- 发布平台：Android 电视端（\u0007ndroid-tv，Android 6.0+ / API 23+）\n- 版本：\u0000.5.13（\u000bersionCode 66）\n- 发布日期：2026-11-10\n- 安装包：MarcoMovie-0.5.13-android-tv.apk（兼容名：MarcoMovie-0.5.13-preview.apk）\n\n## 本次修复与优化\n\n1. **修复「更多分类」选择综艺、纪录片等分类后自动跳回「推荐」的问题**：\n   - 修复 HomeScreen.selectedTab() 未包含处于选中态的 更多分类  ⌄ 胶囊（home-category-more），导致从「选择分类」弹窗选中第 5 个及以后的溢出分类（如综艺、纪录片）时焦点被错误重置到首个标签「推荐」并触发自动切回「推荐」的问题。\n   - 修复 更多分类  ⌄ 在选中溢出分类且失去焦点时的文字与底色对比度问题。\n\n2. **修复「配置 | 中心」多行分类按遥控器下键自动跳到最下方分类（如 SFTP服务）的问题**：\n   - 限制分类标签聚焦自动切换仅在遥控器左右方向键（DPAD_LEFT / DPAD_RIGHT）横向移动焦点时触发，避免跨行上下移动或弹窗关闭恢复焦点时误切换当前分类。\n   - 优化 CategoryFlow 多行分类焦点连接：当第一行分类（如 UC网盘、百度网盘）正下方无水平重叠的第二行分类胶囊时，按遥控器下键直接进入下方功能卡片；第一行末尾与第二行首尾支持左右方向键跨行连贯切换。\n\n3. **修复 4K 网盘原画资源报错 4003 无法播放的问题**：\n   - 修复 0.5.12 中当扩展源返回 playerType: 1 时强制覆盖 engPref = 2 并优先于 _softwareFallback 分支创建播放器，导致硬件解码失败（4003）后无法进入内置软解码重试的问题。\n   - 修复带音轨后缀的剧集名（如 4K.mp4【国@@语】）未命中容器直通判断及 Mp4Extractor 忽略 EditList 标志导致的解码异常；新增「硬件解码 → 内置 FFmpeg 软解码 → Android 系统硬件播放器 → 备用画质/线路」多级无缝降级容错。\n\n4. **修复自建源 dytt / dyttm3u8 报错 3002 无法播放的问题**：\n   - 在解析 CMS 播放线路时自动将直连流媒体线路（如 dyttm3u8 的 .m3u8 直连源）排在网页包装线路（如 dytt 的 /share/ 网页地址）之前。\n   - 电视端详情页播放线路胶囊支持遥控器左右聚焦自动切换选集列表；当点击 /share/ 网页包装线路时，自动优先匹配同剧集 .m3u8 直连兄弟线路或直接提取网页内嵌 .m3u8 地址播放，并在单线路播放异常时自动故障转移至下一可用线路。\n\n5. **修复切换 ysc 等扩展源时反复索要「管理所有文件」存储权限的问题**：\n   - 在 AndroidManifest.xml 中补充声明 READ_EXTERNAL_STORAGE、WRITE_EXTERNAL_STORAGE、MANAGE_EXTERNAL_STORAGE 及 \requestLegacyExternalStorage=\"true\"，并在 MainActivity 与插件宿主上下文 PluginApplication 中同步存储权限校验状态，消除在系统设置授予权限后仍反复弹窗提示未授权的问题。",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.13/MarcoMovie-0.5.13-android-tv.apk",
-  "size": 35512408,
-  "sha256": "84676f597449314e4f86165f77aa4e547d22d676db5454b56d778a9933351482",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.13-android-tv.apk",
+  "notes": "# Marco Movie Android 电视 / 盒子 0.5.14\r\n\r\n发布日期：2026-11-10。各平台独立推进版本。\r\n\r\n## 修复\r\n\r\n- 替换网盘账户设置页使用的 Android 6 不支持的回调接口，修复打开相关操作时的兼容风险。\r\n- 同步公共组件维护与下载请求头隔离代码；电视界面不提供手机端下载管理功能。\r\n\r\n## 验证与范围\r\n\r\nAndroid 全部源码编译、既有回归组及下载隔离检查通过；隐私搜索清理经过实际生产代码检查。\r\n\r\n本次发布基于源码、自动化与安装包检查；没有把这些结果当作 iPhone、电视或其他设备的实机播放验收。真实片源、硬件解码和设备体验仍取决于实际设备与服务。\r\n\r\n构建提交：`d26b46302ac038f1749c8cb53916f739f33addba`。\r\n\r\n[构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42755615534)。安装包、校验文件和对应源码一并附在此版本；Android 包使用既有签名，校验结果见随包 build-report.json。\r\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.14/MarcoMovie-0.5.14-android-tv.apk",
+  "size": 35553368,
+  "sha256": "47a743de4e9775dae240a1c00529bc948354fdd5703f2fe4727e6e5c0eae6790",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.14-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.13-android-tv.apk": {
-      "size": 35512408,
-      "sha256": "84676f597449314e4f86165f77aa4e547d22d676db5454b56d778a9933351482",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.13/MarcoMovie-0.5.13-android-tv.apk"
+    "MarcoMovie-0.5.14-android-tv.apk": {
+      "size": 35553368,
+      "sha256": "47a743de4e9775dae240a1c00529bc948354fdd5703f2fe4727e6e5c0eae6790",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.14/MarcoMovie-0.5.14-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.13"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.14"
 }

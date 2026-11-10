@@ -10,6 +10,11 @@ from platform_package_names import clear_names, PLATFORMS, ALIASES
 
 
 class PackageTests(unittest.TestCase):
+    @staticmethod
+    def assets(*names):
+        return [dict(name=name + suffix, state='uploaded')
+                for name in names for suffix in ('', '.sha256')]
+
     def test_clear_names_retain_exact_installers_and_matching_checksums(self):
         for platform, suffixes in PLATFORMS.items():
             for suffix in suffixes:
@@ -50,7 +55,8 @@ class PackageTests(unittest.TestCase):
         (self.out / 'index.html').write_text(self.page, encoding='utf-8')
         (self.out / 'updates').mkdir()
         (self.out / 'updates/stable.json').write_text('{"versionName":"0.5.0"}', encoding='utf-8')
-        self.release = dict(tag_name='ios-v0.5.1', published_at='date', draft=False, prerelease=False, body='iOS fixes')
+        self.release = dict(tag_name='ios-v0.5.1', published_at='date', draft=False, prerelease=False, body='iOS fixes',
+                            assets=self.assets('MarcoMovie-0.5.1-ios-unsigned.ipa'))
 
     def sync(self, releases=None):
         with patch.object(m, 'platform_asset', return_value=('https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.1/MarcoMovie-0.5.1-ios-unsigned.ipa', 123456, 'b' * 64, None)):
@@ -69,7 +75,7 @@ class PackageTests(unittest.TestCase):
 
     def test_clear_iphone_name_is_preferred_without_changing_card_layout(self):
         name = 'MarcoMovie-0.5.1-ios-iphone-ipad-unsigned.ipa'
-        release = dict(self.release, assets=[{'name': name}, {'name': 'MarcoMovie-0.5.1-ios-unsigned.ipa'}])
+        release = dict(self.release, assets=self.assets(name, 'MarcoMovie-0.5.1-ios-unsigned.ipa'))
         with patch.object(m, 'platform_asset', return_value=('https://fixture.invalid/' + name, 123456, 'b'*64, None)) as download:
             m.sync(self.out, [release])
             self.assertEqual(download.call_args.args[1], name)
@@ -86,7 +92,7 @@ class PackageTests(unittest.TestCase):
     def test_named_windows_card_preserves_the_installed_client_updater(self):
         names = ['MarcoMovie-0.5.1-windows-x64-setup.exe', 'MarcoMovie-0.5.1-windows-x64-portable.zip',
                  'MarcoMovie-0.5.1-windows-setup.exe']
-        release = dict(self.release, tag_name='windows-v0.5.1', assets=[{'name': name} for name in names])
+        release = dict(self.release, tag_name='windows-v0.5.1', assets=self.assets(*names))
         body = b'installer fixture'
         digest = hashlib.sha256(body).hexdigest()
         with patch.object(m, 'platform_asset', side_effect=lambda rel, name, output: (name, len(body), digest, body)):
@@ -106,7 +112,7 @@ class PackageTests(unittest.TestCase):
         legacy = 'MarcoMovie-0.5.1-windows-setup.exe'
         for mismatch in ('missing', 'size', 'digest'):
             listed = names if mismatch == 'missing' else names + [legacy]
-            release = dict(self.release, tag_name='windows-v0.5.1', assets=[{'name': name} for name in listed])
+            release = dict(self.release, tag_name='windows-v0.5.1', assets=self.assets(*listed))
             def download(rel, name, output):
                 return (name, 124 if mismatch == 'size' and name == legacy else 123,
                         'c'*64 if mismatch == 'digest' and name == legacy else 'b'*64, b'fixture')
@@ -140,7 +146,8 @@ class PackageTests(unittest.TestCase):
         self.sync()
         path = self.out / 'updates/ios.json'
         original = path.read_bytes()
-        with self.assertRaises(ValueError): self.sync([dict(self.release, tag_name='ios-v0.4.99')])
+        with self.assertRaises(ValueError): self.sync([dict(self.release, tag_name='ios-v0.4.99',
+            assets=self.assets('MarcoMovie-0.4.99-ios-unsigned.ipa'))])
         self.assertEqual(path.read_bytes(), original)
         feed = json.loads(original)
         feed['packages']['MarcoMovie-0.5.1-ios-unsigned.ipa']['sha256'] = 'c' * 64
@@ -148,8 +155,10 @@ class PackageTests(unittest.TestCase):
         with self.assertRaises(ValueError): self.sync()
 
     def test_missing_second_windows_asset_does_not_publish_partial_feed(self):
+        release = dict(self.release, tag_name='windows-v0.5.1', assets=self.assets(
+            'MarcoMovie-0.5.1-windows-setup.exe', 'MarcoMovie-0.5.1-windows-x64.zip'))
         with patch.object(m, 'platform_asset', side_effect=[('first', 10, 'b' * 64, b'installer'), ValueError('missing ZIP')]):
-            with self.assertRaises(ValueError): m.sync(self.out, [dict(self.release, tag_name='windows-v0.5.1')])
+            with self.assertRaises(ValueError): m.sync(self.out, [release])
         self.assertFalse((self.out / 'updates/windows.json').exists())
         self.assertFalse((self.out / 'MarcoMovie-0.5.1-windows-setup.exe').exists())
         self.assertEqual((self.out / 'index.html').read_text(encoding='utf-8'), self.page)
@@ -162,7 +171,8 @@ class PackageTests(unittest.TestCase):
         page = (self.out / 'index.html').read_text(encoding='utf-8')
         self.assertIn('&lt;script&gt;not executable&lt;/script&gt;', page)
         self.assertNotIn('<script>', page)
-        newer = dict(self.release, tag_name='ios-v0.5.2', published_at='later', body='第二版修复')
+        newer = dict(self.release, tag_name='ios-v0.5.2', published_at='later', body='第二版修复',
+                     assets=self.assets('MarcoMovie-0.5.2-ios-unsigned.ipa'))
         self.sync([newer])
         records = json.loads((self.out / 'updates/history.json').read_text(encoding='utf-8'))['releases']
         self.assertEqual({r['tag'] for r in records}, {'ios-v0.5.1', 'ios-v0.5.2'})

@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.5.15",
-  "versionCode": 67,
+  "versionName": "0.5.16",
+  "versionCode": 68,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 手机 / 平板端 0.5.15\n\n- 发布平台：Android 手机 / 平板端（\u0007ndroid-mobile，Android 6.0+ / API 23+，64 位 + 32 位双架构）\n- 版本：\u0000.5.15（\u000bersionCode 67）\n- 发布日期：2026-11-10\n- 安装包：MarcoMovie-0.5.15-android-mobile.apk（兼容名：MarcoMovie-0.5.15-mobile.apk）\n\n## 本次修复与优化\n\n1. **修复 4K 网盘原画资源报错 4003 无法播放的问题**：\n   - 修复硬件解码失败（4003）时软解回退分支被拦截的问题，恢复「硬件解码 → 内置 FFmpeg 软解码 → Android 系统硬件播放器 → 备用画质/线路」多级自动容错。\n   - 修复带音轨标签后缀的 .mp4 / .mkv 剧集（如 4K.mp4【国@@语】）容器识别与时间戳解析兼容性。\n\n2. **修复自建源 dytt / dyttm3u8 报错 3002 无法播放的问题**：\n   - 自动优先排序并选择 .m3u8 / .mp4 直连流媒体线路（如 dyttm3u8），并在命中 /share/ 网页包装线路时自动切换至同名直连兄弟线路或直接提取网页内嵌 .m3u8 流地址播放。\n\n3. **修复切换 ysc 等扩展源反复提示未授予完整文件存储权限的问题**：\n   - 补充完整存储权限声明与插件宿主存储权限状态同步，授权后不再重复弹窗阻断使用。",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.15/MarcoMovie-0.5.15-android-mobile.apk",
-  "size": 61285010,
-  "sha256": "a216881d002bd9773b9a1d9d67f1fd3bd0ccf44e82307a3cf6b8a2b86526aaa7",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.15-android-mobile.apk",
+  "notes": "# Marco Movie Android 手机 / 平板 0.5.16\r\n\r\n发布日期：2026-11-10。各平台独立推进版本。\r\n\r\n## 修复\r\n\r\n- 离开隐私空间或直接退出应用时清理搜索关键词、结果和筛选状态，拦截旧空间迟到的结果。\r\n- 下载直链、跨来源重定向和 HLS 子请求不再转发源站登录信息，同来源认证继续保留。\r\n- 替换设置页中 Android 6 不支持的回调接口，恢复 API 23 兼容检查。\r\n\r\n## 验证与范围\r\n\r\nAndroid 全部源码编译、既有回归组及下载隔离检查通过；隐私搜索清理经过实际生产代码检查。\r\n\r\n本次发布基于源码、自动化与安装包检查；没有把这些结果当作 iPhone、电视或其他设备的实机播放验收。真实片源、硬件解码和设备体验仍取决于实际设备与服务。\r\n\r\n构建提交：`d26b46302ac038f1749c8cb53916f739f33addba`。\r\n\r\n[构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42755615534)。安装包、校验文件和对应源码一并附在此版本；Android 包使用既有签名，校验结果见随包 build-report.json。\r\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.16/MarcoMovie-0.5.16-android-mobile.apk",
+  "size": 61325970,
+  "sha256": "8b8e3617f885d67883b5172ffdadb86d4dd82c1f5dc7641a0be1ed51f3506b14",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.16-android-mobile.apk",
   "packages": {
-    "MarcoMovie-0.5.15-android-mobile.apk": {
-      "size": 61285010,
-      "sha256": "a216881d002bd9773b9a1d9d67f1fd3bd0ccf44e82307a3cf6b8a2b86526aaa7",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.15/MarcoMovie-0.5.15-android-mobile.apk"
+    "MarcoMovie-0.5.16-android-mobile.apk": {
+      "size": 61325970,
+      "sha256": "8b8e3617f885d67883b5172ffdadb86d4dd82c1f5dc7641a0be1ed51f3506b14",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.16/MarcoMovie-0.5.16-android-mobile.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.15"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.16"
 }

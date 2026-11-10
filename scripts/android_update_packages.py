@@ -8,7 +8,7 @@ from sync_movie_mirror import BASE, LIMIT, REPO, apk_identity, asset
 
 def plan(output, releases):
     files, versions, cards, cache = {}, {}, {}, {}
-    for edition in ('mobile', 'tv'):
+    for edition in ('mobile', 'tv', 'lite'):
         platform = 'android-' + edition
         candidates = []
         for release in releases:
@@ -32,7 +32,7 @@ def plan(output, releases):
                     raise ValueError('Android release needs complete notes of at most 8000 characters')
                 name = package_name(version, edition)
                 body, digest = asset(release, name, output, limit=128 * 1024 * 1024)
-                identity = apk_identity(body)
+                identity = apk_identity(body, lite=True) if edition == 'lite' else apk_identity(body)
                 if identity.get('edition') != edition or identity['versionName'] != version:
                     raise ValueError('APK edition/version does not match Android release')
                 github = f'https://github.com/{REPO}/releases/download/{tag}/{name}'
