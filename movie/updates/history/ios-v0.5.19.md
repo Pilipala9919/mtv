@@ -15,4 +15,3 @@
 - IPA 已核验为 **0.5.19（69）**，`MarcoMovie-0.5.19-ios-unsigned.ipa` 与 `MarcoMovie-0.5.19-ios-iphone-ipad-unsigned.ipa` 字节一致；未签名包支持巨魔（TrollStore）直接覆盖更新或证书自签安装。
 - 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。
 - IPA SHA-256：`1ecc1b405b1867dbde4448e0b5661e58315369e1b18479f90bf27d071ad82f36`。
-

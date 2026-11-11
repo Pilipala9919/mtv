@@ -14,4 +14,3 @@
 - 安装版：`MarcoMovie-0.5.12-windows-x64-setup.exe`（兼容别名 `MarcoMovie-0.5.12-windows-setup.exe`），SHA-256：`fd61d5cf327f428eb7d7a547bbbfc41470951021786f65c2c63642720b65f4af`。
 - 绿色便携版：`MarcoMovie-0.5.12-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.12-windows-x64.zip`），SHA-256：`eb786d653033f8db2eb8da2e11f3280199e66cac68b012f56088d385ecb4f8c6`。
 - 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。
-

@@ -20,4 +20,3 @@
 [Android 构建与离线检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42788208834) · [Android 6 电视模拟器回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42788208610)。
 
 安装包、SHA-256 校验文件和对应源码随版本提供。安装包使用既有签名，重新签名后的程序内容与通过云端检查的构建产物逐项一致，详细记录见随包 `build-report.json`。
-

@@ -20,4 +20,3 @@
 
 - 通过 `CompatChecks`、`UpdateLayoutChecks` 与 `UpdateEditionChecks` 本地回归测试。
 - 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 正式签名校验。
-

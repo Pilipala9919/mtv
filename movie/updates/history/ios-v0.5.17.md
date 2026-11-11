@@ -27,4 +27,3 @@ IPA 沿用未签名发布方式。iPhone 升级后的真实扫码、登录保持
 [构建与检查记录（42825063184）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42825063184)。下载后的 IPA 验证为 **0.5.17（67）**，两个 IPA 别名内容相同；150 个原生二进制均为 iOS ARM64，无模拟器文件，最低系统版本声明不高于 iOS 14。
 
 IPA SHA-256：`208c8d56440e07e2807826410e577902fae02b7369e33423f8af5c0f00db9725`。
-

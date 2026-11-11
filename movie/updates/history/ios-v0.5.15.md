@@ -26,4 +26,3 @@ IPA 为**未签名包**，沿用现有安装方式。尚无本轮安装到真实
 IPA SHA-256：`cadcb46c618234faf8a779ac365e90c7ae977695249ba77e5a19ebfdf487d7bd`。
 
 完整范围见 [iOS 原源与网盘适配验证记录](https://github.com/Pilipala9919/MarcoMovie/blob/fix/ios-original-cloud-20261110/docs/ios-source-integrity-20261110.md)。
-

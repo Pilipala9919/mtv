@@ -18,4 +18,3 @@ Android 4.0 的标准 TLS 实现仍不支持 TLS 1.2；此更新没有提供 API
 构建提交：`d26b46302ac038f1749c8cb53916f739f33addba`。
 
 [构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42755615534)。安装包、校验文件和对应源码一并附在此版本；Android 包使用既有签名，校验结果见随包 build-report.json。
-

@@ -23,4 +23,3 @@ macOS 原生 Release 构建通过；包内主程序架构为 `x86_64, arm64`，�
 构建提交：`a4896e4a24051a682510b4566e76917675f9d4e7`。
 
 [构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42825902587)。
-

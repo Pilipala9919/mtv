@@ -21,4 +21,3 @@
 - SHA-256：`8a0f8dfdfc134df3f963fcf8e07082aa967b6f404c31a1845128ab1ca545ace3`。
 - 构建提交：`a1e8a0eb2e8edcb917d716eb5de2d23443d928bf`。[Android 构建与公共守卫校验（42977694295）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42977694295) · [API 23 电视模拟器与宿主回归（42977694074）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42977694074)。
 - 说明：已完成离线回归、云端 API 23 电视模拟器回归及小米电视（`MiTV-ASTP0`，Android 9，`1920×1080`）覆盖安装与实机播放验证；不代表所有第三方电视/盒子固件或外部片源响应速度均已完成穷举验收。
-
