@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-lite",
-  "versionName": "0.5.2",
-  "versionCode": 52,
+  "versionName": "0.5.3",
+  "versionCode": 53,
   "minSdk": 14,
   "prerelease": false,
-  "notes": "# Marco Movie Android Lite 0.5.2\r\n\r\n发布日期：2026-11-10。各平台独立推进版本。\r\n\r\n## 修复\r\n\r\n- HLS 分片、密钥和重定向分别检查来源，跨来源请求不再继承 Cookie、Authorization 等登录信息。\r\n- 在系统支持时明确启用 TLS 1.2 / 1.3；不支持时返回清晰提示，并保留证书校验。\r\n- 纠正正式版 TLS 兼容说明：标准包没有打包 Conscrypt，Android 4.0 不因此获得现代 HTTPS 能力。\r\n\r\n## 验证与范围\r\n\r\n18 份 Lite 源码使用 API 14 重新编译并通过 D8；53 项既有检查、3 项 TLS 能力检查和实际 HLS 代理隔离检查通过。\r\n\r\n本次发布基于源码、自动化与安装包检查；没有把这些结果当作 iPhone、电视或其他设备的实机播放验收。真实片源、硬件解码和设备体验仍取决于实际设备与服务。\r\nAndroid 4.0 的标准 TLS 实现仍不支持 TLS 1.2；此更新没有提供 API 14 的新 TLS 引擎。\r\n\r\n构建提交：`d26b46302ac038f1749c8cb53916f739f33addba`。\r\n\r\n[构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42755615534)。安装包、校验文件和对应源码一并附在此版本；Android 包使用既有签名，校验结果见随包 build-report.json。\r\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-lite-v0.5.2/MarcoMovie-0.5.2-android-lite.apk",
-  "size": 353024,
-  "sha256": "d80581e05e117a1fa4f7924e4b500948653402f52693cd38837659b521648f9d",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.2-android-lite.apk",
+  "notes": "# Marco Movie Android Lite 0.5.3\n\n应用版本：0.5.3（versionCode 53）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存）。\n\n## 更新内容\n\n1. **老设备明文 HTTP 片源与 Android 9+ 兼容修复**\n- 调整目标 SDK 兼容策略并保持 API 14 最低支持，解决在较新 Android 系统上访问部分传统 HTTP 影视采集站被系统拦截的问题，同时保留 Android 14+ 正常安装能力。\n2. **遥控器加载取消与防串台优化**\n- 新增详情加载、搜索与分类翻页任务令牌机制，快速按返回键或切换条目时不再被慢响应覆盖当前画面，遥控器焦点恢复更准确。\n3. **局域网扫码配对安全防护**\n- 局域网配置推送页新增 `Origin` / `Referer` 跨站请求校验，防止局域网内其他网页越权推送配置。\n\n## 包信息\n\n- 安装包：`MarcoMovie-0.5.3-android-lite.apk`（兼容别名 `MarcoMovie-0.5.3-lite.apk`），官方正式签名。\n- SHA-256：`fac34864bb34c82f45a55aeca67b3166ae781e3bb11d3d8514839c0adcb3b8ca`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-lite-v0.5.3/MarcoMovie-0.5.3-android-lite.apk",
+  "size": 348928,
+  "sha256": "fac34864bb34c82f45a55aeca67b3166ae781e3bb11d3d8514839c0adcb3b8ca",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.3-android-lite.apk",
   "packages": {
-    "MarcoMovie-0.5.2-android-lite.apk": {
-      "size": 353024,
-      "sha256": "d80581e05e117a1fa4f7924e4b500948653402f52693cd38837659b521648f9d",
-      "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.2-android-lite.apk"
+    "MarcoMovie-0.5.3-android-lite.apk": {
+      "size": 348928,
+      "sha256": "fac34864bb34c82f45a55aeca67b3166ae781e3bb11d3d8514839c0adcb3b8ca",
+      "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.3-android-lite.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.2"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.3"
 }

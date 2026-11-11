@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "platform": "ios",
-  "versionName": "0.5.18",
+  "versionName": "0.5.19",
   "prerelease": false,
-  "notes": "# Marco Movie iOS / iPadOS 0.5.18\n\n应用版本：0.5.18（68）。本次更新 iPhone / iPad 的更新下载、安装工具交接、分层设置和首页 Logo。\n\n## 更新与安装\n\n- 修复玻璃效果加载、透明度切换时重建弹窗内容、导致正在进行的更新检查丢失界面状态的问题。\n- 本机版本读取与联网检查独立进行。镜像与 GitHub 备用源各有超时，失败后可重试、取消或打开下载站，不会将检查失败显示为已经是最新版。\n- 下载使用更新清单中实际发布的 IPA 地址，不再尝试镜像站上不存在的安装包路径。\n- 选择“下载并用巨魔更新”后，应用自动下载并验证大小和 SHA-256，再通过 TrollStore 的 URL Scheme 请求打开本地 IPA。无法唤起时回退到系统分享；设备须已安装并启用 TrollStore 的 URL Scheme。\n- 选择“下载并自签更新”后，下载与校验完成即打开系统分享菜单。证书自签用户选择签名工具导入、签名并安装。\n- 分享的是下载后的 IPA 文件，包含 iPad 弹出菜单锚点。取消分享后可再次选择“用巨魔更新”或“用其他应用打开”，已验证的同版本文件可复用。\n- 下载进度、连接超时、传输停滞、取消与校验失败均有明确反馈；未完成的临时文件会清理。IPA 同时保存在系统“文件”的 Marco Movie 目录。\n\n## 设置与首页\n\n- 设置首页按外观、浏览、播放、订阅与账号、数据、关于与更新分成六个胶囊入口。\n- 二级分类使用抽屉，壁纸、玻璃、画质、倍速、选集等具体内容进入三级页面。支持返回、路径按钮和胶囊选项，旋转屏幕及切换透明度后保留页面与选择。\n- 首页 Logo 图标由手机端 24 放大至 36 逻辑像素，扩大点击区域。窄屏自动减少字标占用，保留片源、扫码、搜索及原有五次点击入口。\n- 保留 0.5.17 的百度扫码会话完成、旧观看记录或收藏中的玩偶编号恢复等修复。\n\n## 验证范围\n\n本机及 Mac 云端完整 Flutter 回归各 **622 项通过**。新增回归覆盖版本插件不返回、镜像与备用源超时、正文停滞、关闭及重试的迟到响应、玻璃状态变化、IPA 完整性与临时文件清理、巨魔本地文件唤起及失败回退、自签自动下载后分享、取消分享后复用，以及小屏、横屏和 iPad 的设置导航与保存。\n\n实际镜像更新源已通过应用同一 Dart 更新客户端读取；本地渲染用于检查布局，不代表 iPhone 实机画面。安装工具交接参考 [share_plus 10.1.4 文档](https://pub.dev/packages/share_plus/versions/10.1.4)和 [TrollStore 文件接收实现](https://github.com/opa334/TrollStore/blob/main/TrollStore/TSSceneDelegate.m)。\n\nIPA 仍为未签名包。系统分享可用的目标取决于设备已经安装的工具；应用不会替用户签名或声称已完成覆盖安装。iPhone 上真实下载、系统分享与巨魔 / 自签覆盖更新仍需实机验收；其他平台安装包不在本次发布范围内。\n\n构建提交：`7c186bdfc6bea98a368d5a98947696d94a262bae`。\n\n[构建与检查记录（42848120232）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42848120232)。下载后的 IPA 验证为 **0.5.18（68）**，两个 IPA 别名内容相同；151 个原生二进制均为 iOS ARM64，无模拟器文件，最低系统版本声明不高于 iOS 14。系统分享插件和“文件”目录访问配置已随包核对。\n\nIPA SHA-256：`b751d06ab526586cb2987f90d0c235b843b8d76d16c97c4cd78ca60f78e4d8ae`。\n",
+  "notes": "# Marco Movie iOS / iPadOS 0.5.19\n\n应用版本：0.5.19（69）。本次重点修复百度网盘扫码登录失败、网盘原画/高码率资源播放失败等核心问题，并同步全端架构与稳定性优化。\n\n## 核心修复与优化\n\n- **修复百度网盘扫码登录失败**：兼容百度 Passport 扫码轮询接口返回数字型 `error_code: 0` 及跨端跳转完成态，解决切去百度 App 确认授权再切回 Marco Movie 时因后台挂起断开轮询或误判状态导致的无法登录问题；优先展示百度官方二维码图片。\n- **修复百度网盘 / 夸克网盘资源播放失败**：为 iOS / 桌面端播放器补齐与 Android 端一致的本地云盘鉴权流代理（`CloudMediaProxy`），由本地回环代理自动携带网盘 `Cookie`、`User-Agent`、`Referer` 并跟随 302 多级 CDN 跳转及 `Range` 分片拖动请求，解决 `libmpv` 重定向丢鉴权头导致的播放报错。\n- **内置站点脚本与首页聚合加固**：同步最新验证通过的内置脚本清单，玩偶/网盘站及聚合首页在部分源超时时自动跳过慢源并优先呈现可用结果。\n- **多端代码线与更新通道统一**：保留 0.5.18 的分层胶囊设置、首页放大 Logo、更新校验及巨魔（TrollStore）/ 系统分享自签安装流程。\n\n## 验证与包信息\n\n- 本机与云端完整 Flutter 回归（**649 项测试**）及 iOS 内置运行时回归全部通过。\n- IPA 已核验为 **0.5.19（69）**，`MarcoMovie-0.5.19-ios-unsigned.ipa` 与 `MarcoMovie-0.5.19-ios-iphone-ipad-unsigned.ipa` 字节一致；未签名包支持巨魔（TrollStore）直接覆盖更新或证书自签安装。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n- IPA SHA-256：`1ecc1b405b1867dbde4448e0b5661e58315369e1b18479f90bf27d071ad82f36`。\n",
   "packages": {
-    "MarcoMovie-0.5.18-ios-iphone-ipad-unsigned.ipa": {
-      "size": 61570293,
-      "sha256": "b751d06ab526586cb2987f90d0c235b843b8d76d16c97c4cd78ca60f78e4d8ae",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.18/MarcoMovie-0.5.18-ios-iphone-ipad-unsigned.ipa"
+    "MarcoMovie-0.5.19-ios-iphone-ipad-unsigned.ipa": {
+      "size": 61610556,
+      "sha256": "1ecc1b405b1867dbde4448e0b5661e58315369e1b18479f90bf27d071ad82f36",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.19/MarcoMovie-0.5.19-ios-iphone-ipad-unsigned.ipa"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.18"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.19"
 }

@@ -2,6 +2,78 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "android-lite-v0.5.3",
+      "version": "0.5.3",
+      "platforms": [
+        "android-lite"
+      ],
+      "published_at": "2026-11-11T02:09:05Z",
+      "prerelease": false,
+      "target_commitish": "39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e",
+      "notes": "# Marco Movie Android Lite 0.5.3\n\n应用版本：0.5.3（versionCode 53）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存）。\n\n## 更新内容\n\n1. **老设备明文 HTTP 片源与 Android 9+ 兼容修复**\n- 调整目标 SDK 兼容策略并保持 API 14 最低支持，解决在较新 Android 系统上访问部分传统 HTTP 影视采集站被系统拦截的问题，同时保留 Android 14+ 正常安装能力。\n2. **遥控器加载取消与防串台优化**\n- 新增详情加载、搜索与分类翻页任务令牌机制，快速按返回键或切换条目时不再被慢响应覆盖当前画面，遥控器焦点恢复更准确。\n3. **局域网扫码配对安全防护**\n- 局域网配置推送页新增 `Origin` / `Referer` 跨站请求校验，防止局域网内其他网页越权推送配置。\n\n## 包信息\n\n- 安装包：`MarcoMovie-0.5.3-android-lite.apk`（兼容别名 `MarcoMovie-0.5.3-lite.apk`），官方正式签名。\n- SHA-256：`fac34864bb34c82f45a55aeca67b3166ae781e3bb11d3d8514839c0adcb3b8ca`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.3"
+    },
+    {
+      "tag": "android-mobile-v0.5.17",
+      "version": "0.5.17",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-11T02:09:01Z",
+      "prerelease": false,
+      "target_commitish": "39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e",
+      "notes": "# Marco Movie Android 手机 / 平板 0.5.17\n\n应用版本：0.5.17（versionCode 72）。本次整合单站 CMS JSON 接口直连导入、双架构原生库体积精简与网络稳定性优化。\n\n## 更新内容\n\n1. **单站 CMS JSON 接口直连导入**\n- 支持在订阅管理中直接粘贴苹果 CMS JSON 接口地址，自动探测站名并生成可用片源，无需手工编写订阅仓库 JSON。\n2. **播放兼容与页面并发优化**\n- 同步可选隧道播放开关（默认关闭以保障高兼容性）；详情页、搜索页与换源流程在页面退出或切换时即时中断旧请求，操作更跟手。\n- 原生 QuickJS 引擎同时提供 `arm64-v8a`（16KB 页对齐，兼容 Android 15+ 新设备）与 `armeabi-v7a` 双架构编译并剥离调试符号。\n3. **局域网配对防护与存储优化**\n- 局域网配置服务增加跨站请求拦截保护；历史缓存清理改为数据库单事务执行。\n\n## 包信息\n\n- 安装包：`MarcoMovie-0.5.17-android-mobile.apk`（兼容别名 `MarcoMovie-0.5.17-mobile.apk`），官方正式签名，可直接覆盖安装升级。\n- SHA-256：`43a0ca1c3d2a28a958ff585ecc30652ddd6c5999095f432834d55ed27c28d1a0`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.17"
+    },
+    {
+      "tag": "android-tv-v0.5.18",
+      "version": "0.5.18",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-11T02:08:56Z",
+      "prerelease": false,
+      "target_commitish": "39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e",
+      "notes": "# Marco Movie Android TV / 盒子 0.5.18\n\n应用版本：0.5.18（versionCode 73）。本次合并直连苹果 CMS JSON 接口导入能力，并针对电视与盒子端提升大屏遥控稳定性、播放兼容性与配对安全性。\n\n## 更新内容\n\n1. **支持直接导入单站 CMS JSON 接口**\n- 订阅地址除多仓/单仓配置外，现支持直接粘贴单个苹果 CMS JSON `api.php/provide/vod` 接口地址并自动识别导入。\n2. **电视 / 盒子播放与遥控器体验优化**\n- 新增播放设置中的“隧道播放（Tunneled Playback）”开关（默认关闭），避免部分晶晨/海思/瑞芯微机顶盒开启硬件隧道后有声无画或黑屏，按需手动开启。\n- 修复遥控器高频换源、快速搜索与切换详情页时的残留异步回调串台问题，自动取消已离开页面的后台请求。\n3. **局域网扫码配对与数据安全加固**\n- 局域网网页推送服务新增跨站请求来源校验，拦截恶意网页静默改写订阅配置；数据库缓存淘汰升级为事务原子清理。\n\n## 包信息\n\n- 安装包：`MarcoMovie-0.5.18-android-tv.apk`（兼容别名 `MarcoMovie-0.5.18-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- SHA-256：`e1baed140bac2237836c8ed472c599660b79f2a20b04d1e3769e0fe93caaf5e5`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.18"
+    },
+    {
+      "tag": "macos-v0.5.11",
+      "version": "0.5.11",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-11T02:08:51Z",
+      "prerelease": false,
+      "target_commitish": "39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e",
+      "notes": "# Marco Movie macOS 0.5.11\n\n应用版本：0.5.11（61）。本次同步百度网盘扫码登录与网盘流播放修复，并改进 macOS 桌面端更新引导与键盘交互体验。\n\n## 更新内容\n\n- **百度网盘扫码与云盘流播放修复**：修复百度扫码登录状态识别与跨域名登录跳转，新增本地 `CloudMediaProxy` 云盘鉴权流代理，解决百度网盘、夸克网盘高码率直链播放失败问题。\n- **macOS 更新下载与打开优化**：应用内下载并完成 SHA-256 校验后自动在访达（Finder）中定位下载好的压缩包，方便拖入“应用程序”覆盖更新。\n- **桌面端键盘与全屏修复**：修复输入框打字时误触发全局快捷键及退出全屏后窗口置顶异常的问题；同步新版分层胶囊设置界面。\n\n## 包信息\n\n- 应用压缩包：`MarcoMovie-0.5.11-macos-desktop.zip`（兼容别名 `MarcoMovie-0.5.11-macos.zip`），未公证，首次打开请右键点击选择“打开”。\n- SHA-256：`48fcc4f7241cd6fd22fa56b9f41e0e23de57fa3968bcbaac0f3944f2cd94fe85`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.11"
+    },
+    {
+      "tag": "windows-v0.5.12",
+      "version": "0.5.12",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-11T02:08:46Z",
+      "prerelease": false,
+      "target_commitish": "39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e",
+      "notes": "# Marco Movie Windows 0.5.12\n\n应用版本：0.5.12（62）。本次同步百度网盘扫码登录与网盘流播放修复，并完善 Windows 桌面端快捷键、窗口管理与更新安装安全性。\n\n## 更新内容\n\n- **百度网盘扫码与云盘流播放修复**：修复百度扫码登录数字状态码解析与授权重定向，新增本地 `CloudMediaProxy` 云盘鉴权流代理，解决百度网盘、夸克网盘直链 302 跳转丢失请求头导致的播放失败。\n- **桌面端交互体验优化**：修复搜索输入框聚焦时按 `Space`、`F`、`M`、方向键误触播放器快捷键的问题；修复退出全屏后窗口意外置顶的问题。\n- **覆盖更新安装器加固**：安全转义安装包路径参数，安装向导升级前自动清理旧版 `flutter_assets` 与运行库残留，保留用户订阅、收藏、观看记录与网盘登录态。\n- **分层设置与聚合加载优化**：同步六大胶囊分层设置抽屉与更稳健的并发源加载策略。\n\n## 包信息\n\n- 安装版：`MarcoMovie-0.5.12-windows-x64-setup.exe`（兼容别名 `MarcoMovie-0.5.12-windows-setup.exe`），SHA-256：`fd61d5cf327f428eb7d7a547bbbfc41470951021786f65c2c63642720b65f4af`。\n- 绿色便携版：`MarcoMovie-0.5.12-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.12-windows-x64.zip`），SHA-256：`eb786d653033f8db2eb8da2e11f3280199e66cac68b012f56088d385ecb4f8c6`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.12"
+    },
+    {
+      "tag": "ios-v0.5.19",
+      "version": "0.5.19",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-11T02:08:41Z",
+      "prerelease": false,
+      "target_commitish": "39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e",
+      "notes": "# Marco Movie iOS / iPadOS 0.5.19\n\n应用版本：0.5.19（69）。本次重点修复百度网盘扫码登录失败、网盘原画/高码率资源播放失败等核心问题，并同步全端架构与稳定性优化。\n\n## 核心修复与优化\n\n- **修复百度网盘扫码登录失败**：兼容百度 Passport 扫码轮询接口返回数字型 `error_code: 0` 及跨端跳转完成态，解决切去百度 App 确认授权再切回 Marco Movie 时因后台挂起断开轮询或误判状态导致的无法登录问题；优先展示百度官方二维码图片。\n- **修复百度网盘 / 夸克网盘资源播放失败**：为 iOS / 桌面端播放器补齐与 Android 端一致的本地云盘鉴权流代理（`CloudMediaProxy`），由本地回环代理自动携带网盘 `Cookie`、`User-Agent`、`Referer` 并跟随 302 多级 CDN 跳转及 `Range` 分片拖动请求，解决 `libmpv` 重定向丢鉴权头导致的播放报错。\n- **内置站点脚本与首页聚合加固**：同步最新验证通过的内置脚本清单，玩偶/网盘站及聚合首页在部分源超时时自动跳过慢源并优先呈现可用结果。\n- **多端代码线与更新通道统一**：保留 0.5.18 的分层胶囊设置、首页放大 Logo、更新校验及巨魔（TrollStore）/ 系统分享自签安装流程。\n\n## 验证与包信息\n\n- 本机与云端完整 Flutter 回归（**649 项测试**）及 iOS 内置运行时回归全部通过。\n- IPA 已核验为 **0.5.19（69）**，`MarcoMovie-0.5.19-ios-unsigned.ipa` 与 `MarcoMovie-0.5.19-ios-iphone-ipad-unsigned.ipa` 字节一致；未签名包支持巨魔（TrollStore）直接覆盖更新或证书自签安装。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n- IPA SHA-256：`1ecc1b405b1867dbde4448e0b5661e58315369e1b18479f90bf27d071ad82f36`。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.19"
+    },
+    {
       "tag": "macos-v0.5.10",
       "version": "0.5.10",
       "platforms": [

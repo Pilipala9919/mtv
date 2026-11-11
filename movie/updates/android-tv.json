@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.17",
-  "versionCode": 71,
+  "versionName": "0.5.18",
+  "versionCode": 73,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视 / 盒子 0.5.17\n\n发布日期：2026-11-11。版本代码：71。\n\n## 首页分类与筛选\n\n- 电影、剧集等分类获得焦点后立即切换，取消原有的停留等待；已加载分类继续复用缓存。\n- 分类栏改为单个连续滑动的液态玻璃选中框，快速反向移动时从当前位置继续过渡，不再逐个按钮慢慢淡入淡出。\n- “筛选”按钮直接展开分类栏下方的三行筛选：类型、国家 / 地区、年份；再次点击收起，不再打开筛选弹窗。\n- 筛选支持遥控器左右浏览、上下逐行移动；收起筛选及进入详情再返回时，保留已选条件。\n\n## Dock 与设置\n\n- 在“设置 → 首页与壁纸 → Dock 位置”选择右侧或顶部，保存后返回首页生效；导航大小设置继续有效。\n- Dock 使用连续滑动的液态玻璃选中框，按钮略微放大。六个图标重新绘制为清晰矢量路径，提高线条粗细与对比度。\n- 顶部 Dock 为内容保留独立空间，放大导航后标签仍与内容保持间距；网盘面板适配顶部位置，关闭后焦点回到原图标。\n- 设置页及软件更新页改为小步滚动，限制长按遥控器造成的过量滚动；长更新说明可逐段阅读，按钮进入可见区域后再移动焦点。\n- 减少动态效果时选中框直接到位，分类仍立即切换。\n\n## 加载与多源\n\n- 继续包含 0.5.16 的分类目录提前展示、有效缓存复用、限制详情预取及多订阅独立保存。添加新源保留旧源，在片源面板的“已添加源”中切换；同一地址再次导入更新原订阅。\n- 修复取消请求的并发边界：先标记请求已取消，再中断工作线程，防止旧请求吞掉中断后又发送兜底请求。\n\n## 验证范围\n\n- 构建提交：`fede0b4e832fdc426a4097bc1a785047f4f59a9a`。\n- [Android 构建与离线检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42849589975)的公共检查和 Android 构建任务通过；本版本仅发布 Android TV 安装包。\n- [Android 6 / API 23 电视模拟器回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42849589988)共 337 项通过：首页与遥控器 147 项、加载与多源 32 项、字幕 36 项、来源宿主 122 项。\n- 检查三行筛选、右侧 Dock、顶部 Dock、放大导航及长更新说明截图。取消请求的确定性回归可在旧实现上复现失败，修复后的调度测试共 28 项通过。\n- 发布包来自上述干净提交的 CI 产物，使用既有正式签名，核对包名、版本代码、SHA-256、ZIP 完整性及重新签名后的有效载荷一致性；旧版本资源保留。\n\n## 范围与限制\n\n- 本次未连接实体电视，模拟器结果不代表具体电视的画面流畅度或真实片源速度已验收。\n- 分类页面立即响应焦点；首次片单、详情及海报仍受片源服务和网络响应时间影响。\n- 不变更手机、Lite、Windows、macOS 或 iOS 的已发布安装包与版本。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.17/MarcoMovie-0.5.17-android-tv.apk",
-  "size": 35561560,
-  "sha256": "7c7913fbf3906d4604b7ef5b51e64f5c0688ceebbdd1698895dc790912f4c6d6",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.17-android-tv.apk",
+  "notes": "# Marco Movie Android TV / 盒子 0.5.18\n\n应用版本：0.5.18（versionCode 73）。本次合并直连苹果 CMS JSON 接口导入能力，并针对电视与盒子端提升大屏遥控稳定性、播放兼容性与配对安全性。\n\n## 更新内容\n\n1. **支持直接导入单站 CMS JSON 接口**\n- 订阅地址除多仓/单仓配置外，现支持直接粘贴单个苹果 CMS JSON `api.php/provide/vod` 接口地址并自动识别导入。\n2. **电视 / 盒子播放与遥控器体验优化**\n- 新增播放设置中的“隧道播放（Tunneled Playback）”开关（默认关闭），避免部分晶晨/海思/瑞芯微机顶盒开启硬件隧道后有声无画或黑屏，按需手动开启。\n- 修复遥控器高频换源、快速搜索与切换详情页时的残留异步回调串台问题，自动取消已离开页面的后台请求。\n3. **局域网扫码配对与数据安全加固**\n- 局域网网页推送服务新增跨站请求来源校验，拦截恶意网页静默改写订阅配置；数据库缓存淘汰升级为事务原子清理。\n\n## 包信息\n\n- 安装包：`MarcoMovie-0.5.18-android-tv.apk`（兼容别名 `MarcoMovie-0.5.18-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- SHA-256：`e1baed140bac2237836c8ed472c599660b79f2a20b04d1e3769e0fe93caaf5e5`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.18/MarcoMovie-0.5.18-android-tv.apk",
+  "size": 35725477,
+  "sha256": "e1baed140bac2237836c8ed472c599660b79f2a20b04d1e3769e0fe93caaf5e5",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.18-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.17-android-tv.apk": {
-      "size": 35561560,
-      "sha256": "7c7913fbf3906d4604b7ef5b51e64f5c0688ceebbdd1698895dc790912f4c6d6",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.17/MarcoMovie-0.5.17-android-tv.apk"
+    "MarcoMovie-0.5.18-android-tv.apk": {
+      "size": 35725477,
+      "sha256": "e1baed140bac2237836c8ed472c599660b79f2a20b04d1e3769e0fe93caaf5e5",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.18/MarcoMovie-0.5.18-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.17"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.18"
 }

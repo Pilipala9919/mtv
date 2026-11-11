@@ -1,30 +1,30 @@
 {
   "schema": 1,
   "platform": "windows",
-  "versionName": "0.5.11",
+  "versionName": "0.5.12",
   "prerelease": false,
-  "notes": "# Marco Movie Windows 0.5.11\n\n修复 Windows 0.5.10 / macOS 0.5.9 录屏反馈中的插件适配与网盘播放问题。\n\n- 补齐实际桌面订阅携带的另一版插件，恢复对应玩偶、T4、FY、DM84 等适配，保留旧订阅版本。\n- 夸克原画及转码媒体请求补齐账号会话，处理接口与媒体请求中的会话轮换。保留大文件 Range 拖动、同文件切换画质和账号切换取消。\n- 为解析和起播增加等待上限，避免播放停在 00:00 时持续等待。\n- 修复不同订阅的同名插件搜索去重，并在侧栏和提示中区分订阅。\n\n提供 Windows x64 安装版与免安装版，包内主程序版本为 `0.5.11`。\n\n实际订阅在线验证：玩偶首页 120 条，“疯狂动物城”7 条，“精武英雄”1 条。Windows 共 578 项 Flutter 检查通过，包括打包原生解码库读取合成鉴权 HEVC/MKV、播放进度、暂停和定位。\n\n构建提交：`3c2ad0dbf3e9d4074aa35ac022169d702e4de379`。构建记录：https://github.com/Pilipala9919/MarcoMovie/actions/runs/42851117410。\n\n合成测试不等同于用户账号的 72.8 GB 原片实播；物理 Mac 和该片完整 4K/HDR 播放仍未验收。保留原订阅与网盘账号，不替换为其他来源。第三方源的验证码、失效分享或服务故障会按实际结果提示。\n\n安装包、免安装包、对应源码和 SHA-256 校验文件随版本提供。更新前请退出正在运行的旧程序。\n",
+  "notes": "# Marco Movie Windows 0.5.12\n\n应用版本：0.5.12（62）。本次同步百度网盘扫码登录与网盘流播放修复，并完善 Windows 桌面端快捷键、窗口管理与更新安装安全性。\n\n## 更新内容\n\n- **百度网盘扫码与云盘流播放修复**：修复百度扫码登录数字状态码解析与授权重定向，新增本地 `CloudMediaProxy` 云盘鉴权流代理，解决百度网盘、夸克网盘直链 302 跳转丢失请求头导致的播放失败。\n- **桌面端交互体验优化**：修复搜索输入框聚焦时按 `Space`、`F`、`M`、方向键误触播放器快捷键的问题；修复退出全屏后窗口意外置顶的问题。\n- **覆盖更新安装器加固**：安全转义安装包路径参数，安装向导升级前自动清理旧版 `flutter_assets` 与运行库残留，保留用户订阅、收藏、观看记录与网盘登录态。\n- **分层设置与聚合加载优化**：同步六大胶囊分层设置抽屉与更稳健的并发源加载策略。\n\n## 包信息\n\n- 安装版：`MarcoMovie-0.5.12-windows-x64-setup.exe`（兼容别名 `MarcoMovie-0.5.12-windows-setup.exe`），SHA-256：`fd61d5cf327f428eb7d7a547bbbfc41470951021786f65c2c63642720b65f4af`。\n- 绿色便携版：`MarcoMovie-0.5.12-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.12-windows-x64.zip`），SHA-256：`eb786d653033f8db2eb8da2e11f3280199e66cac68b012f56088d385ecb4f8c6`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
   "packages": {
-    "MarcoMovie-0.5.11-windows-x64-setup.exe": {
-      "size": 49818249,
-      "sha256": "42fcab8c6b109ef448a0b1d01d6161c0784b3706245240d6bddf2a4df82921e0",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.11/MarcoMovie-0.5.11-windows-x64-setup.exe"
+    "MarcoMovie-0.5.12-windows-x64-setup.exe": {
+      "size": 49991040,
+      "sha256": "fd61d5cf327f428eb7d7a547bbbfc41470951021786f65c2c63642720b65f4af",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.12/MarcoMovie-0.5.12-windows-x64-setup.exe"
     },
-    "MarcoMovie-0.5.11-windows-x64-portable.zip": {
-      "size": 71923853,
-      "sha256": "c0d202dbabbc6afef23c20c2f8eeb10c5e51e8096a9e431a0a4512db243b7713",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.11/MarcoMovie-0.5.11-windows-x64-portable.zip"
+    "MarcoMovie-0.5.12-windows-x64-portable.zip": {
+      "size": 72270996,
+      "sha256": "eb786d653033f8db2eb8da2e11f3280199e66cac68b012f56088d385ecb4f8c6",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.12/MarcoMovie-0.5.12-windows-x64-portable.zip"
     },
-    "MarcoMovie-0.5.11-windows-setup.exe": {
-      "size": 49818249,
-      "sha256": "42fcab8c6b109ef448a0b1d01d6161c0784b3706245240d6bddf2a4df82921e0",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.11/MarcoMovie-0.5.11-windows-setup.exe"
+    "MarcoMovie-0.5.12-windows-setup.exe": {
+      "size": 49991040,
+      "sha256": "fd61d5cf327f428eb7d7a547bbbfc41470951021786f65c2c63642720b65f4af",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.12/MarcoMovie-0.5.12-windows-setup.exe"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.11",
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.12",
   "windows": {
-    "size": 49818249,
-    "sha256": "42fcab8c6b109ef448a0b1d01d6161c0784b3706245240d6bddf2a4df82921e0",
-    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.11/MarcoMovie-0.5.11-windows-setup.exe"
+    "size": 49991040,
+    "sha256": "fd61d5cf327f428eb7d7a547bbbfc41470951021786f65c2c63642720b65f4af",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.12/MarcoMovie-0.5.12-windows-setup.exe"
   }
 }
