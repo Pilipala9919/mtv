@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.18",
-  "versionCode": 73,
+  "versionName": "0.5.19",
+  "versionCode": 74,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android TV / 盒子 0.5.18\n\n应用版本：0.5.18（versionCode 73）。本次合并直连苹果 CMS JSON 接口导入能力，并针对电视与盒子端提升大屏遥控稳定性、播放兼容性与配对安全性。\n\n## 更新内容\n\n1. **支持直接导入单站 CMS JSON 接口**\n- 订阅地址除多仓/单仓配置外，现支持直接粘贴单个苹果 CMS JSON `api.php/provide/vod` 接口地址并自动识别导入。\n2. **电视 / 盒子播放与遥控器体验优化**\n- 新增播放设置中的“隧道播放（Tunneled Playback）”开关（默认关闭），避免部分晶晨/海思/瑞芯微机顶盒开启硬件隧道后有声无画或黑屏，按需手动开启。\n- 修复遥控器高频换源、快速搜索与切换详情页时的残留异步回调串台问题，自动取消已离开页面的后台请求。\n3. **局域网扫码配对与数据安全加固**\n- 局域网网页推送服务新增跨站请求来源校验，拦截恶意网页静默改写订阅配置；数据库缓存淘汰升级为事务原子清理。\n\n## 包信息\n\n- 安装包：`MarcoMovie-0.5.18-android-tv.apk`（兼容别名 `MarcoMovie-0.5.18-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- SHA-256：`e1baed140bac2237836c8ed472c599660b79f2a20b04d1e3769e0fe93caaf5e5`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.18/MarcoMovie-0.5.18-android-tv.apk",
-  "size": 35725477,
-  "sha256": "e1baed140bac2237836c8ed472c599660b79f2a20b04d1e3769e0fe93caaf5e5",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.18-android-tv.apk",
+  "notes": "# Marco Movie Android TV / 盒子 0.5.19\n\n应用版本：0.5.19（versionCode 74）。本次更新重绘电视端高清矢量 Dock 图标、修复顶部 Dock 模式下左上角品牌标志对齐与固定挂载，并全面重构首页单行分类与沉浸式筛选及全引擎筛选透传能力。\n\n## 更新内容\n\n1. **Dock 栏高清矢量图标与顶部品牌标志对齐**\n- 电视端 Dock 导航栏 6 个图标（首页、搜索、直播、收藏、网盘、设置）重绘为 `1:1` 原生屏幕物理像素坐标矢量图形并加入整数线宽像素吸附对齐，解决原有 `24x24` 画布缩放导致的边缘发虚问题；同步优化横排与竖排下当前页圆点指示器的防遮挡间距。\n- 当“设置 → 首页与壁纸 → Dock 位置”设为顶部时，左上角 `MARCO MOVIE` 品牌标志改为固定挂载在顶层视口，与顶部 Dock 栏严格保持同一高度与垂直居中齐平（兼容 `85%`–`140%` 导航大小缩放），上下浏览片单时不再随页面下移或滚出屏幕。\n\n2. **首页单行分类与沉浸式筛选重构**\n- 移除电视端分类栏的“更多分类”弹窗按钮与尾部“筛选”按钮，所有类目在单行横向滑动轨道中完整展示，方向键左右移动时自动平滑居中滚动并保持流光胶囊跟随，避免向右翻分类时误触其他功能键。\n- “推荐”页默认隐藏筛选面板，保持清爽浏览；切换至电影、剧集、动漫等具体分类时，分类栏下方自动展开“类型、国家 / 地区、年份”三行筛选面板（在已选中分类上按遥控器确认键也可手动展开或收起，再次点击已选筛选项可取消该条件）。\n- 焦点下移进入海报墙浏览时，若已选择筛选条件则自动折叠为单行摘要条（显示已选条件并提供“修改”“重置”快捷入口），若未选择任何条件则自动完全收起让出纵向视野；进入详情页返回后完整保留当前筛选状态。\n\n3. **全引擎分类筛选修复**\n- 修复 Node / CatPaw / T4 宿主分类接口未透传 `ext` 筛选参数导致扩展爬虫筛选失效的问题，现同时解析明文 JSON 与 Base64URL 编码筛选载荷并安全转发。\n- 扩展常见片源筛选字段与标题映射（兼容 `cateId`、`type`、`plot`、`yr`、剧情、分类、风格、产地等），为苹果 CMS JSON/XML 站点补齐远程参数回退、XML `<vod_class>`/`<type>` 解析及 `vod_remarks`/`vod_tag` 备注字段筛选兜底；纯本地资料筛选不足一行时自动向后补扫分页。\n\n## 验证与包信息\n\n- 安装包：`MarcoMovie-0.5.19-android-tv.apk`（兼容别名 `MarcoMovie-0.5.19-preview.apk`），官方正式签名，支持应用内直接覆盖升级；不变更手机、Lite、Windows、macOS 或 iOS 已发布版本。\n- SHA-256：`4720d267180d50b9b24fdc8bf711d919b5221547f1b35a69add055fbf60ba117`。\n- 构建提交：`bd43b072d485775f9d6b003d8c21152c3d3110c6`。[Android 构建与公共守卫校验（42960060904）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42960060904) · [API 23 电视模拟器与宿主回归（42960060900）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42960060900)。\n- 说明：已完成离线单元回归、Node 宿主筛选测试与云端 API 23 电视模拟器自动化回归，不代表特定实体电视型号或第三方片源响应速度已完成实机验收。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.19/MarcoMovie-0.5.19-android-tv.apk",
+  "size": 35733669,
+  "sha256": "4720d267180d50b9b24fdc8bf711d919b5221547f1b35a69add055fbf60ba117",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.19-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.18-android-tv.apk": {
-      "size": 35725477,
-      "sha256": "e1baed140bac2237836c8ed472c599660b79f2a20b04d1e3769e0fe93caaf5e5",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.18/MarcoMovie-0.5.18-android-tv.apk"
+    "MarcoMovie-0.5.19-android-tv.apk": {
+      "size": 35733669,
+      "sha256": "4720d267180d50b9b24fdc8bf711d919b5221547f1b35a69add055fbf60ba117",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.19/MarcoMovie-0.5.19-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.18"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.19"
 }
