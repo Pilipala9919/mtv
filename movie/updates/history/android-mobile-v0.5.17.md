@@ -17,3 +17,4 @@
 - 安装包：`MarcoMovie-0.5.17-android-mobile.apk`（兼容别名 `MarcoMovie-0.5.17-mobile.apk`），官方正式签名，可直接覆盖安装升级。
 - SHA-256：`43a0ca1c3d2a28a958ff585ecc30652ddd6c5999095f432834d55ed27c28d1a0`。
 - 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。
+

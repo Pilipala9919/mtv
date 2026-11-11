@@ -14,3 +14,4 @@
 - 应用压缩包：`MarcoMovie-0.5.12-macos-desktop.zip`（兼容别名 `MarcoMovie-0.5.12-macos.zip`），未公证，首次打开请右键点击选择“打开”。
 - SHA-256：`bf1431eba87e317b4379a6921b99bafb809b05e5d148b41e9f27c6b9ce1cd9dd`。
 - 构建提交：`ba5e9a0240af0d2b8dd4a770e65430e4ac861a4a`。[构建与检查记录（42967305556）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42967305556)。
+

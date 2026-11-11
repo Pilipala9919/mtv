@@ -26,3 +26,4 @@ IPA 沿用未签名发布方式。扫码成功后的真实账号交换、iPhone 
 [构建与检查记录（42813074825）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42813074825)。安装包、SHA-256 校验文件和对应源码一并提供。
 
 IPA SHA-256：`5602961d0e9ac7491447d4941c2efb792b80a64078c027fd07262b8eeac703e9`。
+

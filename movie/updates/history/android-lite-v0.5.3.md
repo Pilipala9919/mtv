@@ -16,3 +16,4 @@
 - 安装包：`MarcoMovie-0.5.3-android-lite.apk`（兼容别名 `MarcoMovie-0.5.3-lite.apk`），官方正式签名。
 - SHA-256：`fac34864bb34c82f45a55aeca67b3166ae781e3bb11d3d8514839c0adcb3b8ca`。
 - 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。
+

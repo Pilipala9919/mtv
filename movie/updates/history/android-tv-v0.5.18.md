@@ -17,3 +17,4 @@
 - 安装包：`MarcoMovie-0.5.18-android-tv.apk`（兼容别名 `MarcoMovie-0.5.18-preview.apk`），官方正式签名，支持应用内直接覆盖升级。
 - SHA-256：`e1baed140bac2237836c8ed472c599660b79f2a20b04d1e3769e0fe93caaf5e5`。
 - 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。
+

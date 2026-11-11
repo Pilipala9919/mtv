@@ -29,3 +29,4 @@ Android 16 模拟器通过 122 项源检查；自适应播放布局通过 54 项
 构建代码：`c10becae6aea8506858a8076b7938a196d6300b8`（Android 0.5.1，版本代码 51）。
 
 [完整构建与回归](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42449618961)；[本机运行组件与 16KB 打包检查](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42449705860)。正式安装包经原签名重新签署、逐文件内容核对和摘要校验，附对应源码。验证范围为自动回归、模拟器和完整包检查，不代表全部机型或全部第三方源已完成真机播放验收。
+

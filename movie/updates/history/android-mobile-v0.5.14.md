@@ -21,3 +21,4 @@
 ## 验证范围
 
 - 通过 `check_public_content.py` 公开内容合规扫描与 `build_android.py` 正式签名与对齐校验。
+

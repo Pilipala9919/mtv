@@ -23,3 +23,4 @@
 - SHA-256：`4720d267180d50b9b24fdc8bf711d919b5221547f1b35a69add055fbf60ba117`。
 - 构建提交：`bd43b072d485775f9d6b003d8c21152c3d3110c6`。[Android 构建与公共守卫校验（42960060904）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42960060904) · [API 23 电视模拟器与宿主回归（42960060900）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42960060900)。
 - 说明：已完成离线单元回归、Node 宿主筛选测试与云端 API 23 电视模拟器自动化回归，不代表特定实体电视型号或第三方片源响应速度已完成实机验收。
+

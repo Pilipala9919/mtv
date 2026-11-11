@@ -22,3 +22,4 @@
 
 - Passed `scripts/check_public_content.py`, `scripts/test_drpy_assets.py`, `flutter/test_*.py`, and the `flutter test` suite on macOS.
 - Android-only native `.jar` Spider plugins without a cross-platform `CspBridge` / `GuardSource` / `DrpySource` adapter remain unsupported on desktop.
+

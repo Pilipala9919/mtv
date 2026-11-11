@@ -28,3 +28,4 @@
 - SHA-256：`c718a8a9e26b78d99622977f4b635acb42ce5349a1cf1df67bf698369ae359da`。
 - 构建提交：`a5aaabb01094e090f1bf3b2762e593cdb75824a7`。[Android 构建与离线回归校验（42966923078）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42966923078) · [公共守卫校验（42966922364）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42966922364)。
 - 说明：已完成公共守卫、Java 格式、全部离线单元回归及云端多架构构建校验，不代表特定实体手机型号或真实第三方网盘账号播放已完成实机验收。
+

@@ -22,3 +22,4 @@ IPA 为未签名包，沿用现有安装方式；未完成所有第三方插件�
 构建提交：`fcae8434ab31e61281541acbcd6af605d57569b5`。
 
 [构建与检查记录](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42755645003)。安装包、SHA-256 校验文件和对应源码一并附在此版本。
+

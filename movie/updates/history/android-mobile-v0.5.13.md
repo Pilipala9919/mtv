@@ -16,3 +16,4 @@
 
 - 通过 `ReviewFixChecks`、`UpdateLayoutChecks`、`test_android_update_packages.py` 与 `check_public_content.py` 本地校验。
 - 通过 `build_android.py` 正式签名与对齐校验。
+

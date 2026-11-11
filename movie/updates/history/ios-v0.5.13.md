@@ -10,3 +10,4 @@
    - 适度加长横屏右侧竖向工具条容器与按钮间距，显示更舒展自然。
 4. **修复 iOS 软件内拉取新版本一直加载中 / 404 的问题**：
    - 镜像站边缘代理与客户端更新器同步支持 `MarcoMovie-<ver>-ios-unsigned.ipa` 与 `MarcoMovie-<ver>-ios-iphone-ipad-unsigned.ipa` 双文件名自动映射与超时兜底，流式下载进度更新节流防卡顿。
+
