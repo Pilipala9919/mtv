@@ -79,10 +79,10 @@ class InstallWizardChecks(unittest.TestCase):
         # updates but are never a visible manual download here.
         self.assertNotIn('marcotv.wlj9919.top',self.app)
         self.assertNotIn('base+file',self.app)
-        self.assertIn('https://github.com/Pilipala9919/MarcoTV/releases/download/v0.15.0/MarcoTV-0.15.0.apk',self.app)
+        self.assertIn('https://github.com/Pilipala9919/MarcoTV/releases/download/v0.16.0/MarcoTV-0.16.0.apk',self.app)
         self.assertIn('https://pan.quark.cn/s/df36e65bca44',self.app)
-        self.assertIn('https://raw.githubusercontent.com/Pilipala9919/mtv/main/MarcoTV-Installer-1.0.0-Windows.exe',self.app)
-        self.assertIn('https://raw.githubusercontent.com/Pilipala9919/mtv/main/MarcoTV-Installer-1.0.0-Android.apk',self.app)
+        self.assertIn('https://raw.githubusercontent.com/Pilipala9919/mtv/main/MarcoTV-Installer-1.0.1-Windows.exe',self.app)
+        self.assertIn('https://raw.githubusercontent.com/Pilipala9919/mtv/main/MarcoTV-Installer-1.0.1-Android.apk',self.app)
 
 class OfficialApkChecks(unittest.TestCase):
     def test_choose_apk_ignores_restricted(self):
