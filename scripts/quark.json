@@ -23,16 +23,16 @@
   "windows-setup": {
     "folder": "/MarcoMovie/Windows安装版",
     "share_url": "https://pan.quark.cn/s/340eb49a4242",
-    "file": "MarcoMovie-0.5.15-windows-x64-setup.exe",
-    "version": "0.5.15",
-    "sha256": "3714fadaf6113f6c4966af972eae6e10f89addfde1e73b52e06d32001ad48575"
+    "file": "MarcoMovie-0.5.16-windows-x64-setup.exe",
+    "version": "0.5.16",
+    "sha256": "3eefd662aebc328c22b7e3e5196df0166cf3fcbf3b379cc2b5d266f83f4eee13"
   },
   "windows-zip": {
     "folder": "/MarcoMovie/Windows绿色版",
     "share_url": "https://pan.quark.cn/s/097b525e7317",
-    "file": "MarcoMovie-0.5.15-windows-x64-portable.zip",
-    "version": "0.5.15",
-    "sha256": "6de8c3dcf6b5a9c69b9ccfd2ebcf75079424f7433965e6ddd14448ffefb009aa"
+    "file": "MarcoMovie-0.5.16-windows-x64-portable.zip",
+    "version": "0.5.16",
+    "sha256": "6d775b55d38d76d4fe89576554f16fb92843fb064ff7322d946109de7f75b406"
   },
   "macos": {
     "folder": "/MarcoMovie/macOS",
