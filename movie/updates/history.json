@@ -2,6 +2,30 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "macos-v0.5.12",
+      "version": "0.5.12",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-11T06:54:47Z",
+      "prerelease": false,
+      "target_commitish": "ba5e9a0240af0d2b8dd4a770e65430e4ac861a4a",
+      "notes": "# Marco Movie macOS 0.5.12\n\n发布日期：2026-11-11。应用版本：`0.5.12`（构建号 `62`）。本次更新同步修复阿里云盘扫码确认后中文昵称 GBK 解码失败、百度网盘带提取码分享播放签名与区域 CDN 跳转、高码率网盘原画起播缓冲超时自动降档、选集详情页备用网盘失效提示折叠与夸克目录误报，以及全站搜索并发读取失败问题。\n\n## 更新内容\n\n- **阿里云盘扫码登录修复与轮询保活**：修复阿里云盘 `bizExt` 内置 GBK 中文昵称导致扫码确认后报“网盘账号验证未完成”的问题，并保持点击跳转授权后的后台二维码状态轮询。\n- **百度分享直链与高码率网盘播放加固**：修复带提取码百度分享 `sekey` 二次编码与签名问题，支持 `d.pcs.baidu.com` 区域 CDN 跳转并剥离跨域 `Cookie`；同步合入 `CloudMediaProxy` 探测断连及时回收与首帧起播缓冲超时自动清晰度降档保护。\n- **详情页告警折叠与并发搜索优化**：修正夸克分享目录末页误报“目录返回不完整”，已有可用线路时自动折叠跳过的失效备用分享；共享插件包并发单次下载去重与宿主串行解包，消除全站搜索批量“暂时无法读取”。\n\n## 验证范围与包信息\n\n- 公共内容守卫检查、Python / JS / CatPaw 共享宿主检查、全部 `658` 项 Flutter 自动化测试及 macOS 原生 `Mpv.framework` 合成鉴权回放回归通过；自动化测试不代表已完成用户私人网盘账号实机全片验收。\n- 应用压缩包：`MarcoMovie-0.5.12-macos-desktop.zip`（兼容别名 `MarcoMovie-0.5.12-macos.zip`），未公证，首次打开请右键点击选择“打开”。\n- SHA-256：`bf1431eba87e317b4379a6921b99bafb809b05e5d148b41e9f27c6b9ce1cd9dd`。\n- 构建提交：`ba5e9a0240af0d2b8dd4a770e65430e4ac861a4a`。[构建与检查记录（42967305556）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42967305556)。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.12"
+    },
+    {
+      "tag": "ios-v0.5.20",
+      "version": "0.5.20",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-11T06:54:43Z",
+      "prerelease": false,
+      "target_commitish": "ba5e9a0240af0d2b8dd4a770e65430e4ac861a4a",
+      "notes": "# Marco Movie iOS / iPadOS 0.5.20\n\n发布日期：2026-11-11。应用版本：`0.5.20`（构建号 `70`），最低系统要求：iOS / iPadOS 14.0。本次更新集中修复 iOS 实机反馈的五大问题：四大网盘（夸克、UC、百度网盘、阿里云盘）本机直接跳转 App 授权与扫码登录、百度带提取码分享播放失败、选集详情页失效备用分享提示刷屏与夸克目录误报、全站并发搜索多线路读取失败，以及设置页底部 Dock 上层高遮罩遮挡问题。\n\n## 核心修复与优化\n\n1. **四大网盘本机直接跳转 App 授权与扫码登录全链路修复**\n- **阿里云盘（我的阿狸）**：修复扫码确认登录后因官方 `bizExt` 内置中文昵称采用 GBK 编码（含 `0x5C` 尾字节边界）导致 UTF-8 解码异常、误报“网盘账号验证未完成”的问题；新增 iOS / iPadOS 原生 `WKWebView` 授权页（`marco_movie/netdisk_auth`），点击「本机跳转授权」可直接完成本机免密、唤起淘宝 App（`tbopen://`）一键授权或验证码登录并自动提取 `refresh_token`，同时支持一键保存二维码并拉起阿里云盘 App（`smartdrive://`）相册扫码。\n- **百度网盘（我的嘟嘟）**：移除 iOS 端无效的安卓专用 `bdnetdisk://n/action.EXTERNAL_LINK` 链接；接入百度 Passport 官方移动端原生授权通道（`wappass.baidu.com` + `bdnetdisk://com.baidu.passport/grantweb` / `baiduyunipad://` / `baiduboxapp://`），点击「本机跳转授权」可直接唤起本机百度网盘 App 原生「授权登录」确认页，授权返回后自动交换并校验 `pan.baidu.com` 域 `BDUSS` 与 `STOKEN`。\n- **夸克网盘（我的夸父）与 UC 网盘（我的优汐）**：补齐 iPhone 与 iPad 独立官方 `appkey` 协议（`qklink://`、`qkcloudlink://`、`uclink://`、`ucliteioslink://`），按设备形态优先唤起客户端确认页，未安装客户端时自动回退应用内网页登录，并修复跳转后二维码轮询定时器未续期的问题。\n\n2. **修复百度网盘带提取码分享播放失败与区域 CDN 重定向问题**\n- 修复带提取码的百度分享请求 DLNA 原画直链时 `sekey`（`randsk`）二次 URL 编码及账号标识签名问题，放宽本地 `CloudMediaProxy` 对 `d.pcs.baidu.com` 多级区域 P2SP CDN 节点的 HTTPS 跳转支持并自动隔离账号 `Cookie`；同步包含探测流断连回收与高码率起播缓冲超时自动清晰度降档保护。\n\n3. **修复选集详情页分享告警刷屏与夸克目录误报**\n- 修复夸克公开分享目录因历史删减文件导致原站总数字段偏大时误报“目录返回不完整”的问题；已有可用播放线路时自动将失效的备用网盘分享折叠为单行摘要（可点击展开查看明细）。\n\n4. **修复全站搜索多线路并发读取失败**\n- 为内置本地脚本宿主新增启动队列串行化保护、提升 iOS 无 JIT 模式解包超时余量，并对共用同一插件包的多个站点实施并发单次下载去重，消除并发争抢导致的批量“暂时无法读取”。\n\n5. **修复设置页底部 Dock 上层遮挡问题**\n- 移除设置页外层重复叠加的底部裁剪边距与底部安全区硬截断，改为与主页一致的全屏穿透液态玻璃透明滚动样式，“关于与更新”与“数据”入口不再被高黑底遮挡。\n\n## 验证范围与包信息\n\n- 公共内容守卫检查、Python / JS / CatPaw 运行时检查、iOS 壳层幂等测试及完整 `658` 项 Flutter 自动化测试全部通过；自动化测试不代表已使用用户私人真实账号对全部第三方网盘客户端完成实机验收。\n- IPA 已核验为 **0.5.20（70）**，`MarcoMovie-0.5.20-ios-unsigned.ipa` 与 `MarcoMovie-0.5.20-ios-iphone-ipad-unsigned.ipa` 字节一致；未签名包支持巨魔（TrollStore）直接覆盖安装或证书自签安装。\n- 构建提交：`ba5e9a0240af0d2b8dd4a770e65430e4ac861a4a`。[构建与检查记录（42967305556）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42967305556)。\n- IPA SHA-256：`dc74c75793438807d1e4959e277d8e3f195c5266fa0d04f12851d48cf51969a9`。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.20"
+    },
+    {
       "tag": "windows-v0.5.14",
       "version": "0.5.14",
       "platforms": [

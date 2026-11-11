@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "platform": "macos",
-  "versionName": "0.5.11",
+  "versionName": "0.5.12",
   "prerelease": false,
-  "notes": "# Marco Movie macOS 0.5.11\n\n应用版本：0.5.11（61）。本次同步百度网盘扫码登录与网盘流播放修复，并改进 macOS 桌面端更新引导与键盘交互体验。\n\n## 更新内容\n\n- **百度网盘扫码与云盘流播放修复**：修复百度扫码登录状态识别与跨域名登录跳转，新增本地 `CloudMediaProxy` 云盘鉴权流代理，解决百度网盘、夸克网盘高码率直链播放失败问题。\n- **macOS 更新下载与打开优化**：应用内下载并完成 SHA-256 校验后自动在访达（Finder）中定位下载好的压缩包，方便拖入“应用程序”覆盖更新。\n- **桌面端键盘与全屏修复**：修复输入框打字时误触发全局快捷键及退出全屏后窗口置顶异常的问题；同步新版分层胶囊设置界面。\n\n## 包信息\n\n- 应用压缩包：`MarcoMovie-0.5.11-macos-desktop.zip`（兼容别名 `MarcoMovie-0.5.11-macos.zip`），未公证，首次打开请右键点击选择“打开”。\n- SHA-256：`48fcc4f7241cd6fd22fa56b9f41e0e23de57fa3968bcbaac0f3944f2cd94fe85`。\n- 构建提交：`39e2cf2d00c4ef3b71ff395a7d5742a1afc1c33e`。[构建与检查记录（42937702864）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42937702864)。\n",
+  "notes": "# Marco Movie macOS 0.5.12\n\n发布日期：2026-11-11。应用版本：`0.5.12`（构建号 `62`）。本次更新同步修复阿里云盘扫码确认后中文昵称 GBK 解码失败、百度网盘带提取码分享播放签名与区域 CDN 跳转、高码率网盘原画起播缓冲超时自动降档、选集详情页备用网盘失效提示折叠与夸克目录误报，以及全站搜索并发读取失败问题。\n\n## 更新内容\n\n- **阿里云盘扫码登录修复与轮询保活**：修复阿里云盘 `bizExt` 内置 GBK 中文昵称导致扫码确认后报“网盘账号验证未完成”的问题，并保持点击跳转授权后的后台二维码状态轮询。\n- **百度分享直链与高码率网盘播放加固**：修复带提取码百度分享 `sekey` 二次编码与签名问题，支持 `d.pcs.baidu.com` 区域 CDN 跳转并剥离跨域 `Cookie`；同步合入 `CloudMediaProxy` 探测断连及时回收与首帧起播缓冲超时自动清晰度降档保护。\n- **详情页告警折叠与并发搜索优化**：修正夸克分享目录末页误报“目录返回不完整”，已有可用线路时自动折叠跳过的失效备用分享；共享插件包并发单次下载去重与宿主串行解包，消除全站搜索批量“暂时无法读取”。\n\n## 验证范围与包信息\n\n- 公共内容守卫检查、Python / JS / CatPaw 共享宿主检查、全部 `658` 项 Flutter 自动化测试及 macOS 原生 `Mpv.framework` 合成鉴权回放回归通过；自动化测试不代表已完成用户私人网盘账号实机全片验收。\n- 应用压缩包：`MarcoMovie-0.5.12-macos-desktop.zip`（兼容别名 `MarcoMovie-0.5.12-macos.zip`），未公证，首次打开请右键点击选择“打开”。\n- SHA-256：`bf1431eba87e317b4379a6921b99bafb809b05e5d148b41e9f27c6b9ce1cd9dd`。\n- 构建提交：`ba5e9a0240af0d2b8dd4a770e65430e4ac861a4a`。[构建与检查记录（42967305556）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42967305556)。\n",
   "packages": {
-    "MarcoMovie-0.5.11-macos-desktop.zip": {
-      "size": 118164109,
-      "sha256": "48fcc4f7241cd6fd22fa56b9f41e0e23de57fa3968bcbaac0f3944f2cd94fe85",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/macos-v0.5.11/MarcoMovie-0.5.11-macos-desktop.zip"
+    "MarcoMovie-0.5.12-macos-desktop.zip": {
+      "size": 118198911,
+      "sha256": "bf1431eba87e317b4379a6921b99bafb809b05e5d148b41e9f27c6b9ce1cd9dd",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/macos-v0.5.12/MarcoMovie-0.5.12-macos-desktop.zip"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.11"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.12"
 }
