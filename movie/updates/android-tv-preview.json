@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.19",
-  "versionCode": 74,
+  "versionName": "0.5.20",
+  "versionCode": 77,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android TV / 盒子 0.5.19\n\n应用版本：0.5.19（versionCode 74）。本次更新重绘电视端高清矢量 Dock 图标、修复顶部 Dock 模式下左上角品牌标志对齐与固定挂载，并全面重构首页单行分类与沉浸式筛选及全引擎筛选透传能力。\n\n## 更新内容\n\n1. **Dock 栏高清矢量图标与顶部品牌标志对齐**\n- 电视端 Dock 导航栏 6 个图标（首页、搜索、直播、收藏、网盘、设置）重绘为 `1:1` 原生屏幕物理像素坐标矢量图形并加入整数线宽像素吸附对齐，解决原有 `24x24` 画布缩放导致的边缘发虚问题；同步优化横排与竖排下当前页圆点指示器的防遮挡间距。\n- 当“设置 → 首页与壁纸 → Dock 位置”设为顶部时，左上角 `MARCO MOVIE` 品牌标志改为固定挂载在顶层视口，与顶部 Dock 栏严格保持同一高度与垂直居中齐平（兼容 `85%`–`140%` 导航大小缩放），上下浏览片单时不再随页面下移或滚出屏幕。\n\n2. **首页单行分类与沉浸式筛选重构**\n- 移除电视端分类栏的“更多分类”弹窗按钮与尾部“筛选”按钮，所有类目在单行横向滑动轨道中完整展示，方向键左右移动时自动平滑居中滚动并保持流光胶囊跟随，避免向右翻分类时误触其他功能键。\n- “推荐”页默认隐藏筛选面板，保持清爽浏览；切换至电影、剧集、动漫等具体分类时，分类栏下方自动展开“类型、国家 / 地区、年份”三行筛选面板（在已选中分类上按遥控器确认键也可手动展开或收起，再次点击已选筛选项可取消该条件）。\n- 焦点下移进入海报墙浏览时，若已选择筛选条件则自动折叠为单行摘要条（显示已选条件并提供“修改”“重置”快捷入口），若未选择任何条件则自动完全收起让出纵向视野；进入详情页返回后完整保留当前筛选状态。\n\n3. **全引擎分类筛选修复**\n- 修复 Node / CatPaw / T4 宿主分类接口未透传 `ext` 筛选参数导致扩展爬虫筛选失效的问题，现同时解析明文 JSON 与 Base64URL 编码筛选载荷并安全转发。\n- 扩展常见片源筛选字段与标题映射（兼容 `cateId`、`type`、`plot`、`yr`、剧情、分类、风格、产地等），为苹果 CMS JSON/XML 站点补齐远程参数回退、XML `<vod_class>`/`<type>` 解析及 `vod_remarks`/`vod_tag` 备注字段筛选兜底；纯本地资料筛选不足一行时自动向后补扫分页。\n\n## 验证与包信息\n\n- 安装包：`MarcoMovie-0.5.19-android-tv.apk`（兼容别名 `MarcoMovie-0.5.19-preview.apk`），官方正式签名，支持应用内直接覆盖升级；不变更手机、Lite、Windows、macOS 或 iOS 已发布版本。\n- SHA-256：`4720d267180d50b9b24fdc8bf711d919b5221547f1b35a69add055fbf60ba117`。\n- 构建提交：`bd43b072d485775f9d6b003d8c21152c3d3110c6`。[Android 构建与公共守卫校验（42960060904）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42960060904) · [API 23 电视模拟器与宿主回归（42960060900）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42960060900)。\n- 说明：已完成离线单元回归、Node 宿主筛选测试与云端 API 23 电视模拟器自动化回归，不代表特定实体电视型号或第三方片源响应速度已完成实机验收。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.19/MarcoMovie-0.5.19-android-tv.apk",
-  "size": 35733669,
-  "sha256": "4720d267180d50b9b24fdc8bf711d919b5221547f1b35a69add055fbf60ba117",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.19-android-tv.apk",
+  "notes": "# Marco Movie Android TV / 盒子 0.5.20\r\n\r\n应用版本：0.5.20（versionCode 77）。本次更新新增电视端自适应新版悬浮卡片播放界面、重构带观看进度的海报墙历史记录页、恢复 Dock 胶囊毛玻璃外框并收敛内部方形圆角焦点框，同时全面优化遥控器移焦、页面滚动与毛玻璃采样帧率。\r\n\r\n## 更新内容\r\n\r\n1. **新版悬浮卡片播放页与屏幕比例自适应**\r\n- 新增电视端现代悬浮卡片播放界面（默认启用，可在“设置 → 播放与解码 → 播放页样式”中随时切换“新版悬浮卡片 / 经典工具栏”）：底部悬浮卡片整合当前片名与分集、全套圆形矢量操作按钮（播放/暂停、下一集、选集、字幕、音轨、换源、倍速、更多）、纤细胶囊进度条、实时流媒体技术参数胶囊（分辨率、杜比视界/HDR/编码、声道格式、解码方式）与等宽数字时间码；点击字幕、音轨、换源、倍速或更多时在对应按钮上方平滑弹出带矢量图标与胶囊选中态的悬浮菜单。\r\n- 引入基于视口物理分辨率比例的自适应尺寸换算，控制卡片、上拉弹窗与各级字号均随屏幕比例协调缩放，不受界面放大档位（`110%` / `120%`）或系统字体放大影响；重做右上角实时时钟为细体等宽数字与自绘居中双圆点冒号，并修复 Android 9（API 28）设备 `SeekBar.setMinHeight` 兼容问题。\r\n\r\n2. **Dock 栏焦点框收敛与海报墙观看历史**\r\n- 保持电视端 Dock 导航栏原版胶囊毛玻璃外框与胶囊提示气泡样式，将内部滑动选中焦点框收敛为低调克制的方形圆角微光样式。\r\n- 电视端“观看历史”页面由纯文字列表重构为多列竖版海报墙，右上角展示观看集数/资源标签，海报底部叠加渐变遮罩、观看百分比（如 `已看 87%` / `已看完`）与白色进度条，支持确认键续播、长按或菜单键单条移除及一键清空。\r\n\r\n3. **滚动、动画与毛玻璃掉帧优化**\r\n- 优化 `FocusMotion` 背景复用、`GlassSelection` 预分配着色器矩阵、`TvScrollView` 帧驱动平滑滚动、`HomeAmbient` 低分辨率预模糊背景缓存及 `GlassworkSurface` `BitmapShader` 圆角直绘与背景变化节流，降低分类切换、海报翻页与连续移焦时的绘制开销。\r\n\r\n## 验证与包信息\r\n\r\n- 安装包：`MarcoMovie-0.5.20-android-tv.apk`（兼容别名 `MarcoMovie-0.5.20-preview.apk`），官方正式签名，支持应用内直接覆盖升级；不变更手机、Lite、Windows、macOS 或 iOS 已发布版本。\r\n- SHA-256：`8a0f8dfdfc134df3f963fcf8e07082aa967b6f404c31a1845128ab1ca545ace3`。\r\n- 构建提交：`a1e8a0eb2e8edcb917d716eb5de2d23443d928bf`。[Android 构建与公共守卫校验（42977694295）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42977694295) · [API 23 电视模拟器与宿主回归（42977694074）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/42977694074)。\r\n- 说明：已完成离线回归、云端 API 23 电视模拟器回归及小米电视（`MiTV-ASTP0`，Android 9，`1920×1080`）覆盖安装与实机播放验证；不代表所有第三方电视/盒子固件或外部片源响应速度均已完成穷举验收。\r\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.20/MarcoMovie-0.5.20-android-tv.apk",
+  "size": 35786917,
+  "sha256": "8a0f8dfdfc134df3f963fcf8e07082aa967b6f404c31a1845128ab1ca545ace3",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.20-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.19-android-tv.apk": {
-      "size": 35733669,
-      "sha256": "4720d267180d50b9b24fdc8bf711d919b5221547f1b35a69add055fbf60ba117",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.19/MarcoMovie-0.5.19-android-tv.apk"
+    "MarcoMovie-0.5.20-android-tv.apk": {
+      "size": 35786917,
+      "sha256": "8a0f8dfdfc134df3f963fcf8e07082aa967b6f404c31a1845128ab1ca545ace3",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.20/MarcoMovie-0.5.20-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.19"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.20"
 }
