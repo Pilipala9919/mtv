@@ -2,8 +2,10 @@
 
 One folder per platform, one permanent share link per folder. The share
 link never changes: a new release only uploads the new file into the
-folder and deletes the previous file this script uploaded. iOS always retains
-existing files, including when invoked by the scheduled multi-platform sync.
+folder and deletes the previous file this script uploaded. iOS follows
+the same rule on normal runs (older versions are pruned once the current
+package is verified in place); only an explicit --keep-old run retains
+existing files.
 
 Current package per platform comes from the per-platform feeds the
 mirror already publishes (movie/updates/<platform>.json), or from the
@@ -436,7 +438,26 @@ def verify_ios_publication(root, snapshot, before_upload=False):
         raise QuarkError("iOS share manifest changed during upload; publication stopped")
 
 
-def sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run):
+def prune_stale_files(folder, name):
+    """Remove every file in folder except name.
+
+    Only called after the current package was verified present in the
+    folder, so the new version is never at risk. A failed removal only
+    warns; the sync still succeeds and retries on the next run.
+    Non-file entries are never touched.
+    """
+    stale = [row["name"] for row in list_folder_entries(folder)
+             if row.get("type") == "file" and row["name"] != name]
+    if not stale:
+        return
+    print(f"  removing previous version(s): {', '.join(stale)}")
+    try:
+        remove_files(folder, stale)
+    except QuarkError as exc:
+        print(f"  warning: remove stale failed: {exc}")
+
+
+def sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run, prune=False):
     name, url, size, digest, version = source
     validate_published_source(key, source)
     entry = manifest.get(key, {})
@@ -446,7 +467,8 @@ def sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run):
             or not re.fullmatch(r"/s/[A-Za-z0-9_-]+", share.path)):
         raise QuarkError("Keep-old mode requires the existing managed folder and permanent share")
     if dry_run:
-        print(f"[{key}] verified {version}; would upload without removing any files")
+        print(f"[{key}] verified {version}; would upload"
+              + (" and prune older versions" if prune else " without removing any files"))
         return entry
     local = Path(tmpdir) / name
     download(url, local, size, digest)
@@ -458,7 +480,11 @@ def sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run):
         if entry.get("file") != name or entry.get("sha256") != digest:
             raise QuarkError("Same-name package already exists; keep-old mode refuses replacement")
         checked_remote_file(before, name, size)
-        print(f"[{key}] verified package is already present; no upload or deletion")
+        if prune:
+            print(f"[{key}] verified package is already present; pruning older versions")
+            prune_stale_files(folder, name)
+        else:
+            print(f"[{key}] verified package is already present; no upload or deletion")
         return entry
     upload_file(local, folder)
     after = list_folder_entries(folder)
@@ -467,13 +493,24 @@ def sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run):
         if not any(all(candidate.get(k) == row.get(k) for k in ("name", "type", "size"))
                    for candidate in after):
             raise QuarkError("Existing directory entries changed during upload")
-    print(f"[{key}] uploaded and verified {version}; all existing files retained")
+    if prune:
+        print(f"[{key}] uploaded and verified {version}")
+        prune_stale_files(folder, name)
+    else:
+        print(f"[{key}] uploaded and verified {version}; all existing files retained")
     return {**entry, "folder": folder, "file": name, "version": version, "sha256": digest}
 
 
 def sync_platform(key, folder, source, manifest, tmpdir, dry_run, keep_old=False):
-    if keep_old or key == "ios":
+    if keep_old:
         return sync_preserving_files(key, folder, source, manifest, tmpdir, dry_run)
+    if key == "ios":
+        # iOS keeps the preserving upload flow, but prunes older versions
+        # once the current package is verified in place (2026-11-11: the
+        # folder had accumulated 0.5.17/0.5.18/0.5.19 alongside 0.5.21
+        # because the preserving path never deleted anything).
+        return sync_preserving_files(key, folder, source, manifest, tmpdir,
+                                     dry_run, prune=True)
     name, url, size, sha256, version = source
     size_mb = f"{size / 1024 / 1024:.1f} MB" if size else "?"
     print(f"[{key}] {name} ({version or '?'}, {size_mb}) -> {folder}")
