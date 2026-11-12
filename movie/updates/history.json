@@ -2,6 +2,78 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "android-lite-v0.5.4",
+      "version": "0.5.4",
+      "platforms": [
+        "android-lite"
+      ],
+      "published_at": "2026-11-12T03:45:53Z",
+      "prerelease": false,
+      "target_commitish": "b851a910ff321820f5ac3354c39387e028de7bdd",
+      "notes": "# Marco Movie Android Lite 0.5.4\n\n发布日期：2026-11-12。应用版本：`0.5.4`（versionCode `54`）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存），本次更新同步接入全平台互通的 **`marco-movie-sync` v2 多端网络同步**。\n\n## 更新内容\n\n1. **兼容 API 14 老设备的 `marco-movie-sync` v2 多端同步（`LiteSync`）**\n- 在保持单 DEX 超小体积与 Android 4.0+（TLS 1.2 兼容）最低要求的前提下，完整支持标准 WebDAV 自动云同步（含原生套接字 `MKCOL` 多级建目录、启动静默拉取与进度/收藏变更自动推送）及局域网点对点双向同步（`/<token>/sync`）。\n- 顶栏新增「同步」快捷胶囊、首页新增「多端网络同步」入口，老盒子或老电视无需繁琐遥控打字，用手机局域网配对或连接同一 WebDAV 即可双向同步观看进度与收藏。\n\n2. **多端公开订阅源无损互通与跨源搜索回退**\n- 开启「同时同步我的公开订阅源配置」时，Android Lite 可直接拉取手机或电脑端的公开 JSON / XML / 多仓订阅配置一键启用；当云端存有标准版或桌面端的多份订阅时，Lite 写回云端会自动完整保留全部次要订阅条目，绝不覆盖丢失其他设备的多仓/多源配置。\n- 打开外端同步的观看历史或收藏条目而当前源不存在对应站点时，自动回退至跨站全局搜索；导出订阅时自动剥离隐私标记与隐私分组条目。\n\n## 包信息与构建记录\n\n- **安装包**：`MarcoMovie-0.5.4-android-lite.apk`（更新兼容别名 `MarcoMovie-0.5.4-lite.apk`），官方正式签名。\n- **SHA-256**：`a83807940add47514e3a9cef2d51648588dd5cb4fae72fc16b0fb2e7f4aae8ae`。\n- **对应源码包**：`MarcoMovie-android-lite-v0.5.4-source.zip`，SHA-256：`0db787258fa78e573c68399616e975137ff562fd28a470ecf4b0739a9e630870`。\n- **构建提交**：`b851a910ff321820f5ac3354c39387e028de7bdd`。[多端原生构建与校验记录（43147174023）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43147174023)。\n\n## 验证范围与限制\n\n- 通过公共内容守卫检查、API 14 `bootclasspath` 与 D8 `--min-api 14` 单 DEX 编译校验、`67` 项 TV Lite JVM 离线回归（含 v2 多订阅无损保留、隐私条目剥离、局域网双向同步与 WebDAV `MKCOL` 校验）、3 项 TLS 能力检查及官方正式签名校验；未声明实体老旧电视实机验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.4"
+    },
+    {
+      "tag": "android-mobile-v0.5.21",
+      "version": "0.5.21",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-12T03:45:49Z",
+      "prerelease": false,
+      "target_commitish": "b851a910ff321820f5ac3354c39387e028de7bdd",
+      "notes": "# Marco Movie Android 手机 / 平板 0.5.21\n\n发布日期：2026-11-12。版本代码：`80`。本次更新为 Android 手机与平板端正式接入全平台互通的 **`marco-movie-sync` v2 多端网络同步**，与 Android 电视、Android Lite、iOS / iPadOS、Windows 及 macOS 无缝互通观看进度、收藏列表与可选公开订阅源配置。\n\n## 多端网络同步 v2 与移动端交互升级\n\n- **WebDAV 自动云同步与局域网点对点双向互传**：支持坚果云、Nextcloud、Alist、NAS 等标准 WebDAV 服务（支持原生 `MKCOL` 自动创建多级目录、启动静默拉取与播放/收藏/订阅变更自动节流推送），并提供本机局域网同步二维码生成及扫码/粘贴对端地址双向合并，同一 Wi-Fi 下无需云盘即可与客厅电视、iPad 或电脑秒级同步。\n- **可选公开订阅源同步与移动端「已添加源」多订阅切换**：新增默认开启的「同时同步我的公开订阅源配置」开关，新手机连接同步即可一步导入公开订阅仓库、观看历史与收藏并自动启用片源；同时为手机/平板端完整开放 `ConfigLibrary`「已添加源」管理与删除能力（设置 → 订阅与账号 → 已添加源 / 片源选择器底部入口）。点击外端同步记录若本机缺少原站点，自动回退至跨源聚合搜索。\n- **全场景触控入口与严格隐私隔离**：在首次启动欢迎页、底部「片库」顶栏「多端同步」胶囊、「设置 → 订阅与账号」及「设置 → 数据」二级页面全面接入 iOS 风格深色玻璃同步面板；隐私空间内容、混合订阅中的隐私站点/直播、本机 `file://` 配置、网盘 Cookie / Token 与 Emby 凭据严格保留在本机，绝不外传。\n\n## 包信息与构建记录\n\n- **安装包（ARM64 + ARMv7 双架构）**：`MarcoMovie-0.5.21-android-mobile.apk`（更新兼容别名 `MarcoMovie-0.5.21-mobile.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`d52ec57cce6ae6874264c8f35575501ec26542aa3db49c032ca148ac402aa164`。\n- **对应源码包**：`MarcoMovie-android-mobile-v0.5.21-source.zip`，SHA-256：`0db787258fa78e573c68399616e975137ff562fd28a470ecf4b0739a9e630870`。\n- **构建提交**：`b851a910ff321820f5ac3354c39387e028de7bdd`。[多端原生构建与校验记录（43147174023）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43147174023)。\n\n## 验证范围与限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线同步与多订阅回归、16KB 页对齐双架构原生构建及官方正式签名校验。\n- 自动化构建与离线回归不代表特定实体手机型号或外部私有 WebDAV 服务已完成实机穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.21"
+    },
+    {
+      "tag": "android-tv-v0.5.21",
+      "version": "0.5.21",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-12T03:45:44Z",
+      "prerelease": false,
+      "target_commitish": "b851a910ff321820f5ac3354c39387e028de7bdd",
+      "notes": "# Marco Movie Android 电视 / 盒子 0.5.21\n\n发布日期：2026-11-12。版本代码：`79`。本次更新为电视与机顶盒端正式带来全平台互通的 **`marco-movie-sync` v2 多端网络同步**，支持大屏遥控零打字扫码直连同步与 WebDAV 自动云同步，客厅看一半切到手机、平板或电脑即可接着看。\n\n## 全平台多端网络同步 v2（大屏扫码直连 + WebDAV 自动云同步）\n\n- **电视扫码免输入双向同步**：电视首页欢迎页「多端同步」、观看历史页、我的收藏页、「设置 → 数据 → 多端网络同步」以及原有「手机扫码配置」弹窗均已升级支持 `/configure/<token>/sync` 双向同步协议。打开电视二维码后，同一局域网内的手机、平板或电脑无需输入密码即可一键把公开订阅源、收藏与观看进度推送并合并到电视端，解决遥控器输入长地址痛点。\n- **WebDAV 自动云同步与原生 `MKCOL` 目录自建**：支持坚果云、群晖 / 威联通 NAS、Alist、Nextcloud 等标准 WebDAV 服务，采用原生套接字级 `MKCOL` 逐级创建缺失远端目录，启动后静默拉取最新记录，播放存盘、收藏增删与订阅变更后自动防抖推送。\n- **可选同步公开订阅源与多订阅管理（`ConfigLibrary`）**：默认开启「同时同步我的订阅源配置」，新电视首次同步即可自动拉取并激活云端公开订阅源，亦可在片源选择器的「已添加源」中自由切换或删除多份订阅（带 `sub:` 墓碑同步防复活）；点击其他设备同步来的记录若缺少原站点，自动跳转全站聚合搜索。\n- **严格隔离隐私空间与账号凭据**：进入隐私空间时彻底停用同步读写；导出订阅前自动剥离带 `isPrivate` / `private` / `hidden` / `space:\"private\"` 或「隐私 / 私密」分组的站点与直播源，网盘登录 Cookie / Token 与 Emby 凭据绝不上传。\n\n## 包信息与构建记录\n\n- **安装包（32 位电视 / 盒子专版）**：`MarcoMovie-0.5.21-android-tv.apk`（更新兼容别名 `MarcoMovie-0.5.21-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`7c67cbe5ff521fc760c2fcc5b74a8d238e1f9105064a908d4dee01054b2c1d4d`。\n- **对应源码包**：`MarcoMovie-android-tv-v0.5.21-source.zip`，SHA-256：`0db787258fa78e573c68399616e975137ff562fd28a470ecf4b0739a9e630870`。\n- **构建提交**：`b851a910ff321820f5ac3354c39387e028de7bdd`。[多端原生构建与校验记录（43147174023）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43147174023)。\n\n## 验证范围与限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线同步回归（16 项 WebDAV `MKCOL`、局域网双向合并、墓碑与隐私剥离检查 + 13 项多订阅库检查 + 27 项电视局域网配对检查）、API 23 回调依赖校验及官方正式签名校验。\n- 自动化与离线协议验证不代表所有第三方电视/盒子固件及外部私有 WebDAV 服务均已完成实机验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.21"
+    },
+    {
+      "tag": "macos-v0.5.14",
+      "version": "0.5.14",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-12T03:45:40Z",
+      "prerelease": false,
+      "target_commitish": "b851a910ff321820f5ac3354c39387e028de7bdd",
+      "notes": "# Marco Movie macOS 0.5.14\n\n发布日期：2026-11-12。应用版本：`0.5.14`（构建号 `64`）。本次更新正式上线全平台互通的 **`marco-movie-sync` v2 多端网络同步**（支持用户自配 WebDAV 自动云同步与局域网点对点双向直连同步），并包含此前合入的 21 套 `Guard` 纯数据插件适配、`XBPQ` / `XYQ` / `XPath` 规则引擎、选集页秒开提速及真实豆瓣 / 烂番茄评分胶囊恢复。\n\n## 更新内容\n\n- **全平台 `marco-movie-sync` v2 多端网络同步**：支持连接坚果云、NAS、Alist、Nextcloud 等标准 WebDAV 服务实现启动自动拉取与进度/收藏/订阅变更自动推送（支持 `MKCOL` 自动建目录与单调删除墓碑防复活），同时内置 5 分钟随机令牌局域网双向同步服务（`LanSyncServer`），无需云盘即可与同一网络下的 iPhone / iPad、Android 电视/手机或 Windows 电脑点对点双向合并。\n- **可选公开订阅源同步与严格隐私隔离**：支持「同时同步我的订阅源配置」开关（默认开启），新 Mac 可一键同步公开订阅仓库、观看历史与收藏列表；关闭时仅同步进度与收藏并保留云端已有订阅。跨端点击缺失片源的历史或收藏自动回退至聚合搜索；隐私空间内容、本机 `file://` 配置、网盘 Cookie / Token 与 Emby 凭据严格保留在本机，绝不外发。\n- **片源规则扩展、详情秒开与真实评分胶囊同步**：同步内置 21 套无 JIT `Guard` 协议适配器、纯 Dart `CspRuleEngines`（`csp_XBPQ` / `csp_XYQ` / `csp_XPath*`）与 `api.php/v1.vod` 解析，优化 `DetailScreen` 连接池复用与 4 路快源竞速，并恢复经年份与标题核验的真实豆瓣 / 烂番茄评分徽章（无真实数据时自动隐藏）。\n\n## 包信息与构建记录\n\n- **macOS 桌面应用包（Apple Silicon / Intel）**：`MarcoMovie-0.5.14-macos-desktop.zip`（更新兼容别名 `MarcoMovie-0.5.14-macos.zip`），SHA-256：`f74b08e03c28eea74abbf885ebd32feb93705bda5e9e4e49f80bac199f6d9364`。\n- **对应源码包**：`MarcoMovie-macos-v0.5.14-source.zip`，SHA-256：`0db787258fa78e573c68399616e975137ff562fd28a470ecf4b0739a9e630870`。\n- **构建提交**：`b851a910ff321820f5ac3354c39387e028de7bdd`。[多端原生构建与校验记录（43147174023）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43147174023)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、macOS 原生 Release 构建、打包 `Mpv.framework` 合成媒体回放校验及全部 `691` 项 Flutter 自动化测试。\n- 应用压缩包未公证，首次打开请右键选择“打开”；自动化回归不代表已完成物理 Mac 设备及私人账号实机全片验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.14"
+    },
+    {
+      "tag": "windows-v0.5.17",
+      "version": "0.5.17",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-12T03:45:35Z",
+      "prerelease": false,
+      "target_commitish": "b851a910ff321820f5ac3354c39387e028de7bdd",
+      "notes": "# Marco Movie Windows 0.5.17\n\n发布日期：2026-11-12。应用版本：`0.5.17`（构建号 `67`）。本次更新正式上线全平台互通的 **`marco-movie-sync` v2 多端网络同步**（支持用户自配 WebDAV 自动云同步与局域网点对点双向直连同步），打通 Windows 电脑与电视、手机、平板及 macOS 之间的观看进度、收藏列表与可选公开订阅源配置同步。\n\n## 更新内容\n\n- **WebDAV 自动云同步与局域网免云盘点对点同步**：支持连接坚果云、群晖 / 威联通 NAS、Alist、Nextcloud 等标准 WebDAV 服务（自动补全同步文件名并通过 `MKCOL` 创建缺失父目录），支持启动静默拉取与观看/收藏/订阅变更自动节流推送；同时内置 5 分钟令牌作用域的局域网双向同步服务（`LanSyncServer`），同一局域网内无需任何云盘账号即可与电视、手机或其他电脑扫码/粘贴地址双向合并数据。\n- **可选同步公开订阅源配置与跨端换源兜底**：支持「同时同步我的订阅源配置」独立开关（默认开启），新电脑连接同步后可一次性拉取公开订阅配置、观看进度与收藏并自动启用可用片源；关闭该开关时仅同步进度与收藏且不抹除云端已有订阅。打开其他设备同步来的历史或收藏条目而本机缺少对应源站时，自动触发跨源聚合搜索。\n- **桌面端快捷入口与隐私凭据本机隔离**：在桌面端「我的片库」右上角、「设置 → 订阅与账号」与「设置 → 数据」中提供液态玻璃多端同步面板；严格剔除并隔离隐私空间（私密订阅、私密站点与直播、隐私历史与收藏）、本机 `file://` 文件订阅、网盘账号 Cookie / Token 及 Emby 登录凭据。\n\n## 包信息与构建记录\n\n- **安装版（推荐）**：`MarcoMovie-0.5.17-windows-x64-setup.exe`（更新兼容别名 `MarcoMovie-0.5.17-windows-setup.exe`），SHA-256：`de219828f826ed27feb66424c7d81c2e5f5d8d4ae8497620d37772fc3225bd25`。\n- **绿色便携版**：`MarcoMovie-0.5.17-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.17-windows-x64.zip`），SHA-256：`f82d1896cffda46be4327cb3c83106a0b140712e0a89875d90a4d66a20279230`。\n- **对应源码包**：`MarcoMovie-windows-v0.5.17-source.zip`，SHA-256：`0db787258fa78e573c68399616e975137ff562fd28a470ecf4b0739a9e630870`。\n- **构建提交**：`b851a910ff321820f5ac3354c39387e028de7bdd`。[多端原生构建与校验记录（43147174023）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43147174023)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Windows x64 原生构建、打包 `libmpv-2.dll` 原生回放校验及全部 `691` 项 Flutter 自动化测试。\n- 更新前请先退出正在运行的旧版程序；自动化与本地回环同步测试不代表已完成第三方外部 WebDAV 服务及用户私人账号实机穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.17"
+    },
+    {
+      "tag": "ios-v0.5.24",
+      "version": "0.5.24",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-12T03:45:30Z",
+      "prerelease": false,
+      "target_commitish": "b851a910ff321820f5ac3354c39387e028de7bdd",
+      "notes": "# Marco Movie iOS / iPadOS 0.5.24\n\n发布日期：2026-11-12。应用版本：`0.5.24`（构建号 `74`），最低系统要求：iOS / iPadOS 14.0。本次更新正式上线全平台互通的 **`marco-movie-sync` v2 多端网络同步**（支持用户自配 WebDAV 自动云同步与局域网点对点免云盘直连同步），支持跨设备同步观看历史进度、我的收藏及可选的公开订阅源配置，同时严格隔离隐私空间与网盘登录凭据。\n\n## 更新内容\n\n1. **全平台互通的多端网络同步 v2（WebDAV 云同步 + 局域网点对点直连）**\n- 支持填写坚果云、Nextcloud、Alist、群晖 NAS 等任意标准 WebDAV 服务器与应用密码：开启「自动云同步」后，启动时静默拉取最新进度，观看进度推进、收藏切换或订阅变更时自动节流推送，首次连接不存在的远端目录时自动通过 `MKCOL` 创建目录层级。\n- 内置 5 分钟一次性随机会话令牌的局域网双向同步服务（`LanSyncServer`）：无需任何云服务器或账号，在同一 Wi-Fi / 局域网内打开「生成本机接收码」即可与电视、Android 手机/平板、Windows 或 macOS 客户端一键双向合并数据。\n- 采用单调删除墓碑（`hist:` / `fav:` / `add:` / `sub:`）与基于时间戳的逐条合并算法，单端删除历史、取消收藏或移除订阅不会在其他设备“死而复生”，且向下兼容 v1 与 `marco-movie-backup` 载荷。\n\n2. **可选同步公开订阅源配置与新设备一键开箱即用**\n- 新增默认开启的「同时同步我的订阅源配置」开关：新安装的 iPhone / iPad 只需连接 WebDAV 或扫码局域网配对一次，即可一步拉取公开订阅仓库、观看历史进度与收藏列表并自动激活可用片源；关闭该开关时仅同步观看进度与收藏，同时完整保留云端已有的其他设备订阅列表。\n- 跨端播放容错兜底：点击来自其他设备同步的历史或收藏条目时，若本机尚未导入原片源站点，将自动发起跨源同名聚合检索，无缝衔接续播。\n\n3. **iOS 原生二级页面适配与严格的隐私 / 凭据隔离**\n- 在 iOS「我的片库」顶栏新增「多端同步」快捷按钮，并在「设置 → 订阅与账号」及「设置 → 数据」中接入原生系统设置风格全屏二级页面，无底部弹窗遮挡。\n- **隐私安全红线**：隐私空间（私密订阅、私密站点及其历史与收藏，含混合订阅中带隐私标记或分组的条目）、本机 `file://` 配置、四大网盘 Cookie / Token 及 Emby 凭据严格保留在本机，绝不写入云端或局域网同步载荷，也不会被远端同步覆盖。\n\n## 包信息与构建记录\n\n- **未签名 IPA（iPhone / iPad 通用）**：`MarcoMovie-0.5.24-ios-iphone-ipad-unsigned.ipa`（更新兼容别名 `MarcoMovie-0.5.24-ios-unsigned.ipa`），SHA-256：`f3ae5696a626bd6b2d17dc6f6f09e20950a0df87111ec3edd511b8a5de2d0be1`。\n- **对应源码包**：`MarcoMovie-ios-v0.5.24-source.zip`，SHA-256：`0db787258fa78e573c68399616e975137ff562fd28a470ecf4b0739a9e630870`。\n- **构建提交**：`b851a910ff321820f5ac3354c39387e028de7bdd`。[多端原生构建与校验记录（43147174023）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43147174023)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查（950 个受控文件零违规）、iOS Xcode 原生 Release 构建及全部 `691` 项 Flutter 自动化测试（含 WebDAV `MKCOL` 重试、空设备订阅同步、关闭订阅同步云端保护、隐私空间剥离隔离及真实回环套接字局域网双向同步端到端测试）。\n- 未签名 IPA 支持巨魔（TrollStore）直接覆盖更新或自签工具安装；自动化构建与协议测试不代表已完成物理 iPhone / iPad 实机及第三方私有 WebDAV 服务穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.24"
+    },
+    {
       "tag": "ios-v0.5.23",
       "version": "0.5.23",
       "platforms": [
