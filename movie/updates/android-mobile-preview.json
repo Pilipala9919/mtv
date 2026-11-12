@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.5.21",
-  "versionCode": 80,
+  "versionName": "0.5.22",
+  "versionCode": 82,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 手机 / 平板 0.5.21\n\n发布日期：2026-11-12。版本代码：`80`。本次更新为 Android 手机与平板端正式接入全平台互通的 **`marco-movie-sync` v2 多端网络同步**，与 Android 电视、Android Lite、iOS / iPadOS、Windows 及 macOS 无缝互通观看进度、收藏列表与可选公开订阅源配置。\n\n## 多端网络同步 v2 与移动端交互升级\n\n- **WebDAV 自动云同步与局域网点对点双向互传**：支持坚果云、Nextcloud、Alist、NAS 等标准 WebDAV 服务（支持原生 `MKCOL` 自动创建多级目录、启动静默拉取与播放/收藏/订阅变更自动节流推送），并提供本机局域网同步二维码生成及扫码/粘贴对端地址双向合并，同一 Wi-Fi 下无需云盘即可与客厅电视、iPad 或电脑秒级同步。\n- **可选公开订阅源同步与移动端「已添加源」多订阅切换**：新增默认开启的「同时同步我的公开订阅源配置」开关，新手机连接同步即可一步导入公开订阅仓库、观看历史与收藏并自动启用片源；同时为手机/平板端完整开放 `ConfigLibrary`「已添加源」管理与删除能力（设置 → 订阅与账号 → 已添加源 / 片源选择器底部入口）。点击外端同步记录若本机缺少原站点，自动回退至跨源聚合搜索。\n- **全场景触控入口与严格隐私隔离**：在首次启动欢迎页、底部「片库」顶栏「多端同步」胶囊、「设置 → 订阅与账号」及「设置 → 数据」二级页面全面接入 iOS 风格深色玻璃同步面板；隐私空间内容、混合订阅中的隐私站点/直播、本机 `file://` 配置、网盘 Cookie / Token 与 Emby 凭据严格保留在本机，绝不外传。\n\n## 包信息与构建记录\n\n- **安装包（ARM64 + ARMv7 双架构）**：`MarcoMovie-0.5.21-android-mobile.apk`（更新兼容别名 `MarcoMovie-0.5.21-mobile.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`d52ec57cce6ae6874264c8f35575501ec26542aa3db49c032ca148ac402aa164`。\n- **对应源码包**：`MarcoMovie-android-mobile-v0.5.21-source.zip`，SHA-256：`0db787258fa78e573c68399616e975137ff562fd28a470ecf4b0739a9e630870`。\n- **构建提交**：`b851a910ff321820f5ac3354c39387e028de7bdd`。[多端原生构建与校验记录（43147174023）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43147174023)。\n\n## 验证范围与限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线同步与多订阅回归、16KB 页对齐双架构原生构建及官方正式签名校验。\n- 自动化构建与离线回归不代表特定实体手机型号或外部私有 WebDAV 服务已完成实机穷举验收。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.21/MarcoMovie-0.5.21-android-mobile.apk",
-  "size": 63673778,
-  "sha256": "d52ec57cce6ae6874264c8f35575501ec26542aa3db49c032ca148ac402aa164",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.21-android-mobile.apk",
+  "notes": "# Marco Movie Android 手机 / 平板 0.5.22\n\n发布日期：2026-11-12。版本代码：`82`。本次更新重点修复手机端连续下滑浏览海报闪烁、观影记录返回首页未即时刷新的问题，并同步升级单部影片独立片头片尾、播放页常显时间、首页自动翻页与更新说明分类归纳。\n\n## 问题修复与优化\n\n- 修复手机端连续向下滑动翻阅海报时，列表封面因视图复用清空占位与缓存重复计费而反复闪烁的问题。\n- 修复播放完毕或返回首页时，最新观看历史记录未立即显示的问题。\n\n## 片源与播放\n\n- 片头、片尾跳过设置改为每部影片独立记录（仅本机存储并隔离隐私空间，不再全局同步影响其他剧集）。\n- 播放页点击「片头 / 片尾」按钮时优先默认设为当前播放时间点，并提供恢复与秒级微调按钮。\n- 新增独立开关的「播放页常显时间」功能，支持在全屏观影隐藏控制栏时常驻显示右上角时钟。\n\n## 界面与交互\n\n- 首页下滑接近底部自动加载下一页海报，取消手动「加载更多影片」按钮；分类筛选默认收起，点击后按需展开。\n- 应用内版本更新页支持自动提炼更新摘要并按模块清晰归类展示。\n\n## 包信息与构建记录\n\n- **安装包（ARM64 + ARMv7 双架构）**：`MarcoMovie-0.5.22-android-mobile.apk`（更新兼容别名 `MarcoMovie-0.5.22-mobile.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`9aa432664eedd37f7456652d199acbd596d76a477071e1e80f8aa064191fa2d4`。\n- **对应源码包**：`MarcoMovie-android-mobile-v0.5.22-source.zip`，SHA-256：`9202a106441188a6b57e280f87a09af0f2c7d783213befd75f13958604199190`。\n- **构建提交**：`bf201d146c2caba51054fd6e5deef2aa9570e57c`。[多端原生构建与校验记录（43184837950）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43184837950)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线回归、16KB 页对齐双架构原生构建及官方正式签名校验；未声明全部实体手机机型穷举验收。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.22/MarcoMovie-0.5.22-android-mobile.apk",
+  "size": 63735468,
+  "sha256": "9aa432664eedd37f7456652d199acbd596d76a477071e1e80f8aa064191fa2d4",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.22-android-mobile.apk",
   "packages": {
-    "MarcoMovie-0.5.21-android-mobile.apk": {
-      "size": 63673778,
-      "sha256": "d52ec57cce6ae6874264c8f35575501ec26542aa3db49c032ca148ac402aa164",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.21/MarcoMovie-0.5.21-android-mobile.apk"
+    "MarcoMovie-0.5.22-android-mobile.apk": {
+      "size": 63735468,
+      "sha256": "9aa432664eedd37f7456652d199acbd596d76a477071e1e80f8aa064191fa2d4",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.5.22/MarcoMovie-0.5.22-android-mobile.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.21"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.22"
 }

@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "platform": "ios",
-  "versionName": "0.5.24",
+  "versionName": "0.5.25",
   "prerelease": false,
-  "notes": "# Marco Movie iOS / iPadOS 0.5.24\n\n发布日期：2026-11-12。应用版本：`0.5.24`（构建号 `74`），最低系统要求：iOS / iPadOS 14.0。本次更新正式上线全平台互通的 **`marco-movie-sync` v2 多端网络同步**（支持用户自配 WebDAV 自动云同步与局域网点对点免云盘直连同步），支持跨设备同步观看历史进度、我的收藏及可选的公开订阅源配置，同时严格隔离隐私空间与网盘登录凭据。\n\n## 更新内容\n\n1. **全平台互通的多端网络同步 v2（WebDAV 云同步 + 局域网点对点直连）**\n- 支持填写坚果云、Nextcloud、Alist、群晖 NAS 等任意标准 WebDAV 服务器与应用密码：开启「自动云同步」后，启动时静默拉取最新进度，观看进度推进、收藏切换或订阅变更时自动节流推送，首次连接不存在的远端目录时自动通过 `MKCOL` 创建目录层级。\n- 内置 5 分钟一次性随机会话令牌的局域网双向同步服务（`LanSyncServer`）：无需任何云服务器或账号，在同一 Wi-Fi / 局域网内打开「生成本机接收码」即可与电视、Android 手机/平板、Windows 或 macOS 客户端一键双向合并数据。\n- 采用单调删除墓碑（`hist:` / `fav:` / `add:` / `sub:`）与基于时间戳的逐条合并算法，单端删除历史、取消收藏或移除订阅不会在其他设备“死而复生”，且向下兼容 v1 与 `marco-movie-backup` 载荷。\n\n2. **可选同步公开订阅源配置与新设备一键开箱即用**\n- 新增默认开启的「同时同步我的订阅源配置」开关：新安装的 iPhone / iPad 只需连接 WebDAV 或扫码局域网配对一次，即可一步拉取公开订阅仓库、观看历史进度与收藏列表并自动激活可用片源；关闭该开关时仅同步观看进度与收藏，同时完整保留云端已有的其他设备订阅列表。\n- 跨端播放容错兜底：点击来自其他设备同步的历史或收藏条目时，若本机尚未导入原片源站点，将自动发起跨源同名聚合检索，无缝衔接续播。\n\n3. **iOS 原生二级页面适配与严格的隐私 / 凭据隔离**\n- 在 iOS「我的片库」顶栏新增「多端同步」快捷按钮，并在「设置 → 订阅与账号」及「设置 → 数据」中接入原生系统设置风格全屏二级页面，无底部弹窗遮挡。\n- **隐私安全红线**：隐私空间（私密订阅、私密站点及其历史与收藏，含混合订阅中带隐私标记或分组的条目）、本机 `file://` 配置、四大网盘 Cookie / Token 及 Emby 凭据严格保留在本机，绝不写入云端或局域网同步载荷，也不会被远端同步覆盖。\n\n## 包信息与构建记录\n\n- **未签名 IPA（iPhone / iPad 通用）**：`MarcoMovie-0.5.24-ios-iphone-ipad-unsigned.ipa`（更新兼容别名 `MarcoMovie-0.5.24-ios-unsigned.ipa`），SHA-256：`f3ae5696a626bd6b2d17dc6f6f09e20950a0df87111ec3edd511b8a5de2d0be1`。\n- **对应源码包**：`MarcoMovie-ios-v0.5.24-source.zip`，SHA-256：`0db787258fa78e573c68399616e975137ff562fd28a470ecf4b0739a9e630870`。\n- **构建提交**：`b851a910ff321820f5ac3354c39387e028de7bdd`。[多端原生构建与校验记录（43147174023）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43147174023)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查（950 个受控文件零违规）、iOS Xcode 原生 Release 构建及全部 `691` 项 Flutter 自动化测试（含 WebDAV `MKCOL` 重试、空设备订阅同步、关闭订阅同步云端保护、隐私空间剥离隔离及真实回环套接字局域网双向同步端到端测试）。\n- 未签名 IPA 支持巨魔（TrollStore）直接覆盖更新或自签工具安装；自动化构建与协议测试不代表已完成物理 iPhone / iPad 实机及第三方私有 WebDAV 服务穷举验收。\n",
+  "notes": "# Marco Movie iOS / iPadOS 0.5.25\n\n发布日期：2026-11-12。应用版本：`0.5.25`（构建号 `75`），最低系统要求：iOS / iPadOS 14.0。本次更新同步新增 32 套无 JIT `Wex` 订阅线路适配与网盘解析容错增强，并升级单部影片独立片头片尾、播放页常显时间、首页自动翻页、海报防闪与更新说明自动归纳。\n\n## 问题修复与优化\n\n- 修复连续快速下滑浏览海报时因高清封面切换清空旧帧引发的海报闪烁问题，以及看完影片返回首页未立即刷新观影记录的问题。\n- 修复系统代理异常、网盘分享目录分页或待播预热剧集引发的读取网盘失败提示，支持同剧集跨网盘线路自动回退。\n\n## 片源与播放\n\n- 在不依赖 JIT 与外部原生代码的前提下，新增 32 套 `Wex` 纯数据提取与直连/网盘适配器，解锁瓜子、独播、文才、小枫、贱片、师兄、粉猪、咸鱼、追剧、柚子等片源线路。\n- 片头、片尾跳过时长改为按单部影片本机独立记录（严格隔离隐私空间且不同步覆盖其他影片），播放页点击片头/片尾按钮优先默认设为当前播放时间并支持快捷微调。\n- 新增独立开关的「播放页常显时间」功能，全屏播放隐藏控制栏后仍可在右上角常显时间。\n\n## 界面与交互\n\n- 首页下滑自动加载更多海报（取消「加载更多影片」按钮），分类筛选默认收起、再次点击分类胶囊或筛选按钮展开。\n- 软件更新页面与弹窗支持自动总结归纳各版本更新重点，告别冗长杂乱说明。\n\n## 包信息与构建记录\n\n- **未签名 IPA（iPhone / iPad 通用）**：`MarcoMovie-0.5.25-ios-iphone-ipad-unsigned.ipa`（更新兼容别名 `MarcoMovie-0.5.25-ios-unsigned.ipa`），SHA-256：`4ed3399564e95c5779eebd4d011b0b69fb9ef9d55237faec12a11354d77b0e94`。\n- **对应源码包**：`MarcoMovie-ios-v0.5.25-source.zip`，SHA-256：`9202a106441188a6b57e280f87a09af0f2c7d783213befd75f13958604199190`。\n- **构建提交**：`bf201d146c2caba51054fd6e5deef2aa9570e57c`。[多端原生构建与校验记录（43184837950）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43184837950)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、iOS Xcode 原生 Release 构建及全部 `701` 项 Flutter 自动化测试；未签名 IPA 支持巨魔（TrollStore）直接覆盖更新或自签工具安装。\n",
   "packages": {
-    "MarcoMovie-0.5.24-ios-iphone-ipad-unsigned.ipa": {
-      "size": 61974097,
-      "sha256": "f3ae5696a626bd6b2d17dc6f6f09e20950a0df87111ec3edd511b8a5de2d0be1",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.24/MarcoMovie-0.5.24-ios-iphone-ipad-unsigned.ipa"
+    "MarcoMovie-0.5.25-ios-iphone-ipad-unsigned.ipa": {
+      "size": 62059643,
+      "sha256": "4ed3399564e95c5779eebd4d011b0b69fb9ef9d55237faec12a11354d77b0e94",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.25/MarcoMovie-0.5.25-ios-iphone-ipad-unsigned.ipa"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.24"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.25"
 }
