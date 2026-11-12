@@ -6,7 +6,7 @@ import hashlib
 from unittest.mock import patch
 
 import sync_platform_packages as m
-from platform_package_names import clear_names, PLATFORMS, ALIASES
+from platform_package_names import clear_names, PLATFORMS, ALIASES, filter_isl_messages, windows_installer_script
 
 
 class PackageTests(unittest.TestCase):
@@ -241,6 +241,47 @@ class PackageTests(unittest.TestCase):
         self.assertIn('data-platform="ios"><span class="package-version">0.5.1</span>', result)
         self.assertIn('<details class="package-check"><summary>校验</summary><code>SHA-256：'+'b'*64, result)
         self.assertIn('<style>existing CSS</style>', result)
+
+    def test_verbose_release_notes_are_automatically_summarized_and_categorized_on_page(self):
+        self.release['body'] = (
+            '## Marco Movie v0.5.25（iOS / iPadOS）\n\n'
+            '发布日期：2026-11-12\n\n'
+            '### 包信息\n'
+            '- 安装包：`MarcoMovie-0.5.25-ios-unsigned.ipa`\n'
+            '- SHA-256：`0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef`\n\n'
+            '### 更新内容\n'
+            '- 修复片源切换与网盘目录读取失败问题，参见 `flutter/src/core/wogg_source.dart`。\n'
+            '- 新增播放页右上角常显时间独立开关。\n'
+            '- 优化首页往下滑动自动加载更多海报，默认收起筛选分类。\n\n'
+            '### 验证范围\n'
+            '- 通过公共内容守卫检查与单元测试。\n'
+            '- 已知限制：需在实机复核。\n'
+        )
+        self.sync()
+        archived = (self.out / 'updates/history/ios-v0.5.1.md').read_text(encoding='utf-8')
+        self.assertEqual(archived, self.release['body'].rstrip('\n') + '\n')
+        page = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertNotIn('0123456789abcdef0123456789abcdef0123456789abcdef', page)
+        self.assertNotIn('flutter/src/core/wogg_source.dart', page)
+        self.assertNotIn('通过公共内容守卫检查', page)
+        self.assertIn('<h4>片源与播放</h4>', page)
+        self.assertIn('<h4>界面与交互</h4>', page)
+        self.assertIn('<h4>注意事项</h4>', page)
+        self.assertIn('已知限制：需在实机复核', page)
+
+    def test_windows_chinese_installer_filters_isl_and_guards_duplicate_desktop_shortcut(self):
+        cn = '[LangOptions]\nLanguageName=中文\n[Messages]\nButtonNext=下一步(&N) >\nRemovedKey=旧版键\nBadArgs=参数 %1 %2\n'
+        default = '[Messages]\nButtonNext=&Next >\nBadArgs=Arg %1\n'
+        filtered = filter_isl_messages(cn, default)
+        self.assertIn('LanguageName=中文', filtered)
+        self.assertIn('ButtonNext=下一步(&N) >', filtered)
+        self.assertNotIn('RemovedKey=', filtered)
+        self.assertNotIn('BadArgs=', filtered)
+        iss = windows_installer_script('0.5.18', 'MarcoMovie-0.5.18-windows-setup')
+        self.assertIn('UsePreviousTasks=no', iss)
+        self.assertIn('ShowLanguageDialog=no', iss)
+        self.assertIn('Check: ShouldOfferDesktopIcon', iss)
+        self.assertIn('CurStepChanged(CurStep: TSetupStep)', iss)
 
 
 if __name__ == '__main__':
