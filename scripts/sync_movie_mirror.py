@@ -41,6 +41,9 @@ QQ_GROUP3_CODE = '1109397842'
 # Fourth official QQ group, same universal scope (added 2026-11-10).
 QQ_GROUP4_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=4R4VS2AZHrwlVDj%2BgPmVxmcoPOjrnr9ENZVwvmjCcibaj9bbvA%2Bt7wHfUx2p6DhK&busi_data=eyJncm91cENvZGUiOiIxMTM1NTU2MzQyIiwidG9rZW4iOiI3UDI5WjZRNVdEUW9vU2dpaHZpejgxRm8xbzJKYk53TUhkVkF5VVZqeGJ2QU1WWHo1dFpIS2kwRWRiNjVPTTFJIiwidWluIjoiOTI2MDA0MyJ9&data=cCs0QRwbu37CVPXnKa8dCNjBmg64vKQNc-SvEyqqHCtTaH9dFIVK_ebEpz1R6epl-UFxvXmwgD3DcbEbDaDFDg&svctype=4&tempid=h5_group_info'
 QQ_GROUP4_CODE = '1135556342'
+# Fifth official QQ group, same universal scope (added 2026-11-13).
+QQ_GROUP5_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=65Mqw9daSUbAtgzCx4pJfUrtu%2FFSVG8EaMf7NabXrs3oZAWrQikcppAOmzBrWxCB&busi_data=eyJncm91cENvZGUiOiI3MTk2NTMyMDgiLCJ0b2tlbiI6Imt6dXMwTUhxcW9JM1VhV2RBMGZKUHZVdnBaa2p1MTgvS2RlN1ByMzZyRzcxZm9oSk5UMzZyam5va0Y5enBrYnAiLCJ1aW4iOiI5MjYwMDQzIn0%3D&data=-RJGncjsQc24ceUyIj5fqQAioLoqI9NM05EirWbDkurn_LN2dzT1oMUAY5opGwCmHLHKu_kMjBgshLNU66zD8A&svctype=4&tempid=h5_group_info'
+QQ_GROUP5_CODE = '719653208'
 # Quark Drive share links, written by scripts/sync_quark.py (one permanent
 # folder link per platform). Absent on first run: cards render without the
 # Quark button until the first Quark sync writes the manifest.
@@ -600,7 +603,7 @@ def sync(output):
 <div class="card"><h3>官方交流群 3️⃣：Marco！2</h3><p>群号 1109397842 · 点开下面的按钮会跳到 QQ 加群。</p>
 <a class="btn primary" href="{escaped(QQ_GROUP3_URL)}">加入 QQ 群</a></div>
 <div class="card"><h3>官方交流群 4️⃣：Marco！3</h3><p>群号 1135556342 · 点开下面的按钮会跳到 QQ 加群。</p>
-<a class="btn primary" href="{escaped(QQ_GROUP4_URL)}">加入 QQ 群</a></div></section>
+<a class="btn primary" href="{escaped(QQ_GROUP4_URL)}">加入 QQ 群</a></div>\n<div class="card"><h3>官方交流群 5️⃣：Marco！4</h3><p>群号 719653208 · 点开下面的按钮会跳到 QQ 加群。</p>\n<a class="btn primary" href="{escaped(QQ_GROUP5_URL)}">加入 QQ 群</a></div></section>
 <footer>作者：Pilipala · <a href="LICENSE">GPL-3.0-only</a> · <a href="NOTICE">署名与许可</a> · <a href="https://github.com/{REPO}/blob/main/docs/USER_GUIDE.md">使用指南</a> · <a href="/">Marco TV</a></footer>
 </div></body></html>'''
     files = {apk_name + '.sha256': (sha + '  ' + apk_name + '\n').encode(),
