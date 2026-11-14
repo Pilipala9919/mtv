@@ -232,6 +232,34 @@ class PackageTests(unittest.TestCase):
         self.assertIn('<h3>iPhone / iPad 版 (IPA) · v0.5.2</h3>', result)
         self.assertNotIn('v0.5.0', result)
 
+    def test_stale_star_count_refreshes_from_live_repo(self):
+        # The full re-render owns the Stars line, but no current workflow
+        # runs it, so the count froze at 671 on 2026-11-10 while the repo
+        # kept growing; the in-place sync must refresh it every run.
+        page = self.page.replace('<header>Existing layout</header>',
+                                 '<p class="meta"><b>671 Stars</b> · GPL-3.0-only</p>')
+        with patch.object(m, 'fetch_stars', return_value=893):
+            result = m.refresh_stars(page)
+        self.assertIn('<b>893 Stars</b>', result)
+        self.assertNotIn('671 Stars', result)
+        self.assertIn('<style>existing CSS</style>', result)
+
+    def test_star_count_unchanged_when_repo_unreadable(self):
+        page = self.page.replace('<header>Existing layout</header>',
+                                 '<p class="meta"><b>671 Stars</b> · GPL-3.0-only</p>')
+        with patch.object(m, 'fetch_stars', return_value=None):
+            self.assertEqual(m.refresh_stars(page), page)
+
+    def test_sync_refreshes_stars_on_the_written_page(self):
+        page = self.page.replace('<header>Existing layout</header>',
+                                 '<p class="meta"><b>671 Stars</b> · GPL-3.0-only</p>')
+        (self.out / 'index.html').write_text(page, encoding='utf-8')
+        with patch.object(m, 'fetch_stars', return_value=893):
+            self.sync()
+        result = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('<b>893 Stars</b>', result)
+        self.assertNotIn('671 Stars', result)
+
     def test_responsive_card_metadata_survives_future_sync(self):
         page = self.page.replace('<div class="dl"><h3>ios-unsigned.ipa</h3>', '<div class="dl" data-platform="ios"><span class="package-version">0.5.0</span><h3>iPhone</h3>')
         page = page.replace('<code>SHA-256：', '<details class="package-check"><summary>校验</summary><code>SHA-256：').replace('</code>', '</code></details>')

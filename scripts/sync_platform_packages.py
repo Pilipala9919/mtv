@@ -11,7 +11,7 @@ from pathlib import Path
 import re
 from urllib.parse import urlsplit
 
-from sync_movie_mirror import BASE, REPO, fetch, platform_asset
+from sync_movie_mirror import BASE, REPO, fetch, fetch_stars, platform_asset
 from platform_package_names import ALIASES as CLEAR_NAMES
 
 SUFFIXES = {
@@ -394,6 +394,21 @@ def patch_card(page, suffix, package):
     return page[:card.start()] + replacement + page[card.end():]
 
 
+def refresh_stars(page):
+    """Replace the page's star count with the live repo count.
+
+    The full re-render (sync_movie_mirror.py) owns this line, but no current
+    workflow runs it, so the count froze at 671 on 2026-11-10 while the repo
+    kept growing. This in-place sync refreshes it every run instead.
+    Leaves the page unchanged when the count cannot be read or the line
+    is absent; never fails the sync.
+    """
+    stars = fetch_stars()
+    if stars is None:
+        return page
+    return re.sub(r'<b>\d+ Stars</b>', f'<b>{stars} Stars</b>', page, count=1)
+
+
 def sync(output, releases=None):
     output = Path(output)
     original = (output / 'index.html').read_bytes()
@@ -471,6 +486,7 @@ def sync(output, releases=None):
     history, note_files = release_history(output, releases)
     files.update(note_files)
     page = patch_notes(page, history)
+    page = refresh_stars(page)
     files['index.html'] = page.encode('utf-8')
     # Nothing is written until every release/card has validated. Git publishes
     # the complete snapshot; never rewrite a previously published binary.
