@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-lite",
-  "versionName": "0.5.5",
-  "versionCode": 55,
+  "versionName": "0.5.6",
+  "versionCode": 56,
   "minSdk": 14,
   "prerelease": false,
-  "notes": "# Marco Movie Android Lite 0.5.5\n\n发布日期：2026-11-14。应用版本：`0.5.5`（versionCode `55`）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存），本次更新新增订阅源各线路手动分组编删、电视搜索手机扫码输入、老电视 DLNA / 网页投屏接收及旧系统根证书 TLS 兼容加固。\n\n## 功能与同步\n\n- 顶部导航栏与首页快捷栏新增「投屏」入口（`LiteCast`），在 API 14+ 单 DEX 轻量环境下同时支持 UPnP / DLNA 标准媒体投屏接收（手机视频 App 搜索「Marco Movie Lite」直投）与局域网扫码网页直投及遥控（播放/暂停/进度跳转/音量调节）。\n- 搜索页新增「手机扫码输入」按钮，手机扫描电视屏幕二维码即可网页输入片名推送至老电视直接触发搜索，告别老旧遥控器逐字拼写。\n- 内置 Conscrypt TLS 引擎与 Let's Encrypt `ISRG Root X1` 根证书复合信任链，解决 Android 4.0–7.0 老电视因系统根证书过期无法拉取 HTTPS 订阅源与海报的问题，并加固局域网配对服务 5 分钟自动过期保护。\n\n## 片源与播放\n\n- 线路管理页支持分组胶囊筛选、手动新建/分配单条或批量线路分组、手动编辑单条线路（名称、分组、API、解析 `playUrl`、扩展 `ext`、可搜索开关及恢复默认）、删除单条/批量删除线路与恢复已删线路；刷新订阅后自动保留自定义设置。\n- 解除配置拉取 `identity` 限制并支持透明 GZIP 解压、双 UA 回退、20 项三端订阅解析一致性对齐及不可用线路灰显具体原因说明。\n\n## 包信息与构建记录\n\n- **安装包**：`MarcoMovie-0.5.5-android-lite.apk`（更新兼容别名 `MarcoMovie-0.5.5-lite.apk`），官方正式签名。\n- **SHA-256**：`1df8e73937c37fcc8c65ac08ac5051515b023b0577baadf916fb02216aa81e9a`。\n- **对应源码包**：`MarcoMovie-android-lite-v0.5.5-source.zip`，SHA-256：`90255894dc49d9416af602a4075147e8706fdb0052a642adc19507ad34b26c85`。\n- **构建提交**：`9a7cba393e69825031ac29230cb5afa1e0961d41`。[多端原生构建与校验记录（43575866858）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43575866858)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、API 14 `bootclasspath` 与 D8 `--min-api 14` 单 DEX 编译校验、`193` 项 TV Lite JVM 离线回归（含 DLNA / 网页投屏、搜索扫码输入、线路分组编删）、20 项三端规范一致性测试、8 项 TLS 能力检查及官方正式签名校验；未声明实体老旧电视实机穷举验收。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-lite-v0.5.5/MarcoMovie-0.5.5-android-lite.apk",
-  "size": 1225553,
-  "sha256": "1df8e73937c37fcc8c65ac08ac5051515b023b0577baadf916fb02216aa81e9a",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.5-android-lite.apk",
+  "notes": "# Marco Movie Android Lite 0.5.6\n\n发布日期：2026-11-15。应用版本：`0.5.6`（versionCode `56`）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存），本次更新同步焕新全平台统一的金属胶片丝带 M 桌面图标，并保持完整的老电视投屏、扫码搜索、线路分组编删与现代 TLS 根证书兼容能力。\n\n## 品牌视觉与版本维护\n\n- **全新金属胶片丝带 M 品牌图标**：同步更新 Android Lite 多密度桌面启动图标（`mdpi` 至 `xxxhdpi`）为黑曜石底金属胶片丝带「M」视觉设计，在老电视与机顶盒桌面上呈现更清晰的辨识度。\n- **超轻量兼容保障**：持续保持 API 14 单 DEX 架构、内置 Conscrypt TLS + Let's Encrypt `ISRG Root X1` 根证书信任链、DLNA / 网页投屏接收、手机扫码搜索输入与订阅线路分组编删能力。\n\n## 包信息与构建记录\n\n- **安装包**：`MarcoMovie-0.5.6-android-lite.apk`（更新兼容别名 `MarcoMovie-0.5.6-lite.apk`），官方正式签名。\n- **SHA-256**：`9d0f55fa2029ab5195ca04556f1ead6dde3ffbaecc644d95f14b5bd65743e115`。\n- **对应源码包**：`MarcoMovie-android-lite-v0.5.6-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、API 14 `bootclasspath` 与 D8 `--min-api 14` 单 DEX 编译校验、`193` 项 TV Lite JVM 离线回归、20 项三端规范一致性测试、8 项 TLS 能力检查及官方正式签名校验；未声明实体老旧电视实机穷举验收。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-lite-v0.5.6/MarcoMovie-0.5.6-android-lite.apk",
+  "size": 1266848,
+  "sha256": "9d0f55fa2029ab5195ca04556f1ead6dde3ffbaecc644d95f14b5bd65743e115",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.6-android-lite.apk",
   "packages": {
-    "MarcoMovie-0.5.5-android-lite.apk": {
-      "size": 1225553,
-      "sha256": "1df8e73937c37fcc8c65ac08ac5051515b023b0577baadf916fb02216aa81e9a",
-      "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.5-android-lite.apk"
+    "MarcoMovie-0.5.6-android-lite.apk": {
+      "size": 1266848,
+      "sha256": "9d0f55fa2029ab5195ca04556f1ead6dde3ffbaecc644d95f14b5bd65743e115",
+      "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.6-android-lite.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.5"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.6"
 }

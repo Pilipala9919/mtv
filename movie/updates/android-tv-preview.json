@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.23",
-  "versionCode": 83,
+  "versionName": "0.5.24",
+  "versionCode": 85,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视 / 盒子 0.5.23\n\n发布日期：2026-11-14。版本代码：`83`。本次更新重点新增订阅源各线路手动分组、单条编辑与删除，电视端搜索手机扫码输入，以及常驻 Dock 栏的电视投屏接收功能（支持 DLNA / UPnP 媒体投屏与扫码网页直投遥控），并同步升级片源防拦截回退与存储安全加固。\n\n## 功能与同步\n\n- 电视端悬浮 Dock 栏（右侧与顶部模式）新增「投屏」入口，内置 UPnP / DLNA 标准数字媒体渲染器（支持手机主流视频 App 在同一局域网搜索「Marco Movie TV」一键投屏并同步播放进度、快进快退与音量）及扫码网页直投遥控器（支持推送 `.m3u8` / `.mp4` 直链与可选请求头）。\n- 电视端全局搜索页新增「扫码输入」按钮，生成带一次性随机令牌的局域网手机输入二维码，手机扫码即可打字或语音输入片名推送至电视立即搜索。\n- 强化 WebDAV 多端同步（坚果云根目录自动追加 `MarcoMovie/` 子目录、ETag 并发冲突检测与 412 自动重试）及 `AndroidKeyStore` 敏感凭据加密保护。\n\n## 片源与播放\n\n- 「切换片源」升级为支持订阅源内各线路手动分组（筛选分组、新建分组、单条移动与批量分组）、手动编辑单条线路参数（名称、分组、API 地址、解析 `playUrl`、扩展 `ext`、可搜索开关及一键重置默认）与单条/批量删除及恢复已删线路；刷新订阅自动保留自定义分组与编删配置。\n- 新增 `JumiTV` 及多套 `Wex` / `FTY` / `WoGG` 结构化纯数据提取适配器，优化站点镜像切换、验证码拦截提示、本机回环代理绕过、双 UA 配置拉取回退与未适配线路灰显原因展示。\n- 播放进度持久化与订阅保存全面移至后台单线程序列执行器异步落盘，消除主线程磁盘同步阻塞导致的遥控焦点抽帧。\n\n## 包信息与构建记录\n\n- **安装包（32 位电视 / 盒子专版）**：`MarcoMovie-0.5.23-android-tv.apk`（更新兼容别名 `MarcoMovie-0.5.23-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`8f666ae240eb6f64797901a88e72801d5d4f86f6dd3e744246d92b11f071a1e7`。\n- **对应源码包**：`MarcoMovie-android-tv-v0.5.23-source.zip`，SHA-256：`90255894dc49d9416af602a4075147e8706fdb0052a642adc19507ad34b26c85`。\n- **构建提交**：`9a7cba393e69825031ac29230cb5afa1e0961d41`。[多端原生构建与校验记录（43575866858）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43575866858)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线回归（含 DLNA / 网页投屏协议与 XXE/SSRF 防护、搜索扫码一次性令牌、线路分组编删及 20 项三端一致性用例）、API 23 模拟器回归及官方正式签名校验；未声明全部实体电视型号与路由器组播环境穷举验收。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.23/MarcoMovie-0.5.23-android-tv.apk",
-  "size": 36078635,
-  "sha256": "8f666ae240eb6f64797901a88e72801d5d4f86f6dd3e744246d92b11f071a1e7",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.23-android-tv.apk",
+  "notes": "# Marco Movie Android 电视 / 盒子 0.5.24\n\n发布日期：2026-11-15。版本代码：`85`。本次更新专项修复 HDR10 片源频闪与 HEVC / 杜比视界片源画面偏绿问题，新增全屏播放右上角「已播时长 / 总时长 · 现在时间」悬浮胶囊、首页返回键二次退出确认弹窗、选集详情页豆瓣评分与烂番茄指数展示，并重绘现代悬浮卡片片头片尾专属图标与升级全新金属胶片丝带 M 品牌标识。\n\n## 播放画质与界面交互\n\n- **HDR10 防闪烁保护**：新增 `hdrSessionActive` 持续激活保护，在识别到 HDR10 / HLG / Dolby Vision 片源后全程锁定硬件 `SurfaceView` 直通输出（禁止自动回退切换至 `TextureView`），并在 HDR 播放会话内自动抑制工具条 Alpha 渐变动画与高光重绘，解决部分电视面板因 HDR 模式反复进出导致的画面频闪。\n- **HEVC 与杜比视界偏绿色彩修复**：针对缺失色彩元数据的 HEVC 片源自动补齐分辨率自适应 BT.709 / BT.601 默认色彩空间（不覆盖源流已声明的 BT.2020 HDR 元数据），优先选择硬件 HEVC 解码器；准确识别杜比视界 Profile 5（`dvhe.05` / `dvh1.05` 及原始 `dvcC` 配置记录）专有 IPT-PQ-C2 色彩空间，禁止将其错误重标为普通 HEVC，并在设备解码器不支持时给出清晰提示或安全回退，彻底解决画面偏绿偏紫。\n- **全屏右上角「已播时长 / 总时长 · 现在时间」胶囊**：全屏播放且工具条与弹层收起时，右上角常驻展示黑曜石半透明圆角胶囊，等宽数字显示当前播放进度、总时长与系统时间；拉起底部播放控制条或任意叠加层时自动隐藏，支持在设置中自由开关。\n- **现代悬浮卡片片头/片尾专属图标**：重新设计现代悬浮卡片控制栏中的「片头 `[→`」与「片尾 `←]`」矢量几何图标，与「下一集 `▶|`」及快进快退图标彻底区分。\n- **首页返回键二次退出确认**：在电视端首页顶层按遥控器返回键（且无侧栏、抽屉或弹窗打开）时弹出二次确认对话框，默认焦点停留在「继续观看」，防止连续按返回键误退应用。\n\n## 片源详情与品牌视觉\n\n- **选集页豆瓣评分与烂番茄指数**：扩展 CMS 结构化字段与简介文本（兼容 PTGen 全角空格 `◎豆瓣评分　8.9`、「烂番茄新鲜度高达 94%」等描述）双通道提取，自动过滤 `0.0` / `10.0` 等无效占位分值，在选集详情页展示已核验的「豆瓣 ★ X.X」与「烂番茄 XX%」徽标。\n- **全新金属胶片丝带 M 品牌图标**：升级电视端桌面图标与 Leanback 横幅 Banner 为黑曜石底金属胶片丝带「M」视觉设计。\n\n## 包信息与构建记录\n\n- **安装包（32 位电视 / 盒子专版）**：`MarcoMovie-0.5.24-android-tv.apk`（更新兼容别名 `MarcoMovie-0.5.24-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`de5bbcf9c9af31148af1b04bffac2813be1ba05d8f40cf7caeeef4cbb3df8773`。\n- **对应源码包**：`MarcoMovie-android-tv-v0.5.24-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线回归（含 26 项电视端 HDR/DV 色彩归一化、豆瓣/烂番茄评分提取、右上角 HUD 与图标专项检查及 49 项 CMS 检查）、API 23 字节码回调与模拟器回归及官方正式签名校验；未声明全部实体电视面板型号与杜比视界授权硬件穷举实机验收。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.24/MarcoMovie-0.5.24-android-tv.apk",
+  "size": 35991057,
+  "sha256": "de5bbcf9c9af31148af1b04bffac2813be1ba05d8f40cf7caeeef4cbb3df8773",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.24-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.23-android-tv.apk": {
-      "size": 36078635,
-      "sha256": "8f666ae240eb6f64797901a88e72801d5d4f86f6dd3e744246d92b11f071a1e7",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.23/MarcoMovie-0.5.23-android-tv.apk"
+    "MarcoMovie-0.5.24-android-tv.apk": {
+      "size": 35991057,
+      "sha256": "de5bbcf9c9af31148af1b04bffac2813be1ba05d8f40cf7caeeef4cbb3df8773",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.24/MarcoMovie-0.5.24-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.23"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.24"
 }

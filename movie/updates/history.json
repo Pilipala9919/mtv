@@ -2,6 +2,78 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "macos-v0.5.17",
+      "version": "0.5.17",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-14T17:52:05Z",
+      "prerelease": false,
+      "target_commitish": "76163bf0569f5dea83c872dacfcc65a793d0fe58",
+      "notes": "# Marco Movie macOS 0.5.17\n\n发布日期：2026-11-15。应用版本：`0.5.17`（构建号 `67`）。本次更新新增播放器防误触锁屏模式，并同步焕新全平台统一的金属胶片丝带 M 桌面图标与应用内品牌视觉。\n\n## 播放交互与品牌视觉\n\n- **播放器防误触锁屏**：播放控制栏新增一键「锁屏」开关；开启锁屏后自动收起全部控制条，拦截触控板/鼠标误触双击暂停、滑动跳转与键盘播放快捷键操作；单击画面仅浮现独立「解锁」胶囊按钮，安心沉浸观影。\n- **全新金属胶片丝带 M 品牌图标**：升级 macOS 应用 `.icns` 图标集（Dock 栏与访达）及应用内品牌标识为黑曜石底金属胶片丝带「M」视觉设计。\n\n## 包信息与构建记录\n\n- **macOS 桌面应用包（Apple Silicon / Intel）**：`MarcoMovie-0.5.17-macos-desktop.zip`（更新兼容别名 `MarcoMovie-0.5.17-macos.zip`），SHA-256：`43651b4323b5fd34d84f9088ad87c338ca7736b568fc199c0dc8da6f2d8e9b17`。\n- **对应源码包**：`MarcoMovie-macos-v0.5.17-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、macOS 原生 Release 构建、打包 `Mpv.framework` 媒体回放校验及全部 Flutter 自动化测试（含播放器锁屏交互组件测试）；应用压缩包未公证，首次打开请右键选择“打开”。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.17"
+    },
+    {
+      "tag": "ios-v0.5.27",
+      "version": "0.5.27",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-14T17:37:57Z",
+      "prerelease": false,
+      "target_commitish": "76163bf0569f5dea83c872dacfcc65a793d0fe58",
+      "notes": "# Marco Movie iOS / iPadOS 0.5.27\n\n发布日期：2026-11-15。应用版本：`0.5.27`（构建号 `77`），最低系统要求：iOS / iPadOS 14.0。本次更新新增播放器防误触锁屏模式，并同步焕新全平台统一的金属胶片丝带 M 主屏幕图标与应用内品牌视觉。\n\n## 播放交互与品牌视觉\n\n- **播放器防误触锁屏**：播放控制栏新增一键「锁屏」开关；开启锁屏后自动收起全部控制条，拦截手持 iPhone / iPad 观影时的边缘误触、双击暂停、左右滑动快进快退及上下滑动亮度/音量手势；轻触画面仅浮现独立「解锁」胶囊按钮，3.5 秒无操作自动隐去。\n- **全新金属胶片丝带 M 品牌图标**：升级 iOS / iPadOS 全尺寸 AppIcon 与应用内品牌标识为黑曜石底金属胶片丝带「M」视觉设计。\n\n## 包信息与构建记录\n\n- **未签名 IPA（iPhone / iPad 通用）**：`MarcoMovie-0.5.27-ios-iphone-ipad-unsigned.ipa`（更新兼容别名 `MarcoMovie-0.5.27-ios-unsigned.ipa`），SHA-256：`c81b72ada0521a6009dfc3fa123f20fde0190dfebea4f64c462e388ee4d45668`。\n- **对应源码包**：`MarcoMovie-ios-v0.5.27-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、iOS Xcode 原生 Release 构建及全部 Flutter 自动化测试（含播放器锁屏交互组件测试）；未签名 IPA 支持巨魔（TrollStore）直接覆盖更新或自签工具安装。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.27"
+    },
+    {
+      "tag": "windows-v0.5.20",
+      "version": "0.5.20",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-14T17:36:00Z",
+      "prerelease": false,
+      "target_commitish": "76163bf0569f5dea83c872dacfcc65a793d0fe58",
+      "notes": "# Marco Movie Windows 0.5.20\n\n发布日期：2026-11-15。应用版本：`0.5.20`（构建号 `70`）。本次更新新增播放器防误触锁屏模式，并同步焕新全平台统一的金属胶片丝带 M 桌面图标与应用内品牌视觉。\n\n## 播放交互与品牌视觉\n\n- **播放器防误触锁屏**：播放控制栏新增一键「锁屏」开关；开启锁屏后自动收起全部控制条并隐藏沉浸式无边框窗口标题栏交互，拦截鼠标双击暂停、滚轮调节、拖拽快进快退及键盘播放快捷键误触；单击画面仅浮现独立「解锁」胶囊按钮，全屏或触控屏观影更省心。\n- **全新金属胶片丝带 M 品牌图标**：升级 Windows 桌面快捷方式与可执行程序 `.ico` 图标及应用内品牌标识为黑曜石底金属胶片丝带「M」视觉设计。\n\n## 包信息与构建记录\n\n- **安装版（推荐，简体中文向导）**：`MarcoMovie-0.5.20-windows-x64-setup.exe`（更新兼容别名 `MarcoMovie-0.5.20-windows-setup.exe`），SHA-256：`758dbf183ec228a3660cc60f6fa1ab40928163f1361705b9d033f6509b5adbc8`。\n- **绿色便携版**：`MarcoMovie-0.5.20-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.20-windows-x64.zip`），SHA-256：`446ebfdce3148a12342bab13cea8dd07886aaffc9959e5fe78bedc3e2514f178`。\n- **对应源码包**：`MarcoMovie-windows-v0.5.20-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Windows x64 原生构建、简体中文 Inno Setup 安装包校验、打包 `libmpv-2.dll` 媒体回放校验及全部 Flutter 自动化测试（含播放器锁屏交互组件测试）；未声明用户私人网盘账号实机穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.20"
+    },
+    {
+      "tag": "android-lite-v0.5.6",
+      "version": "0.5.6",
+      "platforms": [
+        "android-lite"
+      ],
+      "published_at": "2026-11-14T17:30:09Z",
+      "prerelease": false,
+      "target_commitish": "76163bf0569f5dea83c872dacfcc65a793d0fe58",
+      "notes": "# Marco Movie Android Lite 0.5.6\n\n发布日期：2026-11-15。应用版本：`0.5.6`（versionCode `56`）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存），本次更新同步焕新全平台统一的金属胶片丝带 M 桌面图标，并保持完整的老电视投屏、扫码搜索、线路分组编删与现代 TLS 根证书兼容能力。\n\n## 品牌视觉与版本维护\n\n- **全新金属胶片丝带 M 品牌图标**：同步更新 Android Lite 多密度桌面启动图标（`mdpi` 至 `xxxhdpi`）为黑曜石底金属胶片丝带「M」视觉设计，在老电视与机顶盒桌面上呈现更清晰的辨识度。\n- **超轻量兼容保障**：持续保持 API 14 单 DEX 架构、内置 Conscrypt TLS + Let's Encrypt `ISRG Root X1` 根证书信任链、DLNA / 网页投屏接收、手机扫码搜索输入与订阅线路分组编删能力。\n\n## 包信息与构建记录\n\n- **安装包**：`MarcoMovie-0.5.6-android-lite.apk`（更新兼容别名 `MarcoMovie-0.5.6-lite.apk`），官方正式签名。\n- **SHA-256**：`9d0f55fa2029ab5195ca04556f1ead6dde3ffbaecc644d95f14b5bd65743e115`。\n- **对应源码包**：`MarcoMovie-android-lite-v0.5.6-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、API 14 `bootclasspath` 与 D8 `--min-api 14` 单 DEX 编译校验、`193` 项 TV Lite JVM 离线回归、20 项三端规范一致性测试、8 项 TLS 能力检查及官方正式签名校验；未声明实体老旧电视实机穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.6"
+    },
+    {
+      "tag": "android-mobile-v0.5.24",
+      "version": "0.5.24",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-14T17:30:04Z",
+      "prerelease": false,
+      "target_commitish": "76163bf0569f5dea83c872dacfcc65a793d0fe58",
+      "notes": "# Marco Movie Android 手机 / 平板 0.5.24\n\n发布日期：2026-11-15。版本代码：`86`。本次更新新增播放器防误触锁屏模式，同步升级 HDR10 防闪烁与 HEVC / 杜比视界偏绿色彩修复、详情页豆瓣评分与烂番茄指数精准提取，以及全新金属胶片丝带 M 自适应品牌图标。\n\n## 播放交互与画质\n\n- **播放器防误触锁屏**：播放控制栏新增一键「锁屏」按钮；开启锁屏后自动收起全部控制条、固定当前屏幕旋转方向，并拦截双击暂停、左右滑动快进快退、上下滑动亮度/音量调节及系统返回键误触；轻触屏幕仅浮现独立「解锁」胶囊按钮（3.5 秒无操作自动隐去）。\n- **HDR10 稳定输出与 HEVC / 杜比视界偏绿修复**：在 HDR 会话期间锁定硬件 `SurfaceView` 输出避免频闪；为缺失色彩元数据的 HEVC 流补齐分辨率自适应 BT.709 / BT.601 默认色彩标准并优先启用硬件解码器，准确区分杜比视界 Profile 5 专有色彩空间与 Profile 8.1 / 8.4 向后兼容层，消除画面偏绿偏紫异常。\n\n## 详情展示与品牌视觉\n\n- **详情页豆瓣评分与烂番茄指数**：支持从 CMS 评分字段与简介文本中精准提取真实豆瓣评分与烂番茄新鲜度百分比，过滤 `0.0` / `10.0` 等无效占位分值后在详情页直观展示。\n- **全新金属胶片丝带 M 品牌图标**：升级 Android 自适应图标（Adaptive Icon）与单色主题图标（Monochrome Icon）为黑曜石底金属胶片丝带「M」视觉设计。\n\n## 包信息与构建记录\n\n- **安装包（ARM64 + ARMv7 双架构）**：`MarcoMovie-0.5.24-android-mobile.apk`（更新兼容别名 `MarcoMovie-0.5.24-mobile.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`8d3ce735d7bb551155b2931e76fcf22fb601440bc5ce0b49297cb5fba021668c`。\n- **对应源码包**：`MarcoMovie-android-mobile-v0.5.24-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线回归（含 30 项播放器防误触锁屏状态机检查与 26 项解码色彩/评分检查）、16KB 页对齐双架构原生构建及官方正式签名校验；未声明全部实体手机与平板机型穷举实机验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.24"
+    },
+    {
+      "tag": "android-tv-v0.5.24",
+      "version": "0.5.24",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-14T17:28:07Z",
+      "prerelease": false,
+      "target_commitish": "76163bf0569f5dea83c872dacfcc65a793d0fe58",
+      "notes": "# Marco Movie Android 电视 / 盒子 0.5.24\n\n发布日期：2026-11-15。版本代码：`85`。本次更新专项修复 HDR10 片源频闪与 HEVC / 杜比视界片源画面偏绿问题，新增全屏播放右上角「已播时长 / 总时长 · 现在时间」悬浮胶囊、首页返回键二次退出确认弹窗、选集详情页豆瓣评分与烂番茄指数展示，并重绘现代悬浮卡片片头片尾专属图标与升级全新金属胶片丝带 M 品牌标识。\n\n## 播放画质与界面交互\n\n- **HDR10 防闪烁保护**：新增 `hdrSessionActive` 持续激活保护，在识别到 HDR10 / HLG / Dolby Vision 片源后全程锁定硬件 `SurfaceView` 直通输出（禁止自动回退切换至 `TextureView`），并在 HDR 播放会话内自动抑制工具条 Alpha 渐变动画与高光重绘，解决部分电视面板因 HDR 模式反复进出导致的画面频闪。\n- **HEVC 与杜比视界偏绿色彩修复**：针对缺失色彩元数据的 HEVC 片源自动补齐分辨率自适应 BT.709 / BT.601 默认色彩空间（不覆盖源流已声明的 BT.2020 HDR 元数据），优先选择硬件 HEVC 解码器；准确识别杜比视界 Profile 5（`dvhe.05` / `dvh1.05` 及原始 `dvcC` 配置记录）专有 IPT-PQ-C2 色彩空间，禁止将其错误重标为普通 HEVC，并在设备解码器不支持时给出清晰提示或安全回退，彻底解决画面偏绿偏紫。\n- **全屏右上角「已播时长 / 总时长 · 现在时间」胶囊**：全屏播放且工具条与弹层收起时，右上角常驻展示黑曜石半透明圆角胶囊，等宽数字显示当前播放进度、总时长与系统时间；拉起底部播放控制条或任意叠加层时自动隐藏，支持在设置中自由开关。\n- **现代悬浮卡片片头/片尾专属图标**：重新设计现代悬浮卡片控制栏中的「片头 `[→`」与「片尾 `←]`」矢量几何图标，与「下一集 `▶|`」及快进快退图标彻底区分。\n- **首页返回键二次退出确认**：在电视端首页顶层按遥控器返回键（且无侧栏、抽屉或弹窗打开）时弹出二次确认对话框，默认焦点停留在「继续观看」，防止连续按返回键误退应用。\n\n## 片源详情与品牌视觉\n\n- **选集页豆瓣评分与烂番茄指数**：扩展 CMS 结构化字段与简介文本（兼容 PTGen 全角空格 `◎豆瓣评分　8.9`、「烂番茄新鲜度高达 94%」等描述）双通道提取，自动过滤 `0.0` / `10.0` 等无效占位分值，在选集详情页展示已核验的「豆瓣 ★ X.X」与「烂番茄 XX%」徽标。\n- **全新金属胶片丝带 M 品牌图标**：升级电视端桌面图标与 Leanback 横幅 Banner 为黑曜石底金属胶片丝带「M」视觉设计。\n\n## 包信息与构建记录\n\n- **安装包（32 位电视 / 盒子专版）**：`MarcoMovie-0.5.24-android-tv.apk`（更新兼容别名 `MarcoMovie-0.5.24-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`de5bbcf9c9af31148af1b04bffac2813be1ba05d8f40cf7caeeef4cbb3df8773`。\n- **对应源码包**：`MarcoMovie-android-tv-v0.5.24-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线回归（含 26 项电视端 HDR/DV 色彩归一化、豆瓣/烂番茄评分提取、右上角 HUD 与图标专项检查及 49 项 CMS 检查）、API 23 字节码回调与模拟器回归及官方正式签名校验；未声明全部实体电视面板型号与杜比视界授权硬件穷举实机验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.24"
+    },
+    {
       "tag": "macos-v0.5.16",
       "version": "0.5.16",
       "platforms": [
