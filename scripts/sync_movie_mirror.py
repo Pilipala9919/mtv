@@ -91,9 +91,9 @@ PAGE_CSS = """
   .btn.ghost { background:transparent; color:var(--text); }
   .meta { margin-top:18px; color:var(--muted); font-size:13px; }
   .meta b { color:var(--silver); }
-  .hero figure { background:#fff; border-radius:16px; padding:14px; }
+  .hero figure { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; }
   .hero figure img { width:100%; display:block; border-radius:8px; }
-  .hero figure figcaption { color:#666; font-size:12px; text-align:center; padding-top:10px; }
+  .hero figure figcaption { color:var(--muted); font-size:12px; text-align:center; padding-top:10px; }
   .notice { margin:30px 0 0; padding:14px 18px; background:var(--card); border:1px solid var(--line);
     border-left:3px solid var(--silver); border-radius:10px; color:var(--muted); font-size:14px; }
   section.block { padding:44px 0 0; }
@@ -565,7 +565,7 @@ def sync(output):
                          'Windows / macOS / iOS 多平台下载</a></p>')
     changelog = render_changelog(feed['notes'])
     page = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Marco Movie · 多端自适应播放器 · Pilipala</title><style>{PAGE_CSS}</style>
+<title>Marco Movie · 多端自适应播放器 · Pilipala</title><link rel="icon" type="image/png" href="app-icon-512.png"><link rel="apple-touch-icon" href="app-icon-512.png"><style>{PAGE_CSS}</style>
 <body><div class="wrap">
 <header class="nav"><div class="brand"><img src="app-icon-512.png" alt="Marco Movie 应用图标">Marco Movie</div>
 <nav class="links"><a href="#download">下载</a><a href="#features">功能</a><a href="#changelog">本次更新</a><a href="#group">交流群</a><a href="https://github.com/{REPO}" target="_blank" rel="noopener">GitHub</a></nav></header>
@@ -574,7 +574,7 @@ def sync(output):
 <p class="lead">支持 Android 电视大屏遥控、手机与平板 64 位专属触控，以及 Windows / macOS / iOS（iOS 14.0+ 巨魔与自签）多端独立适配的开源播放器。</p>
 <div class="btn-row"><a class="btn primary" href="{escaped(_gh(apk_name))}">下载电视版</a>{mobile_button}<a class="btn ghost" href="#download">全部平台</a></div>
 <p class="meta"><b>{stars} Stars</b> · GPL-3.0-only · {published_date} 更新 · 作者 Pilipala</p>
-</div><figure><img src="tv-banner-960x540.png" alt="Marco Movie 横幅：银色场记板加播放标志"><figcaption>银色场记板横幅 · 仓库原图</figcaption></figure></div>
+</div><figure><img src="tv-banner-960x540.png" alt="Marco Movie 横幅：银灰胶片丝带 M 标志与品牌字标"><figcaption>Marco Movie 品牌横幅 · 仓库原图</figcaption></figure></div>
 <p class="notice">本产品仅为工具，不内置、不提供、不托管任何影视资源或配置地址。内容与配置请自行合法获取，数据保存在本机。</p>
 <section class="block" id="features"><h2>文字介绍与功能</h2>
 <p class="sub">同一版本，按遥控器、触屏和桌面操作分别适配。</p>

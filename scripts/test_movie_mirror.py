@@ -207,6 +207,16 @@ class MirrorTests(unittest.TestCase):
         self.assertNotIn('界面示意', page)
         self.assertNotIn('class="shots"', page)
 
+    def test_brand_assets_and_dark_hero_frame(self):
+        self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        self.assertIn('<link rel="icon" type="image/png" href="app-icon-512.png">', page)
+        self.assertIn('<link rel="apple-touch-icon" href="app-icon-512.png">', page)
+        self.assertIn('.hero figure { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; }', page)
+        self.assertIn('src="tv-banner-960x540.png"', page)
+        self.assertIn('Marco Movie 品牌横幅', page)
+        self.assertNotIn('银色场记板', page)
+
     def test_stars_rendered_from_repo_api(self):
         self.sync()
         page = (self.out/'index.html').read_text(encoding='utf-8')
