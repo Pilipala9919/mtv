@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "platform": "ios",
-  "versionName": "0.5.25",
+  "versionName": "0.5.26",
   "prerelease": false,
-  "notes": "# Marco Movie iOS / iPadOS 0.5.25\n\n发布日期：2026-11-12。应用版本：`0.5.25`（构建号 `75`），最低系统要求：iOS / iPadOS 14.0。本次更新同步新增 32 套无 JIT `Wex` 订阅线路适配与网盘解析容错增强，并升级单部影片独立片头片尾、播放页常显时间、首页自动翻页、海报防闪与更新说明自动归纳。\n\n## 问题修复与优化\n\n- 修复连续快速下滑浏览海报时因高清封面切换清空旧帧引发的海报闪烁问题，以及看完影片返回首页未立即刷新观影记录的问题。\n- 修复系统代理异常、网盘分享目录分页或待播预热剧集引发的读取网盘失败提示，支持同剧集跨网盘线路自动回退。\n\n## 片源与播放\n\n- 在不依赖 JIT 与外部原生代码的前提下，新增 32 套 `Wex` 纯数据提取与直连/网盘适配器，解锁瓜子、独播、文才、小枫、贱片、师兄、粉猪、咸鱼、追剧、柚子等片源线路。\n- 片头、片尾跳过时长改为按单部影片本机独立记录（严格隔离隐私空间且不同步覆盖其他影片），播放页点击片头/片尾按钮优先默认设为当前播放时间并支持快捷微调。\n- 新增独立开关的「播放页常显时间」功能，全屏播放隐藏控制栏后仍可在右上角常显时间。\n\n## 界面与交互\n\n- 首页下滑自动加载更多海报（取消「加载更多影片」按钮），分类筛选默认收起、再次点击分类胶囊或筛选按钮展开。\n- 软件更新页面与弹窗支持自动总结归纳各版本更新重点，告别冗长杂乱说明。\n\n## 包信息与构建记录\n\n- **未签名 IPA（iPhone / iPad 通用）**：`MarcoMovie-0.5.25-ios-iphone-ipad-unsigned.ipa`（更新兼容别名 `MarcoMovie-0.5.25-ios-unsigned.ipa`），SHA-256：`4ed3399564e95c5779eebd4d011b0b69fb9ef9d55237faec12a11354d77b0e94`。\n- **对应源码包**：`MarcoMovie-ios-v0.5.25-source.zip`，SHA-256：`9202a106441188a6b57e280f87a09af0f2c7d783213befd75f13958604199190`。\n- **构建提交**：`bf201d146c2caba51054fd6e5deef2aa9570e57c`。[多端原生构建与校验记录（43184837950）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43184837950)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、iOS Xcode 原生 Release 构建及全部 `701` 项 Flutter 自动化测试；未签名 IPA 支持巨魔（TrollStore）直接覆盖更新或自签工具安装。\n",
+  "notes": "# Marco Movie iOS / iPadOS 0.5.26\n\n发布日期：2026-11-14。应用版本：`0.5.26`（构建号 `76`），最低系统要求：iOS / iPadOS 14.0。本次更新新增订阅源各线路手动分组、手动编辑与单条/批量删除能力，并同步补齐更多无 JIT `Wex` / `FTY` / `WoGG` 订阅兼容、镜像防拦截回退、独立原子存储与钥匙串安全加固。\n\n## 片源与播放\n\n- 「切换片源」页面新增分组筛选胶囊栏与「管理分组 / 批量分组 / 批量删除 / 恢复已删」操作栏，点击线路卡片 `⋯` 或长按即可手动移动/新建分组、手动编辑单条线路参数（名称、分组、API 地址、解析 `playUrl`、扩展 `ext`、可搜索开关及一键重置默认）或删除单条线路；刷新或重导订阅后自动保留自定义编排。\n- 在不依赖 JIT 与外部原生代码的前提下，补充 `JumiTV` 及多套 `Wex` / `FTY` / `WoGG` 结构化纯数据提取适配器，优化源站镜像自动切换、Cloudflare / 验证码拦截提示、本机回环代理绕过及未适配线路灰显原因展示。\n- 升级播放器流订阅生命周期管理与海报缓存容量治理，减少长时间浏览与连续切集时的内存占用。\n\n## 功能与同步\n\n- 接入 iOS Keychain 系统钥匙串敏感凭据安全存储、PBKDF2 加盐隐私密码哈希、独立 JSON 原子存储架构、一键导出脱敏诊断日志及 WebDAV 坚果云子目录与 ETag 并发保护。\n\n## 包信息与构建记录\n\n- **未签名 IPA（iPhone / iPad 通用）**：`MarcoMovie-0.5.26-ios-iphone-ipad-unsigned.ipa`（更新兼容别名 `MarcoMovie-0.5.26-ios-unsigned.ipa`），SHA-256：`ce272a2d92d940483c052de9d9a0ce49b33966a498e6e7eba7ba298ba0624d42`。\n- **对应源码包**：`MarcoMovie-ios-v0.5.26-source.zip`，SHA-256：`90255894dc49d9416af602a4075147e8706fdb0052a642adc19507ad34b26c85`。\n- **构建提交**：`9a7cba393e69825031ac29230cb5afa1e0961d41`。[多端原生构建与校验记录（43575866858）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43575866858)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、iOS Xcode 原生 Release 构建及全部 Flutter 自动化测试；未签名 IPA 支持巨魔（TrollStore）直接覆盖更新或自签工具安装。\n",
   "packages": {
-    "MarcoMovie-0.5.25-ios-iphone-ipad-unsigned.ipa": {
-      "size": 62059643,
-      "sha256": "4ed3399564e95c5779eebd4d011b0b69fb9ef9d55237faec12a11354d77b0e94",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.25/MarcoMovie-0.5.25-ios-iphone-ipad-unsigned.ipa"
+    "MarcoMovie-0.5.26-ios-iphone-ipad-unsigned.ipa": {
+      "size": 62311500,
+      "sha256": "ce272a2d92d940483c052de9d9a0ce49b33966a498e6e7eba7ba298ba0624d42",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.26/MarcoMovie-0.5.26-ios-iphone-ipad-unsigned.ipa"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.25"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.26"
 }

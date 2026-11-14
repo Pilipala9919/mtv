@@ -2,6 +2,78 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "macos-v0.5.16",
+      "version": "0.5.16",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-14T09:11:53Z",
+      "prerelease": false,
+      "target_commitish": "9a7cba393e69825031ac29230cb5afa1e0961d41",
+      "notes": "# Marco Movie macOS 0.5.16\n\n发布日期：2026-11-14。应用版本：`0.5.16`（构建号 `66`）。本次更新新增订阅源各线路手动分组、手动编辑与单条/批量删除能力，并同步补齐更多 `Wex` / `FTY` / `WoGG` 订阅兼容、桌面交互快捷键、独立原子存储与钥匙串安全凭据加固。\n\n## 片源与播放\n\n- 「切换片源」全面支持对订阅源内各条线路手动创建与分配分组、批量分组、手动编辑单条线路参数（名称、分组、API 地址、解析 `playUrl`、扩展 `ext`、可搜索开关及一键重置默认）、删除单条/批量删除线路及恢复已删线路；刷新订阅后自动保留自定义分组与编删配置。\n- 新增 `JumiTV` 及多套无 JIT `Wex` / `FTY` / `WoGG` 结构化纯数据提取适配器，优化源站镜像自动切换、验证码拦截识别、本机回环代理绕过及未适配片源灰显诊断原因说明。\n- 播放器新增桌面快捷键（`M` 静音、`N`/`P` 切集、`[`/`]` 调速、`Cmd+W` 退出），完善流订阅释放与海报内存缓存容量治理。\n\n## 功能与同步\n\n- 桌面端支持鼠标拖拽滚动、横向列表滚轮滚动与悬停翻页箭头，窗口半屏贴靠自动保留侧边栏导航，并在关窗前安全完成同步推送。\n- 接入 macOS 系统 Keychain 敏感凭据安全存储、独立原子文件持久化、脱敏诊断日志包导出及 WebDAV 坚果云子目录与 ETag 并发保护。\n\n## 包信息与构建记录\n\n- **macOS 桌面应用包（Apple Silicon / Intel）**：`MarcoMovie-0.5.16-macos-desktop.zip`（更新兼容别名 `MarcoMovie-0.5.16-macos.zip`），SHA-256：`8fbe85f0236c7905116ce2bdffe392b57f08dde539b32888b5e3d715fd10eba8`。\n- **对应源码包**：`MarcoMovie-macos-v0.5.16-source.zip`，SHA-256：`90255894dc49d9416af602a4075147e8706fdb0052a642adc19507ad34b26c85`。\n- **构建提交**：`9a7cba393e69825031ac29230cb5afa1e0961d41`。[多端原生构建与校验记录（43575866858）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43575866858)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、macOS 原生 Release 构建、打包 `Mpv.framework` 媒体回放校验及全部 Flutter 自动化测试；应用压缩包未公证，首次打开请右键选择“打开”。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.16"
+    },
+    {
+      "tag": "ios-v0.5.26",
+      "version": "0.5.26",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-14T08:53:27Z",
+      "prerelease": false,
+      "target_commitish": "9a7cba393e69825031ac29230cb5afa1e0961d41",
+      "notes": "# Marco Movie iOS / iPadOS 0.5.26\n\n发布日期：2026-11-14。应用版本：`0.5.26`（构建号 `76`），最低系统要求：iOS / iPadOS 14.0。本次更新新增订阅源各线路手动分组、手动编辑与单条/批量删除能力，并同步补齐更多无 JIT `Wex` / `FTY` / `WoGG` 订阅兼容、镜像防拦截回退、独立原子存储与钥匙串安全加固。\n\n## 片源与播放\n\n- 「切换片源」页面新增分组筛选胶囊栏与「管理分组 / 批量分组 / 批量删除 / 恢复已删」操作栏，点击线路卡片 `⋯` 或长按即可手动移动/新建分组、手动编辑单条线路参数（名称、分组、API 地址、解析 `playUrl`、扩展 `ext`、可搜索开关及一键重置默认）或删除单条线路；刷新或重导订阅后自动保留自定义编排。\n- 在不依赖 JIT 与外部原生代码的前提下，补充 `JumiTV` 及多套 `Wex` / `FTY` / `WoGG` 结构化纯数据提取适配器，优化源站镜像自动切换、Cloudflare / 验证码拦截提示、本机回环代理绕过及未适配线路灰显原因展示。\n- 升级播放器流订阅生命周期管理与海报缓存容量治理，减少长时间浏览与连续切集时的内存占用。\n\n## 功能与同步\n\n- 接入 iOS Keychain 系统钥匙串敏感凭据安全存储、PBKDF2 加盐隐私密码哈希、独立 JSON 原子存储架构、一键导出脱敏诊断日志及 WebDAV 坚果云子目录与 ETag 并发保护。\n\n## 包信息与构建记录\n\n- **未签名 IPA（iPhone / iPad 通用）**：`MarcoMovie-0.5.26-ios-iphone-ipad-unsigned.ipa`（更新兼容别名 `MarcoMovie-0.5.26-ios-unsigned.ipa`），SHA-256：`ce272a2d92d940483c052de9d9a0ce49b33966a498e6e7eba7ba298ba0624d42`。\n- **对应源码包**：`MarcoMovie-ios-v0.5.26-source.zip`，SHA-256：`90255894dc49d9416af602a4075147e8706fdb0052a642adc19507ad34b26c85`。\n- **构建提交**：`9a7cba393e69825031ac29230cb5afa1e0961d41`。[多端原生构建与校验记录（43575866858）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43575866858)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、iOS Xcode 原生 Release 构建及全部 Flutter 自动化测试；未签名 IPA 支持巨魔（TrollStore）直接覆盖更新或自签工具安装。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.26"
+    },
+    {
+      "tag": "windows-v0.5.19",
+      "version": "0.5.19",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-14T08:51:56Z",
+      "prerelease": false,
+      "target_commitish": "9a7cba393e69825031ac29230cb5afa1e0961d41",
+      "notes": "# Marco Movie Windows 0.5.19\n\n发布日期：2026-11-14。应用版本：`0.5.19`（构建号 `69`）。本次更新新增订阅源各线路手动分组、手动编辑与单条/批量删除能力，并同步升级更多 `Wex` / `FTY` / `WoGG` 订阅兼容、桌面交互快捷键、独立文件原子存储与凭据安全加固。\n\n## 片源与播放\n\n- 「切换片源」全面支持对订阅源内各条线路手动分组（筛选分组、新建分组、单条移动与批量分配分组）、手动编辑单条线路参数（名称、分组、API 地址、解析 `playUrl`、扩展 `ext`、可搜索开关及一键重置默认）、删除单条/批量删除线路及恢复已删线路；刷新或重导订阅后自动保留自定义分组与编删配置。\n- 新增 `JumiTV` 及多套 `Wex` / `FTY` / `WoGG` 结构化纯数据提取适配器，优化站点镜像自动切换、Cloudflare / 验证码拦截提示、本机回环代理绕过及未适配片源灰显具体诊断说明。\n- 播放器新增桌面快捷键（`M` 静音、`N`/`P` 切集、`[`/`]` 调速、`Ctrl+W` 退出），优化播放器流订阅释放与海报内存缓存上限。\n\n## 功能与同步\n\n- 桌面端支持鼠标拖拽滚动、横向列表滚轮横向滚动与悬停翻页箭头，半屏贴靠（宽度≥700）保持侧边栏导航，关窗前自动安全推送同步。\n- 升级 Windows DPAPI 系统级敏感凭据安全存储、独立 JSON 原子存储架构、诊断日志一键脱敏导出及 WebDAV 坚果云子目录与 ETag 并发保护。\n\n## 包信息与构建记录\n\n- **安装版（推荐，简体中文向导）**：`MarcoMovie-0.5.19-windows-x64-setup.exe`（更新兼容别名 `MarcoMovie-0.5.19-windows-setup.exe`），SHA-256：`3865ed47cc20e03020ed88c9f0cc9eb9034d2fe460e1ede45cf21998f9d64755`。\n- **绿色便携版**：`MarcoMovie-0.5.19-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.19-windows-x64.zip`），SHA-256：`b76fea5889eed85eac1ef3381ebf0726199d0ffdc5d6b836486aa43bc818bcd2`。\n- **对应源码包**：`MarcoMovie-windows-v0.5.19-source.zip`，SHA-256：`90255894dc49d9416af602a4075147e8706fdb0052a642adc19507ad34b26c85`。\n- **构建提交**：`9a7cba393e69825031ac29230cb5afa1e0961d41`。[多端原生构建与校验记录（43575866858）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43575866858)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Windows x64 原生构建、简体中文 Inno Setup 安装包校验、打包 `libmpv-2.dll` 媒体回放校验及全部 Flutter 自动化测试；未声明用户私人网盘账号实机穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.19"
+    },
+    {
+      "tag": "android-lite-v0.5.5",
+      "version": "0.5.5",
+      "platforms": [
+        "android-lite"
+      ],
+      "published_at": "2026-11-14T08:50:58Z",
+      "prerelease": false,
+      "target_commitish": "9a7cba393e69825031ac29230cb5afa1e0961d41",
+      "notes": "# Marco Movie Android Lite 0.5.5\n\n发布日期：2026-11-14。应用版本：`0.5.5`（versionCode `55`）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存），本次更新新增订阅源各线路手动分组编删、电视搜索手机扫码输入、老电视 DLNA / 网页投屏接收及旧系统根证书 TLS 兼容加固。\n\n## 功能与同步\n\n- 顶部导航栏与首页快捷栏新增「投屏」入口（`LiteCast`），在 API 14+ 单 DEX 轻量环境下同时支持 UPnP / DLNA 标准媒体投屏接收（手机视频 App 搜索「Marco Movie Lite」直投）与局域网扫码网页直投及遥控（播放/暂停/进度跳转/音量调节）。\n- 搜索页新增「手机扫码输入」按钮，手机扫描电视屏幕二维码即可网页输入片名推送至老电视直接触发搜索，告别老旧遥控器逐字拼写。\n- 内置 Conscrypt TLS 引擎与 Let's Encrypt `ISRG Root X1` 根证书复合信任链，解决 Android 4.0–7.0 老电视因系统根证书过期无法拉取 HTTPS 订阅源与海报的问题，并加固局域网配对服务 5 分钟自动过期保护。\n\n## 片源与播放\n\n- 线路管理页支持分组胶囊筛选、手动新建/分配单条或批量线路分组、手动编辑单条线路（名称、分组、API、解析 `playUrl`、扩展 `ext`、可搜索开关及恢复默认）、删除单条/批量删除线路与恢复已删线路；刷新订阅后自动保留自定义设置。\n- 解除配置拉取 `identity` 限制并支持透明 GZIP 解压、双 UA 回退、20 项三端订阅解析一致性对齐及不可用线路灰显具体原因说明。\n\n## 包信息与构建记录\n\n- **安装包**：`MarcoMovie-0.5.5-android-lite.apk`（更新兼容别名 `MarcoMovie-0.5.5-lite.apk`），官方正式签名。\n- **SHA-256**：`1df8e73937c37fcc8c65ac08ac5051515b023b0577baadf916fb02216aa81e9a`。\n- **对应源码包**：`MarcoMovie-android-lite-v0.5.5-source.zip`，SHA-256：`90255894dc49d9416af602a4075147e8706fdb0052a642adc19507ad34b26c85`。\n- **构建提交**：`9a7cba393e69825031ac29230cb5afa1e0961d41`。[多端原生构建与校验记录（43575866858）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43575866858)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、API 14 `bootclasspath` 与 D8 `--min-api 14` 单 DEX 编译校验、`193` 项 TV Lite JVM 离线回归（含 DLNA / 网页投屏、搜索扫码输入、线路分组编删）、20 项三端规范一致性测试、8 项 TLS 能力检查及官方正式签名校验；未声明实体老旧电视实机穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.5"
+    },
+    {
+      "tag": "android-mobile-v0.5.23",
+      "version": "0.5.23",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-14T08:50:52Z",
+      "prerelease": false,
+      "target_commitish": "9a7cba393e69825031ac29230cb5afa1e0961d41",
+      "notes": "# Marco Movie Android 手机 / 平板 0.5.23\n\n发布日期：2026-11-14。版本代码：`84`。本次更新新增订阅源各线路手动分组、手动编辑与单条/批量删除能力，并同步补齐多套 `Wex` / `FTY` / `WoGG` 片源兼容、镜像防拦截回退、后台异步持久化与凭据安全存储加固。\n\n## 片源与播放\n\n- 「切换片源」全面支持对订阅源内各条线路手动创建与切换分组、批量分组、手动编辑单条线路参数（名称、分组、API 地址、解析 `playUrl`、扩展 `ext`、可搜索开关及一键恢复原始参数）、删除单条或批量删除线路以及恢复已删线路；刷新或重导同一订阅后自动保留自定义编排。\n- 新增 `JumiTV` 及多套 `Wex` / `FTY` / `WoGG` 纯数据提取适配器，优化源站镜像自动切换、Cloudflare / 验证码拦截明确提示、双 UA 配置拉取回退与未适配片源灰显诊断说明。\n- 播放进度记录与订阅配置保存重构为后台异步序列落盘，手机端 ZIP 扩展包导入补齐跨协议重定向与 Cookie 维护，消除主线程写入卡顿。\n\n## 功能与同步\n\n- 升级 WebDAV 多端同步（坚果云自动创建 `MarcoMovie/` 子目录、ETag 并发校验与 412 冲突重试），并采用 `AndroidKeyStore` AES-256-GCM 加密保护敏感配置凭据与新增「仅允许 HTTPS 插件」安全开关。\n\n## 包信息与构建记录\n\n- **安装包（ARM64 + ARMv7 双架构）**：`MarcoMovie-0.5.23-android-mobile.apk`（更新兼容别名 `MarcoMovie-0.5.23-mobile.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`7c43554e14d776337aaab1e857ae40ba04f8ddf3b9496c61a4aa888d8b6521b3`。\n- **对应源码包**：`MarcoMovie-android-mobile-v0.5.23-source.zip`，SHA-256：`90255894dc49d9416af602a4075147e8706fdb0052a642adc19507ad34b26c85`。\n- **构建提交**：`9a7cba393e69825031ac29230cb5afa1e0961d41`。[多端原生构建与校验记录（43575866858）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43575866858)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线回归（含线路分组编删、三端一致性套件与后台存储检查）、16KB 页对齐双架构原生构建及官方正式签名校验；未声明全部实体手机机型穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.23"
+    },
+    {
+      "tag": "android-tv-v0.5.23",
+      "version": "0.5.23",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-14T08:50:15Z",
+      "prerelease": false,
+      "target_commitish": "9a7cba393e69825031ac29230cb5afa1e0961d41",
+      "notes": "# Marco Movie Android 电视 / 盒子 0.5.23\n\n发布日期：2026-11-14。版本代码：`83`。本次更新重点新增订阅源各线路手动分组、单条编辑与删除，电视端搜索手机扫码输入，以及常驻 Dock 栏的电视投屏接收功能（支持 DLNA / UPnP 媒体投屏与扫码网页直投遥控），并同步升级片源防拦截回退与存储安全加固。\n\n## 功能与同步\n\n- 电视端悬浮 Dock 栏（右侧与顶部模式）新增「投屏」入口，内置 UPnP / DLNA 标准数字媒体渲染器（支持手机主流视频 App 在同一局域网搜索「Marco Movie TV」一键投屏并同步播放进度、快进快退与音量）及扫码网页直投遥控器（支持推送 `.m3u8` / `.mp4` 直链与可选请求头）。\n- 电视端全局搜索页新增「扫码输入」按钮，生成带一次性随机令牌的局域网手机输入二维码，手机扫码即可打字或语音输入片名推送至电视立即搜索。\n- 强化 WebDAV 多端同步（坚果云根目录自动追加 `MarcoMovie/` 子目录、ETag 并发冲突检测与 412 自动重试）及 `AndroidKeyStore` 敏感凭据加密保护。\n\n## 片源与播放\n\n- 「切换片源」升级为支持订阅源内各线路手动分组（筛选分组、新建分组、单条移动与批量分组）、手动编辑单条线路参数（名称、分组、API 地址、解析 `playUrl`、扩展 `ext`、可搜索开关及一键重置默认）与单条/批量删除及恢复已删线路；刷新订阅自动保留自定义分组与编删配置。\n- 新增 `JumiTV` 及多套 `Wex` / `FTY` / `WoGG` 结构化纯数据提取适配器，优化站点镜像切换、验证码拦截提示、本机回环代理绕过、双 UA 配置拉取回退与未适配线路灰显原因展示。\n- 播放进度持久化与订阅保存全面移至后台单线程序列执行器异步落盘，消除主线程磁盘同步阻塞导致的遥控焦点抽帧。\n\n## 包信息与构建记录\n\n- **安装包（32 位电视 / 盒子专版）**：`MarcoMovie-0.5.23-android-tv.apk`（更新兼容别名 `MarcoMovie-0.5.23-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`8f666ae240eb6f64797901a88e72801d5d4f86f6dd3e744246d92b11f071a1e7`。\n- **对应源码包**：`MarcoMovie-android-tv-v0.5.23-source.zip`，SHA-256：`90255894dc49d9416af602a4075147e8706fdb0052a642adc19507ad34b26c85`。\n- **构建提交**：`9a7cba393e69825031ac29230cb5afa1e0961d41`。[多端原生构建与校验记录（43575866858）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43575866858)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 离线回归（含 DLNA / 网页投屏协议与 XXE/SSRF 防护、搜索扫码一次性令牌、线路分组编删及 20 项三端一致性用例）、API 23 模拟器回归及官方正式签名校验；未声明全部实体电视型号与路由器组播环境穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.23"
+    },
+    {
       "tag": "android-mobile-v0.5.22",
       "version": "0.5.22",
       "platforms": [
