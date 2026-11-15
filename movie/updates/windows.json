@@ -1,30 +1,30 @@
 {
   "schema": 1,
   "platform": "windows",
-  "versionName": "0.5.20",
+  "versionName": "0.5.21",
   "prerelease": false,
-  "notes": "# Marco Movie Windows 0.5.20\n\n发布日期：2026-11-15。应用版本：`0.5.20`（构建号 `70`）。本次更新新增播放器防误触锁屏模式，并同步焕新全平台统一的金属胶片丝带 M 桌面图标与应用内品牌视觉。\n\n## 播放交互与品牌视觉\n\n- **播放器防误触锁屏**：播放控制栏新增一键「锁屏」开关；开启锁屏后自动收起全部控制条并隐藏沉浸式无边框窗口标题栏交互，拦截鼠标双击暂停、滚轮调节、拖拽快进快退及键盘播放快捷键误触；单击画面仅浮现独立「解锁」胶囊按钮，全屏或触控屏观影更省心。\n- **全新金属胶片丝带 M 品牌图标**：升级 Windows 桌面快捷方式与可执行程序 `.ico` 图标及应用内品牌标识为黑曜石底金属胶片丝带「M」视觉设计。\n\n## 包信息与构建记录\n\n- **安装版（推荐，简体中文向导）**：`MarcoMovie-0.5.20-windows-x64-setup.exe`（更新兼容别名 `MarcoMovie-0.5.20-windows-setup.exe`），SHA-256：`758dbf183ec228a3660cc60f6fa1ab40928163f1361705b9d033f6509b5adbc8`。\n- **绿色便携版**：`MarcoMovie-0.5.20-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.20-windows-x64.zip`），SHA-256：`446ebfdce3148a12342bab13cea8dd07886aaffc9959e5fe78bedc3e2514f178`。\n- **对应源码包**：`MarcoMovie-windows-v0.5.20-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Windows x64 原生构建、简体中文 Inno Setup 安装包校验、打包 `libmpv-2.dll` 媒体回放校验及全部 Flutter 自动化测试（含播放器锁屏交互组件测试）；未声明用户私人网盘账号实机穷举验收。\n",
+  "notes": "# Marco Movie Windows 0.5.21\n\n发布日期：2026-11-15。应用版本：`0.5.21`（构建号 `71`）。本次更新同步上线 4K 网盘 6 路并发分片回环代理、玩偶系 / 四盘聚合源同站死链自动回捞、百度/夸克/UC 网盘子目录解析加固以及本机回环引擎探活自愈与并发 DoH 防污染能力。\n\n## 更新内容\n\n- **4K 网盘 6 路并发分片回环代理（`NetdiskRangeProxy`）**：默认启用 `6 路 × 1 MB` 滑动窗口并发预取（缓存上限 `24 MB`），支持 `HEAD`、`HTTP 206` 精确字节区间与 MKV / MP4 尾部索引跳转即时切换（自动中止旧偏移预取），并在上游网盘直链 `401` / `403` 过期时自动刷新续流。\n- **玩偶系 4K 全站适配与同站死链回捞（`WoggNetdiskAdapter`）**：统一适配 20+ 套玩偶系 MacCMS 4K 站点与 PanSou 四盘轮询配额聚合，修复详情页下载容器定位，并在当前条目网盘分享失效或为空时自动并发回捞同站同名备用条目。\n- **网盘子目录契约修复与本机脚本引擎防污染自愈**：修复百度分享子目录 `sekey` 透传契约、夸克/UC 临时转存空间回收及压缩包资源识别；内置 CatPaw / DRPY 回环引擎失活自愈、6 Worker 并发搜索隔离与并发 RFC 8484 DoH 清洁 IP 重连。\n\n## 包信息与构建记录\n\n- **安装版（推荐）**：`MarcoMovie-0.5.21-windows-x64-setup.exe`（更新兼容别名 `MarcoMovie-0.5.21-windows-setup.exe`），SHA-256：`2c70981fc3609bd5f8d11c05705119976b7eda1164f63d001a91b5b67741119c`。\n- **绿色便携版**：`MarcoMovie-0.5.21-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.21-windows-x64.zip`），SHA-256：`e8ce3235f84b370680c029dbbe6331e3bfea126a7797bb5d2c6bd02c6b6938d3`。\n- **对应源码包**：`MarcoMovie-windows-v0.5.21-source.zip`，SHA-256：`0b23a7c652f670543e22595964475256c88410cfe9a800c0bf52e770173455cd`。\n- **构建提交**：`97f872dead7413120694bf73211b72967ffb4198`。[多端原生构建与校验记录（43729927928）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43729927928)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Windows x64 原生构建、`libmpv-2.dll` 媒体回放校验及全部 `948` 项 Flutter 自动化测试；更新前请先退出正在运行的旧版程序。\n",
   "packages": {
-    "MarcoMovie-0.5.20-windows-x64-setup.exe": {
-      "size": 50096605,
-      "sha256": "758dbf183ec228a3660cc60f6fa1ab40928163f1361705b9d033f6509b5adbc8",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.20/MarcoMovie-0.5.20-windows-x64-setup.exe"
+    "MarcoMovie-0.5.21-windows-x64-setup.exe": {
+      "size": 50159580,
+      "sha256": "2c70981fc3609bd5f8d11c05705119976b7eda1164f63d001a91b5b67741119c",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.21/MarcoMovie-0.5.21-windows-x64-setup.exe"
     },
-    "MarcoMovie-0.5.20-windows-x64-portable.zip": {
-      "size": 72539625,
-      "sha256": "446ebfdce3148a12342bab13cea8dd07886aaffc9959e5fe78bedc3e2514f178",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.20/MarcoMovie-0.5.20-windows-x64-portable.zip"
+    "MarcoMovie-0.5.21-windows-x64-portable.zip": {
+      "size": 72617728,
+      "sha256": "e8ce3235f84b370680c029dbbe6331e3bfea126a7797bb5d2c6bd02c6b6938d3",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.21/MarcoMovie-0.5.21-windows-x64-portable.zip"
     },
-    "MarcoMovie-0.5.20-windows-setup.exe": {
-      "size": 50096605,
-      "sha256": "758dbf183ec228a3660cc60f6fa1ab40928163f1361705b9d033f6509b5adbc8",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.20/MarcoMovie-0.5.20-windows-setup.exe"
+    "MarcoMovie-0.5.21-windows-setup.exe": {
+      "size": 50159580,
+      "sha256": "2c70981fc3609bd5f8d11c05705119976b7eda1164f63d001a91b5b67741119c",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.21/MarcoMovie-0.5.21-windows-setup.exe"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.20",
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.21",
   "windows": {
-    "size": 50096605,
-    "sha256": "758dbf183ec228a3660cc60f6fa1ab40928163f1361705b9d033f6509b5adbc8",
-    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.20/MarcoMovie-0.5.20-windows-setup.exe"
+    "size": 50159580,
+    "sha256": "2c70981fc3609bd5f8d11c05705119976b7eda1164f63d001a91b5b67741119c",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/windows-v0.5.21/MarcoMovie-0.5.21-windows-setup.exe"
   }
 }

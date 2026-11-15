@@ -2,6 +2,66 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "android-mobile-v0.5.25",
+      "version": "0.5.25",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-15T16:17:23Z",
+      "prerelease": false,
+      "target_commitish": "97f872dead7413120694bf73211b72967ffb4198",
+      "notes": "# Marco Movie Android 手机 / 平板 0.5.25\n\n发布日期：2026-11-15。版本代码：`88`。本次更新为 Android 手机与平板端同步升级 4K 网盘 6 路并发分片回环代理、CatVod JAR / QuickJS `//bb` 字节码兼容层与并发 DoH 抗 DNS 污染重连机制，大幅改善高码率 4K 网盘原画起播与拖动流畅度。\n\n## 4K 网盘分片加速与片源引擎兼容升级\n\n- **6 路并发分片回环代理与自适应缓冲（`LocalProxy` & `MoviePlayer`）**：本机回环流媒体代理升级为 `6 路 × 1 MB` 并发滑动窗口预取（最多缓存 `24 MB`），支持 `HEAD` 与 `HTTP 206` 精确字节区间响应、拖动进度条即时切换预取窗口及网盘直链 `401` / `403` 过期自动刷新重连，配合 `ExoPlayer` 自适应起播水位显著减少 4K 原盘缓冲等待。\n- **CatVod JAR 爬虫与 QuickJS `//bb` 字节码深度兼容**：补齐 `Spider.client()`、`Spider.safeDns()`、`SpiderApi.multiReq` 并发请求及 `CspEngine` 双架构 `.so` 提取与安全校验；`JsEngine` 支持识别加载 `//bb`（`CATOP`）QuickJS 字节码爬虫并提供本地 `js-host` 公共依赖桥接兜底。\n- **抗 DNS 污染 DoH 重连与配置容错加固（`Cms`）**：内置并发 RFC 8484 DoH 清洁 IP 解析与 HTTPS SNI 保持重连，遇到 `403` 或连接异常自动执行多级 UA 回退，全面消除 `\"null\"` 字符串对订阅配置与请求头的污染。\n\n## 包信息与构建记录\n\n- **安装包（ARM64 + ARMv7 双架构）**：`MarcoMovie-0.5.25-android-mobile.apk`（更新兼容别名 `MarcoMovie-0.5.25-mobile.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`a390251725ab2126716fda348f707ad5c5a81837729d8bfdaadea4079e70a96e`。\n- **对应源码包**：`MarcoMovie-android-mobile-v0.5.25-source.zip`，SHA-256：`0b23a7c652f670543e22595964475256c88410cfe9a800c0bf52e770173455cd`。\n- **构建提交**：`97f872dead7413120694bf73211b72967ffb4198`。[多端原生构建与校验记录（43729927928）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43729927928)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 全套离线回归、16KB 页对齐双架构原生构建及官方正式签名校验。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.25"
+    },
+    {
+      "tag": "android-tv-v0.5.25",
+      "version": "0.5.25",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-15T16:17:18Z",
+      "prerelease": false,
+      "target_commitish": "97f872dead7413120694bf73211b72967ffb4198",
+      "notes": "# Marco Movie Android 电视 / 盒子 0.5.25\n\n发布日期：2026-11-15。版本代码：`87`。本次更新全面升级电视与盒子端 4K 网盘原画并发分片代理、第三方 JAR / QuickJS 爬虫兼容层与并发 DoH 抗 DNS 污染能力，显著提升大屏播放高码率 4K / HDR 网盘原盘的起播速度、快进快退响应与源站连通率。\n\n## 4K 网盘分片加速与片源引擎兼容升级\n\n- **6 路并发分片回环代理与自适应缓冲（`LocalProxy` & `MoviePlayer`）**：本机回环流媒体代理升级为 `6 路 × 1 MB` 并发滑动窗口预取（最多缓存 `24 MB`），完整支持 `HEAD` 与 `HTTP 206` 字节区间请求、大跨度拖动即时取消旧偏移预取以及上游 `401` / `403` 签名过期回调重取；`ExoPlayer` 针对本机高吞吐分片流自动优化起播缓冲水位，实现 4K 大文件秒开与顺滑拖动。\n- **CatVod JAR 爬虫与 QuickJS `//bb` 字节码深度兼容**：补齐 `Spider.client()`、`Spider.safeDns()`、`SpiderApi.multiReq` 并发请求、`CspEngine` 32/64 位 `.so` 安全提取（含目录写权限恢复与 Zip-Slip 防护）；`JsEngine` 新增 `//bb`（`CATOP`）预编译字节码版本动态适配与 `assets://js/lib/` 本地公共桥接库（`cat.js` / `utils.js` / `lodash` / `cheerio`）映射兜底。\n- **抗 DNS 污染 DoH 重连与配置容错加固（`Cms`）**：内置阿里 / 腾讯并发 RFC 8484 DoH 清洁 IP 解析器，遇到 DNS 污染、连接重置或持续 `403` 时自动按多套 UA 回退并保持原始 `Host` 与 HTTPS SNI 重连；`MAX_JSON` 提升至 `16 MB` 并全面阻断 `\"null\"` 字面量污染请求头与解析地址。\n\n## 包信息与构建记录\n\n- **安装包（32 位电视 / 盒子专版）**：`MarcoMovie-0.5.25-android-tv.apk`（更新兼容别名 `MarcoMovie-0.5.25-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`a16e3b89143281212093520fda2db7951f70b8fbc81e85167b1e808b583df7aa`。\n- **对应源码包**：`MarcoMovie-android-tv-v0.5.25-source.zip`，SHA-256：`0b23a7c652f670543e22595964475256c88410cfe9a800c0bf52e770173455cd`。\n- **构建提交**：`97f872dead7413120694bf73211b72967ffb4198`。[多端原生构建与校验记录（43729927928）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43729927928)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 全套离线回归（含新增 `LocalProxyRangeChecks` 6 路分片/Seek/403 刷新回归、80 项 `CompatChecks` Spider/QuickJS/DoH 检查与 `CmsChecks`）、API 23 字节码校验及官方正式签名校验。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.25"
+    },
+    {
+      "tag": "macos-v0.5.18",
+      "version": "0.5.18",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-15T16:17:14Z",
+      "prerelease": false,
+      "target_commitish": "97f872dead7413120694bf73211b72967ffb4198",
+      "notes": "# Marco Movie macOS 0.5.18\n\n发布日期：2026-11-15。应用版本：`0.5.18`（构建号 `68`）。本次更新同步上线 4K 网盘 6 路并发分片回环代理、玩偶系 / 四盘聚合源同站死链自动回捞、百度/夸克/UC 网盘子目录解析加固以及本机回环引擎探活自愈与并发 DoH 防污染能力。\n\n## 更新内容\n\n- **4K 网盘 6 路并发分片回环代理（`NetdiskRangeProxy`）**：默认启用 `6 路 × 1 MB` 滑动窗口并发预取（缓存上限 `24 MB`），支持 `HEAD`、`HTTP 206` 精确字节区间与 MKV / MP4 尾部索引跳转即时切换，并在网盘直链 `401` / `403` 过期时自动刷新续流。\n- **玩偶系 4K 全站适配与同站死链回捞（`WoggNetdiskAdapter`）**：统一适配 20+ 套玩偶系 MacCMS 4K 站点与 PanSou 四盘轮询配额聚合，精准提取详情页下载容器，并在主条目网盘分享失效或为空时自动并发回捞同站同名可用条目。\n- **网盘子目录契约修复与本机脚本引擎防污染自愈**：修复百度分享子目录 `sekey` 透传契约、夸克/UC 临时转存空间清理与压缩包资源识别；内置 CatPaw / DRPY 回环引擎休眠唤醒自愈、6 Worker 并发搜索隔离与并发 RFC 8484 DoH 清洁 IP 重连。\n\n## 包信息与构建记录\n\n- **macOS 桌面应用包（Apple Silicon / Intel）**：`MarcoMovie-0.5.18-macos-desktop.zip`（更新兼容别名 `MarcoMovie-0.5.18-macos.zip`），SHA-256：`ad0aa53af8ee15021fb41443f4d9665c356d50f4460eee851a68ec33558e704a`。\n- **对应源码包**：`MarcoMovie-macos-v0.5.18-source.zip`，SHA-256：`0b23a7c652f670543e22595964475256c88410cfe9a800c0bf52e770173455cd`。\n- **构建提交**：`97f872dead7413120694bf73211b72967ffb4198`。[多端原生构建与校验记录（43729927928）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43729927928)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、macOS 原生 Release 构建、`Mpv.framework` 媒体回放校验及全部 `948` 项 Flutter 自动化测试；应用压缩包未公证，首次打开请右键选择“打开”。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.18"
+    },
+    {
+      "tag": "windows-v0.5.21",
+      "version": "0.5.21",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-15T16:17:10Z",
+      "prerelease": false,
+      "target_commitish": "97f872dead7413120694bf73211b72967ffb4198",
+      "notes": "# Marco Movie Windows 0.5.21\n\n发布日期：2026-11-15。应用版本：`0.5.21`（构建号 `71`）。本次更新同步上线 4K 网盘 6 路并发分片回环代理、玩偶系 / 四盘聚合源同站死链自动回捞、百度/夸克/UC 网盘子目录解析加固以及本机回环引擎探活自愈与并发 DoH 防污染能力。\n\n## 更新内容\n\n- **4K 网盘 6 路并发分片回环代理（`NetdiskRangeProxy`）**：默认启用 `6 路 × 1 MB` 滑动窗口并发预取（缓存上限 `24 MB`），支持 `HEAD`、`HTTP 206` 精确字节区间与 MKV / MP4 尾部索引跳转即时切换（自动中止旧偏移预取），并在上游网盘直链 `401` / `403` 过期时自动刷新续流。\n- **玩偶系 4K 全站适配与同站死链回捞（`WoggNetdiskAdapter`）**：统一适配 20+ 套玩偶系 MacCMS 4K 站点与 PanSou 四盘轮询配额聚合，修复详情页下载容器定位，并在当前条目网盘分享失效或为空时自动并发回捞同站同名备用条目。\n- **网盘子目录契约修复与本机脚本引擎防污染自愈**：修复百度分享子目录 `sekey` 透传契约、夸克/UC 临时转存空间回收及压缩包资源识别；内置 CatPaw / DRPY 回环引擎失活自愈、6 Worker 并发搜索隔离与并发 RFC 8484 DoH 清洁 IP 重连。\n\n## 包信息与构建记录\n\n- **安装版（推荐）**：`MarcoMovie-0.5.21-windows-x64-setup.exe`（更新兼容别名 `MarcoMovie-0.5.21-windows-setup.exe`），SHA-256：`2c70981fc3609bd5f8d11c05705119976b7eda1164f63d001a91b5b67741119c`。\n- **绿色便携版**：`MarcoMovie-0.5.21-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.21-windows-x64.zip`），SHA-256：`e8ce3235f84b370680c029dbbe6331e3bfea126a7797bb5d2c6bd02c6b6938d3`。\n- **对应源码包**：`MarcoMovie-windows-v0.5.21-source.zip`，SHA-256：`0b23a7c652f670543e22595964475256c88410cfe9a800c0bf52e770173455cd`。\n- **构建提交**：`97f872dead7413120694bf73211b72967ffb4198`。[多端原生构建与校验记录（43729927928）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43729927928)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Windows x64 原生构建、`libmpv-2.dll` 媒体回放校验及全部 `948` 项 Flutter 自动化测试；更新前请先退出正在运行的旧版程序。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.21"
+    },
+    {
+      "tag": "ios-v0.5.31",
+      "version": "0.5.31",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-15T16:17:05Z",
+      "prerelease": false,
+      "target_commitish": "97f872dead7413120694bf73211b72967ffb4198",
+      "notes": "# Marco Movie iOS / iPadOS 0.5.31\n\n发布日期：2026-11-15。应用版本：`0.5.31`（构建号 `81`），最低系统要求：iOS / iPadOS 14.0。本次更新围绕 4K 网盘原画播放、玩偶系 / 四盘聚合源检索与前后台挂起恢复进行深度架构升级，带来 6 路并发分片回环代理、同站死链自动回捞与 CatPaw / DRPY 本机引擎自愈能力。\n\n## 4K 网盘播放与片源解析升级\n\n- **6 路并发分片回环代理与首尾秒拖（`NetdiskRangeProxy`）**：为夸克、UC、百度、阿里云盘高码率 4K / 杜比视界原画直链新增本机 `6 路 × 1 MB` 滑动窗口并发分片代理（内存上限 `24 MB`），完整支持 `HEAD` 与 `HTTP 206` 字节区间请求；播放 MKV / MP4 大体积原盘执行尾部索引探测或大幅拖动进度条时自动取消旧偏移预取，消除单连接限速卡顿，并在上游 `401` / `403` 签名过期时无感刷新直链续传。\n- **玩偶系 4K 全站兼容与同站同名死链自动回捞（`WoggNetdiskAdapter`）**：全面覆盖玩偶哥哥、木偶、蜡笔、剧透、快影、虎斑、蜗牛、多多、闪电、至臻、米粒、星剧社等 20+ 套 MacCMS 4K 网盘站点与易搜 / 米搜 / 盘搜 / 聚剧四盘轮询配额聚合；精准锁定详情页下载链接容器（杜绝误抓侧栏推荐片源），并在主条目网盘分享全部失效或目录为空时自动并发检索同站同名其他条目补齐可用剧集。\n- **夸克 / UC / 百度网盘分享解析加固**：修复夸克与 UC 分享桌面/移动 UA 兼容及临时转存根目录空间回收，保持百度网盘分享子目录原始 `sekey` 透传契约与直链解码兼容，针对取消分享、空文件夹及 RAR/7z/分卷压缩包资源给出明确诊断说明。\n- **本机 CatPaw / DRPY 回环服务自愈与并发 DoH 防污染**：修复 iOS 切后台挂起唤醒后回环端口失活导致的 `Connection refused` 连锁失败，新增套接字健康探活、自动重启与 6 Worker 并发搜索超时隔离，并内置并发 RFC 8484 DoH（阿里 / 腾讯 DNSPod）清洁 IP 解析与 HTTPS SNI 重连。\n\n## 包信息与构建记录\n\n- **未签名 IPA（iPhone / iPad 通用）**：`MarcoMovie-0.5.31-ios-iphone-ipad-unsigned.ipa`（更新兼容别名 `MarcoMovie-0.5.31-ios-unsigned.ipa`），SHA-256：`41b5c56167b64a672c965d19ede77837378a70cbbf51c06642f887e9fa154156`。\n- **对应源码包**：`MarcoMovie-ios-v0.5.31-source.zip`，SHA-256：`0b23a7c652f670543e22595964475256c88410cfe9a800c0bf52e770173455cd`。\n- **构建提交**：`97f872dead7413120694bf73211b72967ffb4198`。[多端原生构建与校验记录（43729927928）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43729927928)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、iOS Xcode 原生 Release 构建及全部 `948` 项 Flutter 自动化测试（含 6 路分片代理 40 GB 虚拟 MKV 首尾跳转、同站死链回捞、四盘配额均衡、百度/夸克子目录契约及回环端口自愈回归）；未签名 IPA 支持巨魔（TrollStore）直接覆盖更新或自签工具安装。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.31"
+    },
+    {
       "tag": "macos-v0.5.17",
       "version": "0.5.17",
       "platforms": [

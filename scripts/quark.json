@@ -2,44 +2,44 @@
   "android-tv": {
     "folder": "/MarcoMovie/电视版",
     "share_url": "https://pan.quark.cn/s/b9207bfb5e53",
-    "file": "MarcoMovie-0.5.24-android-tv.apk",
-    "version": "0.5.24",
-    "sha256": "de5bbcf9c9af31148af1b04bffac2813be1ba05d8f40cf7caeeef4cbb3df8773"
+    "file": "MarcoMovie-0.5.25-android-tv.apk",
+    "version": "0.5.25",
+    "sha256": "a16e3b89143281212093520fda2db7951f70b8fbc81e85167b1e808b583df7aa"
   },
   "android-mobile": {
     "folder": "/MarcoMovie/手机版",
     "share_url": "https://pan.quark.cn/s/370912cb6556",
-    "file": "MarcoMovie-0.5.24-android-mobile.apk",
-    "version": "0.5.24",
-    "sha256": "8d3ce735d7bb551155b2931e76fcf22fb601440bc5ce0b49297cb5fba021668c"
+    "file": "MarcoMovie-0.5.25-android-mobile.apk",
+    "version": "0.5.25",
+    "sha256": "a390251725ab2126716fda348f707ad5c5a81837729d8bfdaadea4079e70a96e"
   },
   "ios": {
     "folder": "/MarcoMovie/iOS",
     "share_url": "https://pan.quark.cn/s/88f59851a6f7",
-    "file": "MarcoMovie-0.5.27-ios-iphone-ipad-unsigned.ipa",
-    "version": "0.5.27",
-    "sha256": "c81b72ada0521a6009dfc3fa123f20fde0190dfebea4f64c462e388ee4d45668"
+    "file": "MarcoMovie-0.5.31-ios-iphone-ipad-unsigned.ipa",
+    "version": "0.5.31",
+    "sha256": "41b5c56167b64a672c965d19ede77837378a70cbbf51c06642f887e9fa154156"
   },
   "windows-setup": {
     "folder": "/MarcoMovie/Windows安装版",
     "share_url": "https://pan.quark.cn/s/340eb49a4242",
-    "file": "MarcoMovie-0.5.20-windows-x64-setup.exe",
-    "version": "0.5.20",
-    "sha256": "758dbf183ec228a3660cc60f6fa1ab40928163f1361705b9d033f6509b5adbc8"
+    "file": "MarcoMovie-0.5.21-windows-x64-setup.exe",
+    "version": "0.5.21",
+    "sha256": "2c70981fc3609bd5f8d11c05705119976b7eda1164f63d001a91b5b67741119c"
   },
   "windows-zip": {
     "folder": "/MarcoMovie/Windows绿色版",
     "share_url": "https://pan.quark.cn/s/097b525e7317",
-    "file": "MarcoMovie-0.5.20-windows-x64-portable.zip",
-    "version": "0.5.20",
-    "sha256": "446ebfdce3148a12342bab13cea8dd07886aaffc9959e5fe78bedc3e2514f178"
+    "file": "MarcoMovie-0.5.21-windows-x64-portable.zip",
+    "version": "0.5.21",
+    "sha256": "e8ce3235f84b370680c029dbbe6331e3bfea126a7797bb5d2c6bd02c6b6938d3"
   },
   "macos": {
     "folder": "/MarcoMovie/macOS",
     "share_url": "https://pan.quark.cn/s/c7be45d7a4b5",
-    "file": "MarcoMovie-0.5.17-macos-desktop.zip",
-    "version": "0.5.17",
-    "sha256": "43651b4323b5fd34d84f9088ad87c338ca7736b568fc199c0dc8da6f2d8e9b17"
+    "file": "MarcoMovie-0.5.18-macos-desktop.zip",
+    "version": "0.5.18",
+    "sha256": "ad0aa53af8ee15021fb41443f4d9665c356d50f4460eee851a68ec33558e704a"
   },
   "android-lite": {
     "folder": "/MarcoMovie/轻量版",
