@@ -128,10 +128,14 @@ class ScopedUploadTests(unittest.TestCase):
         self.no_mkdir.assert_not_called()
         self.no_share.assert_not_called()
 
-    def test_scheduled_ios_sync_also_preserves_every_existing_file(self):
-        with contextlib.redirect_stdout(io.StringIO()):
+    def test_scheduled_ios_sync_prunes_only_after_verified_upload(self):
+        # The scheduled iOS policy changed in 9a23c9e. Explicit --keep-old
+        # uploads retain the separate no-deletion coverage above.
+        with contextlib.redirect_stdout(io.StringIO()), \
+                patch.object(sync, 'prune_stale_files') as prune:
             result = sync.sync_platform('ios', self.folder, self.source,
                                        self.manifest, self.root, False)
+        prune.assert_called_once_with(self.folder, self.name)
         self.assertEqual(result['version'], self.version)
         self.assertEqual([c[0] for c in self.commands], ['ls', 'upload', 'ls'])
         self.no_delete.assert_not_called()
