@@ -369,12 +369,15 @@ def patch_card(page, suffix, package):
     if len(matches) != 1:
         raise ValueError('Expected exactly one existing download card: ' + suffix)
     card = matches[0]
+    # 2026-11-17 policy: the card's only download button is Quark (a
+    # permanent share link, never versioned), so the only href this
+    # patch owns is the checksum file link; the package button is gone.
     replacement, links = re.subn(
-        r'href="[^"<>]*' + name_pattern + r'(\.sha256)?"',
-        lambda match: 'href="' + html.escape(package['url'], quote=True) + (match[1] or '') + '"',
+        r'href="[^"<>]*' + name_pattern + r'\.sha256"',
+        lambda match: 'href="' + html.escape(package['url'], quote=True) + '.sha256"',
         card[0])
-    if links != 2:
-        raise ValueError('Expected package and checksum links: ' + suffix)
+    if links != 1:
+        raise ValueError('Expected checksum link: ' + suffix)
     replacement, hashes = re.subn(r'(SHA-256：)[a-f0-9]{64}',
                                  lambda match: match[1] + package['sha256'], replacement)
     replacement, sizes = re.subn(r'\d+(?:\.\d+)? MB', f'{package["size"] / 1024 / 1024:.1f} MB', replacement)
@@ -418,15 +421,10 @@ def sync(output, releases=None):
     from android_update_packages import plan as android_plan
     files, versions, android_cards = android_plan(output, releases)
     for platform, package in android_cards.items():
+        # The top download shortcuts point at permanent Quark share
+        # links, which never change with a release, so there is nothing
+        # to patch there; only the cards are versioned.
         page = patch_card(page, platform + '.apk', package)
-        # The top download shortcuts must follow the same verified release as
-        # their cards; leave unrelated links and the archived notes untouched.
-        if platform in ('android-tv', 'android-mobile'):
-            suffixes = 'android-tv|preview' if platform == 'android-tv' else 'android-mobile|mobile'
-            label = '下载电视版' if platform == 'android-tv' else '下载手机版'
-            pattern = (r'(<a\b[^>]*\bhref=")[^"<>]*MarcoMovie-\d+\.\d+\.\d+-(?:'
-                       + suffixes + r')\.apk("[^>]*>' + label + r'</a>)')
-            page = re.sub(pattern, lambda match: match[1] + html.escape(package['url'], quote=True) + match[2], page)
     for platform, suffixes in SUFFIXES.items():
         release = choose_platform(releases, platform)
         if release is None:

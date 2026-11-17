@@ -98,7 +98,7 @@ class MirrorTests(unittest.TestCase):
         with zipfile.ZipFile(source,'w') as z: z.writestr('AndroidManifest.xml',b'<manifest/>')
         with self.assertRaises(ValueError): m.apk_identity(source.getvalue())
 
-    def test_large_tv_package_is_verified_and_linked_from_both_download_and_feed(self):
+    def test_large_tv_package_is_verified_and_linked_from_checksum_and_feed(self):
         name='MarcoMovie-0.4.12-preview.apk'
         self.release['assets']=[a for a in self.release['assets'] if a['name'] not in (name,name+'.sha256')]
         self.add_asset(name,b'large apk fixture' * (m.LIMIT//17+2))
@@ -106,7 +106,11 @@ class MirrorTests(unittest.TestCase):
         expected=f'https://github.com/{m.REPO}/releases/download/v0.4.12-preview/{name}'
         self.assertEqual(feed['url'],expected)
         self.assertFalse((self.out/name).exists())
-        self.assertIn('href="'+expected+'"',(self.out/'index.html').read_text(encoding='utf8'))
+        # 2026-11-17 policy: the card's download button is Quark-only, so
+        # the GitHub asset URL only survives on the page as the checksum
+        # file link; the feed still carries the verified release URL.
+        self.assertIn('href="'+expected+'.sha256"',(self.out/'index.html').read_text(encoding='utf8'))
+        self.assertNotIn('href="'+expected+'"',(self.out/'index.html').read_text(encoding='utf8'))
 
     def test_official_release_updates_stable_channel(self):
         self.release['prerelease']=False
@@ -114,12 +118,19 @@ class MirrorTests(unittest.TestCase):
         self.assertFalse(feed['prerelease'])
         self.assertEqual(json.loads((self.out/'updates/stable.json').read_text(encoding='utf8')),feed)
 
-    def test_large_mobile_hero_link_matches_update_feed(self):
+    def test_large_mobile_hero_link_uses_quark(self):
+        # 2026-11-17 policy: the hero shortcuts point at the permanent
+        # Quark share links, not at the release assets; the feed still
+        # carries the verified release URL for the in-app updater.
         name='MarcoMovie-0.4.12-mobile.apk';self.add_asset(name,b'mobile fixture')
         next(a for a in self.release['assets'] if a['name']==name)['size']=m.LIMIT+1
-        feed=self.sync()
+        links = {'android-tv': 'https://pan.quark.cn/s/tv123',
+                 'android-mobile': 'https://pan.quark.cn/s/mo456'}
+        with patch.object(m, 'load_quark_links', return_value=links):
+            feed=self.sync()
         page=(self.out/'index.html').read_text(encoding='utf8')
-        self.assertIn('href="'+feed['mobile']['url']+'">下载手机版',page)
+        self.assertIn('href="https://pan.quark.cn/s/mo456">下载手机版',page)
+        self.assertNotIn('href="'+feed['mobile']['url']+'">下载手机版',page)
         self.assertNotIn('href="'+name+'"',page)
 
     def add_asset(self, name, body, checksum=True):
@@ -262,20 +273,22 @@ class MirrorTests(unittest.TestCase):
         # The user's per-platform feeds override a card with that platform's
         # latest version (TV 0.5.9 while the release is 0.4.12): the card
         # shows the override version, URL, size and checksum; the hero
-        # button still points at the release's GitHub asset.
+        # button points at the permanent Quark share link.
         (self.out / 'updates').mkdir(parents=True)
         (self.out / 'updates' / 'android-tv.json').write_text(json.dumps({
             "versionName": "0.5.9", "packages": {
                 "MarcoMovie-0.5.9-android-tv.apk": {
                     "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.5.9-android-tv/MarcoMovie-0.5.9-android-tv.apk",
                     "size": 1234567, "sha256": "a" * 64}}}), encoding='utf-8')
-        self.sync()
+        links = {'android-tv': 'https://pan.quark.cn/s/tv123'}
+        with patch.object(m, 'load_quark_links', return_value=links):
+            self.sync()
         page = (self.out / 'index.html').read_text(encoding='utf-8')
         self.assertIn('Android 电视版 · v0.5.9', page)
         self.assertIn('https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.5.9-android-tv/MarcoMovie-0.5.9-android-tv.apk', page)
         self.assertIn('1.2 MB', page)
         self.assertIn('a' * 64, page)
-        self.assertIn('href="https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-preview.apk">下载电视版', page)
+        self.assertIn('href="https://pan.quark.cn/s/tv123">下载电视版', page)
 
     def test_platform_feed_override_platform_card_new_schema(self):
         # The iOS feed uses the new single-package shape (0.5.6).
@@ -317,10 +330,15 @@ class MirrorTests(unittest.TestCase):
         page = (self.out / 'index.html').read_text(encoding='utf-8')
         self.assertNotIn('pan.quark.cn', page)
         self.assertNotIn('>夸克网盘下载</a>', page)
+        # With no Quark links there are no download buttons at all: the
+        # hero shortcuts are Quark-only too, so they stay hidden.
+        self.assertNotIn('>下载电视版</a>', page)
+        self.assertNotIn('>下载手机版</a>', page)
 
-    def test_download_buttons_are_github_and_quark(self):
-        # Mirror files stay hosted for the feeds, but every card's download
-        # buttons are GitHub + Quark (the mirror download button is gone).
+    def test_download_buttons_are_quark_only(self):
+        # 2026-11-17 policy: mirror files stay hosted for the feeds, but
+        # every card's download button is Quark-only; the GitHub asset
+        # URL only survives on the page as the checksum file link.
         self.add_asset('MarcoMovie-0.4.12-mobile.apk', b'mobile fixture')
         links = {'android-tv': 'https://pan.quark.cn/s/tv123',
                  'android-mobile': 'https://pan.quark.cn/s/mo456'}
@@ -329,8 +347,9 @@ class MirrorTests(unittest.TestCase):
         page = (self.out / 'index.html').read_text(encoding='utf-8')
         tv_gh = 'https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-preview.apk'
         mobile_gh = 'https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.4.12-preview/MarcoMovie-0.4.12-mobile.apk'
-        self.assertIn('href="' + tv_gh + '">去 GitHub 下载', page)
-        self.assertIn('href="' + mobile_gh + '">去 GitHub 下载', page)
+        self.assertNotIn('去 GitHub 下载', page)
+        self.assertIn('href="' + tv_gh + '.sha256"', page)
+        self.assertIn('href="' + mobile_gh + '.sha256"', page)
         self.assertIn('https://pan.quark.cn/s/tv123', page)
         self.assertIn('https://pan.quark.cn/s/mo456', page)
         self.assertTrue((self.out / 'MarcoMovie-0.4.12-preview.apk').exists())
@@ -339,7 +358,7 @@ class MirrorTests(unittest.TestCase):
     def test_no_mirror_package_links_on_page(self):
         # Mirror files stay hosted for the in-app feeds, but the rendered
         # page must not offer any manually clickable mirror package
-        # download: every package href is GitHub or Quark.
+        # download; 2026-11-17 policy: every package href is Quark-only.
         self.add_asset('MarcoMovie-0.4.12-mobile.apk', b'mobile fixture')
         links = {'android-tv': 'https://pan.quark.cn/s/tv123',
                  'android-mobile': 'https://pan.quark.cn/s/mo456'}
@@ -349,8 +368,7 @@ class MirrorTests(unittest.TestCase):
         for href in re.findall(r'href="([^"]+)"', page):
             bare = href.split('?')[0].split('#')[0].lower()
             if bare.endswith(('.apk', '.ipa', '.zip', '.exe')):
-                self.assertTrue(href.startswith('https://github.com/') or
-                                href.startswith('https://pan.quark.cn/'), href)
+                self.assertTrue(href.startswith('https://pan.quark.cn/'), href)
         self.assertTrue(feed['url'].startswith('https://marcotv.wlj9919.top/movie/'))
 
     def test_mirror_package_link_in_changelog_stays_plain_text(self):

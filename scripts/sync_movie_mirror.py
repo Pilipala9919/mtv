@@ -541,13 +541,16 @@ def sync(output):
     mobile_override = platform_feed_override(output, "android-mobile")
     mobile_href = (mobile_override[0] if mobile_override else
                    next((p[3] for p in platforms if p[0] == f'MarcoMovie-{version}-mobile.apk'), None))
-    mobile_btn_href = (mobile_override[0] if mobile_override else
-                       (_gh(f'MarcoMovie-{version}-mobile.apk') if mobile_href else None))
-    mobile_button = (f'<a class="btn ghost" href="{escaped(mobile_btn_href)}">下载手机版</a>' if mobile_btn_href else '')
+    # 2026-11-17 policy: every version's download button is Quark-only.
+    # The hero shortcuts point at the permanent Quark share links (they
+    # never change with a release), and the mobile shortcut only shows
+    # when a mobile package exists in this release.
+    tv_button = (f'<a class="btn primary" href="{escaped(quark_links["android-tv"])}">下载电视版</a>' if quark_links.get("android-tv") else '')
+    mobile_button = (f'<a class="btn ghost" href="{escaped(quark_links["android-mobile"])}">下载手机版</a>' if mobile_href and quark_links.get("android-mobile") else '')
     download_cards = []
     download_cards.append(
         f'<div class="dl"><h3>Android 电视版{escaped(tv_ver_note)}</h3><p>Android 6.0+ 电视 / 盒子 / 投影仪大屏专享版 · ARM 32 位（内置 FFmpeg / AV1 / VP9 扩展）· {tv_card_size/1024/1024:.1f} MB</p>'
-        f'<a class="btn primary" href="{escaped(tv_card_href)}">去 GitHub 下载</a>{quark_button("android-tv", quark_links)}'
+        f'{quark_button("android-tv", quark_links)}'
         f'<p><a href="{escaped(tv_card_href)}.sha256">校验文件</a></p><code>SHA-256：{tv_card_sha}</code></div>')
     for name, label, note, href, size, digest, body in platforms:
         qkey = quark_key_for_asset(name)
@@ -556,7 +559,7 @@ def sync(output):
         c_ver_note = f' · v{c_ver}' if c_ver else ''
         download_cards.append(
             f'<div class="dl"><h3>{escaped(label)}{escaped(c_ver_note)}</h3><p>{escaped(note)} · {c_size/1024/1024:.1f} MB</p>'
-            f'<a class="btn primary" href="{escaped(c_href)}">去 GitHub 下载</a>{quark_button(qkey, quark_links)}'
+            f'{quark_button(qkey, quark_links)}'
             f'<p><a href="{escaped(c_href)}.sha256">校验文件</a></p><code>SHA-256：{c_digest}</code></div>')
     if platforms:
         other_platforms = ('<p class="sub"><b>其他平台</b> · 与 Android 版同一版本，由 GitHub Actions 云端构建；'
@@ -575,7 +578,7 @@ def sync(output):
 <div class="hero"><div>
 <h1>Marco Movie<br>多端自适应播放器</h1>
 <p class="lead">支持 Android 电视大屏遥控、手机与平板 64 位专属触控，以及 Windows / macOS / iOS（iOS 14.0+ 巨魔与自签）多端独立适配的开源播放器。</p>
-<div class="btn-row"><a class="btn primary" href="{escaped(_gh(apk_name))}">下载电视版</a>{mobile_button}<a class="btn ghost" href="#download">全部平台</a></div>
+<div class="btn-row">{tv_button}{mobile_button}<a class="btn ghost" href="#download">全部平台</a></div>
 <p class="meta"><b>{stars} Stars</b> · GPL-3.0-only · {published_date} 更新 · 作者 Pilipala</p>
 </div><figure><img src="tv-banner-960x540.png" alt="Marco Movie 横幅：银灰胶片丝带 M 标志与品牌字标"><figcaption>Marco Movie 品牌横幅 · 仓库原图</figcaption></figure></div>
 <p class="notice">本产品仅为工具，不内置、不提供、不托管任何影视资源或配置地址。内容与配置请自行合法获取，数据保存在本机。</p>
@@ -590,7 +593,7 @@ def sync(output):
 <p class="sub">{published_date} 发布 · 更新内容来自 GitHub Release 原文，改写为列表。</p>
 {changelog}</section>
 <section class="block" id="download"><h2>下载与安装</h2>
-<p class="sub">安装包同时托管在本站镜像；下载请走 GitHub，或用夸克网盘下载（国内推荐）。校验值以 GitHub Release 为准。</p>
+<p class="sub">安装包同时托管在本站镜像；下载请走夸克网盘下载。校验值以 GitHub Release 为准。</p>
 {other_platforms}<div class="dl-grid">{''.join(download_cards)}</div>{fallback_link}
 <div class="steps">
 <div class="step"><b>第一步 · 下载核对</b><span>按设备选对应安装包，下载后核对 SHA-256 再安装。</span></div>

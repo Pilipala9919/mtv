@@ -54,13 +54,15 @@ class ChannelPageChecks(unittest.TestCase):
         self.assertIn('0.13.0-rc.1 体验版',page)
         self.assertNotIn('0.12.0.apk',page)
         self.assertEqual(page,sync.render_channels(page,'0.13.0-rc.1'))
-    def test_update_section_links_github_not_mirror(self):
-        # The update section's version and checksum links are manual
-        # downloads, so they point at the GitHub release asset; the
-        # mirror APK stays hosted only for the in-app update feeds.
+    def test_update_section_links_quark_not_mirror(self):
+        # 2026-11-17 policy: the update section's version link is the
+        # Quark manual download; the checksum link still points at the
+        # GitHub release asset. The mirror APK stays hosted only for
+        # the in-app update feeds.
         page=self.page('0.12.0')
-        self.assertIn('https://github.com/Pilipala9919/MarcoTV/releases/download/v0.12.0/MarcoTV-0.12.0.apk',page)
+        self.assertIn('https://pan.quark.cn/s/df36e65bca44',page)
         self.assertIn('https://github.com/Pilipala9919/MarcoTV/releases/download/v0.12.0/MarcoTV-0.12.0.apk.sha256',page)
+        self.assertNotIn('href="https://github.com/Pilipala9919/MarcoTV/releases/download/v0.12.0/MarcoTV-0.12.0.apk"',page)
         self.assertNotIn('href="MarcoTV-0.12.0.apk"',page)
         self.assertNotIn('href="MarcoTV-0.12.0.apk.sha256"',page)
     def test_update_section_has_no_source_link(self):
@@ -74,13 +76,17 @@ class InstallWizardChecks(unittest.TestCase):
     def setUp(self):
         self.app=(Path(sync.__file__).resolve().parent.parent/'install'/'app.js').read_text(encoding='utf-8')
     def test_no_mirror_download_buttons(self):
-        # The install wizard's download buttons are GitHub (the TV APK
-        # also offers Quark); the mirror files stay hosted for in-app
-        # updates but are never a visible manual download here.
+        # 2026-11-17 policy: the install wizard's TV download button is
+        # Quark-only; the GitHub release URL stays in the file only as
+        # the checksum base (sha.href=f.href+'.sha256'). The installer
+        # tools have no Quark link, so they keep their GitHub raw links.
+        # The mirror files stay hosted for in-app updates but are never
+        # a visible manual download here.
         self.assertNotIn('marcotv.wlj9919.top',self.app)
         self.assertNotIn('base+file',self.app)
-        self.assertIn('https://github.com/Pilipala9919/MarcoTV/releases/download/v0.16.0/MarcoTV-0.16.0.apk',self.app)
+        self.assertNotIn("a.href=f.href;a.textContent=f.label;$('download').append(a);if(f.quark)",self.app)
         self.assertIn('https://pan.quark.cn/s/df36e65bca44',self.app)
+        self.assertIn("sha.href=f.href+'.sha256'",self.app)
         self.assertIn('https://raw.githubusercontent.com/Pilipala9919/mtv/main/MarcoTV-Installer-1.0.1-Windows.exe',self.app)
         self.assertIn('https://raw.githubusercontent.com/Pilipala9919/mtv/main/MarcoTV-Installer-1.0.1-Android.apk',self.app)
 

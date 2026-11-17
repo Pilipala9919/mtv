@@ -46,8 +46,11 @@ class PackageTests(unittest.TestCase):
         cards = []
         for suffix in sum(m.SUFFIXES.values(), ()):
             name = 'MarcoMovie-0.5.0-' + suffix
+            # 2026-11-17 policy: the card's only download button is Quark
+            # (a permanent share link, never patched); the sync only owns
+            # the checksum link, the hash and the size.
             cards.append(f'<div class="dl"><h3>{suffix}</h3><p>Existing copy · 12.0 MB</p>'
-                         f'<a href="{name}">下载</a><a href="{name}.sha256">校验文件</a>'
+                         f'<a href="https://pan.quark.cn/s/fixture">夸克网盘下载</a><a href="{name}.sha256">校验文件</a>'
                          f'<code>SHA-256：{"a" * 64}</code></div>')
         self.page = ('<style>existing CSS</style><header>Existing layout</header>' + ''.join(cards)
                      + '<section class="block" id="changelog"><h2>Previous notes</h2></section>'
@@ -102,8 +105,11 @@ class PackageTests(unittest.TestCase):
         self.assertEqual(feed['windows']['sha256'], digest)
         self.assertEqual(set(feed['packages']), set(names))
         page = (self.out/'index.html').read_text(encoding='utf-8')
-        self.assertIn('href="' + m.BASE + names[0] + '"', page)
-        self.assertNotIn('href="' + m.BASE + names[2] + '"', page)
+        # 2026-11-17 policy: the card's download button is Quark-only, so
+        # the clear installer name only survives on the page as the
+        # checksum link; the legacy alias stays in the feed, not the page.
+        self.assertIn('href="' + m.BASE + names[0] + '.sha256"', page)
+        self.assertNotIn('href="' + m.BASE + names[2] + '.sha256"', page)
         self.assertEqual((self.out/names[2]).read_bytes(), body)
         self.assertEqual((self.out/(names[2]+'.sha256')).read_text().split(), [digest, names[2]])
 

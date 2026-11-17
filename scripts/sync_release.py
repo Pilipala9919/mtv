@@ -20,6 +20,11 @@ INDEX = ROOT / "index.html"
 SOURCE_REPO = "Pilipala9919/MarcoTV"
 API = f"https://api.github.com/repos/{SOURCE_REPO}/releases/latest"
 RAW = f"https://raw.githubusercontent.com/{SOURCE_REPO}/main/docs/showcase/assets"
+# Permanent Quark share for the MarcoTV folder. 2026-11-17 policy: every
+# version's manual download button is Quark-only; the mirror APK stays
+# hosted in the repo for the in-app update feeds, and the GitHub release
+# asset remains only as the checksum source.
+QUARK_TV_URL = "https://pan.quark.cn/s/df36e65bca44"
 
 SCREENSHOTS = {
     "01-desktop.webp": "desktop.webp",
@@ -96,15 +101,10 @@ def main():
         html = html.replace(f"当前稳定版：{old_version}", f"当前稳定版：{version}")
         html = html.replace(f"版本信息以 {old_version} 稳定版为准", f"版本信息以 {version} 稳定版为准")
         changed = True
-    # Main download button: GitHub + Quark. The mirror APK stays hosted in
-    # the repo for the in-app update feeds, but no visible button on the
-    # page links to it: the main button points at GitHub, and the update
-    # section below (render_channels) links the GitHub release asset too.
-    # Only the local-form button is rewritten here.
-    html, n = re.subn(
-        r'<a class="btn" href="MarcoTV-[0-9]+\.[0-9]+\.[0-9]+\.apk"(?: download)?>下载 MarcoTV-[0-9]+\.[0-9]+\.[0-9]+\.apk</a>',
-        f'<a class="btn" href="{apk_url}">去 GitHub 下载</a>', html)
-    changed = changed or n > 0
+    # Main download button: Quark-only (2026-11-17 policy). The button is
+    # a permanent share link, so this sync never rewrites it; the mirror
+    # APK stays hosted in the repo for the in-app update feeds, but no
+    # visible button on the page links to it or to GitHub.
     html, n = re.subn(r"发布于 \d{4} 年 \d{1,2} 月 \d{1,2} 日",
                       f"发布于 {published.year} 年 {published.month} 月 {published.day} 日", html)
     changed = changed or n > 0
@@ -141,7 +141,7 @@ def render_channels(html, version):
     label = "体验版" if preview else "正式版"
     status = "体验版仍在验证中，日常使用默认推荐上方稳定版。" if preview else "体验渠道与稳定渠道当前提供同一正式版，原 RC 用户可直接覆盖升级。"
     section = f'''<h2>电视在线更新</h2>
-<p>当前提供 <a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk">{version} {label}</a>。{status} 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
+<p>当前提供 <a href="{QUARK_TV_URL}">{version} {label}</a>。{status} 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
 <p>安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。镜像优先，失败后尝试 GitHub；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
 <p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
 '''
