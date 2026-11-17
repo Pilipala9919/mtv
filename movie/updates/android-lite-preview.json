@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-lite",
-  "versionName": "0.5.6",
-  "versionCode": 56,
+  "versionName": "0.5.7",
+  "versionCode": 57,
   "minSdk": 14,
   "prerelease": false,
-  "notes": "# Marco Movie Android Lite 0.5.6\n\n发布日期：2026-11-15。应用版本：`0.5.6`（versionCode `56`）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存），本次更新同步焕新全平台统一的金属胶片丝带 M 桌面图标，并保持完整的老电视投屏、扫码搜索、线路分组编删与现代 TLS 根证书兼容能力。\n\n## 品牌视觉与版本维护\n\n- **全新金属胶片丝带 M 品牌图标**：同步更新 Android Lite 多密度桌面启动图标（`mdpi` 至 `xxxhdpi`）为黑曜石底金属胶片丝带「M」视觉设计，在老电视与机顶盒桌面上呈现更清晰的辨识度。\n- **超轻量兼容保障**：持续保持 API 14 单 DEX 架构、内置 Conscrypt TLS + Let's Encrypt `ISRG Root X1` 根证书信任链、DLNA / 网页投屏接收、手机扫码搜索输入与订阅线路分组编删能力。\n\n## 包信息与构建记录\n\n- **安装包**：`MarcoMovie-0.5.6-android-lite.apk`（更新兼容别名 `MarcoMovie-0.5.6-lite.apk`），官方正式签名。\n- **SHA-256**：`9d0f55fa2029ab5195ca04556f1ead6dde3ffbaecc644d95f14b5bd65743e115`。\n- **对应源码包**：`MarcoMovie-android-lite-v0.5.6-source.zip`，SHA-256：`a5d929dca9a035e0dddfd8c20d14e59feb06ff07568d671072c60c4e26fd8f86`。\n- **构建提交**：`76163bf0569f5dea83c872dacfcc65a793d0fe58`。[多端原生构建与校验记录（43617109635）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43617109635)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、API 14 `bootclasspath` 与 D8 `--min-api 14` 单 DEX 编译校验、`193` 项 TV Lite JVM 离线回归、20 项三端规范一致性测试、8 项 TLS 能力检查及官方正式签名校验；未声明实体老旧电视实机穷举验收。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-lite-v0.5.6/MarcoMovie-0.5.6-android-lite.apk",
+  "notes": "# Marco Movie Android Lite 0.5.7\n\n发布日期：2026-11-17。应用版本：`0.5.7`（versionCode `57`）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存），本次更新支持直接导入单采集站 MacCMS 接口地址，并延续完整的老设备 TLS 证书兼容与局域网投屏能力。\n\n## 更新内容\n\n- **单采集站 MacCMS 接口直接导入（`#55`）**：当导入地址直接返回单站 MacCMS JSON（`code`/`list`/`class`）或苹果 CMS XML（`<rss>`/`<list>`）数据时，`LiteCatalog` 自动清洗临时筛选参数并包装为独立站点卡片，无需额外编写包含 `sites` 数组的外层订阅配置文件即可直接浏览与搜索。\n- **超轻量老设备兼容保障**：保持 API 14 单 DEX 架构、内置 Conscrypt TLS + Let's Encrypt `ISRG Root X1` 根证书信任链、DLNA / 网页投屏接收、手机扫码搜索输入与订阅线路分组编删能力。\n\n## 包信息与构建记录\n\n- **安装包**：`MarcoMovie-0.5.7-android-lite.apk`（更新兼容别名 `MarcoMovie-0.5.7-lite.apk`），官方正式签名。\n- **SHA-256**：`41fdad3070f4b88d5ab68cc9fd0176935d8428ba99fa365e01e26a4b78329826`。\n- **对应源码包**：`MarcoMovie-android-lite-v0.5.7-source.zip`，SHA-256：`faab2c634c65d721f9ae71336dd43c0b168cae14c01fc0a714f3de3334a6df6b`。\n- **构建提交**：`a3cbe546c3faa803e6be2b06bbe62b6767e503c9`。[多端原生构建与校验记录（44020396179）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/44020396179)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、API 14 `bootclasspath` 与 D8 `--min-api 14` 单 DEX 编译校验、`194` 项 TV Lite JVM 离线回归、20 项三端规范一致性测试、8 项 TLS 能力检查及官方正式签名校验；未声明实体老旧设备穷举验收。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-lite-v0.5.7/MarcoMovie-0.5.7-android-lite.apk",
   "size": 1266848,
-  "sha256": "9d0f55fa2029ab5195ca04556f1ead6dde3ffbaecc644d95f14b5bd65743e115",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.6-android-lite.apk",
+  "sha256": "41fdad3070f4b88d5ab68cc9fd0176935d8428ba99fa365e01e26a4b78329826",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.7-android-lite.apk",
   "packages": {
-    "MarcoMovie-0.5.6-android-lite.apk": {
+    "MarcoMovie-0.5.7-android-lite.apk": {
       "size": 1266848,
-      "sha256": "9d0f55fa2029ab5195ca04556f1ead6dde3ffbaecc644d95f14b5bd65743e115",
-      "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.6-android-lite.apk"
+      "sha256": "41fdad3070f4b88d5ab68cc9fd0176935d8428ba99fa365e01e26a4b78329826",
+      "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.7-android-lite.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.6"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.7"
 }

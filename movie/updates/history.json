@@ -2,6 +2,66 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "android-mobile-v0.5.26",
+      "version": "0.5.26",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-17T05:28:42Z",
+      "prerelease": false,
+      "target_commitish": "a3cbe546c3faa803e6be2b06bbe62b6767e503c9",
+      "notes": "# Marco Movie Android 手机 / 平板 0.5.26\n\n发布日期：2026-11-17。版本代码：`89`。本次更新围绕 Android 手机与平板端的多源搜索滑动流畅度、网盘伪装 `.mp3` 视频播放、浏览器扩展弹幕推送、Android 6 HTTPS 证书兼容及 WebDAV 仅同步订阅源模式进行集中升级。\n\n## 更新内容\n\n- **多源并发搜索滑动流畅度优化（`#45`）**：搜索结果流新增 `220ms` 增量刷新节流，手指按住与上下滑动期间自动延后列表重排，并按 `siteKey + vodId` 复用已构建结果行视图，消除多源并发返回时的跳帧与卡顿。\n- **伪装 `.mp3` 视频播放与本地协议兼容（`#31` / `#41` / `#28`）**：`MoviePlayer` 将 MP4 / MKV / FLV / AVI 严格魔数容器提取器置于 `Mp3Extractor` 之前并开放 `.mp3` 的 `#EXTM3U` 嗅探，解决网盘伪装 `.mp3` 视频只出声无画面问题；支持 `clan://` 本地存储协议解析；`CspEngine` 遇到损坏 JAR 自动清理缓存重试一次并输出脱敏诊断信息。\n- **扩展推送弹幕与 Android 6 HTTPS 握手修复（`#36` / `#55`）**：`LocalProxy` 新增回环 `/action`（`do=refresh&type=danmaku` / `subtitle`）与 `/proxy?do=danmaku` 弹幕推送接口（保留防跨站 `Origin` / `Sec-Fetch-Site` 校验）；为 API 23（Android 6）注入 `[系统信任库 + ISRG Root X1]` 复合证书链并补齐 `SniOverrideSocketFactory` 全重载 SNI 透传。\n- **WebDAV 仅同步订阅源模式（`#44`）**：云端同步新增「仅同步订阅源（隔离观看记录）」开关，开启后仅同步订阅源配置且完整保留远端已有的历史与收藏数据，满足多设备共用订阅但观影记录互不干扰的场景。\n\n## 包信息与构建记录\n\n- **安装包（ARM64 + ARMv7 双架构）**：`MarcoMovie-0.5.26-android-mobile.apk`（更新兼容别名 `MarcoMovie-0.5.26-mobile.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`8842ecec24f61283479ba6a2ace92ed4786ca43a7193546a5bdd2b3c1a4d93a9`。\n- **对应源码包**：`MarcoMovie-android-mobile-v0.5.26-source.zip`，SHA-256：`4084d3dca2987826bc7e6c7d0e9ceabefe6106bb22f8066f292217f984d46bf3`。\n- **构建提交**：`a3cbe546c3faa803e6be2b06bbe62b6767e503c9`。[多端原生构建与校验记录（44020396179）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/44020396179)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 全套离线回归、API 23 字节码与 TLS 检查、16KB 页对齐双架构原生构建及官方正式签名校验。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.5.26"
+    },
+    {
+      "tag": "android-lite-v0.5.7",
+      "version": "0.5.7",
+      "platforms": [
+        "android-lite"
+      ],
+      "published_at": "2026-11-17T05:28:39Z",
+      "prerelease": false,
+      "target_commitish": "a3cbe546c3faa803e6be2b06bbe62b6767e503c9",
+      "notes": "# Marco Movie Android Lite 0.5.7\n\n发布日期：2026-11-17。应用版本：`0.5.7`（versionCode `57`）。专为 Android 4.0+（API 14+）老旧电视、机顶盒与老手机打造的超轻量独立版本（包名 `com.pilipala.marcomovie.lite`，可与标准版共存），本次更新支持直接导入单采集站 MacCMS 接口地址，并延续完整的老设备 TLS 证书兼容与局域网投屏能力。\n\n## 更新内容\n\n- **单采集站 MacCMS 接口直接导入（`#55`）**：当导入地址直接返回单站 MacCMS JSON（`code`/`list`/`class`）或苹果 CMS XML（`<rss>`/`<list>`）数据时，`LiteCatalog` 自动清洗临时筛选参数并包装为独立站点卡片，无需额外编写包含 `sites` 数组的外层订阅配置文件即可直接浏览与搜索。\n- **超轻量老设备兼容保障**：保持 API 14 单 DEX 架构、内置 Conscrypt TLS + Let's Encrypt `ISRG Root X1` 根证书信任链、DLNA / 网页投屏接收、手机扫码搜索输入与订阅线路分组编删能力。\n\n## 包信息与构建记录\n\n- **安装包**：`MarcoMovie-0.5.7-android-lite.apk`（更新兼容别名 `MarcoMovie-0.5.7-lite.apk`），官方正式签名。\n- **SHA-256**：`41fdad3070f4b88d5ab68cc9fd0176935d8428ba99fa365e01e26a4b78329826`。\n- **对应源码包**：`MarcoMovie-android-lite-v0.5.7-source.zip`，SHA-256：`faab2c634c65d721f9ae71336dd43c0b168cae14c01fc0a714f3de3334a6df6b`。\n- **构建提交**：`a3cbe546c3faa803e6be2b06bbe62b6767e503c9`。[多端原生构建与校验记录（44020396179）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/44020396179)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、API 14 `bootclasspath` 与 D8 `--min-api 14` 单 DEX 编译校验、`194` 项 TV Lite JVM 离线回归、20 项三端规范一致性测试、8 项 TLS 能力检查及官方正式签名校验；未声明实体老旧设备穷举验收。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.7"
+    },
+    {
+      "tag": "windows-v0.5.24",
+      "version": "0.5.24",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-17T05:28:37Z",
+      "prerelease": false,
+      "target_commitish": "a3cbe546c3faa803e6be2b06bbe62b6767e503c9",
+      "notes": "# Marco Movie Windows 0.5.24\n\n发布日期：2026-11-17。应用版本：`0.5.24`（构建号 `74`）。本次更新延续柔光背景桌面界面与完整本地用户数据兼容，集中修复中文输入法搜索回车误触、播放器鼠标微小抖动频繁唤醒控制栏及网盘伪装 `.mp3` 视频黑屏问题，并新增 WebDAV 仅同步订阅源模式与 JSON 备份文件直接读写能力。\n\n## 更新内容\n\n- **中文输入法拼写组合态保护（`#27`）**：搜索框与直播频道筛选识别 Windows 中文输入法 `composing` 选词状态，拼音未上屏前按回车不再提前触发残缺英文搜索，并补齐柔光面板透明交互层兼容。\n- **播放器鼠标唤醒防抖与快速收起（`#50`）**：去重桌面指针悬停/移动事件，控制栏隐藏后需 `350ms` 内累计位移达到 `12px` 以上才重新唤醒，桌面端空闲自动隐藏时间缩短至 `2.2s`，消除桌面轻微震动导致的控制栏反复弹出。\n- **网盘伪装 `.mp3` 视频原画播放（`#31`）**：夸克、UC、百度、阿里云盘分享自动将 `>= 15 MiB` 的伪装 `.mp3` 文件纳入可播视频列表，并在 `mpv` 强制开启 `vid=auto` 与禁用纯音频封面模式，正常输出视频画面。\n- **WebDAV 仅同步订阅源模式与 JSON 备份文件读写（`#44` / `#47`）**：云端同步新增「同时同步观看历史与收藏」开关（关闭后仅同步订阅源并保留云端已有观影记录）；备份恢复弹窗支持直接导出 `.json` 备份文件与从本地选择 `.json` 文件恢复。\n\n## 包信息与构建记录\n\n- **Windows 64 位安装版**：`MarcoMovie-0.5.24-windows-x64-setup.exe`（更新兼容别名 `MarcoMovie-0.5.24-windows-setup.exe`），SHA-256：`bc402a2617c931a1677572df1df08586e7b7b8bce8d9b1a7bbcd50b837176e08`。\n- **Windows 64 位绿色便携版**：`MarcoMovie-0.5.24-windows-x64-portable.zip`（兼容别名 `MarcoMovie-0.5.24-windows-x64.zip`），SHA-256：`5b680ca3247d18560b128ab8bc87055b4b514285261b01eabf5fb32c7f45859e`。\n- **对应源码包**：`MarcoMovie-windows-v0.5.24-source.zip`，SHA-256：`780e4e526e697ca0f5f69fb39a51620a53fa9a4ad6eda220f6f7ff151acfc965`。\n- **构建提交**：`a3cbe546c3faa803e6be2b06bbe62b6767e503c9`。[多端原生构建与校验记录（44020396179）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/44020396179)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Inno Setup 6 安装脚本预检、Windows x64 原生 Release 构建、`libmpv-2.dll` 媒体回放校验及全套 Flutter 自动化测试（含 Windows V4 UI、输入法组合态、鼠标防抖与云同步专项测试）。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.5.24"
+    },
+    {
+      "tag": "macos-v0.5.19",
+      "version": "0.5.19",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-17T05:28:35Z",
+      "prerelease": false,
+      "target_commitish": "a3cbe546c3faa803e6be2b06bbe62b6767e503c9",
+      "notes": "# Marco Movie macOS 0.5.19\n\n发布日期：2026-11-17。应用版本：`0.5.19`（构建号 `69`）。本次更新修复 macOS 本地订阅文件与离线配置包选择无响应问题，同步升级桌面播放器鼠标唤醒防抖、网盘伪装 `.mp3` 视频原画播放、WebDAV 仅同步订阅源模式及 JSON 备份文件直接导出与恢复。\n\n## 更新内容\n\n- **本地订阅与离线 `.zip` 配置包导入修复（`#57`）**：为 macOS 应用补齐 `com.apple.security.files.user-selected.read-write` 用户自选文件沙盒权限并增加内存字节流读取兜底，修复设置页与首页点击「选择本地配置 / 离线包」无反应的问题。\n- **桌面播放器鼠标防抖与自动隐藏优化（`#50`）**：去重指针移动事件，控制栏收起后需 `350ms` 内累计移动 `>= 12px` 才唤醒，空闲自动隐藏缩短至 `2.2s`，观影体验更沉浸。\n- **网盘伪装 `.mp3` 视频识别播放（`#31`）**：夸克、UC、百度、阿里云盘分享自动将 `>= 15 MiB` 的伪装 `.mp3` 识别为视频并在 `mpv` 强制开启 `vid=auto`，修复只出声无画面问题。\n- **WebDAV 仅同步订阅源模式与 JSON 备份文件读写（`#44` / `#47`）**：WebDAV 新增「同时同步观看历史与收藏」开关（关闭后仅同步订阅源，实现多设备观看记录隔离且不清空云端原有记录）；备份恢复弹窗支持一键导出与选择本地 `.json` 文件。\n\n## 包信息与构建记录\n\n- **macOS 桌面应用包（Apple Silicon / Intel）**：`MarcoMovie-0.5.19-macos-desktop.zip`（更新兼容别名 `MarcoMovie-0.5.19-macos.zip`），SHA-256：`e8620a66d5b2e5815f2ba8ce9ba9c3118eba12875c68cbc4cab06d8dbbdddfaf`。\n- **对应源码包**：`MarcoMovie-macos-v0.5.19-source.zip`，SHA-256：`9c4356bb4bec4ac3aa672b501c0edb0ceb221fbd00d609c650c0198b7e27b1fa`。\n- **构建提交**：`a3cbe546c3faa803e6be2b06bbe62b6767e503c9`。[多端原生构建与校验记录（44020396179）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/44020396179)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、macOS 原生 Release 构建、沙盒权限重签校验、`Mpv.framework` 媒体回放测试及全套 Flutter 自动化回归；应用压缩包未公证，首次打开请右键选择“打开”。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.5.19"
+    },
+    {
+      "tag": "ios-v0.5.32",
+      "version": "0.5.32",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-17T05:28:33Z",
+      "prerelease": false,
+      "target_commitish": "a3cbe546c3faa803e6be2b06bbe62b6767e503c9",
+      "notes": "# Marco Movie iOS / iPadOS 0.5.32\n\n发布日期：2026-11-17。应用版本：`0.5.32`（构建号 `82`），最低系统要求：iOS / iPadOS 14.0。本次更新升级网盘伪装 `.mp3` 视频原画播放、WebDAV 仅同步订阅源（隔离观看记录）模式及 JSON 备份文件直接导出与恢复能力。\n\n## 更新内容\n\n- **网盘伪装 `.mp3` 视频识别与原画播放（`#31`）**：夸克、UC、百度、阿里云盘分享自动将 `>= 15 MiB` 的伪装 `.mp3` 资源纳入可播放视频条目，并在播放器底层启用 `vid=auto` 视频轨道探测，解决伪装后缀片源黑屏仅有声音的问题。\n- **WebDAV 仅同步订阅源模式（`#44`）**：云端同步新增「同时同步观看历史与收藏」开关；关闭后仅同步订阅源列表并完整保留云端已有的观看历史与收藏记录，方便多设备共享片源但各自独立保留观影进度。\n- **JSON 备份文件直接导出与恢复（`#47`）**：备份与恢复弹窗新增「导出为 JSON 文件」与「选择 JSON 文件」按钮，配合文件内存读取兜底可在「文件」App 中直接保存或导入完整备份配置。\n\n## 包信息与构建记录\n\n- **未签名 IPA（iPhone / iPad 通用）**：`MarcoMovie-0.5.32-ios-iphone-ipad-unsigned.ipa`（更新兼容别名 `MarcoMovie-0.5.32-ios-unsigned.ipa`），SHA-256：`87a90092312dcdfbfc004ad58274b1501f03fb8a1902858b1c0191d5a9021532`。\n- **对应源码包**：`MarcoMovie-ios-v0.5.32-source.zip`，SHA-256：`77ad179ca97058861c21fd20b84e0e34fc5dae1827f8ab73ccd62bfeb8dab157`。\n- **构建提交**：`a3cbe546c3faa803e6be2b06bbe62b6767e503c9`。[多端原生构建与校验记录（44020396179）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/44020396179)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、iOS Xcode 原生 Release 构建及全套 Flutter 自动化测试；未签名 IPA 支持巨魔（TrollStore）直接覆盖更新或自签工具安装。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.5.32"
+    },
+    {
       "tag": "windows-v0.5.23",
       "version": "0.5.23",
       "platforms": [
