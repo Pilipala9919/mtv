@@ -309,10 +309,33 @@ def movie_sources(platform=None):
     return src
 
 
+def _latest_apk(glob_pattern, name_re, label):
+    """Pick the newest local APK matching a strict filename pattern.
+
+    The repo keeps older versioned APKs, so a fixed filename goes stale
+    the next release (2026-11-17: tv_sources() still named 0.15.0 after
+    0.16.0 shipped, and the Quark TV folder kept serving the old build).
+    The strict pattern also excludes variants such as -Lite and
+    -Restricted, which must never be treated as the stable download.
+    """
+    best = None
+    best_key = None
+    for path in ROOT.glob(glob_pattern):
+        m = re.fullmatch(name_re, path.name)
+        if not m:
+            continue
+        key = tuple(int(part) for part in m.groups())
+        if best_key is None or key > best_key:
+            best, best_key = path, key
+    if best is None:
+        raise QuarkError(f"no local {label} APK found in {ROOT}")
+    return local_asset(best)
+
+
 def tv_sources():
     return {
-        "tv": local_asset(ROOT / "MarcoTV-0.15.0.apk"),
-        "tv-lite": local_asset(ROOT / "MarcoTV-Lite-0.1.2.apk"),
+        "tv": _latest_apk("MarcoTV-*.apk", r"MarcoTV-(\d+)\.(\d+)\.(\d+)\.apk", "MarcoTV"),
+        "tv-lite": _latest_apk("MarcoTV-Lite-*.apk", r"MarcoTV-Lite-(\d+)\.(\d+)\.(\d+)\.apk", "MarcoTV Lite"),
     }
 
 

@@ -110,5 +110,37 @@ class PruneTests(unittest.TestCase):
                                 self.tmpdir, False, keep_old=False)
 
 
+class TvSourcesTests(unittest.TestCase):
+    """tv_sources() must follow the newest local APK, not a fixed name.
+
+    The TV sync used to name MarcoTV-0.15.0.apk outright, so after 0.16.0
+    shipped the Quark TV folder kept serving the old build while the page
+    advertised the new one.
+    """
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        for name in ("MarcoTV-0.15.0.apk", "MarcoTV-0.16.0.apk",
+                     "MarcoTV-0.16.0-Restricted.apk", "MarcoTV-Lite-0.1.2.apk"):
+            (self.root / name).write_bytes(CONTENT)
+
+    def test_picks_newest_stable_and_lite(self):
+        with patch.object(m, "ROOT", self.root):
+            sources = m.tv_sources()
+        self.assertEqual(sources["tv"][0], "MarcoTV-0.16.0.apk")
+        self.assertEqual(sources["tv"][4], "0.16.0")
+        self.assertEqual(sources["tv"][3], DIGEST)
+        self.assertEqual(sources["tv-lite"][0], "MarcoTV-Lite-0.1.2.apk")
+
+    def test_missing_apk_fails_loudly(self):
+        (self.root / "MarcoTV-0.15.0.apk").unlink()
+        (self.root / "MarcoTV-0.16.0.apk").unlink()
+        with patch.object(m, "ROOT", self.root):
+            with self.assertRaises(m.QuarkError):
+                m.tv_sources()
+
+
 if __name__ == "__main__":
     unittest.main()
