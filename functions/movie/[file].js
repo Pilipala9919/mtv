@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 const REPO = 'Pilipala9919/MarcoMovie';
-const FILE_RE = /^MarcoMovie-(\d+\.\d+\.\d+)-([A-Za-z0-9._-]+)\.(apk|ipa|exe|zip)(\.sha256)?$/;
+const FILE_RE = /^MarcoMovie-(\d+\.\d+\.\d+)-([A-Za-z0-9._-]+)\.(apk|ipa|exe|zip|hap)(\.sha256)?$/;
 const PASSTHROUGH_HEADERS = [
   'accept-ranges',
   'content-length',
@@ -76,6 +76,32 @@ function candidateTargets(version, rest, ext, shaSuffix) {
       ['ios-v' + version, altFile],
       ['ios-v' + version + '-preview', requested],
       ['ios-v' + version + '-preview', altFile],
+      ['v' + version, requested],
+      ['v' + version + '-preview', requested],
+    ];
+  }
+  if (stem.startsWith('tvos-appletv') || stem.startsWith('appletv')) {
+    const universalFile = `MarcoMovie-${version}-tvos-appletv-unsigned.ipa${shaSuffix}`;
+    const shortFile = `MarcoMovie-${version}-appletv-unsigned.ipa${shaSuffix}`;
+    const altFile = requested === universalFile ? shortFile : universalFile;
+    return [
+      ['appletv-v' + version, requested],
+      ['appletv-v' + version, altFile],
+      ['appletv-v' + version + '-preview', requested],
+      ['appletv-v' + version + '-preview', altFile],
+      ['v' + version, requested],
+      ['v' + version + '-preview', requested],
+    ];
+  }
+  if (stem.startsWith('harmonyos')) {
+    const universalFile = `MarcoMovie-${version}-harmonyos-universal.hap${shaSuffix}`;
+    const shortFile = `MarcoMovie-${version}-harmonyos.hap${shaSuffix}`;
+    const altFile = requested === universalFile ? shortFile : universalFile;
+    return [
+      ['harmonyos-v' + version, requested],
+      ['harmonyos-v' + version, altFile],
+      ['harmonyos-v' + version + '-preview', requested],
+      ['harmonyos-v' + version + '-preview', altFile],
       ['v' + version, requested],
       ['v' + version + '-preview', requested],
     ];

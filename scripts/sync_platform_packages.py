@@ -16,11 +16,14 @@ from platform_package_names import ALIASES as CLEAR_NAMES
 
 SUFFIXES = {
     'ios': ('ios-unsigned.ipa',),
+    'appletv': ('appletv-unsigned.ipa',),
+    'harmonyos': ('harmonyos.hap',),
     'windows': ('windows-setup.exe', 'windows-x64.zip'),
     'macos': ('macos.zip',),
 }
 PLATFORM_LABELS = {
     'ios': 'iPhone / iPad', 'windows': 'Windows', 'macos': 'macOS',
+    'appletv': 'Apple TV', 'harmonyos': 'HarmonyOS NEXT',
     'android-tv': 'Android 电视', 'android-mobile': 'Android 手机 / 平板',
     'android-lite': 'Android Lite',
 }
@@ -29,6 +32,7 @@ NOTE_SUFFIXES = {
     'android-lite.apk': 'android-lite',
     'preview.apk': 'android-tv', 'mobile.apk': 'android-mobile',
     'lite.apk': 'android-lite', 'ios-unsigned.ipa': 'ios',
+    'appletv-unsigned.ipa': 'appletv', 'harmonyos.hap': 'harmonyos',
     'windows-setup.exe': 'windows', 'windows-x64.zip': 'windows',
     'macos.zip': 'macos',
 }
@@ -38,7 +42,7 @@ NOTE_SUFFIXES.update({new: NOTE_SUFFIXES[old] for old, new in CLEAR_NAMES.items(
 def note_record(release):
     """Keep the published text verbatim; filenames/tags establish platform scope."""
     tag = release.get('tag_name', '')
-    match = re.fullmatch(r'(?:(ios|windows|macos|android-tv|android-mobile|android-lite)-)?v(\d+\.\d+\.\d+)(-preview)?', tag)
+    match = re.fullmatch(r'(?:(ios|windows|macos|appletv|harmonyos|android-tv|android-mobile|android-lite)-)?v(\d+\.\d+\.\d+)(-preview)?', tag)
     if not match or release.get('draft') or not release.get('published_at'):
         return None
     platform, version, _ = match.groups()
@@ -70,7 +74,7 @@ def release_history(output, releases):
     files = {}
     for item in records:
         # Validate saved names too: an on-disk index never supplies output paths.
-        if not re.fullmatch(r'(?:(?:ios|windows|macos|android-tv|android-mobile|android-lite)-)?v\d+\.\d+\.\d+(?:-preview)?', item['tag']):
+        if not re.fullmatch(r'(?:(?:ios|windows|macos|appletv|harmonyos|android-tv|android-mobile|android-lite)-)?v\d+\.\d+\.\d+(?:-preview)?', item['tag']):
             raise ValueError('Invalid archived release tag')
         text = item['notes'] if item['notes'].strip() else '该历史版本未提供更新说明。'
         files[f'updates/history/{item["tag"]}.md'] = (text if text.endswith('\n') else text + '\n').encode('utf-8')
@@ -357,7 +361,7 @@ def choose_platform(releases, platform):
     return max(candidates, key=lambda item: item[0])[1] if candidates else None
 
 
-def patch_card(page, suffix, package):
+def patch_card(page, suffix, package, quark_url=None):
     aliases = {'android-tv.apk': 'preview.apk', 'android-mobile.apk': 'mobile.apk',
                'android-lite.apk': 'lite.apk'}
     aliases.update(CLEAR_NAMES)
@@ -369,15 +373,26 @@ def patch_card(page, suffix, package):
     if len(matches) != 1:
         raise ValueError('Expected exactly one existing download card: ' + suffix)
     card = matches[0]
-    # 2026-11-17 policy: the card's only download button is Quark (a
-    # permanent share link, never versioned), so the only href this
-    # patch owns is the checksum file link; the package button is gone.
+    # 2026-11-17 policy: established cards use a permanent Quark share link,
+    # while newly introduced platforms may start with a mirror package link
+    # until sync_quark.py creates their permanent share in quark.json.
     replacement, links = re.subn(
         r'href="[^"<>]*' + name_pattern + r'\.sha256"',
         lambda match: 'href="' + html.escape(package['url'], quote=True) + '.sha256"',
         card[0])
     if links != 1:
         raise ValueError('Expected checksum link: ' + suffix)
+    pkg_filename = package['url'].rsplit('/', 1)[-1]
+    if quark_url and re.fullmatch(r'https://pan\.quark\.cn/s/[A-Za-z0-9_-]+', quark_url):
+        replacement = re.sub(
+            r'<a(?:\s+[^>]*)?\s+href="[^"<>]*' + name_pattern + r'"[^>]*>[^<]*</a>',
+            '<a class="btn" href="' + html.escape(quark_url, quote=True) + '" target="_blank" rel="noopener">夸克网盘下载</a>',
+            replacement, count=1)
+    else:
+        replacement = re.sub(
+            r'href="[^"<>]*' + name_pattern + r'"',
+            lambda _: 'href="' + html.escape(BASE + pkg_filename, quote=True) + '"',
+            replacement, count=1)
     replacement, hashes = re.subn(r'(SHA-256：)[a-f0-9]{64}',
                                  lambda match: match[1] + package['sha256'], replacement)
     replacement, sizes = re.subn(r'\d+(?:\.\d+)? MB', f'{package["size"] / 1024 / 1024:.1f} MB', replacement)
@@ -420,11 +435,21 @@ def sync(output, releases=None):
         releases = json.loads(fetch(f'https://api.github.com/repos/{REPO}/releases?per_page=100', 4 * 1024 * 1024))
     from android_update_packages import plan as android_plan
     files, versions, android_cards = android_plan(output, releases)
+    quark_manifest = {}
+    quark_path = output.parent / 'scripts' / 'quark.json'
+    if quark_path.is_file():
+        try:
+            loaded = json.loads(quark_path.read_text(encoding='utf-8'))
+            if isinstance(loaded, dict):
+                quark_manifest = loaded
+        except (ValueError, OSError):
+            quark_manifest = {}
     for platform, package in android_cards.items():
         # The top download shortcuts point at permanent Quark share
         # links, which never change with a release, so there is nothing
         # to patch there; only the cards are versioned.
-        page = patch_card(page, platform + '.apk', package)
+        page = patch_card(page, platform + '.apk', package,
+                          quark_url=(quark_manifest.get(platform) or {}).get('share_url'))
     for platform, suffixes in SUFFIXES.items():
         release = choose_platform(releases, platform)
         if release is None:
@@ -445,7 +470,11 @@ def sync(output, releases=None):
             if body is not None:
                 files[name] = body
                 files[name + '.sha256'] = (digest + '  ' + name + '\n').encode('ascii')
-            page = patch_card(page, suffix, package)
+            q_key = ('windows-setup' if suffix == 'windows-setup.exe'
+                     else 'windows-zip' if suffix == 'windows-x64.zip'
+                     else platform)
+            page = patch_card(page, suffix, package,
+                              quark_url=(quark_manifest.get(q_key) or {}).get('share_url'))
         feed = dict(schema=1, platform=platform, versionName=version, prerelease=False,
                     notes=release.get('body') or '', packages=packages,
                     release_url=f'https://github.com/{REPO}/releases/tag/{release["tag_name"]}')
@@ -490,7 +519,7 @@ def sync(output, releases=None):
     # the complete snapshot; never rewrite a previously published binary.
     for name, body in files.items():
         target = output / name
-        if target.exists() and target.suffix in ('.ipa', '.exe', '.zip', '.apk') and target.read_bytes() != body:
+        if target.exists() and target.suffix in ('.ipa', '.exe', '.zip', '.apk', '.hap') and target.read_bytes() != body:
             raise ValueError('Immutable package differs: ' + name)
     for name, body in files.items():
         target = output / name

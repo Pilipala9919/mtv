@@ -9,9 +9,13 @@ let checks = 0;
 try {
   for (const method of ['GET', 'HEAD']) {
     for (const suffix of ['', '.sha256']) {
-      for (const names of [
-        ['ios-unsigned.ipa', 'ios-iphone-ipad-unsigned.ipa'],
-        ['ios-iphone-ipad-unsigned.ipa', 'ios-unsigned.ipa'],
+      for (const [platformTag, names] of [
+        ['ios', ['ios-unsigned.ipa', 'ios-iphone-ipad-unsigned.ipa']],
+        ['ios', ['ios-iphone-ipad-unsigned.ipa', 'ios-unsigned.ipa']],
+        ['appletv', ['appletv-unsigned.ipa', 'tvos-appletv-unsigned.ipa']],
+        ['appletv', ['tvos-appletv-unsigned.ipa', 'appletv-unsigned.ipa']],
+        ['harmonyos', ['harmonyos.hap', 'harmonyos-universal.hap']],
+        ['harmonyos', ['harmonyos-universal.hap', 'harmonyos.hap']],
       ]) {
         const file = `MarcoMovie-0.5.14-${names[0]}${suffix}`;
         const alternate = `MarcoMovie-0.5.14-${names[1]}${suffix}`;
@@ -34,8 +38,8 @@ try {
         });
         assert.equal(response.status, 206);
         assert.equal(calls.length, 2);
-        assert.equal(calls[0].url, `https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.14/${file}`);
-        assert.equal(calls[1].url, `https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.14/${alternate}`);
+        assert.equal(calls[0].url, `https://github.com/Pilipala9919/MarcoMovie/releases/download/${platformTag}-v0.5.14/${file}`);
+        assert.equal(calls[1].url, `https://github.com/Pilipala9919/MarcoMovie/releases/download/${platformTag}-v0.5.14/${alternate}`);
         assert.equal(calls[1].options.method, method);
         assert.equal(calls[1].options.headers.get('range'), 'bytes=0-15');
         assert.equal(response.headers.get('content-range'), 'bytes 0-15/16');

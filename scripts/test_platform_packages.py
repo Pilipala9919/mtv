@@ -92,6 +92,33 @@ class PackageTests(unittest.TestCase):
         self.assertIn('legacy.ipa', m.patch_card(page, 'ios-unsigned.ipa',
                       dict(url='https://fixture.invalid/legacy.ipa', size=123, sha256='c'*64)))
 
+    def test_appletv_and_harmonyos_releases_sync_and_upgrade_direct_button_to_quark(self):
+        tvos_name = 'MarcoMovie-0.1.0-tvos-appletv-unsigned.ipa'
+        ohos_name = 'MarcoMovie-0.1.0-harmonyos-universal.hap'
+        page = self.page.replace(
+            '<a href="https://pan.quark.cn/s/fixture">夸克网盘下载</a><a href="MarcoMovie-0.5.0-appletv-unsigned.ipa.sha256">',
+            '<a class="btn" href="https://marcotv.wlj9919.top/movie/MarcoMovie-0.1.0-appletv-unsigned.ipa">镜像直链下载</a><a href="MarcoMovie-0.5.0-appletv-unsigned.ipa.sha256">')
+        (self.out / 'index.html').write_text(page, encoding='utf-8')
+        tvos_rel = dict(tag_name='appletv-v0.1.0', published_at='2026-11-17T15:00:00Z',
+                        draft=False, prerelease=False, body='Apple TV 首发支持',
+                        assets=self.assets(tvos_name, 'MarcoMovie-0.1.0-appletv-unsigned.ipa'))
+        ohos_rel = dict(tag_name='harmonyos-v0.1.0', published_at='2026-11-17T15:05:00Z',
+                        draft=False, prerelease=False, body='HarmonyOS NEXT 首发支持',
+                        assets=self.assets(ohos_name, 'MarcoMovie-0.1.0-harmonyos.hap'))
+        with patch.object(m, 'platform_asset', side_effect=lambda rel, name, out: ('https://fixture.invalid/' + name, 2097152, 'd'*64, None)):
+            versions = m.sync(self.out, [tvos_rel, ohos_rel])
+        self.assertEqual(versions, {'appletv': '0.1.0', 'harmonyos': '0.1.0'})
+        written = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('href="' + m.BASE + tvos_name + '"', written)
+        # Once quark.json gains a permanent share URL, re-running sync upgrades the button.
+        scripts_dir = self.out.parent / 'scripts'
+        scripts_dir.mkdir(exist_ok=True)
+        (scripts_dir / 'quark.json').write_text(json.dumps({'appletv': {'share_url': 'https://pan.quark.cn/s/tvosshare1'}}), encoding='utf-8')
+        with patch.object(m, 'platform_asset', side_effect=lambda rel, name, out: ('https://fixture.invalid/' + name, 2097152, 'd'*64, None)):
+            m.sync(self.out, [tvos_rel, ohos_rel])
+        upgraded = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('href="https://pan.quark.cn/s/tvosshare1" target="_blank" rel="noopener">夸克网盘下载</a>', upgraded)
+
     def test_named_windows_card_preserves_the_installed_client_updater(self):
         names = ['MarcoMovie-0.5.1-windows-x64-setup.exe', 'MarcoMovie-0.5.1-windows-x64-portable.zip',
                  'MarcoMovie-0.5.1-windows-setup.exe']

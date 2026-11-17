@@ -43,6 +43,8 @@ MOVIE_FOLDERS = {
     "android-tv": "/MarcoMovie/电视版",
     "android-mobile": "/MarcoMovie/手机版",
     "ios": "/MarcoMovie/iOS",
+    "appletv": "/MarcoMovie/AppleTV",
+    "harmonyos": "/MarcoMovie/鸿蒙版",
     "windows-setup": "/MarcoMovie/Windows安装版",
     "windows-zip": "/MarcoMovie/Windows绿色版",
     "macos": "/MarcoMovie/macOS",
@@ -293,6 +295,8 @@ def movie_sources(platform=None):
         "android-tv": ("android-tv", ".apk"),
         "android-mobile": ("android-mobile", ".apk"),
         "ios": ("ios", ".ipa"),
+        "appletv": ("appletv", ".ipa"),
+        "harmonyos": ("harmonyos", ".hap"),
         "windows-setup": ("windows", "-setup.exe"),
         "windows-zip": ("windows", ".zip"),
         "macos": ("macos", ".zip"),
@@ -364,7 +368,7 @@ def validate_published_source(key, source):
             or not re.fullmatch(r"\d+\.\d+\.\d+", version)
             or not isinstance(name, str)
             or not re.fullmatch(r"MarcoMovie-" + re.escape(version)
-                                + r"-[A-Za-z0-9-]+\.(?:ipa|apk|exe|zip)", name)
+                                + r"-[A-Za-z0-9-]+\.(?:ipa|apk|exe|zip|hap)", name)
             or type(size) is not int or not 0 < size <= 300 * 1024 * 1024
             or not isinstance(digest, str)
             or not re.fullmatch(r"[0-9a-f]{64}", digest)):
@@ -372,6 +376,8 @@ def validate_published_source(key, source):
     platform = "windows" if key.startswith("windows-") else key
     allowed_suffixes = {
         "ios": ("ios-unsigned.ipa", "ios-iphone-ipad-unsigned.ipa"),
+        "appletv": ("appletv-unsigned.ipa", "tvos-appletv-unsigned.ipa"),
+        "harmonyos": ("harmonyos.hap", "harmonyos-universal.hap"),
         "android-tv": ("android-tv.apk",),
         "android-mobile": ("android-mobile.apk",),
         "android-lite": ("android-lite.apk",),
