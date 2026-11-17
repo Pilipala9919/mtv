@@ -61,5 +61,19 @@
     "file": "MarcoTV-Lite-0.1.2.apk",
     "version": "0.1.2",
     "sha256": "ea06ef9ca03cfd792ec3be37f85e5d4a356f3120cc7a63ea19e7cde98837d576"
+  },
+  "appletv": {
+    "folder": "/MarcoMovie/AppleTV",
+    "share_url": "https://pan.quark.cn/s/1b944e395566",
+    "file": "MarcoMovie-0.1.0-tvos-appletv-unsigned.ipa",
+    "version": "0.1.0",
+    "sha256": "02e7c3cef2c999800ddf69aa4bc22715019ef045b0ec26354dd08e8defb5cdad"
+  },
+  "harmonyos": {
+    "folder": "/MarcoMovie/鸿蒙版",
+    "share_url": "https://pan.quark.cn/s/6ba2b9aef9c9",
+    "file": "MarcoMovie-0.1.0-harmonyos-universal.hap",
+    "version": "0.1.0",
+    "sha256": "705029b7ef0cdadc6e7eee7eb7e6b493b03594d4021576e14ca36c84ee6a8c55"
   }
 }
