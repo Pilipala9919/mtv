@@ -90,19 +90,23 @@ class AndroidUpdates(unittest.TestCase):
     def test_existing_card_changes_links_without_restyling(self):
         for platform, old in (('android-mobile', 'mobile'), ('android-tv', 'preview')):
             name = f'MarcoMovie-0.5.0-{old}.apk'
-            page = f'<style>untouched</style><div class="dl" data-platform="{platform}"><a href="{name}">下载</a><a href="{name}.sha256">校验</a><code>SHA-256：{"a"*64}</code><span>12.0 MB</span></div>'
+            page = (f'<style>untouched</style><div class="dl" data-platform="{platform}">'
+                    f'<a href="https://pan.quark.cn/s/fixture">夸克网盘下载</a>'
+                    f'<a href="{name}.sha256">校验</a><code>SHA-256：{"a"*64}</code><span>12.0 MB</span></div>')
             package = dict(url=m.BASE + f'MarcoMovie-0.5.2-{platform}.apk', size=100, sha256='b'*64)
             result = patch_card(page, platform + '.apk', package)
             self.assertIn('<style>untouched</style>', result)
-            self.assertIn('href="' + package['url'] + '"', result)
+            self.assertIn('href="https://pan.quark.cn/s/fixture"', result)
+            self.assertIn('href="' + package['url'] + '.sha256"', result)
             self.assertEqual(patch_card(result, platform + '.apk', package), result)
 
-    def test_top_download_shortcuts_follow_verified_cards(self):
+    def test_top_download_shortcuts_stay_permanent_quark_links(self):
         for platform, old, label in (('android-tv', 'preview', '下载电视版'),
                                       ('android-mobile', 'mobile', '下载手机版')):
             name = f'MarcoMovie-0.5.0-{old}.apk'
-            page = (f'<style>unchanged</style><a class="btn primary" href="{name}">{label}</a>'
-                    f'<div class="dl"><a href="{name}">下载</a><a href="{name}.sha256">校验</a>'
+            quark_href = 'https://pan.quark.cn/s/fixture'
+            page = (f'<style>unchanged</style><a class="btn primary" href="{quark_href}">{label}</a>'
+                    f'<div class="dl"><a href="{quark_href}">夸克网盘下载</a><a href="{name}.sha256">校验</a>'
                     f'<code>SHA-256：{"a"*64}</code><span>12.0 MB</span></div>')
             (self.out / 'index.html').write_text(page, encoding='utf-8')
             package = dict(url=m.BASE + f'MarcoMovie-0.5.2-{platform}.apk', size=100, sha256='b'*64)
@@ -110,7 +114,8 @@ class AndroidUpdates(unittest.TestCase):
                 sync(self.out, [])
             result = (self.out / 'index.html').read_text(encoding='utf-8')
             self.assertIn('<style>unchanged</style>', result)
-            self.assertIn('href="' + package['url'] + '">' + label + '</a>', result)
+            self.assertIn(f'href="{quark_href}">{label}</a>', result)
+            self.assertIn('href="' + package['url'] + '.sha256"', result)
             self.assertNotIn(name, result)
 
 
