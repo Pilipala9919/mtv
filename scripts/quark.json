@@ -65,15 +65,15 @@
   "appletv": {
     "folder": "/MarcoMovie/AppleTV",
     "share_url": "https://pan.quark.cn/s/1b944e395566",
-    "file": "MarcoMovie-0.1.0-tvos-appletv-unsigned.ipa",
-    "version": "0.1.0",
-    "sha256": "02e7c3cef2c999800ddf69aa4bc22715019ef045b0ec26354dd08e8defb5cdad"
+    "file": "MarcoMovie-0.1.1-tvos-appletv-unsigned.ipa",
+    "version": "0.1.1",
+    "sha256": "fef4c3f2cb0e8fc6c8f938b4f037a2831aac697d1208529175aa0fb8153d3ab6"
   },
   "harmonyos": {
     "folder": "/MarcoMovie/鸿蒙版",
     "share_url": "https://pan.quark.cn/s/6ba2b9aef9c9",
-    "file": "MarcoMovie-0.1.0-harmonyos-universal.hap",
-    "version": "0.1.0",
-    "sha256": "705029b7ef0cdadc6e7eee7eb7e6b493b03594d4021576e14ca36c84ee6a8c55"
+    "file": "MarcoMovie-0.1.1-harmonyos-universal.hap",
+    "version": "0.1.1",
+    "sha256": "3df10bc519eeda366c9b5f15ecb92cd3df2cf92148191dfca42d034f4b554bae"
   }
 }
