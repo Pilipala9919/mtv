@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.5.25",
-  "versionCode": 87,
+  "versionName": "0.5.26",
+  "versionCode": 90,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视 / 盒子 0.5.25\n\n发布日期：2026-11-15。版本代码：`87`。本次更新全面升级电视与盒子端 4K 网盘原画并发分片代理、第三方 JAR / QuickJS 爬虫兼容层与并发 DoH 抗 DNS 污染能力，显著提升大屏播放高码率 4K / HDR 网盘原盘的起播速度、快进快退响应与源站连通率。\n\n## 4K 网盘分片加速与片源引擎兼容升级\n\n- **6 路并发分片回环代理与自适应缓冲（`LocalProxy` & `MoviePlayer`）**：本机回环流媒体代理升级为 `6 路 × 1 MB` 并发滑动窗口预取（最多缓存 `24 MB`），完整支持 `HEAD` 与 `HTTP 206` 字节区间请求、大跨度拖动即时取消旧偏移预取以及上游 `401` / `403` 签名过期回调重取；`ExoPlayer` 针对本机高吞吐分片流自动优化起播缓冲水位，实现 4K 大文件秒开与顺滑拖动。\n- **CatVod JAR 爬虫与 QuickJS `//bb` 字节码深度兼容**：补齐 `Spider.client()`、`Spider.safeDns()`、`SpiderApi.multiReq` 并发请求、`CspEngine` 32/64 位 `.so` 安全提取（含目录写权限恢复与 Zip-Slip 防护）；`JsEngine` 新增 `//bb`（`CATOP`）预编译字节码版本动态适配与 `assets://js/lib/` 本地公共桥接库（`cat.js` / `utils.js` / `lodash` / `cheerio`）映射兜底。\n- **抗 DNS 污染 DoH 重连与配置容错加固（`Cms`）**：内置阿里 / 腾讯并发 RFC 8484 DoH 清洁 IP 解析器，遇到 DNS 污染、连接重置或持续 `403` 时自动按多套 UA 回退并保持原始 `Host` 与 HTTPS SNI 重连；`MAX_JSON` 提升至 `16 MB` 并全面阻断 `\"null\"` 字面量污染请求头与解析地址。\n\n## 包信息与构建记录\n\n- **安装包（32 位电视 / 盒子专版）**：`MarcoMovie-0.5.25-android-tv.apk`（更新兼容别名 `MarcoMovie-0.5.25-preview.apk`），官方正式签名，支持应用内直接覆盖升级。\n- **SHA-256**：`a16e3b89143281212093520fda2db7951f70b8fbc81e85167b1e808b583df7aa`。\n- **对应源码包**：`MarcoMovie-android-tv-v0.5.25-source.zip`，SHA-256：`0b23a7c652f670543e22595964475256c88410cfe9a800c0bf52e770173455cd`。\n- **构建提交**：`97f872dead7413120694bf73211b72967ffb4198`。[多端原生构建与校验记录（43729927928）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/43729927928)。\n\n## 验证范围与已知限制\n\n- 通过公共内容守卫检查、Java 格式检查、纯 JVM 全套离线回归（含新增 `LocalProxyRangeChecks` 6 路分片/Seek/403 刷新回归、80 项 `CompatChecks` Spider/QuickJS/DoH 检查与 `CmsChecks`）、API 23 字节码校验及官方正式签名校验。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.25/MarcoMovie-0.5.25-android-tv.apk",
-  "size": 36032313,
-  "sha256": "a16e3b89143281212093520fda2db7951f70b8fbc81e85167b1e808b583df7aa",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.25-android-tv.apk",
+  "notes": "# Marco Movie Android 电视 / 盒子 0.5.26\r\n\r\n版本代码：90；最低 Android 6 / API23。\r\n\r\n## 本次更新\r\n\r\n- V17 原生电视界面、密集海报墙、搜索标题右侧横向来源选择。左导航使用贴边渐变轨道和轻玻璃焦点；Logo固定在导航顶部，展开显示品牌文字且不挤压正文。\r\n- “我的”按钮等宽单行，大字号可随焦点横向滚动；设置中的可聚焦项直接随上下键移动并滚入视野。取消连按三次上键回顶部。\r\n- 电视搜索支持用拼音首字母联想已索引的影视片名（相关：[#40](https://github.com/Pilipala9919/MarcoMovie/issues/40)），不代表实时热门词或全站片库联想。保留双击系统输入法、组合态和候选页；修复多源分页与异步失效。私密匹配不再隐式学习到普通索引，旧派生缓存保留但不自动导入新索引。\r\n- 详情保留加载/失败信息及收藏，历史显示集名、进度、总时长和已看完状态。点播上键进入暂停标记，下键访问进度，退出恢复原暂停状态；直播上下仍换台。\r\n- V2绝对标记节点与旧片尾剩余秒数分开保存，不重解释旧数据；URL型集身份仍仅会话有效。修复短片尾循环触发闩及续播字幕时长处理。\r\n- 媒体识别结合有界内容探测、MIME和播放器行为处理伪装后缀，保留鉴权、Range及错误回退。实际ISO光盘不等同于MP4伪装ISO后缀。\r\n\r\n## 验证边界\r\n\r\n标准Android TV/手机共用的搜索、播放基础代码受到影响；不重新设计手机界面。Lite使用独立源码，本次补丁未覆盖。其他平台现有更新保持不变。\r\n\r\nAPI28 ARMv7隔离测试覆盖了指定的片库、搜索、详情、设置导航、短循环、升级/前向回退、HTTP/HTTPS和字幕场景。最新ISO/MP3伪装MP4案例均取得150条真实播放器进度及视频尺寸样本；大字号末端按钮滚入已观察。用户另对现场隔离素材确认了画面、声音及遥控正常，这不是所有设备或全部格式通过。\r\n\r\n隐私原反例和两项缓存/长标题回归已独立复验。API28小米电视上的独立测试包还实际验证了合成私密数据的匹配/学习隔离、退出后普通索引保持干净、页面重建与冷进程恢复，公开与合成私密数据摘要保持；本轮隔离升级保留了20项偏好和测试配置。这些结果不代表正式应用全部用户数据迁移、PIN交互或真实账号测试。\r\n\r\nAndroid 6 没有物理机验证。早先 x86 Android TV 模拟运行中字幕、加载和来源宿主通过；首页发现两处窗口分页/焦点问题并修复，独立代码复核及11项主机回归通过。最终候选的第一次模拟器运行未启动、900秒超时；唯一重跑 [44436228255 attempt 2](https://github.com/Pilipala9919/MarcoMovie/actions/runs/44436228255/attempts/2) 已成功完成：精确提交 093595dfc384cc789652f61027632c1d77c6ef9e 的 SubtitleProbe、HomeProbe、LoadingProbe、SourceHostProbe 四组原生测试均在 Android 6 / API23 x86 Android TV 模拟器通过，包含首页窗口分页与焦点回归；这不代表 Android 6 物理机验证。ADB黑色视频Surface截图不代表面板黑屏或画面正常；用户现场音画/遥控确认限定于当时的隔离素材。真实网盘改名MP3的取流及画面输出（相关：[#31](https://github.com/Pilipala9919/MarcoMovie/issues/31)）未在真实账户路径验证，不据受控素材测试认定已解决。真实子路径重定向攻击与全部设备/格式也不在本轮原生验证范围。合成数据前向回退结果不保证任意用户数据无损迁移。\r\n\r\n## 安装与回退\r\n\r\n正式包名 com.pilipala.marcomovie，TV edition。同字节更新器兼容别名为 preview APK；只发布电视标签和电视更新，不发布顺带构建的手机版。\r\n\r\n精确构建提交：`093595dfc384cc789652f61027632c1d77c6ef9e`。APK SHA-256：`35289520db05bc0f0484915f16a7f87cdc2d019409da6b976298c5486a79e523`。正式证书 SHA-256：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`。源码附件对应该构建提交；后续发布说明提交不改变运行代码。发布前按仓库固定格式器整理 Java，899 个去除调试信息后的编译类逐字节一致，并重跑隐私、标记/输入法、字幕与媒体边界回归。\r\n\r\n不承诺无损降级。出现问题应使用更高versionCode的已验证修复包，不用卸载或清数据掩盖迁移失败。安装包不附带Lab入口、测试素材、用户配置或调查证据。\r\n\r\n清除跳过记录改为专用存储线程，保留先新后旧顺序、真实写盘失败反馈与空间隔离；独立10场景50断言通过，新版清除按钮未做原生交互。\r\n\r\n更新主镜像在本次核验网络返回 Cloudflare 403/1010；应用已有 GitHub 官方回退路径可读取，不承诺主镜像已恢复，也不等同每台电视已收到更新。\r\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.26/MarcoMovie-0.5.26-android-tv.apk",
+  "size": 36101945,
+  "sha256": "35289520db05bc0f0484915f16a7f87cdc2d019409da6b976298c5486a79e523",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.5.26-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.5.25-android-tv.apk": {
-      "size": 36032313,
-      "sha256": "a16e3b89143281212093520fda2db7951f70b8fbc81e85167b1e808b583df7aa",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.25/MarcoMovie-0.5.25-android-tv.apk"
+    "MarcoMovie-0.5.26-android-tv.apk": {
+      "size": 36101945,
+      "sha256": "35289520db05bc0f0484915f16a7f87cdc2d019409da6b976298c5486a79e523",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.5.26/MarcoMovie-0.5.26-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.25"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.5.26"
 }
