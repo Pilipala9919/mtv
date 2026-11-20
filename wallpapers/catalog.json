@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "updated": "2026-11-20",
+  "items": [
+    {
+      "id": "01-bahamas-shoals",
+      "title": "巴哈马浅滩",
+      "subtitle": "巴哈马埃克苏马群岛 · Sentinel-2A 真彩色卫星观测",
+      "credit": "Contains modified Copernicus Sentinel data 2024",
+      "license": "Copernicus Sentinel Data Legal Notice",
+      "width": 3840,
+      "height": 2160,
+      "size": 1003270,
+      "sha256": "903a6f61a7bd0be2ceed16e6cf7a3734c2f04795a9c33033e1a6a5bd59ce0ceb",
+      "url": "https://marcotv.wlj9919.top/wallpapers/full/01-bahamas-shoals.jpg",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/01-bahamas-shoals.jpg",
+      "thumbSize": 22465,
+      "thumbSha256": "448782eaa9c1e56fdd529af3e511b99dff2492bd5e8282e8f2b397b8e7da1715"
+    },
+    {
+      "id": "02-indigo-ribbon",
+      "title": "靛夜流光",
+      "subtitle": "原创三维缎面曲面渲染 · 钴蓝与珊瑚反光",
+      "credit": "Pilipala · Marco TV 原创渲染",
+      "license": "GPL-3.0-only",
+      "width": 3840,
+      "height": 2160,
+      "size": 221572,
+      "sha256": "ae4e4339481577c49194c1c79ec4c43788da467ad724f0c3c5786163753a4853",
+      "url": "https://marcotv.wlj9919.top/wallpapers/full/02-indigo-ribbon.jpg",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/02-indigo-ribbon.jpg",
+      "thumbSize": 9679,
+      "thumbSha256": "be06930541219a1651d3097592ae3754d364225089d5aee166459895dffcce4d"
+    },
+    {
+      "id": "03-fuji-dusk",
+      "title": "富士暮光",
+      "subtitle": "富士山日落湖景 · 横幅精选裁切调色",
+      "credit": "Romain Guy · Mount Fuji at sunset, March 2025",
+      "license": "CC0 1.0",
+      "width": 3840,
+      "height": 2160,
+      "size": 742983,
+      "sha256": "84ff4e87d6b0edfa7f39facc0baad234833ceb282be4630d8d8d1e01e44059a1",
+      "url": "https://marcotv.wlj9919.top/wallpapers/full/03-fuji-dusk.jpg",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/03-fuji-dusk.jpg",
+      "thumbSize": 14550,
+      "thumbSha256": "c1c840365817a505d3198b78c41c3b294bb484e7732caf0366c87d7183fe967b"
+    },
+    {
+      "id": "04-cosmic-cliffs",
+      "title": "星云之崖",
+      "subtitle": "韦布望远镜船底座星云 NIRCam 观测（裁切压暗）",
+      "credit": "NASA, ESA, CSA, and STScI (weic2205a)",
+      "license": "CC BY 4.0",
+      "width": 3840,
+      "height": 2160,
+      "size": 1560247,
+      "sha256": "a2f9674c2c2b230d210cc4480677ef63da765270b5a5c69c172952f1fd7cd360",
+      "url": "https://marcotv.wlj9919.top/wallpapers/full/04-cosmic-cliffs.jpg",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/04-cosmic-cliffs.jpg",
+      "thumbSize": 34429,
+      "thumbSha256": "2f70bb36c2c53591fd4ad730f6e3324a1fa5b6cac9485fd86fa50243c32d1534"
+    },
+    {
+      "id": "05-tidal-afterglow",
+      "title": "潮汐余晖",
+      "subtitle": "原创日出前海面波纹与薄云反射渲染",
+      "credit": "Pilipala · Marco TV 原创渲染",
+      "license": "GPL-3.0-only",
+      "width": 3840,
+      "height": 2160,
+      "size": 775541,
+      "sha256": "662c0f1718727be893f046584df59afba19f6b4366cc913bae6fb26d8560475e",
+      "url": "https://marcotv.wlj9919.top/wallpapers/full/05-tidal-afterglow.jpg",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/05-tidal-afterglow.jpg",
+      "thumbSize": 25550,
+      "thumbSha256": "4f3e42be770bb290a7710ae7253801e9f355b62b420458bb6107e1ffc6b96ef5"
+    }
+  ]
+}
