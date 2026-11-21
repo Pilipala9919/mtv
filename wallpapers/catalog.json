@@ -1,7 +1,92 @@
 {
   "schema": 1,
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "items": [
+    {
+      "id": "pixar-squirrel",
+      "type": "video",
+      "title": "顽皮小松鼠",
+      "subtitle": "Q版皮克斯 · 蓝调沙发探头微动态",
+      "credit": "Pilipala · Marco TV 原创动态壁纸",
+      "license": "GPL-3.0-only",
+      "width": 1280,
+      "height": 720,
+      "durationSec": 20,
+      "size": 1363598,
+      "sha256": "70445349f7c90c2a87761c859da826b9d5779091b3c2c37c572fc29cb66a2fdb",
+      "url": "https://marcotv.wlj9919.top/wallpapers/videos/pixar-squirrel.mp4",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/pixar-squirrel.jpg",
+      "thumbSize": 17409,
+      "thumbSha256": "37cd015db093cfe3e900c5572a4cde986cb128603ea01c72a9fcddfc8508cebd"
+    },
+    {
+      "id": "pixar-puppy",
+      "type": "video",
+      "title": "招手小奶狗",
+      "subtitle": "Q版皮克斯 · 暖米沙发卖萌微动态",
+      "credit": "Pilipala · Marco TV 原创动态壁纸",
+      "license": "GPL-3.0-only",
+      "width": 1280,
+      "height": 720,
+      "durationSec": 20,
+      "size": 1362811,
+      "sha256": "601a5188e3ca618bcad00056db111173a8658dbb2dfe06f47cf22b6de4e9db36",
+      "url": "https://marcotv.wlj9919.top/wallpapers/videos/pixar-puppy.mp4",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/pixar-puppy.jpg",
+      "thumbSize": 14974,
+      "thumbSha256": "9c41e996fd55846801c0903a0b3c5c63d43233f339f2d8f9529d284ed89d3a66"
+    },
+    {
+      "id": "pixar-penguin",
+      "type": "video",
+      "title": "害羞小企鹅",
+      "subtitle": "Q版皮克斯 · 暖灯沙发捂眼微动态",
+      "credit": "Pilipala · Marco TV 原创动态壁纸",
+      "license": "GPL-3.0-only",
+      "width": 1280,
+      "height": 720,
+      "durationSec": 20,
+      "size": 1131930,
+      "sha256": "c6216a4bbb1e71b850e39b24695d4f37ed8dfbba4111d91c358748165e6964f4",
+      "url": "https://marcotv.wlj9919.top/wallpapers/videos/pixar-penguin.mp4",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/pixar-penguin.jpg",
+      "thumbSize": 14288,
+      "thumbSha256": "954d78aff0ed9c24a4fa0613ce79ddbaf09a6acf1df5ac065b7345e9d4a17fda"
+    },
+    {
+      "id": "pixar-black-cat",
+      "type": "video",
+      "title": "乖巧小黑猫",
+      "subtitle": "Q版皮克斯 · 绿墙木柜探头微动态",
+      "credit": "Pilipala · Marco TV 原创动态壁纸",
+      "license": "GPL-3.0-only",
+      "width": 1280,
+      "height": 720,
+      "durationSec": 20,
+      "size": 1795385,
+      "sha256": "d3a511c573186a6db0bb8270c0160af5d147a698f20b680dd18f830829f6f989",
+      "url": "https://marcotv.wlj9919.top/wallpapers/videos/pixar-black-cat.mp4",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/pixar-black-cat.jpg",
+      "thumbSize": 16970,
+      "thumbSha256": "b88b31e70179f1ddaaabe60a541f95108830be7327ec5b3b536a112888cb46bc"
+    },
+    {
+      "id": "pixar-tabby-cat",
+      "type": "video",
+      "title": "软萌美短猫",
+      "subtitle": "Q版皮克斯 · 暖灯沙发舔爪微动态",
+      "credit": "Pilipala · Marco TV 原创动态壁纸",
+      "license": "GPL-3.0-only",
+      "width": 1280,
+      "height": 720,
+      "durationSec": 20,
+      "size": 1437331,
+      "sha256": "6960218efbc491a6310bc9c2b642ce13cf74817b6bcd00d159a33aef32b9aea1",
+      "url": "https://marcotv.wlj9919.top/wallpapers/videos/pixar-tabby-cat.mp4",
+      "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/pixar-tabby-cat.jpg",
+      "thumbSize": 17706,
+      "thumbSha256": "cb460d513cf237ffbe7e3d5d6cc6075ccc64084f4143bc2c53422d407514b81e"
+    },
     {
       "id": "01-bahamas-shoals",
       "title": "巴哈马浅滩",
@@ -15,7 +100,8 @@
       "url": "https://marcotv.wlj9919.top/wallpapers/full/01-bahamas-shoals.jpg",
       "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/01-bahamas-shoals.jpg",
       "thumbSize": 22465,
-      "thumbSha256": "448782eaa9c1e56fdd529af3e511b99dff2492bd5e8282e8f2b397b8e7da1715"
+      "thumbSha256": "448782eaa9c1e56fdd529af3e511b99dff2492bd5e8282e8f2b397b8e7da1715",
+      "type": "image"
     },
     {
       "id": "02-indigo-ribbon",
@@ -30,7 +116,8 @@
       "url": "https://marcotv.wlj9919.top/wallpapers/full/02-indigo-ribbon.jpg",
       "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/02-indigo-ribbon.jpg",
       "thumbSize": 9679,
-      "thumbSha256": "be06930541219a1651d3097592ae3754d364225089d5aee166459895dffcce4d"
+      "thumbSha256": "be06930541219a1651d3097592ae3754d364225089d5aee166459895dffcce4d",
+      "type": "image"
     },
     {
       "id": "03-fuji-dusk",
@@ -45,7 +132,8 @@
       "url": "https://marcotv.wlj9919.top/wallpapers/full/03-fuji-dusk.jpg",
       "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/03-fuji-dusk.jpg",
       "thumbSize": 14550,
-      "thumbSha256": "c1c840365817a505d3198b78c41c3b294bb484e7732caf0366c87d7183fe967b"
+      "thumbSha256": "c1c840365817a505d3198b78c41c3b294bb484e7732caf0366c87d7183fe967b",
+      "type": "image"
     },
     {
       "id": "04-cosmic-cliffs",
@@ -60,7 +148,8 @@
       "url": "https://marcotv.wlj9919.top/wallpapers/full/04-cosmic-cliffs.jpg",
       "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/04-cosmic-cliffs.jpg",
       "thumbSize": 34429,
-      "thumbSha256": "2f70bb36c2c53591fd4ad730f6e3324a1fa5b6cac9485fd86fa50243c32d1534"
+      "thumbSha256": "2f70bb36c2c53591fd4ad730f6e3324a1fa5b6cac9485fd86fa50243c32d1534",
+      "type": "image"
     },
     {
       "id": "05-tidal-afterglow",
@@ -75,7 +164,8 @@
       "url": "https://marcotv.wlj9919.top/wallpapers/full/05-tidal-afterglow.jpg",
       "thumbUrl": "https://marcotv.wlj9919.top/wallpapers/thumbs/05-tidal-afterglow.jpg",
       "thumbSize": 25550,
-      "thumbSha256": "4f3e42be770bb290a7710ae7253801e9f355b62b420458bb6107e1ffc6b96ef5"
+      "thumbSha256": "4f3e42be770bb290a7710ae7253801e9f355b62b420458bb6107e1ffc6b96ef5",
+      "type": "image"
     }
   ]
 }

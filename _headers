@@ -44,3 +44,7 @@
 /wallpapers/thumbs/*
   Cache-Control: public, max-age=31536000, immutable
   X-Content-Type-Options: nosniff
+
+/wallpapers/videos/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
