@@ -24,7 +24,7 @@ NASA, ESA, CSA, and STScI
 为 Marco TV 制作的原创水面。波纹和反射按母版尺寸渲染。天空照明使用内置图像生成工具制作；创作设定为近海日出前的淡青、长春花蓝与杏桃色薄云，仅作为水面反射光源。
 
 ## Q版皮克斯动态壁纸
-以下 5 支 16∶9 无缝循环动态壁纸（1280 × 720，HEVC 8-bit MP4，无音轨，20 秒）由 Pilipala 为 Marco TV 原创制作：
+以下 5 支 16∶9 无缝循环动态壁纸（3840 × 2160 4K UHD，60 fps，HEVC Main@L5.1 8-bit MP4，无音轨，20 秒）由 Pilipala 为 Marco TV 原创制作：
 
 - `pixar-squirrel`（顽皮小松鼠）：蓝调沙发探头微动态
 - `pixar-puppy`（招手小奶狗）：暖米沙发卖萌微动态
