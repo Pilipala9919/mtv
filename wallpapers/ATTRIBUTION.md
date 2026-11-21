@@ -30,4 +30,4 @@ NASA, ESA, CSA, and STScI
 - `pixar-puppy`（招手小奶狗）：暖米沙发卖萌微动态
 - `pixar-penguin`（害羞小企鹅）：暖灯沙发捂眼微动态
 - `pixar-black-cat`（乖巧小黑猫）：绿墙木柜探头微动态
-- `pixar-tabby-cat`（软萌美短猫）：暖灯沙发舔爪微动态
+- `pixar-tabby-cat`（作者的五花肉~）：暖灯沙发舔爪微动态
