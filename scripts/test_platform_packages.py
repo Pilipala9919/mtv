@@ -50,7 +50,7 @@ class PackageTests(unittest.TestCase):
             # (a permanent share link, never patched); the sync only owns
             # the checksum link, the hash and the size.
             cards.append(f'<div class="dl"><h3>{suffix}</h3><p>Existing copy · 12.0 MB</p>'
-                         f'<a href="https://pan.quark.cn/s/fixture">夸克网盘下载</a><a href="{name}.sha256">校验文件</a>'
+                         f'<a href="https://pan.quark.cn/s/fixture">下载</a><a href="{name}.sha256">校验文件</a>'
                          f'<code>SHA-256：{"a" * 64}</code></div>')
         self.page = ('<style>existing CSS</style><header>Existing layout</header>' + ''.join(cards)
                      + '<section class="block" id="changelog"><h2>Previous notes</h2></section>'
@@ -96,7 +96,7 @@ class PackageTests(unittest.TestCase):
         tvos_name = 'MarcoMovie-0.1.0-tvos-appletv-unsigned.ipa'
         ohos_name = 'MarcoMovie-0.1.0-harmonyos-universal.hap'
         page = self.page.replace(
-            '<a href="https://pan.quark.cn/s/fixture">夸克网盘下载</a><a href="MarcoMovie-0.5.0-appletv-unsigned.ipa.sha256">',
+            '<a href="https://pan.quark.cn/s/fixture">下载</a><a href="MarcoMovie-0.5.0-appletv-unsigned.ipa.sha256">',
             '<a class="btn" href="https://marcotv.wlj9919.top/movie/MarcoMovie-0.1.0-appletv-unsigned.ipa">镜像直链下载</a><a href="MarcoMovie-0.5.0-appletv-unsigned.ipa.sha256">')
         (self.out / 'index.html').write_text(page, encoding='utf-8')
         tvos_rel = dict(tag_name='appletv-v0.1.0', published_at='2026-11-17T15:00:00Z',
@@ -117,7 +117,7 @@ class PackageTests(unittest.TestCase):
         with patch.object(m, 'platform_asset', side_effect=lambda rel, name, out: ('https://fixture.invalid/' + name, 2097152, 'd'*64, None)):
             m.sync(self.out, [tvos_rel, ohos_rel])
         upgraded = (self.out / 'index.html').read_text(encoding='utf-8')
-        self.assertIn('href="https://pan.quark.cn/s/tvosshare1" target="_blank" rel="noopener">夸克网盘下载</a>', upgraded)
+        self.assertIn('href="https://pan.quark.cn/s/tvosshare1" target="_blank" rel="noopener">下载</a>', upgraded)
 
     def test_named_windows_card_preserves_the_installed_client_updater(self):
         names = ['MarcoMovie-0.5.1-windows-x64-setup.exe', 'MarcoMovie-0.5.1-windows-x64-portable.zip',

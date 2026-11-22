@@ -386,7 +386,7 @@ def patch_card(page, suffix, package, quark_url=None):
     if quark_url and re.fullmatch(r'https://pan\.quark\.cn/s/[A-Za-z0-9_-]+', quark_url):
         replacement = re.sub(
             r'<a(?:\s+[^>]*)?\s+href="[^"<>]*' + name_pattern + r'"[^>]*>[^<]*</a>',
-            '<a class="btn" href="' + html.escape(quark_url, quote=True) + '" target="_blank" rel="noopener">夸克网盘下载</a>',
+            '<a class="btn" href="' + html.escape(quark_url, quote=True) + '" target="_blank" rel="noopener">下载</a>',
             replacement, count=1)
     else:
         replacement = re.sub(

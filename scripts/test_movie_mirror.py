@@ -118,10 +118,12 @@ class MirrorTests(unittest.TestCase):
         self.assertFalse(feed['prerelease'])
         self.assertEqual(json.loads((self.out/'updates/stable.json').read_text(encoding='utf8')),feed)
 
-    def test_large_mobile_hero_link_uses_quark(self):
-        # 2026-11-17 policy: the hero shortcuts point at the permanent
-        # Quark share links, not at the release assets; the feed still
-        # carries the verified release URL for the in-app updater.
+    def test_hero_has_no_download_buttons_and_cards_use_quark(self):
+        # 2026-11-22 layout: the hero has no download buttons at all
+        # (only a "全部平台" text link to #download); the card buttons
+        # point at the permanent Quark share links, not at the release
+        # assets; the feed still carries the verified release URL for
+        # the in-app updater.
         name='MarcoMovie-0.4.12-mobile.apk';self.add_asset(name,b'mobile fixture')
         next(a for a in self.release['assets'] if a['name']==name)['size']=m.LIMIT+1
         links = {'android-tv': 'https://pan.quark.cn/s/tv123',
@@ -129,8 +131,12 @@ class MirrorTests(unittest.TestCase):
         with patch.object(m, 'load_quark_links', return_value=links):
             feed=self.sync()
         page=(self.out/'index.html').read_text(encoding='utf8')
-        self.assertIn('href="https://pan.quark.cn/s/mo456">下载手机版',page)
-        self.assertNotIn('href="'+feed['mobile']['url']+'">下载手机版',page)
+        hero = page.split('<header class="hero">')[1].split('</header>')[0]
+        self.assertNotIn('pan.quark.cn', hero)
+        self.assertNotIn('>下载</a>', hero)
+        self.assertIn('<a class="textlink" href="#download">全部平台</a>', hero)
+        self.assertIn('href="https://pan.quark.cn/s/mo456" target="_blank" rel="noopener">下载</a>', page)
+        self.assertNotIn('href="'+feed['mobile']['url']+'"', page)
         self.assertNotIn('href="'+name+'"',page)
 
     def add_asset(self, name, body, checksum=True):
@@ -151,7 +157,7 @@ class MirrorTests(unittest.TestCase):
         self.assertFalse((self.out/'MarcoMovie-0.4.12-macos.zip').exists())
         page = (self.out/'index.html').read_text(encoding='utf-8')
         self.assertIn('MarcoMovie-0.4.12-windows-x64.zip', page)
-        self.assertIn('其他平台', page)
+        self.assertIn('全平台独立更新', page)
 
     def test_platform_package_without_checksum_rejected(self):
         self.add_asset('MarcoMovie-0.4.12-macos.zip', b'mac fixture', checksum=False)
@@ -170,6 +176,30 @@ class MirrorTests(unittest.TestCase):
     def test_without_platform_packages_links_release_page(self):
         self.sync()
         self.assertIn('Windows / macOS / iOS 多平台下载', (self.out/'index.html').read_text(encoding='utf-8'))
+
+    def test_new_layout_section_order_and_card_markup(self):
+        # 2026-11-22 layout: hero -> download -> donate -> features ->
+        # changelog -> group -> footer; cards carry the patcher contract
+        # (data-platform, package-version span, one size, one checksum,
+        # one checksum link) and the page ships the filter script the
+        # platform patcher-generated changelog needs.
+        self.add_asset('MarcoMovie-0.4.12-mobile.apk', b'mobile fixture')
+        links = {'android-tv': 'https://pan.quark.cn/s/tv123',
+                 'android-mobile': 'https://pan.quark.cn/s/mo456'}
+        with patch.object(m, 'load_quark_links', return_value=links):
+            self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        order = ['<header class="hero">', 'id="download"', 'id="donate"',
+                 'id="features"', 'id="changelog"', 'id="group"', '<footer>']
+        positions = [page.index(marker) for marker in order]
+        self.assertEqual(positions, sorted(positions))
+        self.assertEqual(page.count('<div class="dl"'), 2)
+        self.assertIn('<div class="dl" data-platform="android-tv">', page)
+        self.assertIn('<div class="dl" data-platform="android-mobile">', page)
+        self.assertIn('<span class="package-version">0.4.12</span>', page)
+        self.assertIn('src="/assets/donate-wechat.jpg"', page)
+        self.assertIn('src="/assets/donate-alipay.jpg"', page)
+        self.assertIn("document.getElementById('release-platform')", page)
 
     def test_changelog_numbered_items_render_as_list(self):
         body = ('\ufeff### Marco Movie 0.4.12 正式版更新内容\n\n'
@@ -227,12 +257,18 @@ class MirrorTests(unittest.TestCase):
     def test_brand_assets_and_dark_hero_frame(self):
         self.sync()
         page = (self.out/'index.html').read_text(encoding='utf-8')
-        self.assertIn('<link rel="icon" type="image/png" href="app-icon-512.png">', page)
-        self.assertIn('<link rel="apple-touch-icon" href="app-icon-512.png">', page)
-        self.assertIn('.hero figure { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; }', page)
-        self.assertIn('src="tv-banner-960x540.png"', page)
-        self.assertIn('Marco Movie 品牌横幅', page)
+        self.assertIn('<link rel="icon" type="image/png" href="/assets/movie-icon-512.png">', page)
+        self.assertIn('<link rel="apple-touch-icon" href="/assets/movie-icon-512.png">', page)
+        self.assertIn('src="assets/movie-wordmark-dark.png"', page)
+        self.assertIn('src="/assets/marco-symbol.png"', page)
+        self.assertIn('<a class="textlink" href="#download">全部平台</a>', page)
+        self.assertNotIn('app-icon-512.png', page)
+        self.assertNotIn('tv-banner-960x540.png', page)
+        self.assertNotIn('Marco Movie 品牌横幅', page)
         self.assertNotIn('银色场记板', page)
+        # The hero carries no download button: only the text link above.
+        hero = page.split('<header class="hero">')[1].split('</header>')[0]
+        self.assertNotIn('class="btn', hero)
 
     def test_stars_rendered_from_repo_api(self):
         self.sync()
@@ -261,7 +297,7 @@ class MirrorTests(unittest.TestCase):
         self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.2-macos.zip'), 'macos')
         self.assertEqual(m.quark_key_for_asset('MarcoMovie-0.5.0-lite.apk'), 'android-lite')
         self.assertEqual(m.quark_button('android-tv', {}), '')
-        self.assertIn('夸克网盘下载', m.quark_button('android-tv', {'android-tv': 'https://pan.quark.cn/s/abc'}))
+        self.assertIn('>下载</a>', m.quark_button('android-tv', {'android-tv': 'https://pan.quark.cn/s/abc'}))
 
     def test_quark_buttons_render_from_manifest(self):
         links = {'android-tv': 'https://pan.quark.cn/s/tv123',
@@ -270,12 +306,12 @@ class MirrorTests(unittest.TestCase):
             self.sync()
         page = (self.out / 'index.html').read_text(encoding='utf-8')
         self.assertIn('https://pan.quark.cn/s/tv123', page)
-        self.assertIn('夸克网盘下载', page)
+        self.assertIn('>下载</a>', page)
 
     def test_platform_feed_override_tv_card(self):
         # The user's per-platform feeds override a card with that platform's
         # latest version (TV 0.5.9 while the release is 0.4.12): the card
-        # shows the override version, URL, size and checksum; the hero
+        # shows the override version, URL, size and checksum; the card
         # button points at the permanent Quark share link.
         (self.out / 'updates').mkdir(parents=True)
         (self.out / 'updates' / 'android-tv.json').write_text(json.dumps({
@@ -287,11 +323,11 @@ class MirrorTests(unittest.TestCase):
         with patch.object(m, 'load_quark_links', return_value=links):
             self.sync()
         page = (self.out / 'index.html').read_text(encoding='utf-8')
-        self.assertIn('Android 电视版 · v0.5.9', page)
+        self.assertIn('<span class="package-version">0.5.9</span>', page)
         self.assertIn('https://github.com/Pilipala9919/MarcoMovie/releases/download/v0.5.9-android-tv/MarcoMovie-0.5.9-android-tv.apk', page)
         self.assertIn('1.2 MB', page)
         self.assertIn('a' * 64, page)
-        self.assertIn('href="https://pan.quark.cn/s/tv123">下载电视版', page)
+        self.assertIn('href="https://pan.quark.cn/s/tv123" target="_blank" rel="noopener">下载</a>', page)
 
     def test_platform_feed_override_platform_card_new_schema(self):
         # The iOS feed uses the new single-package shape (0.5.6).
@@ -304,7 +340,8 @@ class MirrorTests(unittest.TestCase):
         self.add_asset('MarcoMovie-0.4.12-ios-unsigned.ipa', b'ios fixture')
         self.sync()
         page = (self.out / 'index.html').read_text(encoding='utf-8')
-        self.assertIn('iPhone / iPad 版 (IPA) · v0.5.6', page)
+        self.assertIn('iPhone / iPad 版 (IPA)', page)
+        self.assertIn('<span class="package-version">0.5.6</span>', page)
         self.assertIn('https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.5.6-preview/MarcoMovie-0.5.6-ios-iphone-ipad-unsigned.ipa', page)
         self.assertIn('b' * 64, page)
         (self.out / 'updates' / 'android-lite.json').write_text(json.dumps({
@@ -315,14 +352,16 @@ class MirrorTests(unittest.TestCase):
         self.add_asset('MarcoMovie-0.4.12-lite.apk', b'lite fixture')
         self.sync()
         page = (self.out / 'index.html').read_text(encoding='utf-8')
-        self.assertIn('Android 4.0+ 轻量版 · v0.5.1', page)
+        self.assertIn('Android 4.0+ 轻量版', page)
+        self.assertIn('<span class="package-version">0.5.1</span>', page)
         self.assertIn('https://github.com/Pilipala9919/MarcoMovie/releases/download/android-lite-v0.5.1/MarcoMovie-0.5.1-android-lite.apk', page)
         self.assertIn('c' * 64, page)
 
     def test_platform_feed_override_missing_falls_back(self):
         self.sync()
         page = (self.out / 'index.html').read_text(encoding='utf-8')
-        self.assertIn('<h3>Android 电视版</h3>', page)
+        self.assertIn('<h3>Android 电视版 ', page)
+        self.assertIn('<span class="package-version">0.4.12</span>', page)
         self.assertNotIn('· v', page)
 
     def test_no_quark_buttons_without_manifest(self):
@@ -332,9 +371,9 @@ class MirrorTests(unittest.TestCase):
             self.sync()
         page = (self.out / 'index.html').read_text(encoding='utf-8')
         self.assertNotIn('pan.quark.cn', page)
-        self.assertNotIn('>夸克网盘下载</a>', page)
+        self.assertNotIn('>下载</a>', page)
         # With no Quark links there are no download buttons at all: the
-        # hero shortcuts are Quark-only too, so they stay hidden.
+        # card buttons are Quark-only, and the hero has no buttons.
         self.assertNotIn('>下载电视版</a>', page)
         self.assertNotIn('>下载手机版</a>', page)
 
@@ -389,7 +428,7 @@ class MirrorTests(unittest.TestCase):
         # The CSS counter must count top-level items only: with the old
         # "ol.feats li" selector a sub-bullet ate number 10, so 0.5.0
         # showed 9 then 11.
-        self.assertIn('ol.feats > li {', m.PAGE_CSS)
+        self.assertIn('ol.feats > li{', m.PAGE_CSS)
         self.assertNotIn('ol.feats li {', m.PAGE_CSS)
         body = ('1. **第一条**\n'
                 '   - 子项一\n'
