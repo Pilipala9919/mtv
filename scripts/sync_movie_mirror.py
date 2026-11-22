@@ -156,6 +156,7 @@ PAGE_CSS = """
   section.util h2{margin:0 0 8px;font-size:30px;line-height:1.3;font-weight:700;letter-spacing:-.015em}
   section.util .intro{margin:0 0 8px;font-size:17px;color:var(--muted);max-width:720px}
   section.util .intro + .intro{margin-top:12px}
+  section.util .intro.wide{max-width:none}
 
   /* ---------- 下载卡片 ----------
      约束（同步脚本 patch_card 依赖，改版式时不可破坏）：
@@ -807,7 +808,7 @@ def sync(output):
         c_href, c_size, c_digest, c_ver = p_override or (_gh(name), size, digest, None)
         download_cards.append(_card(qkey, label, note, c_href, c_size, c_digest, c_ver or version))
     if platforms:
-        platforms_note = ('<p class="intro reveal" style="--d:0.2s"><strong style="color:var(--text)">全平台独立更新</strong> · '
+        platforms_note = ('<p class="intro wide reveal" style="--d:0.2s"><strong style="color:var(--text)">全平台独立更新</strong> · '
                           '覆盖 Android、Apple TV（tvOS）、HarmonyOS NEXT、iOS / iPadOS、Windows 与 macOS；'
                           '云端自动构建校验，最低系统声明不代替每台设备实机验证。</p>')
         fallback_link = ''
@@ -862,6 +863,8 @@ def sync(output):
   <p class="lead hero-el" style="--d:0.1s">支持 Android 电视大屏遥控、手机与平板 64 位专属触控，Apple TV（tvOS 16.0+）、HarmonyOS NEXT（纯血鸿蒙手机 / 平板 / 智慧屏），以及 Windows / macOS / iOS（iOS 14.0+ 巨魔与自签）多端独立适配的开源播放器。</p>
   <div class="actions hero-el" style="--d:0.2s">
     <a class="textlink" href="#download">全部平台</a>
+    <a class="textlink" href="#group">交流群</a>
+    <a class="textlink" href="#donate">捐赠支持</a>
   </div>
   <p class="meta hero-el" style="--d:0.3s"><b>{stars} Stars</b> · GPL-3.0-only · 作者 Pilipala</p>
   <p class="free hero-el" style="--d:0.4s">本软件免费开源。如果你付费购买了本软件，请尽快向购买平台申请退款。</p>
