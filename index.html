@@ -3,163 +3,271 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Marco TV · 免费开源 Android 电视桌面</title>
-<meta name="description" content="Marco TV 是 Pilipala 开发的免费开源 Android 电视桌面：横向卡片、时钟屏保、遥控器自定义。本站为镜像站，最新版以 GitHub Releases 为准。">
+<title>Marco · 免费开源的电视桌面与播放器</title>
+<meta name="description" content="Marco 镜像站：免费开源的 Android 电视桌面 Marco TV 与多端播放器 Marco Movie，国内镜像下载。">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0b0e14;color:#e8ecf3;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}
-a{color:#38c8ff}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 60px}
-.tag{display:inline-block;border:1px solid #38c8ff;color:#38c8ff;border-radius:99px;padding:2px 12px;font-size:13px}
-h1{font-size:40px;line-height:1.25;margin:14px 0 8px}h2{font-size:22px;margin:36px 0 12px;border-left:4px solid #38c8ff;padding-left:12px}
-p.lead{color:#b8c0cf;font-size:17px}.card{background:#141924;border:1px solid #232c3d;border-radius:16px;padding:20px;margin:16px 0}
-.btn{display:inline-block;background:#38c8ff;color:#04121a!important;text-decoration:none;font-weight:700;border-radius:12px;padding:12px 22px;margin:6px 10px 6px 0}
-.btn2{display:inline-block;border:1px solid #38c8ff;color:#38c8ff;text-decoration:none;border-radius:12px;padding:11px 20px;margin:6px 10px 6px 0}
-code{word-break:break-all;background:#0b0e14;border:1px solid #232c3d;border-radius:6px;padding:2px 6px;font-size:13px}
-img{width:100%;border-radius:14px;border:1px solid #232c3d;margin:10px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:640px){.grid{grid-template-columns:1fr}h1{font-size:30px}}
-.small{color:#9aa5b5;font-size:14px}ul{padding-left:20px}li{margin:6px 0}
-.warn{background:#1a1410;border:1px solid #6b4a1f;border-radius:12px;padding:14px 18px}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #000;
+    color: #F5F5F7;
+    font-family: -apple-system, "SF Pro Display", "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  a { text-decoration: none; }
+  a:focus-visible { outline: 2px solid #0A84FF; outline-offset: 4px; border-radius: 4px; }
+
+  /* ---------- 顶栏 ---------- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    height: 48px;
+    background: rgba(22, 22, 23, 0.72);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+  .nav-inner {
+    max-width: 1024px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand { color: #F5F5F7; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; display: inline-flex; align-items: center; gap: 8px; }
+  .nav-brand img { display: block; }
+  .nav-link { color: #A1A1A6; font-size: 14px; transition: color 0.3s ease; }
+  .nav-link:hover { color: #F5F5F7; }
+
+  /* ---------- 首屏 Hero ---------- */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 96px 24px 64px;
+  }
+  .hero-logo {
+    width: min(680px, 84vw);
+    height: auto;
+    display: block;
+  }
+  .hero-sub {
+    margin-top: 28px;
+    font-size: clamp(18px, 2.4vw, 24px);
+    line-height: 1.5;
+    color: #A1A1A6;
+    max-width: 640px;
+  }
+  .hero-links {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px 44px;
+  }
+  .hero-links a {
+    font-size: 21px;
+    color: #0A84FF;
+    transition: color 0.3s ease;
+  }
+  .hero-links a:hover { color: #409CFF; text-decoration: underline; }
+  .hero-links a.tv { color: #B694F6; }
+  .hero-links a.tv:hover { color: #E5D2FF; }
+
+  /* 首屏加载动效：依次淡入上浮 */
+  .hero-el {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: var(--d, 0s);
+  }
+  @keyframes heroIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- 产品区 ---------- */
+  .product {
+    padding: 180px 24px;
+    text-align: center;
+  }
+  .product-logo {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto;
+    border-radius: 17px;
+    display: block;
+  }
+  .product h2 {
+    margin-top: 32px;
+    font-size: clamp(40px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .product-intro {
+    margin: 20px auto 0;
+    font-size: 21px;
+    line-height: 1.6;
+    color: #A1A1A6;
+    max-width: 640px;
+  }
+  .product-version {
+    margin-top: 16px;
+    font-size: 17px;
+    color: #6E6E73;
+  }
+  .product-link {
+    display: inline-block;
+    margin-top: 24px;
+    font-size: 19px;
+    color: #0A84FF;
+    transition: color 0.3s ease;
+  }
+  .product-link:hover { color: #409CFF; text-decoration: underline; }
+  .product-link.tv { color: #B694F6; }
+  .product-link.tv:hover { color: #E5D2FF; }
+  .product-shot {
+    display: block;
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    margin: 72px auto 0;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  }
+
+  /* ---------- 滚动揭示动效 ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.9s ease-out,
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .reveal-img {
+    transform: translateY(24px) scale(0.98);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* ---------- 页脚 ---------- */
+  footer {
+    padding: 120px 24px 64px;
+  }
+  .footer-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 40px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #6E6E73;
+  }
+  .footer-inner a { color: #A1A1A6; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+  .footer-inner a:hover { color: #F5F5F7; }
+
+  /* ---------- 减动效：全部直接显示 ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero-el { animation: none; opacity: 1; transform: none; }
+    .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+  }
+
+  /* ---------- 手机 ---------- */
+  @media (max-width: 640px) {
+    .product { padding: 120px 24px; }
+    .product-intro { font-size: 19px; }
+    .product-shot { margin-top: 48px; border-radius: 18px; }
+    .hero-links a { font-size: 19px; }
+    footer { padding: 80px 24px 48px; }
+  }
 </style>
+<noscript><style>
+  .hero-el { animation: none; opacity: 1; transform: none; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+</style></noscript>
 </head>
-<body><div class="wrap">
-<span class="tag">镜像站 · marcotv.wlj9919.top</span>
-<h1>Marco TV</h1>
-<p class="lead">Pilipala 开发的免费开源 Android 电视桌面。横向卡片、连续焦点动画、粗体时间与日期、风景壁纸、时钟屏保，以及适合遥控器的自定义设置。</p>
-<div class="warn"><strong>免费声明：</strong>本软件免费开源。如果你付费购买了本软件，请尽快向购买平台申请退款。</div>
+<body>
 
-<div class="card">
-<h2 style="margin-top:0;border:none;padding:0">下载稳定版</h2>
-<p><strong>当前稳定版：0.19.0</strong> · 发布于 2026 年 11 月 20 日 · 约 2.2MB<br>
-<span class="small">可覆盖升级并保留配置，无需先卸载。功能与兼容范围请阅读说明。</span></p>
-<a class="btn2" data-quark="tv" href="https://pan.quark.cn/s/df36e65bca44" target="_blank" rel="noopener">夸克网盘下载</a>
-<a class="btn2" href="https://github.com/Pilipala9919/MarcoTV/releases/latest" target="_blank" rel="noopener">去 GitHub 看全部版本</a>
-<p class="small">校验值 SHA256：<br><code>26a912eb31ccf7450ac9df6aead303b753c5f008550b2b6384ac0f542b8860f9</code><br>
-下载后对一下这串字符，不一样就重新下载，不要装。</p>
-</div>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="/"><img src="assets/marco-symbol.png" alt="" width="22" height="22">Marco</a>
+    <a class="nav-link" href="https://github.com/Pilipala9919">GitHub</a>
+  </div>
+</nav>
 
-<section id="lite" class="card">
-<span class="tag">Lite · 老电视兼容实验版</span>
-<h2>Android 4.x？试试 Marco TV Lite。</h2>
-<p><strong>Lite 0.1.2</strong> · 约 301 KiB。保留卡片桌面、四款时钟和 Magic Desktop 基础调整，可与完整版共存。</p>
-<p class="small">已通过 Android 4.0.2 模拟器基础验证，尚无老电视真机验证。更多机型等待实测反馈，欢迎加入测试！Lite 暂无手机互联、系统最近任务或在线更新。</p>
-<a class="btn2" data-quark="tv-lite" href="https://pan.quark.cn/s/9de42641cfa4" target="_blank" rel="noopener">夸克网盘下载</a>
-<a class="btn2" href="lite/">功能对比、安装与使用说明 →</a>
-<p class="small">完整版仍需 Android 6.0 及以上。Lite 独立安装和手动更新，不替换完整版更新渠道。</p>
-</section>
+<header class="hero">
+  <h1 class="hero-el" style="--d:0s"><img class="hero-logo" src="assets/marco-logo-horizontal.png" alt="Marco" width="2172" height="724"></h1>
+  <p class="hero-sub hero-el" style="--d:0.1s">免费开源的电视桌面与播放器，国内镜像下载站。</p>
+  <div class="hero-links hero-el" style="--d:0.2s">
+    <a class="tv" href="/tv/">Marco TV &gt;</a>
+    <a href="/movie/">Marco Movie &gt;</a>
+  </div>
+</header>
 
-<section id="connect" class="card">
-<span class="tag">0.14.0 · Marco 互联</span>
-<h2>你的电视，随手整理。</h2>
-<p>从电视首页打开 Marco 互联，手机扫码、电视确认。无需手机 App，即可整理卡片、预览外观、上传壁纸、下载本地备份与脱敏诊断。</p>
-<p>仅限同一局域网，可随时断开。当前不提供全局遥控、投屏或云端远程控制。</p>
-<img src="showcase/assets/69-connect.png" alt="Marco 互联双栏扫码页面，二维码为无效示例" loading="lazy">
-<p class="small">0.14.0 小米 Android 9 实机示例，私人卡片与连接信息均已替换。</p>
-<a class="btn" href="showcase/#connect">查看 Marco 互联与新版界面 →</a>
-<a class="btn2" href="showcase/#modules">全部功能与使用条件</a>
-</section>
+<main>
+  <section class="product" id="tv">
+    <img class="product-logo reveal" style="--d:0s" src="assets/tv-icon.svg" alt="Marco TV 图标" width="72" height="72">
+    <h2 class="reveal" style="--d:0.1s">Marco TV</h2>
+    <p class="product-intro reveal" style="--d:0.2s">免费开源 Android 电视桌面。横向卡片、时钟屏保、遥控器自定义。</p>
+    <p class="product-version reveal" style="--d:0.3s">当前稳定版 0.19.0，2026 年 11 月 20 日发布</p>
+    <a class="product-link tv reveal" style="--d:0.4s" href="/tv/">进入 Marco TV &gt;</a>
+    <img class="product-shot reveal reveal-img" style="--d:0.5s" src="/tv/assets/hero-cover.jpg" alt="Marco TV 品牌主封面：害羞小企鹅动态壁纸桌面" width="1920" height="1080" loading="lazy">
+  </section>
 
-<h2>0.14.2 · 自由调整卡片位置与高度</h2><p>卡片行上下位置 0–100%，卡片高度 70–130%；Magic Desktop 实时预览，保存后应用，支持备份恢复。</p><img src="showcase/assets/82-magic-layout.png" alt="Magic Desktop 卡片位置和高度滑块，示例内容"><h2>0.14.1 · 四款时钟，圆体倾斜可调</h2><p>现代宽体、修长窄体、柔圆错倾、雅致衬线。Magic Desktop 调整圆体倾斜幅度 0–14°，桌面与屏保共用。</p><img src="showcase/assets/79-round-tilt-max.png" alt="Magic Desktop 的圆体倾斜滑块，示例内容"><h2>0.14.1 · 朦胧壁纸背景</h2><p>Magic Desktop 预览背后使用当前壁纸的模糊底色，颜色依稀可见，前景保持清晰。</p><img src="showcase/assets/72-preview-aurora-blur.png" alt="0.14.1 壁纸模糊背景，临时示例卡片"><h2>0.14.0 · Magic Desktop</h2><p>首页新入口，20 项参数集中调整。左侧是放大的 3D 桌面预览，右侧是窄参数面板；设置子页原位切换，返回恢复原焦点。</p>
-<img src="showcase/assets/85-desktop.png" alt="0.14.0 桌面与 Marco 互联入口">
-<div class="grid"><img src="showcase/assets/63-settings-navigation.png" alt="0.14.0 原位设置" loading="lazy"><img src="showcase/assets/68-magic-desktop.png" alt="0.14.0 Magic Desktop 透视预览" loading="lazy"></div>
-<img src="showcase/assets/66-wifi-switch.png" alt="0.14.0 Wi-Fi 胶囊开关，示例网络" loading="lazy">
-<p class="small">本页使用 0.14.0 小米 Android 9 新版实机截图，全部采用临时示例内容。<a href="showcase/">查看完整产品介绍与各模块使用条件 →</a></p>
+  <section class="product" id="movie">
+    <img class="product-logo reveal" style="--d:0s" src="assets/movie-icon-512.png" alt="Marco Movie 图标" width="72" height="72">
+    <h2 class="reveal" style="--d:0.1s">Marco Movie</h2>
+    <p class="product-intro reveal" style="--d:0.2s">免费开源多端播放器，支持 Android 电视与手机、Windows、macOS、iOS。</p>
+    <p class="product-version reveal" style="--d:0.3s">各端独立版本：电视版 0.5.29、手机版 0.5.26、iOS 0.5.33</p>
+    <a class="product-link reveal" style="--d:0.4s" href="/movie/">进入 Marco Movie &gt;</a>
+    <img class="product-shot reveal reveal-img" style="--d:0.5s" src="assets/movie-banner.png" alt="Marco Movie 品牌横幅" width="960" height="540" loading="lazy">
+  </section>
+</main>
 
-<h2>0.14.3 · 全部应用与简单桌面设置</h2><p>首页打开五列应用抽屉，确定直接启动，长按进入添加流程；包含桌面隐藏的可启动应用。设置默认桌面时先打开系统确认页，选择 Marco TV 即可。厂商隐藏或锁定该功能时，再按帮助操作。</p><img src="showcase/assets/87-all-apps-drawer.png" alt="0.14.3 全部应用抽屉，临时示例应用图标"><p class="small">小米 Android 9 实机界面，使用临时示例卡片；不包含私人应用列表。Android 6 为最低要求，其他型号需逐台验证。</p><h2>0.14.4 · 动效衔接与预览优化</h2><p>顶部入口间距更舒展，焦点连续移动；设置进入、返回与 Magic Desktop 使用统一弹簧动效。列表聚焦和滑块平滑变化，实时预览减少重复绘制。保留原有桌面卡片切换手感。</p><img src="showcase/assets/90-magic-motion.png" alt="0.14.4 Magic Desktop 实机预览，使用示例卡片"><p class="small">实机截图不代表帧率。预览转场仍有掉帧，其他机型等待实测反馈，欢迎加入。</p><h2 id="release0150">0.15.0 · 按本机指引启用桌面</h2><p>优先使用系统默认桌面选择；需要调试时提供品牌指引，系统设置返回后自动继续一次。检查实际 Home 服务，支持恢复原配置，保留原厂桌面。Magic Desktop 草稿与壁纸、屏保统一，最近任务动效可连续反向。</p><p class="small">更多机型待实测反馈，欢迎加入。诊断保存在本机，不自动上传。</p><h2>能做什么</h2>
-<ul>
-<li>Marco 互联：同一局域网扫码连接，扫码并在电视确认，整理卡片、预览外观、上传壁纸和导出备份</li>
-<li>读取已安装应用和系统输入源，支持收藏、排序、隐藏、改名、自定义封面</li>
-<li>默认按最近从 Marco TV 打开的顺序排列，置顶应用优先，也支持自定义排序</li>
-<li>可选系统最近任务：双击 Home 打开堆叠卡片，回到原页面（需电脑启动任务辅助服务）</li>
-<li>本地备份与恢复：自动快照、设置和图片导出，恢复前先预览并备份原配置</li>
-<li>四张内置风景壁纸，也支持本地图片；闲置时放大并提亮时间、压暗背景</li>
-<li>滑块左右微调、长按加速，调整时实时预览；设置逐级返回，Home 可直接回桌面</li>
-<li>本地异常记录和诊断报告导出，不上传日志；备份只在本地，不上云</li>
-</ul>
+<footer>
+  <div class="footer-inner">
+    <p>原项目：<a href="https://github.com/Pilipala9919/MarcoTV">Pilipala9919 / MarcoTV</a> · <a href="https://github.com/Pilipala9919/MarcoMovie">Pilipala9919 / MarcoMovie</a> · 协议 GPL-3.0-only · 版权 © 2026 Pilipala</p>
+    <p>本站为镜像站，只做展示和下载中转，方便国内访问；最新版本、问题反馈和源码以 GitHub 原仓库为准。</p>
+    <p>本软件免费开源。如果你付费购买了本软件，请尽快向购买平台申请退款。</p>
+  </div>
+</footer>
 
-<h2>电视在线更新</h2>
-<p>当前提供 <a href="https://pan.quark.cn/s/df36e65bca44">0.19.0 正式版</a>。体验渠道与稳定渠道当前提供同一正式版，原 RC 用户可直接覆盖升级。 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
-<p>安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。镜像优先，失败后尝试 GitHub；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
-<p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v0.19.0/MarcoTV-0.19.0.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
-<h2>先核对你的电视能不能装</h2>
-<ul>
-<li>最低 <strong>Android 6.0 / API 23</strong>；实测设备是小米 MiTV-ASTP0、Android 9</li>
-<li>先看背面铭牌记下品牌和完整型号，再到原厂设置里看实际系统，不要只记“55 寸”</li>
-<li><strong>不能装：</strong>三星 Tizen、LG webOS、Roku、Apple tvOS；其他系统需先确认是否兼容 Android APK</li>
-<li>最低版本符合，不代表 Home 接管、自动恢复这些管理功能一定都开放，要逐项验收</li>
-</ul>
+<script>
+  // 滚动揭示：元素进入视口时加 .in，依次淡入上浮
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
 
-<h2>没有 U 盘？从这里开始</h2>
-<p>选择电视系统和手边设备，让向导帮你选择安装路线。Windows 电脑与安卓手机可使用免费安装助手；电视浏览器和厂商文件接收也有对应步骤。</p>
-<p><a class="btn" href="install/">打开无 U 盘安装向导 →</a></p>
-<p class="small">助手 1.0.1 内含桌面 0.16.0，仅支持普通网络 ADB，首次连接需电视授权；无线配对码、iOS 助手暂不支持。<a href="https://github.com/Pilipala9919/MarcoTV/tree/main/installer">使用说明与验证范围</a></p>
-<h2>使用 U 盘安装</h2>
-<ol>
-<li>把 <code>MarcoTV-0.19.0.apk</code> 复制到 U 盘根目录</li>
-<li>U 盘插到电视普通 USB 口，用电视自带文件管理器打开 U 盘</li>
-<li>选中安装包，如果系统提示禁止安装，就给“实际打开安装包的那个文件管理器”开一次安装未知应用权限，再重新打开安装包</li>
-<li>装好后从应用列表打开 Marco TV，先验证方向键、应用启动和设置界面</li>
-<li>只想先看看桌面，到这里就够了；想设为默认桌面、开机打开、自动恢复，再走 ADB 那一步</li>
-</ol>
-<p>完整安装说明、使用说明、各品牌电视设置入口、常见问题，见原项目文档：<a href="https://github.com/Pilipala9919/MarcoTV" target="_blank" rel="noopener">github.com/Pilipala9919/MarcoTV</a></p>
-
-<h2>常见问题，挑最常问的说</h2>
-<ul>
-<li><strong>品牌在表里就一定能用吗？</strong>不能，只按品牌判断不够，要核对完整型号、地区和实际系统。</li>
-<li><strong>没有开发者选项怎么办？</strong>U盘试装不一定需要它；需要 ADB 时再按品牌表去关于页找版本号字段启用。</li>
-<li><strong>还是装不上？</strong>先确认授权的是实际打开安装包的那个应用，再看是不是儿童模式、酒店模式或品牌禁装，核对安装失败的原文。</li>
-<li><strong>提示签名冲突？</strong>已装版本和这个安装包签名不同，不要直接清数据或卸载，先用备份与恢复导出配置和图片。</li>
-<li><strong>有人要收钱、要激活码？</strong>没有这个流程，Pilipala 是免费发行，付过钱的尽快找购买平台退款。</li>
-<li><strong>反馈要带什么？</strong>品牌、完整型号、系统与软件版本、当前步骤、错误原文；截图前遮住序列号、IP、Wi-Fi 名称这些个人信息。</li>
-</ul>
-
-<h2>隐私</h2>
-<p>备份只做本地快照和用户主动文件导出，不上云；诊断只保存在电视本地，可关闭、清除和预览后导出，不会自动上传。报告里不含 Wi-Fi 名称、IP、节目、视频地址和密码。</p>
-
-<h2>官方交流群</h2>
-<div class="card">
-<p style="margin-top:0"><strong>官方交流群 1️⃣：Marco！</strong> · 群号 815085102</p>
-<p class="small">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
-<a class="btn" href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=%2FqKQ4IqdIqi2mRxgPr8PBGGEhIo0M5yMI6%2BBNKH7CoOFDczcaEXekgiu8Kbt%2BORc&amp;busi_data=eyJncm91cENvZGUiOiI4MTUwODUxMDIiLCJ0b2tlbiI6Im9CUW4wejI1NlB6UW9uK1EzdGNEMlZXdkgvMExVcGpVdXhOMFVrVXZmcWt0N3ZoaHRLMzNzd2lLVVp6UzZXc2QiLCJ1aW4iOiI5MjYwMDQzIn0%3D&amp;data=VXYI4NkXW1KuR0A5qzeADzpuJOBl7PrdDs8NBNT4RMeKMjrMmev1_pjDDKH3CfTw7VwFoH-5Hkd71EDQ9_qj1w&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" rel="noopener">加入 QQ 群</a>
-</div>
-
-<div class="card">
-<p style="margin-top:0"><strong>官方交流群 2️⃣：Marco！1</strong> · 群号 1036404238</p>
-<p class="small">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
-<a class="btn" href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=4nZ%2F26D%2BhMLo6lpV1MQfM69dkpOz2TvHsfIf9bRWMtZA0gKGiIqgH2vzgqcaIvPT&amp;busi_data=eyJncm91cENvZGUiOiIxMDM2NDA0MjM4IiwidG9rZW4iOiIvdWRhVUc5WjRpQkZkZkdvYTNZa1ViVlhGVmVGOGsxTUVYZUJHV0lVOWZ2aUxSM2pQUHNBRTVMMS9sb01ETHVNIiwidWluIjoiOTI2MDA0MyJ9&amp;data=9yPnjsGlyhnKtpk8QK9noXL2QkiODxOBsmKZ3IaeJyiux1GGkQ133sh8-szNRlS_L3LkjShSMyXMaH3uiyyH3w&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" rel="noopener">加入 QQ 群</a>
-</div>
-
-<div class="card">
-<p style="margin-top:0"><strong>官方交流群 3️⃣：Marco！2</strong> · 群号 1109397842</p>
-<p class="small">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
-<a class="btn" href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=ws6auJW%2BuftWj0%2BsnZbOLnvNbl0Ggt%2FcTmQN7%2BlonNBzUamrwpioeqnOC9WgAykn&amp;busi_data=eyJncm91cENvZGUiOiIxMTA5Mzk3ODQyIiwidG9rZW4iOiJILzBhR05mdENBckpwMFBudmNzd1JDS3ZFTkZhcjNWMlJnVjFiLzhReHlMc1VuS2Q2emR6N211cDhJUVZFY3VRIiwidWluIjoiOTI2MDA0MyJ9&amp;data=G8FC-Qq9g9Hc60XTobpCu8MVb-W4EwRZJoYYgQxTJzSkutIWe-8LWboOF451y2aMdH8N4I3p1H1XtAoqRLzgVQ&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" rel="noopener">加入 QQ 群</a>
-</div>
-
-<div class="card">
-<p style="margin-top:0"><strong>官方交流群 4️⃣：Marco！3</strong> · 群号 1135556342</p>
-<p class="small">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
-<a class="btn" href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=4R4VS2AZHrwlVDj%2BgPmVxmcoPOjrnr9ENZVwvmjCcibaj9bbvA%2Bt7wHfUx2p6DhK&amp;busi_data=eyJncm91cENvZGUiOiIxMTM1NTU2MzQyIiwidG9rZW4iOiI3UDI5WjZRNVdEUW9vU2dpaHZpejgxRm8xbzJKYk53TUhkVkF5VVZqeGJ2QU1WWHo1dFpIS2kwRWRiNjVPTTFJIiwidWluIjoiOTI2MDA0MyJ9&amp;data=cCs0QRwbu37CVPXnKa8dCNjBmg64vKQNc-SvEyqqHCtTaH9dFIVK_ebEpz1R6epl-UFxvXmwgD3DcbEbDaDFDg&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" rel="noopener">加入 QQ 群</a>
-</div>
-
-<div class="card">
-<p style="margin-top:0"><strong>官方交流群 5️⃣：Marco！4</strong> · 群号 719653208</p>
-<p class="small">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
-<a class="btn" href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=65Mqw9daSUbAtgzCx4pJfUrtu%2FFSVG8EaMf7NabXrs3oZAWrQikcppAOmzBrWxCB&amp;busi_data=eyJncm91cENvZGUiOiI3MTk2NTMyMDgiLCJ0b2tlbiI6Imt6dXMwTUhxcW9JM1VhV2RBMGZKUHZVdnBaa2p1MTgvS2RlN1ByMzZyRzcxZm9oSk5UMzZyam5va0Y5enBrYnAiLCJ1aW4iOiI5MjYwMDQzIn0%3D&amp;data=-RJGncjsQc24ceUyIj5fqQAioLoqI9NM05EirWbDkurn_LN2dzT1oMUAY5opGwCmHLHKu_kMjBgshLNU66zD8A&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" rel="noopener">加入 QQ 群</a>
-</div>
-
-<div class="card">
-<p style="margin-top:0"><strong>官方交流群 6️⃣：Marco！5</strong> · 群号 1136252786</p>
-<p class="small">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
-<a class="btn" href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=AjxHG3yHvzzYhak51CIowxk0VdnymHxcHhpzP9KX130uzdzBrDJifxuwi%2FCHxZzD&amp;busi_data=eyJncm91cENvZGUiOiIxMTM2MjUyNzg2IiwidG9rZW4iOiIvRnZmZFdTNjF3eWVIUlYvQ3VpU1lWWjBJZENHdUZuQWtyVUFpOHdNcE1YaTl4TmJOdTZDcW1zQldjdlhJOTMyIiwidWluIjoiOTI2MDA0MyJ9&amp;data=L2iVl1AmbfbbwzxnZQyJXmo7khoYflsYSDjkRnJMqEouDDRsI46_NtzWI-9nr48crOziKWr4-pqKjGVvEvZKQw&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" rel="noopener">加入 QQ 群</a>
-</div>
-
-<div class="card">
-<p style="margin-top:0"><strong>官方交流群 7️⃣：Marco！6</strong> · 群号 1092881150</p>
-<p class="small">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
-<a class="btn" href="https://qun.qq.com/universal-share/share?ac=1&amp;authKey=BwtsqpgLEJSl27gFHWB%2BIcJ7eOMFxdugHZatXl63g7lfrVBVM%2BX0Ler5HLevajcA&amp;busi_data=eyJncm91cENvZGUiOiIxMDkyODgxMTUwIiwidG9rZW4iOiJFSmlOdFNGQ2d2bUpwc0NBN1d6Z0taUUxyc1VkUUllTU8za2gxeGd5WS9JOFM4amdyUlROL1JMQ0R4akxhd05pIiwidWluIjoiOTI2MDA0MyJ9&amp;data=IDgssTWvaVVBWlGPnyUPGWjLbIEvmGxNS8lsaOYyHlUSqdCicIYdLeRdnNUj5lkEPs01NzTQ0f73ATLwJ4ciFw&amp;svctype=4&amp;tempid=h5_group_info" target="_blank" rel="noopener">加入 QQ 群</a>
-</div>
-
-<div class="card">
-<p style="margin-top:0"><strong>原项目：</strong><a href="https://github.com/Pilipala9919/MarcoTV" target="_blank" rel="noopener">Pilipala9919 / MarcoTV</a> · 协议 GPL-3.0-only · 版权 © 2026 Pilipala</p>
-<p class="small">本站为镜像站，只做展示和下载中转，方便国内访问；最新版本、问题反馈和源码以 GitHub 原仓库为准。本页内容整理自原项目 README 与文档，版本信息以 0.19.0 稳定版为准，镜像上次同步于 2026 年 11 月 21 日。本站每天同步稳定版下载页与两条电视更新索引，经校验后由 Cloudflare 自动部署。体验版不会推给稳定渠道。</p>
-</div>
-</div></body>
+</body>
 </html>

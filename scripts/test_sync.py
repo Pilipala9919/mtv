@@ -41,13 +41,23 @@ class SyncChecks(unittest.TestCase):
 
 class ChannelPageChecks(unittest.TestCase):
     def page(self, version):
-        return sync.render_channels('<p>以上为 0.11.1 实机截图</p><h2>体验版与电视在线更新</h2><p>old</p><h2>先核对你的电视能不能装</h2>', version)
+        # Fixture mirrors the TV page layout: the update section sits
+        # between the install section and the highlights section, each
+        # with its own <section> wrapper.
+        return sync.render_channels(
+            '<p>以上为 0.11.1 实机截图</p>'
+            '<section class="util rows" id="update"><h2>电视在线更新</h2><p class="intro">old</p></section>'
+            '<section class="util" id="highlights"><h2>更新亮点</h2></section>',
+            version)
     def test_stable_replaces_preview_label(self):
         page=self.page('0.12.0')
         self.assertIn('0.12.0 正式版',page)
         self.assertNotIn('old',page)
         self.assertIn('0.11.1 实机截图',page)
         self.assertIn('0.11.1 没有在线更新',page)
+        self.assertIn('<section class="util rows" id="update">',page)
+        self.assertIn('<section class="util" id="highlights"><h2>更新亮点</h2></section>',page)
+        self.assertEqual(page.count('</section>'),2)
     def test_future_preview_and_repeated_sync(self):
         page=self.page('0.12.0')
         page=sync.render_channels(page,'0.13.0-rc.1')
@@ -65,6 +75,15 @@ class ChannelPageChecks(unittest.TestCase):
         self.assertNotIn('href="https://github.com/Pilipala9919/MarcoTV/releases/download/v0.12.0/MarcoTV-0.12.0.apk"',page)
         self.assertNotIn('href="MarcoTV-0.12.0.apk"',page)
         self.assertNotIn('href="MarcoTV-0.12.0.apk.sha256"',page)
+    def test_update_section_feed_links_are_root_absolute(self):
+        # The TV page lives at /tv/: a relative updates/ link would
+        # resolve to /tv/updates/ and break, so the feeds must be
+        # root-absolute.
+        page=self.page('0.12.0')
+        self.assertIn('href="/updates/stable.json"',page)
+        self.assertIn('href="/updates/preview.json"',page)
+        self.assertNotIn('href="updates/stable.json"',page)
+        self.assertNotIn('href="updates/preview.json"',page)
     def test_update_section_has_no_source_link(self):
         # No source download on the mirror site: the update section
         # links the APK, its checksum and the two update feeds only.
@@ -97,9 +116,11 @@ class OfficialApkChecks(unittest.TestCase):
         with self.assertRaises(ValueError):
             sync.choose_apk({'MarcoTV-0.15.0-Restricted.apk': {}}, '0.15.0')
     def test_main_syncs_official_apk_and_homepage_sha(self):
-        # End to end with the real homepage as fixture: the release carries
+        # End to end with the real TV page as fixture: the release carries
         # both the official APK and the Restricted variant; the sync must
-        # download the official one and stamp its SHA on the homepage.
+        # download the official one and stamp its SHA on the TV page.
+        # The site root is the Marco hub now; the sync must only rewrite
+        # tv/index.html, never the hub.
         official = b'official apk fixture'
         osha = hashlib.sha256(official).hexdigest()
         ourl = f'https://github.com/{sync.SOURCE_REPO}/releases/download/v0.15.0/MarcoTV-0.15.0.apk'
@@ -127,13 +148,39 @@ class OfficialApkChecks(unittest.TestCase):
                 return json.dumps(release)
             raise AssertionError(address)
         root = Path(sync.__file__).resolve().parent.parent
-        with tempfile.TemporaryDirectory() as directory, patch.object(sync, 'ROOT', Path(directory)), patch.object(sync, 'INDEX', Path(directory) / 'index.html'), patch.object(sync, 'fetch', fetch):
-            (Path(directory) / 'index.html').write_text((root / 'index.html').read_text(encoding='utf-8'), encoding='utf-8')
+        with tempfile.TemporaryDirectory() as directory, patch.object(sync, 'ROOT', Path(directory)), patch.object(sync, 'INDEX', Path(directory) / 'tv' / 'index.html'), patch.object(sync, 'fetch', fetch):
+            (Path(directory) / 'tv').mkdir()
+            (Path(directory) / 'tv' / 'index.html').write_text((root / 'tv' / 'index.html').read_text(encoding='utf-8'), encoding='utf-8')
             self.assertEqual(sync.main(), 0)
             self.assertEqual((Path(directory) / 'MarcoTV-0.15.0.apk').read_bytes(), official)
             self.assertFalse((Path(directory) / 'MarcoTV-0.15.0-Restricted.apk').exists())
-            html = (Path(directory) / 'index.html').read_text(encoding='utf-8')
+            self.assertFalse((Path(directory) / 'index.html').exists())
+            html = (Path(directory) / 'tv' / 'index.html').read_text(encoding='utf-8')
             self.assertIn(osha, html)
-            self.assertNotIn('ef6fd9257e7c0364198e13c3021932fd35902919ee9a8f9ddd1b4a64977bf672', html)
+            self.assertNotIn('26a912eb31ccf7450ac9df6aead303b753c5f008550b2b6384ac0f542b8860f9', html)
+            self.assertEqual(html.count('<!--sync:version-->0.15.0<!--/sync:version-->'), 2)
+            self.assertNotIn('<!--sync:version-->0.19.0', html)
+            self.assertIn('MarcoTV-0.15.0.apk', html)
+            self.assertIn('0.15.0 正式版', html)
+            self.assertIn('<section class="util" id="highlights">', html)
+
+class SyncAnchorChecks(unittest.TestCase):
+    def test_replace_anchor_updates_all_marked_spots(self):
+        html = '<p><!--sync:version-->0.19.0<!--/sync:version--> and <!--sync:version-->0.19.0<!--/sync:version--></p>'
+        out = sync._replace_anchor(html, 'version', '0.20.0')
+        self.assertEqual(out.count('<!--sync:version-->0.20.0<!--/sync:version-->'), 2)
+    def test_replace_anchor_missing_raises(self):
+        with self.assertRaises(ValueError):
+            sync._replace_anchor('<p>no anchors here</p>', 'version', '0.20.0')
+    def test_tv_page_has_sync_anchors(self):
+        # Pins the contract between tv/index.html and the sync: every
+        # anchor the script requires must exist, exactly as many times
+        # as the page design expects (hero + download section).
+        root = Path(sync.__file__).resolve().parent.parent
+        html = (root / 'tv' / 'index.html').read_text(encoding='utf-8')
+        self.assertEqual(html.count('<!--sync:version-->'), 2)
+        self.assertEqual(html.count('<!--sync:release-date-->'), 2)
+        self.assertEqual(html.count('<!--sync:size-->'), 2)
+        self.assertEqual(html.count('<!--sync:sha256-->'), 1)
 
 if __name__=='__main__':unittest.main()

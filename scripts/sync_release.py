@@ -3,9 +3,12 @@
 
 Reads https://api.github.com/repos/Pilipala9919/MarcoTV/releases/latest
 (which excludes drafts and prereleases), downloads the APK and the four
-showcase screenshots, and updates index.html in place: version, release
+showcase screenshots, and updates tv/index.html in place: version, release
 date, APK filename, size and SHA256. Exits 0 with no changes when the
 mirror already matches the latest stable release.
+
+The site root (index.html) is the Marco hub and is never touched here;
+only the TV product page (tv/index.html) carries sync anchors.
 """
 import hashlib
 import json
@@ -16,7 +19,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-INDEX = ROOT / "index.html"
+INDEX = ROOT / "tv" / "index.html"
 SOURCE_REPO = "Pilipala9919/MarcoTV"
 API = f"https://api.github.com/repos/{SOURCE_REPO}/releases/latest"
 RAW = f"https://raw.githubusercontent.com/{SOURCE_REPO}/main/docs/showcase/assets"
@@ -39,6 +42,22 @@ def fetch(url, binary=False):
     with urllib.request.urlopen(req, timeout=60) as resp:
         data = resp.read()
     return data if binary else data.decode("utf-8")
+
+
+def _replace_anchor(html, name, value):
+    """Replace every <!--sync:<name>-->...<!--/sync:<name>--> spot in tv/index.html.
+
+    The TV page marks each syncable value (version, release-date, size,
+    sha256) with an HTML comment anchor; a value may appear in more than
+    one place (hero + download section) and all marked spots update
+    together. A missing anchor fails loudly: a silently stale version or
+    checksum is worse than a failed sync.
+    """
+    pattern = re.compile(r"(<!--sync:" + re.escape(name) + r"-->)[^<]*(<!--/sync:" + re.escape(name) + r"-->)")
+    html, n = pattern.subn(lambda m: m.group(1) + value + m.group(2), html)
+    if n == 0:
+        raise ValueError(f"sync anchor missing in tv/index.html: sync:{name}")
+    return html
 
 
 def choose_apk(assets, version):
@@ -98,21 +117,21 @@ def main():
         # upgrade instructions must retain their historical version.
         html = html.replace(f"MarcoTV-{old_version}", f"MarcoTV-{version}")
         html = html.replace(f"/v{old_version}/", f"/v{version}/")
-        html = html.replace(f"当前稳定版：{old_version}", f"当前稳定版：{version}")
         html = html.replace(f"版本信息以 {old_version} 稳定版为准", f"版本信息以 {version} 稳定版为准")
         changed = True
     # Main download button: Quark-only (2026-11-17 policy). The button is
     # a permanent share link, so this sync never rewrites it; the mirror
     # APK stays hosted in the repo for the in-app update feeds, but no
     # visible button on the page links to it or to GitHub.
-    html, n = re.subn(r"发布于 \d{4} 年 \d{1,2} 月 \d{1,2} 日",
-                      f"发布于 {published.year} 年 {published.month} 月 {published.day} 日", html)
-    changed = changed or n > 0
-    html, n = re.subn(r"约 [\d.]+MB", f"约 {size_mb:.1f}MB", html, count=1)
-    changed = changed or n > 0
-    if re.search(r"[0-9a-f]{64}", html):
-        html, n = re.subn(r"[0-9a-f]{64}", sha, html, count=1)
-        changed = changed or n > 0
+    # Sync anchors in tv/index.html (idempotent: same values rewrite to the
+    # same text, so these run on every sync, not only on version change).
+    before_anchors = html
+    html = _replace_anchor(html, "version", version)
+    html = _replace_anchor(html, "release-date",
+                           f"{published.year} 年 {published.month} 月 {published.day} 日")
+    html = _replace_anchor(html, "size", f"{size_mb:.1f} MB")
+    html = _replace_anchor(html, "sha256", sha)
+    changed = changed or html != before_anchors
     today = datetime.now(timezone(timedelta(hours=8))).date()
     html, n = re.subn(r"镜像建于 \d{4} 年 \d{1,2} 月 \d{1,2} 日",
                       f"镜像上次同步于 {today.year} 年 {today.month} 月 {today.day} 日", html)
@@ -136,16 +155,27 @@ def main():
 
 
 def render_channels(html, version):
-    """Render either a preview release or its stable successor without stale RC labels."""
+    """Render either a preview release or its stable successor without stale RC labels.
+
+    Rewrites only the inside of the TV page's update section (from its
+    <h2> to its own closing </section>); the surrounding section tags and
+    the sections before/after it are untouched. Update-feed links are
+    root-absolute: the page lives at /tv/, so a relative updates/ link
+    would resolve to /tv/updates/ and break.
+    """
     preview = "-" in version
     label = "体验版" if preview else "正式版"
     status = "体验版仍在验证中，日常使用默认推荐上方稳定版。" if preview else "体验渠道与稳定渠道当前提供同一正式版，原 RC 用户可直接覆盖升级。"
     section = f'''<h2>电视在线更新</h2>
-<p>当前提供 <a href="{QUARK_TV_URL}">{version} {label}</a>。{status} 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
-<p>安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。镜像优先，失败后尝试 GitHub；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
-<p><a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk.sha256">校验值</a> · <a href="updates/stable.json">稳定版索引</a> · <a href="updates/preview.json">体验版索引</a></p>
-'''
-    result, count = re.subn(r"<h2>(?:体验版与)?电视在线更新</h2>.*?(?=<h2>先核对你的电视能不能装</h2>)", lambda _: section, html, flags=re.S)
+    <p class="intro">当前提供 <a href="{QUARK_TV_URL}">{version} {label}</a>。{status} 更多机型等待实测反馈，<a href="https://github.com/Pilipala9919/MarcoTV/issues">欢迎加入测试，分享你的使用情况</a>。</p>
+    <p class="intro">安装后到“维护与帮助 → 软件更新”检查更新，日常使用选择稳定版渠道。镜像优先，失败后尝试 GitHub；可选自动下载，安装仍需确认。0.11.1 没有在线更新，需先手动覆盖安装。每次 APK 更新后，最近任务辅助服务仍需电脑重新启动。</p>
+    <div class="links">
+      <a href="https://github.com/Pilipala9919/MarcoTV/releases/download/v{version}/MarcoTV-{version}.apk.sha256">校验值</a>
+      <a href="/updates/stable.json">稳定版索引</a>
+      <a href="/updates/preview.json">体验版索引</a>
+    </div>
+  </section>'''
+    result, count = re.subn(r"<h2>(?:体验版与)?电视在线更新</h2>.*?</section>", lambda _: section, html, flags=re.S)
     if count != 1: raise ValueError("Update section missing or duplicated")
     return result
 
