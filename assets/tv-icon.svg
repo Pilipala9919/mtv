@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="MarcoTV brand asset">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="0.85" y2="1"><stop stop-color="#FFF9FF" offset="0"/><stop stop-color="#E6D5FF" offset=".25"/><stop stop-color="#C0A1FA" offset=".62"/><stop stop-color="#7856C8" offset="1"/></linearGradient>
+ <radialGradient id="bgLight" cx=".32" cy=".06" r="1.06"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".76"/><stop offset=".48" stop-color="#D9BEFF" stop-opacity=".08"/><stop offset="1" stop-color="#7045C2" stop-opacity=".15"/></radialGradient>
+ <linearGradient id="rear" x1=".12" y1=".9" x2=".95" y2=".05"><stop offset="0" stop-color="#BFA2FF"/><stop offset=".50" stop-color="#9E7DF3"/><stop offset="1" stop-color="#D4B6FF"/></linearGradient>
+ <linearGradient id="middle" x1="0" y1=".15" x2="1" y2=".9"><stop offset="0" stop-color="#E7D2FF" stop-opacity=".91"/><stop offset=".50" stop-color="#C7A9FF" stop-opacity=".80"/><stop offset="1" stop-color="#AB8AFA" stop-opacity=".90"/></linearGradient>
+ <linearGradient id="front" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".38" stop-color="#FFF8F6"/><stop offset=".70" stop-color="#FAF2FC"/><stop offset="1" stop-color="#EDE5FB"/></linearGradient>
+ <linearGradient id="frontUnframed" x1="0" y1=".0" x2="1" y2="1"><stop offset="0" stop-color="#F5F0FF"/><stop offset=".35" stop-color="#D4BEFC"/><stop offset="1" stop-color="#B798F6"/></linearGradient>
+ <linearGradient id="darkBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19142E"/><stop offset=".5" stop-color="#28203E"/><stop offset="1" stop-color="#17152A"/></linearGradient>
+ <linearGradient id="lightBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F4EDFF"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="170%" height="180%"><feGaussianBlur stdDeviation="25"/></filter>
+ <filter id="cardShadow" x="-25%" y="-30%" width="160%" height="180%"><feGaussianBlur in="SourceAlpha" stdDeviation="19" result="blur"/><feOffset in="blur" dx="0" dy="19" result="offsetBlur"/><feComponentTransfer in="offsetBlur" result="low"><feFuncA type="linear" slope="0.22"/></feComponentTransfer><feMerge><feMergeNode in="low"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <clipPath id="squircle"><rect x="35" y="35" width="954" height="954" rx="234"/></clipPath>
+ </defs>
+<g id="App_icon_background"><rect x="35" y="35" width="954" height="954" rx="234" fill="url(#bg)"/><rect x="35" y="35" width="954" height="954" rx="234" fill="url(#bgLight)"/></g><g clip-path="url(#squircle)" id="Stacked_card_symbol">
+ <g transform="translate(0 12)" fill="#4B2A99" opacity=".14" filter="url(#shadow)"><path d="M 480,715 C 484,667 508,642 566,625 L 1019,504 C 1085,488 1120,514 1109,580 L 1083,758 C 1076,797 1052,823 1006,838 L 556,955 C 478,974 423,944 435,875 Z"/><path d="M 276,653 C 288,614 311,591 356,576 L 953,417 C 1020,399 1058,426 1051,488 L 1035,647 C 1030,683 1008,708 960,720 L 365,881 C 288,899 245,872 255,809 Z"/><path d="M 176,382 C 188,340 224,311 284,294 L 767,163 C 858,139 899,173 891,260 L 868,422 C 864,471 840,502 779,519 L 237,665 C 168,686 126,663 134,600 L 151,450 C 155,415 163,396 176,382 Z"/></g>
+ <path id="Layer_03_back" d="M 480,715 C 484,667 508,642 566,625 L 1019,504 C 1085,488 1120,514 1109,580 L 1083,758 C 1076,797 1052,823 1006,838 L 556,955 C 478,974 423,944 435,875 Z" fill="url(#rear)" opacity="1" stroke="#E2CFFF" stroke-opacity=".43" stroke-width="3" stroke-linejoin="round"/>
+ <path id="Layer_02_middle" d="M 276,653 C 288,614 311,591 356,576 L 953,417 C 1020,399 1058,426 1051,488 L 1035,647 C 1030,683 1008,708 960,720 L 365,881 C 288,899 245,872 255,809 Z" fill="url(#middle)" opacity="1" stroke="#FFF8FF" stroke-opacity=".43" stroke-width="3" stroke-linejoin="round"/>
+ <path id="Layer_01_front" d="M 176,382 C 188,340 224,311 284,294 L 767,163 C 858,139 899,173 891,260 L 868,422 C 864,471 840,502 779,519 L 237,665 C 168,686 126,663 134,600 L 151,450 C 155,415 163,396 176,382 Z" fill="url(#front)" opacity="1" stroke="#FFF8FE" stroke-opacity=".43" stroke-width="3" stroke-linejoin="round"/>
+ </g><rect x="37" y="37" width="950" height="950" rx="233" fill="none" stroke="#FFFFFF" stroke-opacity=".46" stroke-width="4"/>
+</svg>
