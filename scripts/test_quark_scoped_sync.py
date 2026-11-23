@@ -140,6 +140,26 @@ class ScopedUploadTests(unittest.TestCase):
         self.assertEqual([c[0] for c in self.commands], ['ls', 'upload', 'ls'])
         self.no_delete.assert_not_called()
 
+    def test_dual_ios_feed_separates_main_and_ios14_sources(self):
+        ios14_name = f"MarcoMovie-{self.version}-ios14-unsigned.ipa"
+        ios14_url = self.url.rsplit("/", 1)[0] + "/" + ios14_name
+        ios14_digest = "e" * 64
+        path = self.root / "movie/updates/ios.json"
+        feed = json.loads(path.read_text(encoding="utf-8"))
+        feed["packages"][ios14_name] = {
+            "url": ios14_url,
+            "size": 1234,
+            "sha256": ios14_digest,
+        }
+        path.write_text(json.dumps(feed), encoding="utf-8")
+        main_src = sync.movie_sources("ios")["ios"]
+        ios14_src = sync.movie_sources("ios14")["ios14"]
+        self.assertEqual(main_src[0], self.name)
+        self.assertEqual(ios14_src[0], ios14_name)
+        self.assertEqual(ios14_src[3], ios14_digest)
+        fp = sync.ios_feed_fingerprint(self.root, self.version)
+        self.assertEqual(fp["package"]["name"], self.name)
+
     def test_restore_older_package_keeps_current_feed_and_manifest(self):
         path = self.root/'movie/updates/ios.json'
         current = '0.5.16'

@@ -92,6 +92,45 @@ class PackageTests(unittest.TestCase):
         self.assertIn('legacy.ipa', m.patch_card(page, 'ios-unsigned.ipa',
                       dict(url='https://fixture.invalid/legacy.ipa', size=123, sha256='c'*64)))
 
+    def test_dual_ios_packages_sync_main_and_ios14_into_feed_and_cards(self):
+        main_name = 'MarcoMovie-0.7.5-ios-iphone-ipad-unsigned.ipa'
+        ios14_name = 'MarcoMovie-0.7.5-ios14-unsigned.ipa'
+        ios14_card = (
+            '<div class="dl" data-platform="ios14"><h3>iOS 14 兼容版</h3>'
+            '<p class="card-meta"><span class="package-version">0.7.0</span> · 60.0 MB</p>'
+            '<a class="btn" href="https://marcotv.wlj9919.top/movie/MarcoMovie-0.7.0-ios14-unsigned.ipa">下载</a>'
+            '<a href="MarcoMovie-0.7.0-ios14-unsigned.ipa.sha256">校验文件</a>'
+            '<code>SHA-256：' + 'a' * 64 + '</code></div>'
+        )
+        (self.out / 'index.html').write_text(
+            self.page.replace('<section class="block"', ios14_card + '<section class="block"'),
+            encoding='utf-8',
+        )
+        release = dict(
+            self.release,
+            tag_name='ios-v0.7.5',
+            body='iOS 0.7.5 dual package release',
+            assets=self.assets(main_name, 'MarcoMovie-0.7.5-ios-unsigned.ipa', ios14_name),
+        )
+        with patch.object(
+            m,
+            'platform_asset',
+            side_effect=lambda rel, name, out: (
+                'https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.7.5/' + name,
+                63911322 if 'ios14' in name else 63909667,
+                'c' * 64 if 'ios14' in name else 'b' * 64,
+                None,
+            ),
+        ):
+            self.assertEqual(m.sync(self.out, [release]), {'ios': '0.7.5'})
+        feed = json.loads((self.out / 'updates/ios.json').read_text(encoding='utf-8'))
+        self.assertEqual(set(feed['packages']), {main_name, ios14_name})
+        self.assertEqual(feed['ios14']['sha256'], 'c' * 64)
+        page = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('MarcoMovie-0.7.5-ios-iphone-ipad-unsigned.ipa.sha256', page)
+        self.assertIn('MarcoMovie-0.7.5-ios14-unsigned.ipa.sha256', page)
+        self.assertIn('SHA-256：' + 'c' * 64, page)
+
     def test_appletv_and_harmonyos_releases_sync_and_upgrade_direct_button_to_quark(self):
         tvos_name = 'MarcoMovie-0.1.0-tvos-appletv-unsigned.ipa'
         ohos_name = 'MarcoMovie-0.1.0-harmonyos-universal.hap'

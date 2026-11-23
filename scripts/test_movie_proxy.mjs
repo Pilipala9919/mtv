@@ -48,6 +48,25 @@ try {
       }
     }
   }
+  // iOS 14 compat IPA must resolve strictly to ios14-unsigned.ipa and never
+  // fall back to the iOS 15.0+ universal IPA.
+  {
+    const calls = [];
+    globalThis.fetch = async (url) => {
+      calls.push(url);
+      return new Response(null, { status: 404 });
+    };
+    const resp = await onRequest({
+      request: new Request('https://example.invalid/movie/MarcoMovie-0.7.5-ios14-unsigned.ipa'),
+      params: { file: 'MarcoMovie-0.7.5-ios14-unsigned.ipa' },
+      next: async () => new Response(null, { status: 404 }),
+    });
+    assert.equal(resp.status, 404);
+    assert.ok(calls.length > 0);
+    assert.ok(calls.every((u) => u.endsWith('/MarcoMovie-0.7.5-ios14-unsigned.ipa')));
+    assert.equal(calls[0], 'https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.7.5/MarcoMovie-0.7.5-ios14-unsigned.ipa');
+    checks++;
+  }
 } finally {
   globalThis.fetch = originalFetch;
 }

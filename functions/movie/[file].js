@@ -67,6 +67,14 @@ function candidateTargets(version, rest, ext, shaSuffix) {
       ['v' + version, requested],
     ];
   }
+  if (stem === 'ios14-unsigned.ipa') {
+    return [
+      ['ios-v' + version, requested],
+      ['ios-v' + version + '-preview', requested],
+      ['v' + version, requested],
+      ['v' + version + '-preview', requested],
+    ];
+  }
   if (stem.startsWith('ios')) {
     const universalFile = `MarcoMovie-${version}-ios-iphone-ipad-unsigned.ipa${shaSuffix}`;
     const shortFile = `MarcoMovie-${version}-ios-unsigned.ipa${shaSuffix}`;

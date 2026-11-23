@@ -51,6 +51,7 @@ MOVIE_FOLDERS = {
     "android-tv": "/MarcoMovie/电视版",
     "android-mobile": "/MarcoMovie/手机版",
     "ios": "/MarcoMovie/iOS",
+    "ios14": "/MarcoMovie/iOS14",
     "appletv": "/MarcoMovie/AppleTV",
     "harmonyos": "/MarcoMovie/鸿蒙版",
     "windows-setup": "/MarcoMovie/Windows安装版",
@@ -249,7 +250,7 @@ def download(url, dest, size=None, sha256=None):
     return digest
 
 
-def feed_asset(feed_path, package_suffix):
+def feed_asset(feed_path, package_suffix, exclude_substrings=()):
     """Read one platform feed; return (filename, url, size, sha256, version).
 
     Feeds carry their assets in a `packages` dict (name -> {url, size,
@@ -262,11 +263,15 @@ def feed_asset(feed_path, package_suffix):
     package = feed.get("package")
     if isinstance(package, dict) and package.get("url"):
         name = package.get("name") or ""
-        if not name.endswith(package_suffix):
+        if name.endswith(package_suffix) and not any(s in name for s in exclude_substrings):
+            return name, package["url"], package.get("size"), package.get("sha256"), version
+        if not feed.get("packages"):
             raise QuarkError(f"{feed_path}: package {name} does not end {package_suffix}")
-        return name, package["url"], package.get("size"), package.get("sha256"), version
     packages = feed.get("packages") or {}
-    candidates = [n for n in packages if n.endswith(package_suffix)]
+    candidates = [
+        n for n in packages
+        if n.endswith(package_suffix) and not any(s in n for s in exclude_substrings)
+    ]
     if not candidates:
         raise QuarkError(f"{feed_path}: no package ending {package_suffix}")
     # Prefer the -x64- / portable variant when several names match.
@@ -301,24 +306,25 @@ def movie_sources(platform=None):
     updates = ROOT / "movie" / "updates"
     src = {}
 
-    def feed(name, suffix):
+    def feed(name, suffix, exclude_substrings=()):
         stable = updates / f"{name}.json"
         preview = updates / f"{name}-preview.json"
         path = stable if stable.exists() else preview
         if not path.exists():
             raise QuarkError(f"no feed for {name}: {stable} / {preview}")
-        return feed_asset(path, suffix)
+        return feed_asset(path, suffix, exclude_substrings=exclude_substrings)
 
-    for key, (name, suffix) in {
-        "android-tv": ("android-tv", ".apk"),
-        "android-mobile": ("android-mobile", ".apk"),
-        "ios": ("ios", ".ipa"),
-        "appletv": ("appletv", ".ipa"),
-        "harmonyos": ("harmonyos", ".hap"),
-        "windows-setup": ("windows", "-setup.exe"),
-        "windows-zip": ("windows", ".zip"),
-        "macos": ("macos", ".zip"),
-        "android-lite": ("android-lite", ".apk"),
+    for key, (name, suffix, exclude) in {
+        "android-tv": ("android-tv", ".apk", ()),
+        "android-mobile": ("android-mobile", ".apk", ()),
+        "ios": ("ios", ".ipa", ("-ios14-",)),
+        "ios14": ("ios", "-ios14-unsigned.ipa", ()),
+        "appletv": ("appletv", ".ipa", ()),
+        "harmonyos": ("harmonyos", ".hap", ()),
+        "windows-setup": ("windows", "-setup.exe", ()),
+        "windows-zip": ("windows", ".zip", ()),
+        "macos": ("macos", ".zip", ()),
+        "android-lite": ("android-lite", ".apk", ()),
     }.items():
         if platform is not None and key != platform:
             continue
@@ -326,8 +332,13 @@ def movie_sources(platform=None):
                 (updates / name).exists() for name in
                 ("android-lite.json", "android-lite-preview.json")):
             src[key] = local_asset(ROOT / "movie" / "MarcoMovie-0.5.0-lite.apk")
+        elif key == "ios14" and platform is None:
+            try:
+                src[key] = feed(name, suffix, exclude)
+            except QuarkError:
+                continue
         else:
-            src[key] = feed(name, suffix)
+            src[key] = feed(name, suffix, exclude)
     return src
 
 
@@ -403,9 +414,12 @@ def validate_published_source(key, source):
             or not isinstance(digest, str)
             or not re.fullmatch(r"[0-9a-f]{64}", digest)):
         raise QuarkError("Scoped upload requires a valid version, size and SHA-256")
-    platform = "windows" if key.startswith("windows-") else key
+    platform = ("windows" if key.startswith("windows-")
+                else "ios" if key == "ios14"
+                else key)
     allowed_suffixes = {
         "ios": ("ios-unsigned.ipa", "ios-iphone-ipad-unsigned.ipa"),
+        "ios14": ("ios14-unsigned.ipa",),
         "appletv": ("appletv-unsigned.ipa", "tvos-appletv-unsigned.ipa"),
         "harmonyos": ("harmonyos.hap", "harmonyos-universal.hap"),
         "android-tv": ("android-tv.apk",),
@@ -464,7 +478,8 @@ def ios_feed_fingerprint(root, version):
     if (feed.get("platform") != "ios" or feed.get("versionName") != version
             or feed.get("prerelease") is not False or feed.get("release_url") != release_url):
         raise QuarkError("Current iOS feed does not match the requested platform release")
-    name, url, size, digest, source_version = feed_asset(path, ".ipa")
+    name, url, size, digest, source_version = feed_asset(
+        path, ".ipa", exclude_substrings=("-ios14-",))
     return {"platform": feed["platform"], "prerelease": feed["prerelease"],
             "release_url": feed["release_url"],
             "package": {"name": name, "url": url, "size": size,
@@ -649,6 +664,8 @@ def main(argv=None):
     errors = []
     with tempfile.TemporaryDirectory(prefix="quark-sync-") as tmpdir:
         for key, folder in folders.items():
+            if key not in sources:
+                continue
             try:
                 manifest[key] = sync_platform(key, folder, sources[key],
                                               manifest, tmpdir, args.dry_run,

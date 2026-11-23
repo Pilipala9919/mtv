@@ -21,6 +21,9 @@ SUFFIXES = {
     'windows': ('windows-setup.exe', 'windows-x64.zip'),
     'macos': ('macos.zip',),
 }
+OPTIONAL_SUFFIXES = {
+    'ios': ('ios14-unsigned.ipa',),
+}
 PLATFORM_LABELS = {
     'ios': 'iPhone / iPad', 'windows': 'Windows', 'macos': 'macOS',
     'appletv': 'Apple TV', 'harmonyos': 'HarmonyOS NEXT',
@@ -32,6 +35,7 @@ NOTE_SUFFIXES = {
     'android-lite.apk': 'android-lite',
     'preview.apk': 'android-tv', 'mobile.apk': 'android-mobile',
     'lite.apk': 'android-lite', 'ios-unsigned.ipa': 'ios',
+    'ios14-unsigned.ipa': 'ios',
     'appletv-unsigned.ipa': 'appletv', 'harmonyos.hap': 'harmonyos',
     'windows-setup.exe': 'windows', 'windows-x64.zip': 'windows',
     'macos.zip': 'macos',
@@ -505,9 +509,26 @@ def sync(output, releases=None):
                      else platform)
             page = patch_card(page, suffix, package,
                               quark_url=(quark_manifest.get(q_key) or {}).get('share_url'))
+        optional_fields = {}
+        for opt_suffix in OPTIONAL_SUFFIXES.get(platform, ()):
+            opt_name = f'MarcoMovie-{version}-{opt_suffix}'
+            if opt_name in names and (opt_name + '.sha256') in names:
+                href, size, digest, body = platform_asset(release, opt_name, output)
+                opt_package = dict(size=size, sha256=digest, url=href if href.startswith('https://') else BASE + opt_name)
+                packages[opt_name] = opt_package
+                if body is not None:
+                    files[opt_name] = body
+                    files[opt_name + '.sha256'] = (digest + '  ' + opt_name + '\n').encode('ascii')
+                if opt_suffix == 'ios14-unsigned.ipa':
+                    optional_fields['ios14'] = opt_package
+                if re.search(r'MarcoMovie-\d+\.\d+\.\d+-' + re.escape(opt_suffix), page):
+                    opt_q_key = 'ios14' if opt_suffix == 'ios14-unsigned.ipa' else platform
+                    page = patch_card(page, opt_suffix, opt_package,
+                                      quark_url=(quark_manifest.get(opt_q_key) or {}).get('share_url'))
         feed = dict(schema=1, platform=platform, versionName=version, prerelease=False,
                     notes=release.get('body') or '', packages=packages,
-                    release_url=f'https://github.com/{REPO}/releases/tag/{release["tag_name"]}')
+                    release_url=f'https://github.com/{REPO}/releases/tag/{release["tag_name"]}',
+                    **optional_fields)
         if platform == 'windows':
             # Installed 0.5.x clients require this exact legacy filename. The
             # public card can use the clearer name, but the update channel must
@@ -534,10 +555,11 @@ def sync(output, releases=None):
             if version_key(previous['versionName']) > version_key(version):
                 raise ValueError('Refusing platform rollback: ' + platform)
             if previous['versionName'] == version:
-                if any(previous['packages'].get(k) != v for k, v in packages.items()):
+                if any(k in previous['packages'] and previous['packages'][k] != v for k, v in packages.items()):
                     raise ValueError('Refusing to replace a published package: ' + platform)
-                versions[platform] = version
-                continue
+                if previous['packages'] == packages and all(previous.get(k) == v for k, v in optional_fields.items()):
+                    versions[platform] = version
+                    continue
         files[path] = (json.dumps(feed, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
         versions[platform] = version
     history, note_files = release_history(output, releases)
