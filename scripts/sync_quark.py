@@ -12,10 +12,12 @@ mirror already publishes (movie/updates/<platform>.json), or from the
 mirrored file in the repo for the two cases with no feed (Movie lite,
 Marco TV + Lite).
 
-The five Pixar video wallpapers ride with --tv: one folder and one
-permanent share link each, sourced from the mirrored MP4s in
-wallpapers/videos/. They have no version number; the SHA-256 is the
-change detector.
+The five Pixar video wallpapers are their own section, separate from
+MarcoTV and MarcoMovie: one folder and one permanent share link each,
+sourced from the mirrored MP4s in wallpapers/videos/. They have no
+version number; the SHA-256 is the change detector. Wallpapers only
+change when a new one is added, so --wallpapers runs on demand, never
+on the daily schedule.
 
 Requires the `quark` CLI and a logged-in profile (jar file). Upload,
 share, list and remove run straight from Node against Quark's web API
@@ -24,6 +26,7 @@ using the saved cookies; no Chrome is needed for these commands.
 Usage (run from the repo root, inside the GitHub Actions job):
     python scripts/sync_quark.py --movie
     python scripts/sync_quark.py --tv
+    python scripts/sync_quark.py --wallpapers   # on demand, when a wallpaper is added
     python scripts/sync_quark.py --movie --dry-run   # print the plan only
     python scripts/sync_quark.py --movie --platform ios --keep-old
 """
@@ -61,7 +64,7 @@ TV_FOLDERS = {
 }
 
 # wallpaper key -> Quark folder (each wallpaper gets its own folder and
-# permanent share link, like the app platforms; synced with --tv)
+# permanent share link, like the app platforms; synced with --wallpapers)
 WALLPAPER_FOLDERS = {
     "wp-squirrel": "/MarcoTV/壁纸-顽皮小松鼠",
     "wp-puppy": "/MarcoTV/壁纸-招手小奶狗",
@@ -622,25 +625,26 @@ def sync_platform(key, folder, source, manifest, tmpdir, dry_run, keep_old=False
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--movie", action="store_true", help="sync MarcoMovie platforms")
-    ap.add_argument("--tv", action="store_true",
-                    help="sync MarcoTV platforms and video wallpapers")
+    ap.add_argument("--tv", action="store_true", help="sync MarcoTV platforms")
+    ap.add_argument("--wallpapers", action="store_true",
+                    help="sync video wallpapers (on demand)")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--platform", choices=tuple(MOVIE_FOLDERS),
                     help="sync only this MarcoMovie platform")
     ap.add_argument("--keep-old", action="store_true",
                     help="never remove/replace files; require an existing permanent share")
     args = ap.parse_args(argv)
-    if args.movie == args.tv:
-        ap.error("pass exactly one of --movie / --tv")
+    if sum((args.movie, args.tv, args.wallpapers)) != 1:
+        ap.error("pass exactly one of --movie / --tv / --wallpapers")
     if args.platform and not args.movie:
         ap.error("--platform is only available with --movie")
     if args.keep_old and not args.platform:
         ap.error("--keep-old requires --movie --platform")
     folders = ({args.platform: MOVIE_FOLDERS[args.platform]} if args.platform
                else MOVIE_FOLDERS if args.movie
-               else {**TV_FOLDERS, **WALLPAPER_FOLDERS})
+               else TV_FOLDERS if args.tv else WALLPAPER_FOLDERS)
     sources = (movie_sources(args.platform) if args.movie
-               else {**tv_sources(), **wallpaper_sources()})
+               else tv_sources() if args.tv else wallpaper_sources())
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.exists() else {}
     errors = []
     with tempfile.TemporaryDirectory(prefix="quark-sync-") as tmpdir:
