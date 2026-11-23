@@ -12,6 +12,11 @@ mirror already publishes (movie/updates/<platform>.json), or from the
 mirrored file in the repo for the two cases with no feed (Movie lite,
 Marco TV + Lite).
 
+The five Pixar video wallpapers ride with --tv: one folder and one
+permanent share link each, sourced from the mirrored MP4s in
+wallpapers/videos/. They have no version number; the SHA-256 is the
+change detector.
+
 Requires the `quark` CLI and a logged-in profile (jar file). Upload,
 share, list and remove run straight from Node against Quark's web API
 using the saved cookies; no Chrome is needed for these commands.
@@ -53,6 +58,16 @@ MOVIE_FOLDERS = {
 TV_FOLDERS = {
     "tv": "/MarcoTV/电视版",
     "tv-lite": "/MarcoTV/Lite版",
+}
+
+# wallpaper key -> Quark folder (each wallpaper gets its own folder and
+# permanent share link, like the app platforms; synced with --tv)
+WALLPAPER_FOLDERS = {
+    "wp-squirrel": "/MarcoTV/壁纸-顽皮小松鼠",
+    "wp-puppy": "/MarcoTV/壁纸-招手小奶狗",
+    "wp-penguin": "/MarcoTV/壁纸-害羞小企鹅",
+    "wp-black-cat": "/MarcoTV/壁纸-乖巧小黑猫",
+    "wp-tabby-cat": "/MarcoTV/壁纸-五花肉",
 }
 
 UA = {"User-Agent": "mtv-quark-sync"}
@@ -343,6 +358,18 @@ def tv_sources():
     }
 
 
+def wallpaper_sources():
+    """The five Pixar video wallpapers, mirrored in wallpapers/videos/."""
+    videos = ROOT / "wallpapers" / "videos"
+    return {
+        "wp-squirrel": local_asset(videos / "pixar-squirrel-4k60.mp4"),
+        "wp-puppy": local_asset(videos / "pixar-puppy-4k60.mp4"),
+        "wp-penguin": local_asset(videos / "pixar-penguin-4k60.mp4"),
+        "wp-black-cat": local_asset(videos / "pixar-black-cat-4k60.mp4"),
+        "wp-tabby-cat": local_asset(videos / "pixar-tabby-cat-4k60.mp4"),
+    }
+
+
 # ---------------------------------------------------------------- sync
 
 def published_bytes(url, limit):
@@ -563,6 +590,8 @@ def sync_platform(key, folder, source, manifest, tmpdir, dry_run, keep_old=False
             local = ROOT / name
             if key == "android-lite":
                 local = ROOT / "movie" / name
+            if key in WALLPAPER_FOLDERS:
+                local = ROOT / "wallpapers" / "videos" / name
             if not local.exists():
                 raise QuarkError(f"mirrored file missing: {local}")
             print(f"  using mirrored file {local}")
@@ -593,7 +622,8 @@ def sync_platform(key, folder, source, manifest, tmpdir, dry_run, keep_old=False
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--movie", action="store_true", help="sync MarcoMovie platforms")
-    ap.add_argument("--tv", action="store_true", help="sync MarcoTV platforms")
+    ap.add_argument("--tv", action="store_true",
+                    help="sync MarcoTV platforms and video wallpapers")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--platform", choices=tuple(MOVIE_FOLDERS),
                     help="sync only this MarcoMovie platform")
@@ -607,8 +637,10 @@ def main(argv=None):
     if args.keep_old and not args.platform:
         ap.error("--keep-old requires --movie --platform")
     folders = ({args.platform: MOVIE_FOLDERS[args.platform]} if args.platform
-               else MOVIE_FOLDERS if args.movie else TV_FOLDERS)
-    sources = movie_sources(args.platform) if args.movie else tv_sources()
+               else MOVIE_FOLDERS if args.movie
+               else {**TV_FOLDERS, **WALLPAPER_FOLDERS})
+    sources = (movie_sources(args.platform) if args.movie
+               else {**tv_sources(), **wallpaper_sources()})
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.exists() else {}
     errors = []
     with tempfile.TemporaryDirectory(prefix="quark-sync-") as tmpdir:
