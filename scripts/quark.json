@@ -75,5 +75,40 @@
     "file": "MarcoMovie-0.1.1-harmonyos-universal.hap",
     "version": "0.1.1",
     "sha256": "3df10bc519eeda366c9b5f15ecb92cd3df2cf92148191dfca42d034f4b554bae"
+  },
+  "wp-squirrel": {
+    "folder": "/MarcoTV/壁纸-顽皮小松鼠",
+    "share_url": "https://pan.quark.cn/s/b5f19457e16d",
+    "file": "pixar-squirrel-4k60.mp4",
+    "version": null,
+    "sha256": "913f791258e21e4ffb89f60c8cb9aaf58b519941e771c20a94d29b26894e7f61"
+  },
+  "wp-puppy": {
+    "folder": "/MarcoTV/壁纸-招手小奶狗",
+    "share_url": "https://pan.quark.cn/s/b8b083ae9048",
+    "file": "pixar-puppy-4k60.mp4",
+    "version": null,
+    "sha256": "caffca8b6c1cb4cb639ccc52c23c18f60a95fb7239ca0c9b89691ef5986f2740"
+  },
+  "wp-penguin": {
+    "folder": "/MarcoTV/壁纸-害羞小企鹅",
+    "share_url": "https://pan.quark.cn/s/f0311a0a6951",
+    "file": "pixar-penguin-4k60.mp4",
+    "version": null,
+    "sha256": "2e3ad375c721e0e2216b010324a18d9ef98875f73e1d47cd855c98f3c3650638"
+  },
+  "wp-black-cat": {
+    "folder": "/MarcoTV/壁纸-乖巧小黑猫",
+    "share_url": "https://pan.quark.cn/s/2b465cf96656",
+    "file": "pixar-black-cat-4k60.mp4",
+    "version": null,
+    "sha256": "d4e69b4acbc4172aa5a500bcd66836fbc0f66e863fc1fff171a416b303b7ae10"
+  },
+  "wp-tabby-cat": {
+    "folder": "/MarcoTV/壁纸-五花肉",
+    "share_url": "https://pan.quark.cn/s/b29e936a3089",
+    "file": "pixar-tabby-cat-4k60.mp4",
+    "version": null,
+    "sha256": "6c4e0afbed3b095e3774366ebebd9f2e67411cba17ae82f0b221d42288f54d81"
   }
 }
