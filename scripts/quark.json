@@ -16,9 +16,9 @@
   "ios": {
     "folder": "/MarcoMovie/iOS",
     "share_url": "https://pan.quark.cn/s/88f59851a6f7",
-    "file": "MarcoMovie-0.7.0-ios-iphone-ipad-unsigned.ipa",
-    "version": "0.7.0",
-    "sha256": "d24a947cae3e9d26a536fde11a113bac95a0c5ef986114ce3ecdf1ffbe891e26"
+    "file": "MarcoMovie-0.7.5-ios-iphone-ipad-unsigned.ipa",
+    "version": "0.7.5",
+    "sha256": "947784dd59bce99e2b56722972f34f62c3a9dd4d8b96e014649b139b63611cb0"
   },
   "windows-setup": {
     "folder": "/MarcoMovie/Windows安装版",
@@ -110,5 +110,12 @@
     "file": "pixar-tabby-cat-4k60.mp4",
     "version": null,
     "sha256": "6c4e0afbed3b095e3774366ebebd9f2e67411cba17ae82f0b221d42288f54d81"
+  },
+  "ios14": {
+    "folder": "/MarcoMovie/iOS14",
+    "share_url": "https://pan.quark.cn/s/ec14fc783349",
+    "file": "MarcoMovie-0.7.5-ios14-unsigned.ipa",
+    "version": "0.7.5",
+    "sha256": "15615c0d21a6001e42c1909f12379fa671ea069abd90fe48f7c2271ecf442b1f"
   }
 }

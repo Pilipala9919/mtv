@@ -9,7 +9,17 @@
       "size": 63908850,
       "sha256": "947784dd59bce99e2b56722972f34f62c3a9dd4d8b96e014649b139b63611cb0",
       "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.7.5/MarcoMovie-0.7.5-ios-iphone-ipad-unsigned.ipa"
+    },
+    "MarcoMovie-0.7.5-ios14-unsigned.ipa": {
+      "size": 63910444,
+      "sha256": "15615c0d21a6001e42c1909f12379fa671ea069abd90fe48f7c2271ecf442b1f",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.7.5/MarcoMovie-0.7.5-ios14-unsigned.ipa"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.7.5"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.7.5",
+  "ios14": {
+    "size": 63910444,
+    "sha256": "15615c0d21a6001e42c1909f12379fa671ea069abd90fe48f7c2271ecf442b1f",
+    "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/ios-v0.7.5/MarcoMovie-0.7.5-ios14-unsigned.ipa"
+  }
 }
