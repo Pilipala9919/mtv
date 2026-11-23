@@ -51,6 +51,9 @@ QQ_GROUP6_CODE = '1136252786'
 
 QQ_GROUP7_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=BwtsqpgLEJSl27gFHWB%2BIcJ7eOMFxdugHZatXl63g7lfrVBVM%2BX0Ler5HLevajcA&busi_data=eyJncm91cENvZGUiOiIxMDkyODgxMTUwIiwidG9rZW4iOiJFSmlOdFNGQ2d2bUpwc0NBN1d6Z0taUUxyc1VkUUllTU8za2gxeGd5WS9JOFM4amdyUlROL1JMQ0R4akxhd05pIiwidWluIjoiOTI2MDA0MyJ9&data=IDgssTWvaVVBWlGPnyUPGWjLbIEvmGxNS8lsaOYyHlUSqdCicIYdLeRdnNUj5lkEPs01NzTQ0f73ATLwJ4ciFw&svctype=4&tempid=h5_group_info'
 QQ_GROUP7_CODE = '1092881150'
+# Eighth official QQ group, same universal scope (added 2026-11-23).
+QQ_GROUP8_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=83IjYjBMDYnVi4HyiDyG5Tg7jUZr6mO7%2BEe7siM46OkTDqz1UdxOlUii03ksIiQx&busi_data=eyJncm91cENvZGUiOiIxOTAzMzAyOTciLCJ0b2tlbiI6InlpdzdtWjlZZDM4N3Y2Q0hIWDI5Qnd0Q0dsL2w5OEhVcngwMVlnVnRMWkUxbnQ5NGFCQjZkcEZ4VXRXaVZWYUYiLCJ1aW4iOiI5MjYwMDQzIn0%3D&data=Hh8YquUZLsQsNs8cZNjvnvGI0x3gZwrAVA9xSLDzXasDDHAVlfd7ZEA9_hlMryQe9F8uqZVKXXxKeTOOf6Hupw&svctype=4&tempid=h5_group_info'
+QQ_GROUP8_CODE = '190330297'
 # Quark Drive share links, written by scripts/sync_quark.py (one permanent
 # folder link per platform). Absent on first run: cards render without the
 # Quark button until the first Quark sync writes the manifest.
@@ -826,6 +829,7 @@ def sync(output):
         ('Marco！4', QQ_GROUP5_CODE, QQ_GROUP5_URL),
         ('Marco！5', QQ_GROUP6_CODE, QQ_GROUP6_URL),
         ('Marco！6', QQ_GROUP7_CODE, QQ_GROUP7_URL),
+        ('Marco！7', QQ_GROUP8_CODE, QQ_GROUP8_URL),
     ]
     group_rows = ''.join(
         '    <div class="group-row reveal">\n'
