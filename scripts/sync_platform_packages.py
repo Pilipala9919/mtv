@@ -427,6 +427,36 @@ def refresh_stars(page):
     return re.sub(r'<b>\d+ Stars</b>', f'<b>{stars} Stars</b>', page, count=1)
 
 
+def refresh_hub_movie_versions(hub_path, versions):
+    """Rewrite the hub's Movie version line from the synced platform versions.
+
+    The hub shows only the three headline platforms (TV, mobile, iOS);
+    the other six live on the Movie page. Returns True when the file
+    changed. Skips silently when the hub is absent (test fixtures and
+    partial checkouts run the Movie sync without it) or when any of
+    the three versions is unknown; a present hub with a missing anchor
+    fails loudly, like the TV sync's anchors.
+    """
+    tv = versions.get('android-tv')
+    mobile = versions.get('android-mobile')
+    ios = versions.get('ios')
+    if not (tv and mobile and ios):
+        return False
+    hub_path = Path(hub_path)
+    if not hub_path.is_file():
+        return False
+    hub = hub_path.read_text(encoding='utf-8')
+    line = f'各端独立版本：电视版 {tv}、手机版 {mobile}、iOS {ios}'
+    updated, n = re.subn(r'(<!--sync:hub-movie-versions-->)[^<]*(<!--/sync:hub-movie-versions-->)',
+                         lambda m: m.group(1) + line + m.group(2), hub)
+    if n == 0:
+        raise ValueError('sync anchor missing in hub index.html: sync:hub-movie-versions')
+    if updated == hub:
+        return False
+    hub_path.write_text(updated, encoding='utf-8')
+    return True
+
+
 def sync(output, releases=None):
     output = Path(output)
     original = (output / 'index.html').read_bytes()
@@ -526,6 +556,7 @@ def sync(output, releases=None):
         if not target.exists() or target.read_bytes() != body:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(body)
+    refresh_hub_movie_versions(output.parent / 'index.html', versions)
     return versions
 
 

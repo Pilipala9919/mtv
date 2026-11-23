@@ -345,5 +345,38 @@ class PackageTests(unittest.TestCase):
         self.assertIn('CurStepChanged(CurStep: TSetupStep)', iss)
 
 
+class HubVersionTests(unittest.TestCase):
+    HUB = ('<p class="product-version"><!--sync:hub-movie-versions-->'
+           '各端独立版本：电视版 0.5.29、手机版 0.5.26、iOS 0.5.33'
+           '<!--/sync:hub-movie-versions--></p>')
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.hub = Path(self.temp.name) / 'index.html'
+        self.hub.write_text(self.HUB, encoding='utf-8')
+
+    def test_updates_line_and_is_idempotent(self):
+        versions = {'android-tv': '0.6.2', 'android-mobile': '0.6.0', 'ios': '0.7.0'}
+        self.assertTrue(m.refresh_hub_movie_versions(self.hub, versions))
+        self.assertIn('<!--sync:hub-movie-versions-->各端独立版本：电视版 0.6.2、手机版 0.6.0、iOS 0.7.0<!--/sync:hub-movie-versions-->',
+                      self.hub.read_text(encoding='utf-8'))
+        self.assertFalse(m.refresh_hub_movie_versions(self.hub, versions))
+
+    def test_skips_when_a_version_is_unknown(self):
+        self.assertFalse(m.refresh_hub_movie_versions(self.hub, {'ios': '0.7.0'}))
+        self.assertEqual(self.hub.read_text(encoding='utf-8'), self.HUB)
+
+    def test_skips_when_hub_is_absent(self):
+        versions = {'android-tv': '0.6.2', 'android-mobile': '0.6.0', 'ios': '0.7.0'}
+        self.assertFalse(m.refresh_hub_movie_versions(Path(self.temp.name) / 'nope.html', versions))
+
+    def test_missing_anchor_raises(self):
+        self.hub.write_text('<p>no anchors here</p>', encoding='utf-8')
+        versions = {'android-tv': '0.6.2', 'android-mobile': '0.6.0', 'ios': '0.7.0'}
+        with self.assertRaises(ValueError):
+            m.refresh_hub_movie_versions(self.hub, versions)
+
+
 if __name__ == '__main__':
     unittest.main()

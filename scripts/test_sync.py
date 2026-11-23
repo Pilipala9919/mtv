@@ -119,8 +119,9 @@ class OfficialApkChecks(unittest.TestCase):
         # End to end with the real TV page as fixture: the release carries
         # both the official APK and the Restricted variant; the sync must
         # download the official one and stamp its SHA on the TV page.
-        # The site root is the Marco hub now; the sync must only rewrite
-        # tv/index.html, never the hub.
+        # The hub's TV version line is owned by this sync too (anchor
+        # hub-tv-version); the hub's Movie line belongs to the Movie
+        # patcher and the rest of the hub stays untouched.
         official = b'official apk fixture'
         osha = hashlib.sha256(official).hexdigest()
         ourl = f'https://github.com/{sync.SOURCE_REPO}/releases/download/v0.15.0/MarcoTV-0.15.0.apk'
@@ -148,13 +149,17 @@ class OfficialApkChecks(unittest.TestCase):
                 return json.dumps(release)
             raise AssertionError(address)
         root = Path(sync.__file__).resolve().parent.parent
-        with tempfile.TemporaryDirectory() as directory, patch.object(sync, 'ROOT', Path(directory)), patch.object(sync, 'INDEX', Path(directory) / 'tv' / 'index.html'), patch.object(sync, 'fetch', fetch):
+        with tempfile.TemporaryDirectory() as directory, patch.object(sync, 'ROOT', Path(directory)), patch.object(sync, 'INDEX', Path(directory) / 'tv' / 'index.html'), patch.object(sync, 'HUB', Path(directory) / 'index.html'), patch.object(sync, 'fetch', fetch):
             (Path(directory) / 'tv').mkdir()
             (Path(directory) / 'tv' / 'index.html').write_text((root / 'tv' / 'index.html').read_text(encoding='utf-8'), encoding='utf-8')
+            (Path(directory) / 'index.html').write_text((root / 'index.html').read_text(encoding='utf-8'), encoding='utf-8')
             self.assertEqual(sync.main(), 0)
             self.assertEqual((Path(directory) / 'MarcoTV-0.15.0.apk').read_bytes(), official)
             self.assertFalse((Path(directory) / 'MarcoTV-0.15.0-Restricted.apk').exists())
-            self.assertFalse((Path(directory) / 'index.html').exists())
+            hub = (Path(directory) / 'index.html').read_text(encoding='utf-8')
+            self.assertIn('<!--sync:hub-tv-version-->当前稳定版 0.15.0，2026 年 11 月 3 日发布<!--/sync:hub-tv-version-->', hub)
+            self.assertNotIn('<!--sync:hub-tv-version-->当前稳定版 0.21.2', hub)
+            self.assertIn('<!--sync:hub-movie-versions-->', hub)
             html = (Path(directory) / 'tv' / 'index.html').read_text(encoding='utf-8')
             self.assertIn(osha, html)
             self.assertNotIn('26a912eb31ccf7450ac9df6aead303b753c5f008550b2b6384ac0f542b8860f9', html)
@@ -182,5 +187,13 @@ class SyncAnchorChecks(unittest.TestCase):
         self.assertEqual(html.count('<!--sync:release-date-->'), 2)
         self.assertEqual(html.count('<!--sync:size-->'), 2)
         self.assertEqual(html.count('<!--sync:sha256-->'), 1)
+    def test_hub_has_sync_anchors(self):
+        # Pins the contract between the hub and both syncs: the TV line
+        # is owned by sync_release.py, the Movie line by
+        # sync_platform_packages.py; each anchor appears exactly once.
+        root = Path(sync.__file__).resolve().parent.parent
+        html = (root / 'index.html').read_text(encoding='utf-8')
+        self.assertEqual(html.count('<!--sync:hub-tv-version-->'), 1)
+        self.assertEqual(html.count('<!--sync:hub-movie-versions-->'), 1)
 
 if __name__=='__main__':unittest.main()

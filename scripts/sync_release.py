@@ -4,11 +4,13 @@
 Reads https://api.github.com/repos/Pilipala9919/MarcoTV/releases/latest
 (which excludes drafts and prereleases), downloads the APK and the four
 showcase screenshots, and updates tv/index.html in place: version, release
-date, APK filename, size and SHA256. Exits 0 with no changes when the
-mirror already matches the latest stable release.
+date, APK filename, size and SHA256. It also keeps the hub's TV version
+line (index.html) in step via its own sync anchor, so the hub never goes
+stale after a release. Exits 0 with no changes when the mirror already
+matches the latest stable release.
 
-The site root (index.html) is the Marco hub and is never touched here;
-only the TV product page (tv/index.html) carries sync anchors.
+Only the TV version line on the hub is owned here; the hub's Movie line
+is owned by sync_platform_packages.py, and the rest of the hub is static.
 """
 import hashlib
 import json
@@ -20,6 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "tv" / "index.html"
+HUB = ROOT / "index.html"
 SOURCE_REPO = "Pilipala9919/MarcoTV"
 API = f"https://api.github.com/repos/{SOURCE_REPO}/releases/latest"
 RAW = f"https://raw.githubusercontent.com/{SOURCE_REPO}/main/docs/showcase/assets"
@@ -45,18 +48,19 @@ def fetch(url, binary=False):
 
 
 def _replace_anchor(html, name, value):
-    """Replace every <!--sync:<name>-->...<!--/sync:<name>--> spot in tv/index.html.
+    """Replace every <!--sync:<name>-->...<!--/sync:<name>--> spot in a page.
 
     The TV page marks each syncable value (version, release-date, size,
     sha256) with an HTML comment anchor; a value may appear in more than
     one place (hero + download section) and all marked spots update
-    together. A missing anchor fails loudly: a silently stale version or
-    checksum is worse than a failed sync.
+    together. The hub marks its TV version line the same way
+    (hub-tv-version). A missing anchor fails loudly: a silently stale
+    version or checksum is worse than a failed sync.
     """
     pattern = re.compile(r"(<!--sync:" + re.escape(name) + r"-->)[^<]*(<!--/sync:" + re.escape(name) + r"-->)")
     html, n = pattern.subn(lambda m: m.group(1) + value + m.group(2), html)
     if n == 0:
-        raise ValueError(f"sync anchor missing in tv/index.html: sync:{name}")
+        raise ValueError(f"sync anchor missing: sync:{name}")
     return html
 
 
@@ -150,6 +154,14 @@ def main():
     preview_version=sync_update_channels()
     html=render_channels(INDEX.read_text(encoding="utf-8"), preview_version)
     INDEX.write_text(html,encoding="utf-8")
+    # Hub TV version line: same release, same date, via its own anchor.
+    # Idempotent like the TV anchors above, so it runs on every sync.
+    hub = HUB.read_text(encoding="utf-8")
+    hub_new = _replace_anchor(hub, "hub-tv-version",
+                              f"当前稳定版 {version}，{published.year} 年 {published.month} 月 {published.day} 日发布")
+    if hub_new != hub:
+        HUB.write_text(hub_new, encoding="utf-8")
+        changed = True
     print("changed" if changed else "already up to date")
     return 0
 
