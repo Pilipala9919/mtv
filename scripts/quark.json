@@ -65,9 +65,9 @@
   "appletv": {
     "folder": "/MarcoMovie/AppleTV",
     "share_url": "https://pan.quark.cn/s/1b944e395566",
-    "file": "MarcoMovie-0.1.1-tvos-appletv-unsigned.ipa",
-    "version": "0.1.1",
-    "sha256": "fef4c3f2cb0e8fc6c8f938b4f037a2831aac697d1208529175aa0fb8153d3ab6"
+    "file": "MarcoMovie-0.1.2-tvos-appletv-unsigned.ipa",
+    "version": "0.1.2",
+    "sha256": "6a8eabfcb086db4729054e2a46727bd937a05843d78cc00a50928b3fd21e042a"
   },
   "harmonyos": {
     "folder": "/MarcoMovie/鸿蒙版",
