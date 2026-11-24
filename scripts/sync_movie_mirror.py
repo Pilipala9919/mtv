@@ -857,6 +857,7 @@ def sync(output):
     <div class="nav-links">
       <a href="/tv/">Marco TV</a>
       <span class="current">Marco Movie</span>
+      <a href="/wallpapers/">壁纸库</a>
       <a href="https://github.com/{REPO}" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
