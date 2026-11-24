@@ -44,9 +44,9 @@
   "android-lite": {
     "folder": "/MarcoMovie/轻量版",
     "share_url": "https://pan.quark.cn/s/6d0af5ae83ab",
-    "file": "MarcoMovie-0.5.8-android-lite.apk",
-    "version": "0.5.8",
-    "sha256": "3884d1522374b9d0a8b77a92dd361955cad6de96d164e53df60304d408560942"
+    "file": "MarcoMovie-0.5.9-android-lite.apk",
+    "version": "0.5.9",
+    "sha256": "78991a42f11f3ad2fd035e64671dc3b7a92cd2d014581a06c008a55ac5899f8d"
   },
   "tv": {
     "folder": "/MarcoTV/电视版",
