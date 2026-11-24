@@ -1,0 +1,24 @@
+# Marco Movie Apple TV 0.1.2
+
+发布日期：2026-11-24。应用版本：`0.1.2`（构建号 `3`），最低系统要求：tvOS 16.0。
+
+本次更新修复了跨设备续播和收藏同步、私密订阅导出、切集换线时的断点，以及退出播放后分片仍在下载的问题。已通过 Apple TV 4K 模拟器（tvOS 26.2）58 项自动测试。本版尚未经物理 Apple TV 验证。如遇问题，欢迎在 GitHub Issues 附上 Apple TV 型号、tvOS 版本、触发步骤，以及升级前是否正常。
+
+## 更新内容
+
+- **跨设备续播与收藏同步**：统一订阅来源识别与旧设备 ID 映射（兼容仅开启“历史与收藏同步”及双开关同时开启场景），防止同步覆盖本地新增操作，并在来源歧义时保留旧记录不串片。
+- **私密订阅隔离与公开导出过滤**：私密父订阅强制覆盖点播与直播子项并从普通首页、搜索、直播、片库与背景海报中彻底隐藏；普通备份、WebDAV 与局域网扫码导出均过滤私密子站（含顶层数组与单站对象 JSON 形态），避免私密片名与海报被重新上传。
+- **切集换线断点与选集分页**：修复切集、换线和跨线路长剧分页时的断点保存与焦点定位，优化原生选集菜单交互。
+- **播放器分片与资源回收**：修复退出播放或切换片源后本地并发 Range 代理分片仍在后台下载的问题，完善 206 完整性检查与会话撤销清理；同步修复干净检出下的 QuickJS-NG 脚本资源打包。
+
+## 包信息与构建记录
+
+- **未签名 IPA（Apple TV / tvOS 16.0+）**：`MarcoMovie-0.1.2-tvos-appletv-unsigned.ipa`（`3426893` B，更新兼容别名 `MarcoMovie-0.1.2-appletv-unsigned.ipa`），SHA-256：`6a8eabfcb086db4729054e2a46727bd937a05843d78cc00a50928b3fd21e042a`。
+- **对应源码包**：`MarcoMovie-appletv-v0.1.2-source.zip`（`16635551` B），SHA-256：`12a417fe040e25527d8385f3e68372c310080aeba2a35c900d3ed5a1e3df77ea`。
+- **构建提交**：`185534c506748ccf113513e9caa51d9f2a268669`。[Apple TV 构建与模拟器验证记录（45346880559）](https://github.com/Pilipala9919/MarcoMovie/actions/runs/45346880559)。
+
+## 验证范围与已知限制
+
+- 已通过公共内容守卫检查、`tvos/test_tvos_project.py`（`8/8`）、macOS 原生 `swift test`（`52/52`）、Apple TV 4K 模拟器（tvOS 26.2）`58/58` 项自动化与 UI/E2E 回归测试及 Xcode `appletvos` Release 打包解包自检（确认 Bundle ID `com.pilipala.marcoMovie.tv`、`0.1.2` / build `3`、`MinimumOSVersion = 16.0`、`js-host` `6` 项与 `catpaw` `26` 项完整）。
+- 已知限制：发布包为未签名 `.ipa`，需通过 Xcode、Sideloadly、自签工具或巨魔（TrollStore tvOS）安装；受 tvOS 系统沙盒限制不支持 Android JAR 插件、JIT 执行或持久化大缓存。
+- 注意事项：本版尚未经物理 Apple TV 验证，如遇问题欢迎在 GitHub Issues 附上 Apple TV 型号、tvOS 版本、触发步骤，以及升级前是否正常。
