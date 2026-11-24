@@ -72,9 +72,9 @@
   "harmonyos": {
     "folder": "/MarcoMovie/鸿蒙版",
     "share_url": "https://pan.quark.cn/s/fb5983e623c9",
-    "file": "MarcoMovie-0.1.1-harmonyos-universal.hap",
-    "version": "0.1.1",
-    "sha256": "3df10bc519eeda366c9b5f15ecb92cd3df2cf92148191dfca42d034f4b554bae"
+    "file": "MarcoMovie-0.1.2-harmonyos-universal.hap",
+    "version": "0.1.2",
+    "sha256": "22fcc43e12a912b994309da06c4ab17726246ca1d3dfd14ea23dc3d51ddf3979"
   },
   "wp-squirrel": {
     "folder": "/MarcoTV/壁纸-顽皮小松鼠",
