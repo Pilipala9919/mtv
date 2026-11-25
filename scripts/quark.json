@@ -51,9 +51,9 @@
   "tv": {
     "folder": "/MarcoTV/电视版",
     "share_url": "https://pan.quark.cn/s/df36e65bca44",
-    "file": "MarcoTV-0.21.2.apk",
-    "version": "0.21.2",
-    "sha256": "de8b801554413cfbbeb1a5ebd5b6ba686541ac0ab2176d0e10ce86593f200395"
+    "file": "MarcoTV-0.21.3.apk",
+    "version": "0.21.3",
+    "sha256": "2a92aacdcc633de894f51716972ad5fe5b2c15465088195c5ff3fb9174783a6e"
   },
   "tv-lite": {
     "folder": "/MarcoTV/Lite版",
