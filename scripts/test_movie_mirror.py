@@ -254,6 +254,17 @@ class MirrorTests(unittest.TestCase):
         self.assertNotIn('界面示意', page)
         self.assertNotIn('class="shots"', page)
 
+    def test_tencent_channel_section_present(self):
+        self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        self.assertIn('id="channel"', page)
+        self.assertIn('腾讯频道', page)
+        self.assertIn('Marco交流区', page)
+        self.assertIn('https://pd.qq.com/s/N45e3aaawv?b=9', page)
+        self.assertIn('加入腾讯频道', page)
+        self.assertLess(page.index('id="group"'), page.index('id="channel"'))
+        self.assertLess(page.index('id="channel"'), page.index('<footer>'))
+
     def test_brand_assets_and_dark_hero_frame(self):
         self.sync()
         page = (self.out/'index.html').read_text(encoding='utf-8')

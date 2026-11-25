@@ -54,6 +54,8 @@ QQ_GROUP7_CODE = '1092881150'
 # Eighth official QQ group, same universal scope (added 2026-11-23).
 QQ_GROUP8_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=83IjYjBMDYnVi4HyiDyG5Tg7jUZr6mO7%2BEe7siM46OkTDqz1UdxOlUii03ksIiQx&busi_data=eyJncm91cENvZGUiOiIxOTAzMzAyOTciLCJ0b2tlbiI6InlpdzdtWjlZZDM4N3Y2Q0hIWDI5Qnd0Q0dsL2w5OEhVcngwMVlnVnRMWkUxbnQ5NGFCQjZkcEZ4VXRXaVZWYUYiLCJ1aW4iOiI5MjYwMDQzIn0%3D&data=Hh8YquUZLsQsNs8cZNjvnvGI0x3gZwrAVA9xSLDzXasDDHAVlfd7ZEA9_hlMryQe9F8uqZVKXXxKeTOOf6Hupw&svctype=4&tempid=h5_group_info'
 QQ_GROUP8_CODE = '190330297'
+
+TENCENT_CHANNEL_URL = 'https://pd.qq.com/s/N45e3aaawv?b=9'
 # Quark Drive share links, written by scripts/sync_quark.py (one permanent
 # folder link per platform). Absent on first run: cards render without the
 # Quark button until the first Quark sync writes the manifest.
@@ -934,6 +936,15 @@ def sync(output):
     <h2 class="reveal">官方交流群</h2>
     <p class="intro reveal" style="--d:0.1s">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
 {group_rows}
+  </section>
+
+  <section class="util" id="channel">
+    <h2 class="reveal">腾讯频道</h2>
+    <p class="intro reveal" style="--d:0.1s">腾讯频道「Marco交流区」，新版发布、源更新和反馈都在这里。点开加入频道。</p>
+    <div class="group-row reveal">
+      <span class="name">Marco交流区</span><span class="num">腾讯频道</span>
+      <a href="{TENCENT_CHANNEL_URL}" target="_blank" rel="noopener">加入腾讯频道</a>
+    </div>
   </section>
 </main>
 
