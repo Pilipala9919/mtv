@@ -262,6 +262,8 @@ class MirrorTests(unittest.TestCase):
         self.assertIn('Marco交流区', page)
         self.assertIn('https://pd.qq.com/s/N45e3aaawv?b=9', page)
         self.assertIn('加入腾讯频道', page)
+        self.assertLess(page.index('id="download"'), page.index('id="channel"'))
+        self.assertLess(page.index('id="channel"'), page.index('id="donate"'))
         self.assertLess(page.index('id="channel"'), page.index('id="group"'))
         self.assertLess(page.index('id="group"'), page.index('<footer>'))
 

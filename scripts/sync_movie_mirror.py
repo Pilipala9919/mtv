@@ -897,6 +897,15 @@ def sync(output):
     </div>
   </section>
 
+  <section class="util" id="channel">
+    <h2 class="reveal">腾讯频道</h2>
+    <p class="intro reveal" style="--d:0.1s">腾讯频道「Marco交流区」，新版发布、源更新和反馈都在这里。点开加入频道。</p>
+    <div class="group-row reveal">
+      <span class="name">Marco交流区</span><span class="num">腾讯频道</span>
+      <a href="{TENCENT_CHANNEL_URL}" target="_blank" rel="noopener">加入腾讯频道</a>
+    </div>
+  </section>
+
   <!-- 捐赠区：纯静态内容，同步脚本不改写。 -->
   <section class="util reveal" id="donate">
     <h2>捐赠支持</h2>
@@ -930,15 +939,6 @@ def sync(output):
     <h2 class="reveal">版本特性 · {version}</h2>
     <p class="intro reveal" style="--d:0.1s">{published_date} 发布 · 更新内容来自 GitHub Release 原文，改写为列表。</p>
 {changelog}
-  </section>
-
-  <section class="util" id="channel">
-    <h2 class="reveal">腾讯频道</h2>
-    <p class="intro reveal" style="--d:0.1s">腾讯频道「Marco交流区」，新版发布、源更新和反馈都在这里。点开加入频道。</p>
-    <div class="group-row reveal">
-      <span class="name">Marco交流区</span><span class="num">腾讯频道</span>
-      <a href="{TENCENT_CHANNEL_URL}" target="_blank" rel="noopener">加入腾讯频道</a>
-    </div>
   </section>
 
   <section class="util" id="group">
