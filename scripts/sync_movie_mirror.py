@@ -932,12 +932,6 @@ def sync(output):
 {changelog}
   </section>
 
-  <section class="util" id="group">
-    <h2 class="reveal">官方交流群</h2>
-    <p class="intro reveal" style="--d:0.1s">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
-{group_rows}
-  </section>
-
   <section class="util" id="channel">
     <h2 class="reveal">腾讯频道</h2>
     <p class="intro reveal" style="--d:0.1s">腾讯频道「Marco交流区」，新版发布、源更新和反馈都在这里。点开加入频道。</p>
@@ -945,6 +939,12 @@ def sync(output):
       <span class="name">Marco交流区</span><span class="num">腾讯频道</span>
       <a href="{TENCENT_CHANNEL_URL}" target="_blank" rel="noopener">加入腾讯频道</a>
     </div>
+  </section>
+
+  <section class="util" id="group">
+    <h2 class="reveal">官方交流群</h2>
+    <p class="intro reveal" style="--d:0.1s">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
+{group_rows}
   </section>
 </main>
 

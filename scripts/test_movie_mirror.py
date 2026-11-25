@@ -262,8 +262,8 @@ class MirrorTests(unittest.TestCase):
         self.assertIn('Marco交流区', page)
         self.assertIn('https://pd.qq.com/s/N45e3aaawv?b=9', page)
         self.assertIn('加入腾讯频道', page)
-        self.assertLess(page.index('id="group"'), page.index('id="channel"'))
-        self.assertLess(page.index('id="channel"'), page.index('<footer>'))
+        self.assertLess(page.index('id="channel"'), page.index('id="group"'))
+        self.assertLess(page.index('id="group"'), page.index('<footer>'))
 
     def test_brand_assets_and_dark_hero_frame(self):
         self.sync()
