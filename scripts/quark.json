@@ -37,9 +37,9 @@
   "macos": {
     "folder": "/MarcoMovie/macOS",
     "share_url": "https://pan.quark.cn/s/c7be45d7a4b5",
-    "file": "MarcoMovie-0.5.20-macos-desktop.zip",
-    "version": "0.5.20",
-    "sha256": "fad92c6c1f554ff238ecfbcda4ada170bfb86a30a19fdefe114aec28eb8ef10e"
+    "file": "MarcoMovie-0.6.0-macos-desktop.zip",
+    "version": "0.6.0",
+    "sha256": "f9851ec416d67887cf5486e0eb01a40e9294edb62aa09db6fb0aa1df91c7caeb"
   },
   "android-lite": {
     "folder": "/MarcoMovie/轻量版",
