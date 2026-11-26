@@ -870,6 +870,7 @@ def sync(output):
   <p class="lead hero-el" style="--d:0.1s">支持 Android 电视大屏遥控、手机与平板 64 位专属触控，Apple TV（tvOS 16.0+）、HarmonyOS NEXT（纯血鸿蒙手机 / 平板 / 智慧屏），以及 Windows / macOS / iOS（iOS 14.0+ 巨魔与自签）多端独立适配的开源播放器。</p>
   <div class="actions hero-el" style="--d:0.2s">
     <a class="textlink" href="#download">全部平台</a>
+    <a class="textlink" href="#channel">交流区</a>
     <a class="textlink" href="#group">交流群</a>
     <a class="textlink" href="#donate">捐赠支持</a>
   </div>
@@ -902,7 +903,7 @@ def sync(output):
     <p class="intro reveal" style="--d:0.1s">腾讯频道「Marco交流区」，新版发布、源更新和反馈都在这里。点开加入频道。</p>
     <div class="group-row reveal">
       <span class="name">Marco交流区</span><span class="num">腾讯频道</span>
-      <a href="{TENCENT_CHANNEL_URL}" target="_blank" rel="noopener">加入腾讯频道</a>
+      <a class="btn btn-primary" href="{TENCENT_CHANNEL_URL}" target="_blank" rel="noopener">加入腾讯频道</a>
     </div>
   </section>
 
