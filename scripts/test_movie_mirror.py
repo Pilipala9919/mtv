@@ -262,6 +262,7 @@ class MirrorTests(unittest.TestCase):
         self.assertIn('Marco交流区', page)
         self.assertIn('https://pd.qq.com/s/N45e3aaawv?b=9', page)
         self.assertIn('加入腾讯频道', page)
+        self.assertIn('反馈 bug、功能建议、适配版本等需求，请到频道对应板块提交。', page)
         self.assertIn('<a class="textlink" href="#channel">交流区</a>', page)
         self.assertIn('<a class="btn btn-primary" href="https://pd.qq.com/s/N45e3aaawv?b=9" target="_blank" rel="noopener">加入腾讯频道</a>', page)
         self.assertLess(page.index('id="download"'), page.index('id="channel"'))

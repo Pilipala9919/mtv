@@ -900,7 +900,7 @@ def sync(output):
 
   <section class="util" id="channel">
     <h2 class="reveal">腾讯频道</h2>
-    <p class="intro reveal" style="--d:0.1s">腾讯频道「Marco交流区」，新版发布、源更新和反馈都在这里。点开加入频道。</p>
+    <p class="intro reveal" style="--d:0.1s">腾讯频道「Marco交流区」，新版发布、源更新和反馈都在这里。反馈 bug、功能建议、适配版本等需求，请到频道对应板块提交。</p>
     <div class="group-row reveal">
       <span class="name">Marco交流区</span><span class="num">腾讯频道</span>
       <a class="btn btn-primary" href="{TENCENT_CHANNEL_URL}" target="_blank" rel="noopener">加入腾讯频道</a>
