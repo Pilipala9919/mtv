@@ -2,9 +2,9 @@
   "android-tv": {
     "folder": "/MarcoMovie/电视版",
     "share_url": "https://pan.quark.cn/s/b9207bfb5e53",
-    "file": "MarcoMovie-0.6.2-android-tv.apk",
-    "version": "0.6.2",
-    "sha256": "d0cc7e019d67c1b2a4b7769893cf3305c6c645add08536b06ff320f5c957f2bc"
+    "file": "MarcoMovie-0.6.3-android-tv.apk",
+    "version": "0.6.3",
+    "sha256": "68a08fcc4efd5d92a0c9115a07f2a22c57a71672b9ed215e11d030e4765d0faa"
   },
   "android-mobile": {
     "folder": "/MarcoMovie/手机版",
