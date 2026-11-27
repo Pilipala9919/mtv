@@ -72,6 +72,12 @@ WALLPAPER_FOLDERS = {
     "wp-penguin": "/MarcoTV/壁纸-害羞小企鹅",
     "wp-black-cat": "/MarcoTV/壁纸-乖巧小黑猫",
     "wp-tabby-cat": "/MarcoTV/壁纸-五花肉",
+    "wp-pet-golden": "/MarcoTV/壁纸-金毛",
+    "wp-pet-panda": "/MarcoTV/壁纸-熊猫",
+    "wp-pet-alaskan": "/MarcoTV/壁纸-阿拉斯加",
+    "wp-pet-westie": "/MarcoTV/壁纸-西高地",
+    "wp-pet-black-shiba": "/MarcoTV/壁纸-黑豆柴",
+    "wp-pet-brown-shiba": "/MarcoTV/壁纸-浅棕豆柴",
 }
 
 UA = {"User-Agent": "mtv-quark-sync"}
@@ -373,7 +379,7 @@ def tv_sources():
 
 
 def wallpaper_sources():
-    """The five Pixar video wallpapers, mirrored in wallpapers/videos/."""
+    """Pixar video wallpapers plus the six 3D pet wallpapers, mirrored in wallpapers/videos/."""
     videos = ROOT / "wallpapers" / "videos"
     return {
         "wp-squirrel": local_asset(videos / "pixar-squirrel-4k60.mp4"),
@@ -381,6 +387,12 @@ def wallpaper_sources():
         "wp-penguin": local_asset(videos / "pixar-penguin-4k60.mp4"),
         "wp-black-cat": local_asset(videos / "pixar-black-cat-4k60.mp4"),
         "wp-tabby-cat": local_asset(videos / "pixar-tabby-cat-4k60.mp4"),
+        "wp-pet-golden": local_asset(videos / "GoldenRetriever_4K60_Loop_HEVC.mp4"),
+        "wp-pet-panda": local_asset(videos / "Panda_4K60_Loop_HEVC.mp4"),
+        "wp-pet-alaskan": local_asset(videos / "AlaskanMalamute_4K60_Loop_HEVC.mp4"),
+        "wp-pet-westie": local_asset(videos / "Westie_4K60_Loop_HEVC.mp4"),
+        "wp-pet-black-shiba": local_asset(videos / "BlackMameShiba_4K60_Loop_HEVC.mp4"),
+        "wp-pet-brown-shiba": local_asset(videos / "BrownMameShiba_4K60_Loop_HEVC.mp4"),
     }
 
 

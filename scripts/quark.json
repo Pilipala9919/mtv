@@ -117,5 +117,47 @@
     "file": "MarcoMovie-0.7.11-ios14-unsigned.ipa",
     "version": "0.7.11",
     "sha256": "38a97338c1f4b81f28e5b9c3e3470f8aacf25fd90b83b7ba8d38912b15f198be"
+  },
+  "wp-pet-golden": {
+    "folder": "/MarcoTV/壁纸-金毛",
+    "share_url": "https://pan.quark.cn/s/de912c4b20b2",
+    "file": "GoldenRetriever_4K60_Loop_HEVC.mp4",
+    "version": null,
+    "sha256": "ddfc16b3cf80b069cb9ce22caf43cec33c1de129a53ff9c6ba2a3a3dc2f107dc"
+  },
+  "wp-pet-panda": {
+    "folder": "/MarcoTV/壁纸-熊猫",
+    "share_url": "https://pan.quark.cn/s/facdbe326226",
+    "file": "Panda_4K60_Loop_HEVC.mp4",
+    "version": null,
+    "sha256": "bbed7d9f87bc26a4f73068bc9589f43c8d832f0f57a79ddd173b406c1e30c14f"
+  },
+  "wp-pet-westie": {
+    "folder": "/MarcoTV/壁纸-西高地",
+    "share_url": "https://pan.quark.cn/s/d02ef4be72a4",
+    "file": "Westie_4K60_Loop_HEVC.mp4",
+    "version": null,
+    "sha256": "dd81d16517c23b590b47cd09ab9659f9a476d3bc66144f354c51091e635b0a09"
+  },
+  "wp-pet-black-shiba": {
+    "folder": "/MarcoTV/壁纸-黑豆柴",
+    "share_url": "https://pan.quark.cn/s/c1cfcc7af7c5",
+    "file": "BlackMameShiba_4K60_Loop_HEVC.mp4",
+    "version": null,
+    "sha256": "8b1345f447a4e29cea1bf208f3585c5df1f26ba71487083747479cb14bc88eb7"
+  },
+  "wp-pet-brown-shiba": {
+    "folder": "/MarcoTV/壁纸-浅棕豆柴",
+    "share_url": "https://pan.quark.cn/s/626fd3ba8a9e",
+    "file": "BrownMameShiba_4K60_Loop_HEVC.mp4",
+    "version": null,
+    "sha256": "3aa3190516626c2f53ce8154179985a851f86175d210a7ae9ab21bc778dbfe96"
+  },
+  "wp-pet-alaskan": {
+    "folder": "/MarcoTV/壁纸-阿拉斯加",
+    "share_url": "https://pan.quark.cn/s/d67a046ee5cc",
+    "file": "AlaskanMalamute_4K60_Loop_HEVC.mp4",
+    "version": null,
+    "sha256": "e55151de7819c53324e6abd7c2e0d0c7a7448ac286a84473465848dd1a599237"
   }
 }
