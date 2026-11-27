@@ -21,6 +21,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -305,7 +309,13 @@ textarea:focus {
 
 .input-row {
   display: flex;
+  align-items: stretch;
   gap: 8px;
+}
+
+.input-row input {
+  flex: 1;
+  min-width: 0;
 }
 
 .two-col {
@@ -404,6 +414,8 @@ textarea:focus {
   padding: 11px 18px;
   font-size: 15px;
   font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
   cursor: pointer;
   min-height: 44px;
   transition: transform 0.1s, background 0.15s, border-color 0.15s, opacity 0.15s;
