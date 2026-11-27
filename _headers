@@ -32,6 +32,14 @@
   X-Content-Type-Options: nosniff
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'
 
+/ai-console/*
+  Cache-Control: no-store
+  Referrer-Policy: no-referrer
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'
+
 /wallpapers/catalog.json
   Content-Type: application/json; charset=utf-8
   Cache-Control: public, max-age=300
