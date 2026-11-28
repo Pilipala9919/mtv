@@ -23,23 +23,23 @@
   "windows-setup": {
     "folder": "/MarcoMovie/Windows安装版",
     "share_url": "https://pan.quark.cn/s/340eb49a4242",
-    "file": "MarcoMovie-0.7.4-windows-x64-setup.exe",
-    "version": "0.7.4",
-    "sha256": "f47831bf3c7c2a980a8693b6b153845a234b8f53610b27dd724a4cc4c15b3a95"
+    "file": "MarcoMovie-0.7.5-windows-x64-setup.exe",
+    "version": "0.7.5",
+    "sha256": "afbafe63d229ff449a380feca4545fe56c8177526488c52a5cf471862f2fe189"
   },
   "windows-zip": {
     "folder": "/MarcoMovie/Windows绿色版",
     "share_url": "https://pan.quark.cn/s/097b525e7317",
-    "file": "MarcoMovie-0.7.4-windows-x64-portable.zip",
-    "version": "0.7.4",
-    "sha256": "2bc910b3522fa134eaed5ed100b45fa93f09c53626aa42069c0509207a2bd89b"
+    "file": "MarcoMovie-0.7.5-windows-x64-portable.zip",
+    "version": "0.7.5",
+    "sha256": "c757ce175441300cea7997986031c233254b136b02e90e2758f595813c7e5f24"
   },
   "macos": {
     "folder": "/MarcoMovie/macOS",
     "share_url": "https://pan.quark.cn/s/c7be45d7a4b5",
-    "file": "MarcoMovie-0.6.1-macos-desktop.zip",
-    "version": "0.6.1",
-    "sha256": "238707648e4e12ab6f3ae3d5bfd9ced43e8773c0688bd21c7a0c11849f8dbfb7"
+    "file": "MarcoMovie-0.6.2-macos-desktop.zip",
+    "version": "0.6.2",
+    "sha256": "bee810d5b7a02fdca92c84a75022e0a2235fcc11e30974c6ec99fe74f28c19ff"
   },
   "android-lite": {
     "folder": "/MarcoMovie/轻量版",
@@ -65,16 +65,16 @@
   "appletv": {
     "folder": "/MarcoMovie/AppleTV",
     "share_url": "https://pan.quark.cn/s/1b944e395566",
-    "file": "MarcoMovie-0.1.2-tvos-appletv-unsigned.ipa",
-    "version": "0.1.2",
-    "sha256": "6a8eabfcb086db4729054e2a46727bd937a05843d78cc00a50928b3fd21e042a"
+    "file": "MarcoMovie-0.1.3-tvos-appletv-unsigned.ipa",
+    "version": "0.1.3",
+    "sha256": "07cd22222f2701e6a8a3e4d42c5cc7c8a8c90544cc2e0b18ece83816a969d110"
   },
   "harmonyos": {
     "folder": "/MarcoMovie/鸿蒙版",
     "share_url": "https://pan.quark.cn/s/fb5983e623c9",
-    "file": "MarcoMovie-0.1.2-harmonyos-universal.hap",
-    "version": "0.1.2",
-    "sha256": "22fcc43e12a912b994309da06c4ab17726246ca1d3dfd14ea23dc3d51ddf3979"
+    "file": "MarcoMovie-0.1.3-harmonyos-universal.hap",
+    "version": "0.1.3",
+    "sha256": "95efa6160b691557a4812f21ffbf27a5a49382525b698e0367709687f69d9477"
   },
   "wp-squirrel": {
     "folder": "/MarcoTV/壁纸-顽皮小松鼠",
