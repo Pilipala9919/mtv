@@ -189,8 +189,8 @@ class MirrorTests(unittest.TestCase):
         with patch.object(m, 'load_quark_links', return_value=links):
             self.sync()
         page = (self.out/'index.html').read_text(encoding='utf-8')
-        order = ['<header class="hero">', 'id="download"', 'id="donate"',
-                 'id="features"', 'id="changelog"', 'id="group"', '<footer>']
+        order = ['<header class="hero">', 'id="download"', 'id="club"', 'id="donate"',
+                 'id="features"', 'id="changelog"', '<footer>']
         positions = [page.index(marker) for marker in order]
         self.assertEqual(positions, sorted(positions))
         self.assertEqual(page.count('<div class="dl"'), 2)
@@ -224,32 +224,14 @@ class MirrorTests(unittest.TestCase):
         self.assertIn('MarcoMovie-0.4.12-windows-setup.exe', page)
         self.assertIn('Windows 安装版', page)
 
-    def test_group_section_present_and_showcase_frames_removed(self):
+    def test_group_section_removed_and_showcase_frames_removed(self):
         self.sync()
         page = (self.out/'index.html').read_text(encoding='utf-8')
-        self.assertIn('官方交流群', page)
-        self.assertIn('815085102', page)
-        self.assertIn('官方交流群 1️⃣', page)
-        self.assertIn('1036404238', page)
-        self.assertIn('官方交流群 2️⃣', page)
-        self.assertIn('Marco！1', page)
-        self.assertIn('1109397842', page)
-        self.assertIn('官方交流群 3️⃣', page)
-        self.assertIn('Marco！2', page)
-        self.assertIn('1135556342', page)
-        self.assertIn('官方交流群 4️⃣', page)
-        self.assertIn('Marco！3', page)
-        self.assertIn('719653208', page)
-        self.assertIn('官方交流群 5️⃣', page)
-        self.assertIn('Marco！4', page)
-        self.assertIn('1136252786', page)
-        self.assertIn('官方交流群 6️⃣', page)
-        self.assertIn('Marco！5', page)
-        self.assertIn('1092881150', page)
-        self.assertIn('官方交流群 7️⃣', page)
-        self.assertIn('Marco！6', page)
-        self.assertIn('qun.qq.com/universal-share/share', page)
-        self.assertIn('通用群', page)
+        self.assertNotIn('id="group"', page)
+        self.assertNotIn('官方交流群', page)
+        self.assertNotIn('qun.qq.com', page)
+        self.assertNotIn('815085102', page)
+        self.assertNotIn('加入 QQ 群', page)
         self.assertNotIn('画面展示', page)
         self.assertNotIn('界面示意', page)
         self.assertNotIn('class="shots"', page)
@@ -266,9 +248,23 @@ class MirrorTests(unittest.TestCase):
         self.assertIn('<a class="textlink" href="#channel">交流区</a>', page)
         self.assertIn('<a class="btn btn-primary" href="https://pd.qq.com/s/N45e3aaawv?b=9" target="_blank" rel="noopener">加入腾讯频道</a>', page)
         self.assertLess(page.index('id="download"'), page.index('id="channel"'))
-        self.assertLess(page.index('id="channel"'), page.index('id="donate"'))
-        self.assertLess(page.index('id="channel"'), page.index('id="group"'))
-        self.assertLess(page.index('id="group"'), page.index('<footer>'))
+        self.assertLess(page.index('id="channel"'), page.index('id="club"'))
+        self.assertLess(page.index('id="club"'), page.index('id="donate"'))
+
+    def test_club_channel_section_present(self):
+        self.sync()
+        page = (self.out/'index.html').read_text(encoding='utf-8')
+        self.assertIn('id="club"', page)
+        self.assertIn('俱乐部', page)
+        self.assertIn('Marco俱乐部', page)
+        self.assertIn('https://pd.qq.com/s/f8tm7swar8?b=9', page)
+        self.assertIn('加入俱乐部', page)
+        self.assertIn('加入需要提交赞助或捐赠截图，人工审核通过后进频道。', page)
+        self.assertIn('<a class="textlink" href="#club">俱乐部</a>', page)
+        self.assertIn('<a class="btn btn-primary" href="https://pd.qq.com/s/f8tm7swar8?b=9" target="_blank" rel="noopener">加入俱乐部</a>', page)
+        self.assertLess(page.index('id="download"'), page.index('id="channel"'))
+        self.assertLess(page.index('id="channel"'), page.index('id="club"'))
+        self.assertLess(page.index('id="club"'), page.index('id="donate"'))
 
     def test_brand_assets_and_dark_hero_frame(self):
         self.sync()

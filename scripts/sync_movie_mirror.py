@@ -30,32 +30,10 @@ LIMIT = 25 * 1024 * 1024
 # Those are listed on the mirror page but downloaded from the official GitHub release asset.
 PLATFORM_LIMIT = 300 * 1024 * 1024
 
-# Official QQ group (universal: covers Marco TV and Marco Movie, not one product).
-QQ_GROUP_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=%2FqKQ4IqdIqi2mRxgPr8PBGGEhIo0M5yMI6%2BBNKH7CoOFDczcaEXekgiu8Kbt%2BORc&busi_data=eyJncm91cENvZGUiOiI4MTUwODUxMDIiLCJ0b2tlbiI6Im9CUW4wejI1NlB6UW9uK1EzdGNEMlZXdkgvMExVcGpVdXhOMFVrVXZmcWt0N3ZoaHRLMzNzd2lLVVp6UzZXc2QiLCJ1aW4iOiI5MjYwMDQzIn0%3D&data=VXYI4NkXW1KuR0A5qzeADzpuJOBl7PrdDs8NBNT4RMeKMjrMmev1_pjDDKH3CfTw7VwFoH-5Hkd71EDQ9_qj1w&svctype=4&tempid=h5_group_info'
-QQ_GROUP_CODE = '815085102'
-# Second official QQ group, same universal scope (added 2026-11-08).
-QQ_GROUP2_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=4nZ%2F26D%2BhMLo6lpV1MQfM69dkpOz2TvHsfIf9bRWMtZA0gKGiIqgH2vzgqcaIvPT&busi_data=eyJncm91cENvZGUiOiIxMDM2NDA0MjM4IiwidG9rZW4iOiIvdWRhVUc5WjRpQkZkZkdvYTNZa1ViVlhGVmVGOGsxTUVYZUJHV0lVOWZ2aUxSM2pQUHNBRTVMMS9sb01ETHVNIiwidWluIjoiOTI2MDA0MyJ9&data=9yPnjsGlyhnKtpk8QK9noXL2QkiODxOBsmKZ3IaeJyiux1GGkQ133sh8-szNRlS_L3LkjShSMyXMaH3uiyyH3w&svctype=4&tempid=h5_group_info'
-QQ_GROUP2_CODE = '1036404238'
-# Third official QQ group, same universal scope (added 2026-11-09).
-QQ_GROUP3_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=ws6auJW%2BuftWj0%2BsnZbOLnvNbl0Ggt%2FcTmQN7%2BlonNBzUamrwpioeqnOC9WgAykn&busi_data=eyJncm91cENvZGUiOiIxMTA5Mzk3ODQyIiwidG9rZW4iOiJILzBhR05mdENBckpwMFBudmNzd1JDS3ZFTkZhcjNWMlJnVjFiLzhReHlMc1VuS2Q2emR6N211cDhJUVZFY3VRIiwidWluIjoiOTI2MDA0MyJ9&data=G8FC-Qq9g9Hc60XTobpCu8MVb-W4EwRZJoYYgQxTJzSkutIWe-8LWboOF451y2aMdH8N4I3p1H1XtAoqRLzgVQ&svctype=4&tempid=h5_group_info'
-QQ_GROUP3_CODE = '1109397842'
-# Fourth official QQ group, same universal scope (added 2026-11-10).
-QQ_GROUP4_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=4R4VS2AZHrwlVDj%2BgPmVxmcoPOjrnr9ENZVwvmjCcibaj9bbvA%2Bt7wHfUx2p6DhK&busi_data=eyJncm91cENvZGUiOiIxMTM1NTU2MzQyIiwidG9rZW4iOiI3UDI5WjZRNVdEUW9vU2dpaHZpejgxRm8xbzJKYk53TUhkVkF5VVZqeGJ2QU1WWHo1dFpIS2kwRWRiNjVPTTFJIiwidWluIjoiOTI2MDA0MyJ9&data=cCs0QRwbu37CVPXnKa8dCNjBmg64vKQNc-SvEyqqHCtTaH9dFIVK_ebEpz1R6epl-UFxvXmwgD3DcbEbDaDFDg&svctype=4&tempid=h5_group_info'
-QQ_GROUP4_CODE = '1135556342'
-# Fifth official QQ group, same universal scope (added 2026-11-13).
-QQ_GROUP5_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=65Mqw9daSUbAtgzCx4pJfUrtu%2FFSVG8EaMf7NabXrs3oZAWrQikcppAOmzBrWxCB&busi_data=eyJncm91cENvZGUiOiI3MTk2NTMyMDgiLCJ0b2tlbiI6Imt6dXMwTUhxcW9JM1VhV2RBMGZKUHZVdnBaa2p1MTgvS2RlN1ByMzZyRzcxZm9oSk5UMzZyam5va0Y5enBrYnAiLCJ1aW4iOiI5MjYwMDQzIn0%3D&data=-RJGncjsQc24ceUyIj5fqQAioLoqI9NM05EirWbDkurn_LN2dzT1oMUAY5opGwCmHLHKu_kMjBgshLNU66zD8A&svctype=4&tempid=h5_group_info'
-QQ_GROUP5_CODE = '719653208'
-# Sixth official QQ group, same universal scope (added 2026-11-15).
-QQ_GROUP6_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=AjxHG3yHvzzYhak51CIowxk0VdnymHxcHhpzP9KX130uzdzBrDJifxuwi%2FCHxZzD&busi_data=eyJncm91cENvZGUiOiIxMTM2MjUyNzg2IiwidG9rZW4iOiIvRnZmZFdTNjF3eWVIUlYvQ3VpU1lWWjBJZENHdUZuQWtyVUFpOHdNcE1YaTl4TmJOdTZDcW1zQldjdlhJOTMyIiwidWluIjoiOTI2MDA0MyJ9&data=L2iVl1AmbfbbwzxnZQyJXmo7khoYflsYSDjkRnJMqEouDDRsI46_NtzWI-9nr48crOziKWr4-pqKjGVvEvZKQw&svctype=4&tempid=h5_group_info'
-QQ_GROUP6_CODE = '1136252786'
-
-QQ_GROUP7_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=BwtsqpgLEJSl27gFHWB%2BIcJ7eOMFxdugHZatXl63g7lfrVBVM%2BX0Ler5HLevajcA&busi_data=eyJncm91cENvZGUiOiIxMDkyODgxMTUwIiwidG9rZW4iOiJFSmlOdFNGQ2d2bUpwc0NBN1d6Z0taUUxyc1VkUUllTU8za2gxeGd5WS9JOFM4amdyUlROL1JMQ0R4akxhd05pIiwidWluIjoiOTI2MDA0MyJ9&data=IDgssTWvaVVBWlGPnyUPGWjLbIEvmGxNS8lsaOYyHlUSqdCicIYdLeRdnNUj5lkEPs01NzTQ0f73ATLwJ4ciFw&svctype=4&tempid=h5_group_info'
-QQ_GROUP7_CODE = '1092881150'
-# Eighth official QQ group, same universal scope (added 2026-11-23).
-QQ_GROUP8_URL = 'https://qun.qq.com/universal-share/share?ac=1&authKey=83IjYjBMDYnVi4HyiDyG5Tg7jUZr6mO7%2BEe7siM46OkTDqz1UdxOlUii03ksIiQx&busi_data=eyJncm91cENvZGUiOiIxOTAzMzAyOTciLCJ0b2tlbiI6InlpdzdtWjlZZDM4N3Y2Q0hIWDI5Qnd0Q0dsL2w5OEhVcngwMVlnVnRMWkUxbnQ5NGFCQjZkcEZ4VXRXaVZWYUYiLCJ1aW4iOiI5MjYwMDQzIn0%3D&data=Hh8YquUZLsQsNs8cZNjvnvGI0x3gZwrAVA9xSLDzXasDDHAVlfd7ZEA9_hlMryQe9F8uqZVKXXxKeTOOf6Hupw&svctype=4&tempid=h5_group_info'
-QQ_GROUP8_CODE = '190330297'
 
 TENCENT_CHANNEL_URL = 'https://pd.qq.com/s/N45e3aaawv?b=9'
+# Second Tencent channel: Marco Club, supporters-only (added 2026-11-29).
+MARCO_CLUB_URL = 'https://pd.qq.com/s/f8tm7swar8?b=9'
 # Quark Drive share links, written by scripts/sync_quark.py (one permanent
 # folder link per platform). Absent on first run: cards render without the
 # Quark button until the first Quark sync writes the manifest.
@@ -279,7 +257,7 @@ PAGE_CSS = """
   ol.feats li ul li{border:none;border-radius:0;padding:0;position:static}
   ol.feats li ul li::before{content:none}
 
-  /* ---------- 交流群（与 TV 一致） ---------- */
+  /* ---------- 频道与俱乐部（与 TV 一致） ---------- */
   .group-row{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
     border-top:1px solid var(--line);padding:18px 0}
   .group-row:last-child{border-bottom:1px solid var(--line)}
@@ -823,22 +801,6 @@ def sync(output):
                          f'href="https://github.com/{REPO}/releases/tag/{release_tag}">'
                          'Windows / macOS / iOS 多平台下载</a></div>')
     changelog = render_changelog(feed['notes'])
-    groups = [
-        ('Marco！', QQ_GROUP_CODE, QQ_GROUP_URL),
-        ('Marco！1', QQ_GROUP2_CODE, QQ_GROUP2_URL),
-        ('Marco！2', QQ_GROUP3_CODE, QQ_GROUP3_URL),
-        ('Marco！3', QQ_GROUP4_CODE, QQ_GROUP4_URL),
-        ('Marco！4', QQ_GROUP5_CODE, QQ_GROUP5_URL),
-        ('Marco！5', QQ_GROUP6_CODE, QQ_GROUP6_URL),
-        ('Marco！6', QQ_GROUP7_CODE, QQ_GROUP7_URL),
-        ('Marco！7', QQ_GROUP8_CODE, QQ_GROUP8_URL),
-    ]
-    group_rows = ''.join(
-        '    <div class="group-row reveal">\n'
-        f'      <span class="name">官方交流群 {i}\ufe0f\u20e3：{name}</span><span class="num">群号 {code}</span>\n'
-        f'      <a href="{escaped(url)}" target="_blank" rel="noopener">加入 QQ 群</a>\n'
-        '    </div>\n'
-        for i, (name, code, url) in enumerate(groups, 1))
     page = f'''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -871,7 +833,7 @@ def sync(output):
   <div class="actions hero-el" style="--d:0.2s">
     <a class="textlink" href="#download">全部平台</a>
     <a class="textlink" href="#channel">交流区</a>
-    <a class="textlink" href="#group">交流群</a>
+    <a class="textlink" href="#club">俱乐部</a>
     <a class="textlink" href="#donate">捐赠支持</a>
   </div>
   <p class="meta hero-el" style="--d:0.3s"><b>{stars} Stars</b> · GPL-3.0-only · 作者 Pilipala</p>
@@ -904,6 +866,15 @@ def sync(output):
     <div class="group-row reveal">
       <span class="name">Marco交流区</span><span class="num">腾讯频道</span>
       <a class="btn btn-primary" href="{TENCENT_CHANNEL_URL}" target="_blank" rel="noopener">加入腾讯频道</a>
+    </div>
+  </section>
+
+  <section class="util" id="club">
+    <h2 class="reveal">俱乐部</h2>
+    <p class="intro reveal" style="--d:0.1s">Marco俱乐部，支持者的专属频道。加入需要提交赞助或捐赠截图，人工审核通过后进频道。</p>
+    <div class="group-row reveal">
+      <span class="name">Marco俱乐部</span><span class="num">专属频道</span>
+      <a class="btn btn-primary" href="{MARCO_CLUB_URL}" target="_blank" rel="noopener">加入俱乐部</a>
     </div>
   </section>
 
@@ -942,11 +913,6 @@ def sync(output):
 {changelog}
   </section>
 
-  <section class="util" id="group">
-    <h2 class="reveal">官方交流群</h2>
-    <p class="intro reveal" style="--d:0.1s">通用群，不分软件，Marco TV 和 Marco Movie 都可以在这里交流。点开会跳到 QQ 加群。</p>
-{group_rows}
-  </section>
 </main>
 
 <footer>

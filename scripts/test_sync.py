@@ -162,6 +162,8 @@ class OfficialApkChecks(unittest.TestCase):
             self.assertIn('<!--sync:hub-movie-versions-->', hub)
             self.assertIn('<section class="product" id="channel">', hub)
             self.assertIn('反馈 bug、功能建议、适配版本等需求，请到频道对应板块提交。', hub)
+            self.assertIn('<section class="product" id="club">', hub)
+            self.assertIn('https://pd.qq.com/s/f8tm7swar8?b=9', hub)
             html = (Path(directory) / 'tv' / 'index.html').read_text(encoding='utf-8')
             self.assertIn(osha, html)
             self.assertNotIn('26a912eb31ccf7450ac9df6aead303b753c5f008550b2b6384ac0f542b8860f9', html)
