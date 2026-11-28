@@ -116,7 +116,7 @@ PAGE_CSS = """
   .hero-el{opacity:0;transform:translateY(20px);animation:heroIn .9s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--d,0s)}
   @keyframes heroIn{to{opacity:1;transform:translateY(0)}}
 
-  .btn{display:inline-block;text-decoration:none;font-weight:600;font-size:16px;line-height:1.4;
+  .btn{display:inline-block;text-align:center;text-decoration:none;font-weight:600;font-size:16px;line-height:1.4;
     padding:12px 26px;border-radius:999px;cursor:pointer;white-space:nowrap}
   .btn-primary{background:var(--accent);color:#fff}
   .btn-primary:hover{background:var(--accent-hover);text-decoration:none}
@@ -874,7 +874,7 @@ def sync(output):
     <p class="intro reveal" style="--d:0.1s">Marco俱乐部，支持者的专属频道。加入需要提交赞助或捐赠截图，人工审核通过后进频道。</p>
     <div class="group-row reveal">
       <span class="name">Marco俱乐部</span><span class="num">专属频道</span>
-      <a class="btn btn-primary" href="{MARCO_CLUB_URL}" target="_blank" rel="noopener">加入俱乐部</a>
+      <a class="btn btn-primary" href="{MARCO_CLUB_URL}" target="_blank" rel="noopener">加入俱乐部【捐赠赞助后加入】</a>
     </div>
   </section>
 
