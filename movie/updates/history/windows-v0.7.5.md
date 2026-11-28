@@ -1,0 +1,19 @@
+# Marco Movie Windows x64 0.7.5
+
+发布日期：2026-11-28。应用版本 `0.7.5`（构建号 `82`）；支持 Windows 10 / 11（x64 安装版与绿色便携版）。
+
+## 核心更新
+
+- **桌面端 WebDAV 局域网扫码直绑**：Windows 端「云同步」支持生成带 `marco-bind-box-v1`（HMAC-SHA256 CTR + Encrypt-then-MAC）加密通道的局域网绑定二维码；Android / 鸿蒙移动端扫码即可将 WebDAV 服务器与加密凭据一键推送至桌面端，免除手工在电脑输入或反复复制配置。
+- **Emby / Jellyfin HTTP 8096 与 4K DirectPlay 连接修复**：连接面板默认采用 `HTTP + 8096` 并支持 HTTPS 切换与选填端口/路径/名称，兼容裸域名与 `/web/` 完整网址粘贴；登录自动回退 `/emby` 与根路径 `/`、补齐标准 `X-Emby-Authorization` 头与 TLS 握手无凭据明确诊断；`PlaybackInfo` 放行 4K HEVC / AV1 与多音轨 DirectPlay。
+
+## 构建与验证说明
+
+- **精确构建提交**：`a9d5c8cb2bc5c083dc82639c3cbf7026c01882db`
+- **商业代码签名说明**：Windows 安装包与可执行文件暂未购买商业 EV 代码签名，若系统 SmartScreen 提示请核对 `.sha256` 校验和并与官方 GitHub Release 资产对照。
+
+## 包信息与校验
+
+- **安装版（Inno Setup）**：`MarcoMovie-0.7.5-windows-x64-setup.exe`（`72515651` B，兼容别名 `MarcoMovie-0.7.5-windows-setup.exe`），SHA-256：`afbafe63d229ff449a380feca4545fe56c8177526488c52a5cf471862f2fe189`
+- **便携版（Portable ZIP）**：`MarcoMovie-0.7.5-windows-x64-portable.zip`（`103938323` B，兼容别名 `MarcoMovie-0.7.5-windows-x64.zip`），SHA-256：`c757ce175441300cea7997986031c233254b136b02e90e2758f595813c7e5f24`
+- **对应源码包**：`MarcoMovie-windows-v0.7.5-source.zip`（`23432930` B），SHA-256：`0ba85fc57fb21012705b04d2b6e153b4e7f7d58090617b3ecbc51d96535440e0`

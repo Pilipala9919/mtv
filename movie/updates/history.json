@@ -2,6 +2,66 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "windows-v0.7.5",
+      "version": "0.7.5",
+      "platforms": [
+        "windows"
+      ],
+      "published_at": "2026-11-28T02:35:53Z",
+      "prerelease": false,
+      "target_commitish": "a9d5c8cb2bc5c083dc82639c3cbf7026c01882db",
+      "notes": "# Marco Movie Windows x64 0.7.5\n\n发布日期：2026-11-28。应用版本 `0.7.5`（构建号 `82`）；支持 Windows 10 / 11（x64 安装版与绿色便携版）。\n\n## 核心更新\n\n- **桌面端 WebDAV 局域网扫码直绑**：Windows 端「云同步」支持生成带 `marco-bind-box-v1`（HMAC-SHA256 CTR + Encrypt-then-MAC）加密通道的局域网绑定二维码；Android / 鸿蒙移动端扫码即可将 WebDAV 服务器与加密凭据一键推送至桌面端，免除手工在电脑输入或反复复制配置。\n- **Emby / Jellyfin HTTP 8096 与 4K DirectPlay 连接修复**：连接面板默认采用 `HTTP + 8096` 并支持 HTTPS 切换与选填端口/路径/名称，兼容裸域名与 `/web/` 完整网址粘贴；登录自动回退 `/emby` 与根路径 `/`、补齐标准 `X-Emby-Authorization` 头与 TLS 握手无凭据明确诊断；`PlaybackInfo` 放行 4K HEVC / AV1 与多音轨 DirectPlay。\n\n## 构建与验证说明\n\n- **精确构建提交**：`a9d5c8cb2bc5c083dc82639c3cbf7026c01882db`\n- **商业代码签名说明**：Windows 安装包与可执行文件暂未购买商业 EV 代码签名，若系统 SmartScreen 提示请核对 `.sha256` 校验和并与官方 GitHub Release 资产对照。\n\n## 包信息与校验\n\n- **安装版（Inno Setup）**：`MarcoMovie-0.7.5-windows-x64-setup.exe`（`72515651` B，兼容别名 `MarcoMovie-0.7.5-windows-setup.exe`），SHA-256：`afbafe63d229ff449a380feca4545fe56c8177526488c52a5cf471862f2fe189`\n- **便携版（Portable ZIP）**：`MarcoMovie-0.7.5-windows-x64-portable.zip`（`103938323` B，兼容别名 `MarcoMovie-0.7.5-windows-x64.zip`），SHA-256：`c757ce175441300cea7997986031c233254b136b02e90e2758f595813c7e5f24`\n- **对应源码包**：`MarcoMovie-windows-v0.7.5-source.zip`（`23432930` B），SHA-256：`0ba85fc57fb21012705b04d2b6e153b4e7f7d58090617b3ecbc51d96535440e0`\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/windows-v0.7.5"
+    },
+    {
+      "tag": "ios-v0.7.12",
+      "version": "0.7.12",
+      "platforms": [
+        "ios"
+      ],
+      "published_at": "2026-11-28T02:33:11Z",
+      "prerelease": false,
+      "target_commitish": "66f178674c52e7baf20ad4881a3d508ca8ab8ed5",
+      "notes": "# Marco Movie iOS / iPadOS 0.7.12 (build 105)\n\n> 仅包含 `iOS / iPadOS` 独立版本变更；Android 手机、Android 电视、Android Lite、Windows、macOS、Apple TV 与 HarmonyOS NEXT 保持各自独立发布节奏。\n\n## 本版更新内容\n\n1. **结构化 Emby 媒体库连接、编辑与协议 / 4K STRM 兼容升级**\n   - 重构 iOS `连接 Emby 媒体库` 与 `订阅管理 → 编辑 Emby` 表单：支持填写自定义**名称**、**是否允许云端同步**开关（关闭后凭据与订阅严格保留在本机）、**HTTPS** 开关（默认 `HTTP / 8096`，开启 `HTTPS` 自动切换 `443` 并按需展开「忽略证书校验」）、**服务器地址**（支持裸域名/IP 及粘贴完整 URL 自动识别协议/端口/路径）、**路径（选填）**、**端口号**、**用户名**与支持明文/密文切换的**密码**输入框（保留未裁剪密码与空密码登录，并支持「仅修改名称与云端同步状态时免密续验」）。\n   - 强化 `EmbyLibrary` 协议兼容：支持 `/emby` 遇到 `HTTP 404 / 405` 时自动回退裸根路径 `/` 并跨重启持久化；处理同源及 HTTP→HTTPS 重定向；补充标准 `X-Emby-Authorization` 与客户端 `User-Agent`；对 HTTPS 连 HTTP 端口的 TLS 握手失败提供中文探测指引；`PlaybackInfo` 放行 `EnableDirectPlay`（HEVC / H.265 / AV1 / 多音轨）及跨源 `.strm` HTTP 直链安全隔离播放；接入多端 WebDAV / 局域网 `emby_accounts` 双向同步（本地备份仍零凭据泄漏）。\n2. **局域网扫码一键绑定 WebDAV（`marco-bind-box-v1`）**\n   - 合入跨端 LAN 扫码直绑 WebDAV 重构与原生 iOS `AVCaptureSession` 二维码扫描视图（含相册/剪贴板兜底及 `NSCameraUsageDescription`），支持扫码或粘贴配对链接端到端加密互换 WebDAV 配置并立即双向合并历史、收藏与订阅。\n3. **AI 观影实验室口令本机钥匙串持久保存**\n   - 解锁后的 `MMAILAB1` 口令持久保存至本机 Keychain，关闭并重启应用后自动恢复解锁状态，无需重复输入。\n4. **Codex 模型列表净化与 HTTP 400 容错**\n   - 从模型目录中过滤无法在 Codex 订阅通道使用的内置/后缀模型，仅展示已验证可用模型，并在遭遇模型下线导致 `HTTP 400` 时自动自愈回退可用主模型。\n5. **AI 联网搜索并匹配在线弹幕**\n   - 新增 `AiDanmuMatcher`，利用 AI 提取剧名、别名、季集与年份后在线检索匹配 B 站 / 弹弹play 弹幕源并注入 `DanmuSegmentCache` 分段缓存，支持随进度拖动与偏移即时渲染。\n\n## 云端双包构建与自动化验证\n\n- GitHub Actions `Build Multiplatform`（[`46095499184`](https://github.com/Pilipala9919/MarcoMovie/actions/runs/46095499184) · 提交 [`89098494`](https://github.com/Pilipala9919/MarcoMovie/commit/890984945a754fc0a5be5b0c7475cb2c8b149eb2)，发布仓库主线合入 Android 端非 Flutter 补丁至 [`66f17867`](https://github.com/Pilipala9919/MarcoMovie/commit/66f178674c52e7baf20ad4881a3d508ca8ab8ed5)）：\n  - 前置公开守卫与一致性检查（[`140825777452`](https://github.com/Pilipala9919/MarcoMovie/actions/runs/46095499184/job/140825777452)）：`check_public_content.py`（`2888` 个追踪文件零告警）、`sync_readme_versions.py --check`、跨端脚本/Python 打包测试及 `79` 项三端一致性测试全部通过。\n  - 主包 `Build iOS & iPadOS`（[`140826862151`](https://github.com/Pilipala9919/MarcoMovie/actions/runs/46095499184/job/140826862151)，`macos-26` / `Xcode 26.6` / `iphoneos26.5`，`MinimumOSVersion = 15.0`）：全量 `1796` 项 `flutter test` 通过（`18` 项桌面专项跳过）。\n  - 兼容包 `Build iOS 14.0+ Compat`（[`140826862137`](https://github.com/Pilipala9919/MarcoMovie/actions/runs/46095499184/job/140826862137)，Xcode 16，`MinimumOSVersion = 14.0`）：构建与校验通过。\n- 发布资产已校验字节一致（主包与兼容别名）、`Info.plist`（`0.7.12` / `105`、`MinimumOSVersion`、`NSCameraUsageDescription`）及全部 SHA-256 摘要。真实多机型物理 iPhone / iPad 实机安装升级、外部真实 Emby/AI 网关与实机扫码仍待真机验收。\n\n## 资产校验清单（SHA-256）\n\n| 文件 | 大小 (Bytes) | SHA-256 |\n|---|---:|---|\n| `MarcoMovie-0.7.12-ios-iphone-ipad-unsigned.ipa` | 69843367 | `0f6a79c3b7881aa5eb06ad27cfe6dff91031bffe5e1a9fbca852e13166c2bc13` |\n| `MarcoMovie-0.7.12-ios-iphone-ipad-unsigned.ipa.sha256` | — | `MarcoMovie-0.7.12-ios-iphone-ipad-unsigned.ipa` 校验摘要 |\n| `MarcoMovie-0.7.12-ios-unsigned.ipa` | 69843367 | `0f6a79c3b7881aa5eb06ad27cfe6dff91031bffe5e1a9fbca852e13166c2bc13` |\n| `MarcoMovie-0.7.12-ios-unsigned.ipa.sha256` | — | `MarcoMovie-0.7.12-ios-unsigned.ipa` 校验摘要 |\n| `MarcoMovie-0.7.12-ios14-unsigned.ipa` | 69842541 | `c48d74299d3630c8ed88acd0613acc57bb11f44534895c8c234846f94dfd46c5` |\n| `MarcoMovie-0.7.12-ios14-unsigned.ipa.sha256` | — | `MarcoMovie-0.7.12-ios14-unsigned.ipa` 校验摘要 |\n| `MarcoMovie-ios-v0.7.12-source.zip` | 23300081 | `384e9537a9194c74771b5b4517e9541a07f0b73bbae916004dc28cc8136d2a0c` |\n| `MarcoMovie-ios-v0.7.12-source.zip.sha256` | — | `MarcoMovie-ios-v0.7.12-source.zip` 校验摘要 |\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/ios-v0.7.12"
+    },
+    {
+      "tag": "android-lite-v0.5.11",
+      "version": "0.5.11",
+      "platforms": [
+        "android-lite"
+      ],
+      "published_at": "2026-11-28T02:32:07Z",
+      "prerelease": false,
+      "target_commitish": "a9d5c8cb2bc5c083dc82639c3cbf7026c01882db",
+      "notes": "# Marco Movie Android Lite 0.5.11\n\n发布日期：2026-11-28。应用版本 `0.5.11`（版本代码 `61`）；最低 Android 4.0 / API 14 单 DEX 超轻量版（包名 `com.pilipala.marcomovie.lite`）。\n\n## 核心更新\n\n- **Emby / Jellyfin 连接兼容性全面修复**：连接界面新增 `HTTP / HTTPS` 协议开关（默认 `HTTP`、端口默认 `8096`）与选填端口/路径输入，支持直接填写裸域名或粘贴 `/web/` 地址；登录自动兼容 `/emby` 与根路径 `/` 回退及 HTTP → HTTPS 安全重定向，TLS 握手失败时在无凭据前提下主动探测给出清晰 HTTP 端口切换指引，并放行 DirectPlay。\n\n## 包信息与构建记录\n\n- **正式安装包**：`MarcoMovie-0.5.11-android-lite.apk`（`1328288` B；兼容别名 `MarcoMovie-0.5.11-lite.apk`）\n- **APK SHA-256**：`3a4c3a3e1910ac3d498ca807cb42ca890d91a852c4bda255a5b205112bceee5f`\n- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`\n- **精确构建提交**：`a9d5c8cb2bc5c083dc82639c3cbf7026c01882db`\n- **自动化验证**：已通过 API 14 单 DEX 构建与官方正式签名验证、`280` 项 JVM 回归、`8` 项 TLS 检查与 `20/20` 三端源一致性测试。实体 Android 4.x 电视盒实机播放仍待实测。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-lite-v0.5.11"
+    },
+    {
+      "tag": "android-mobile-v0.7.4",
+      "version": "0.7.4",
+      "platforms": [
+        "android-mobile"
+      ],
+      "published_at": "2026-11-28T02:31:58Z",
+      "prerelease": false,
+      "target_commitish": "a9d5c8cb2bc5c083dc82639c3cbf7026c01882db",
+      "notes": "# Marco Movie Android 手机 / 平板 0.7.4\n\n发布日期：2026-11-28。应用版本 `0.7.4`（版本代码 `104`）；最低 Android 6 / API 23（`arm64-v8a` + `armeabi-v7a` 双架构）。\n\n## 核心更新\n\n- **手机端一键扫码绑定电视 / 桌面 WebDAV**：应用内相机扫码（支持相册选图与剪贴板兜底）支持 `marco-bind-box-v1` 端到端加密绑定协议，可将手机已配置的 WebDAV 服务器、账号、加密密码与同步选项加密推送至电视端、桌面端或 Apple TV，并支持从对方反向拉取配置后立即双向同步。\n- **Emby / Jellyfin HTTP 8096 与直连兼容性修复**：连接弹窗协议默认设为 `HTTP（8096）` 并支持 HTTPS 切换、选填端口/路径/名称与裸域名直填（自动清洗 `/web/` 后缀）；登录增加 `/emby` 与根路径 `/` 自动回退、标准 `X-Emby-Authorization` 请求头与 TLS 握手失败无凭据探测明确引导；`PlaybackInfo` 默认放行 4K HEVC / AV1 与多音轨 DirectPlay。\n\n## 包信息与构建记录\n\n- **正式安装包**：`MarcoMovie-0.7.4-android-mobile.apk`（`100995540` B；兼容别名 `MarcoMovie-0.7.4-mobile.apk`，含 `.idsig` v4 签名块）\n- **APK SHA-256**：`47201cfc2243927b33d6a7656f24c4879122957dc49388b9bd661467e15d2100`\n- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`\n- **精确构建提交**：`a9d5c8cb2bc5c083dc82639c3cbf7026c01882db`\n- **自动化验证**：已通过双架构官方正式签名打包与 16 KB 对齐校验、`run_api23_callback_checks.py`（1008 应用类）、`run_guard_checks.py`、`run_secure_storage_checks.py` 与手机端 Emby / 云同步 / 弹幕回归。物理设备升级实测仍待后续补齐。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.7.4"
+    },
+    {
+      "tag": "android-tv-v0.6.4",
+      "version": "0.6.4",
+      "platforms": [
+        "android-tv"
+      ],
+      "published_at": "2026-11-28T02:30:32Z",
+      "prerelease": false,
+      "target_commitish": "a9d5c8cb2bc5c083dc82639c3cbf7026c01882db",
+      "notes": "# Marco Movie Android 电视 / 盒子 0.6.4\n\n发布日期：2026-11-28。应用版本 `0.6.4`（版本代码 `101`）；最低 Android 6 / API 23（32 位 `armeabi-v7a`）。本次重点优化大屏流畅度、剧集海报加载、多仓与脚本源兼容性、盘搜与弹幕体验，并上线全端 WebDAV 局域网扫码直绑与 Emby HTTP/4K 直连修复。\n\n## 核心更新\n\n- **大屏流畅度与海报加载优化**：\n  - 优化首页与全局搜索并发调度、超时预算与大图海报切换防抖，消除快速切换片名时的海报滞后切换问题；\n  - 完善高画质 / 臻彩分类剧集海报的防盗链请求头、重定向与图片格式兼容，减少海报加载失败；\n  - 新增播放器 `45 分钟` 定时关闭预设、工具栏开关与右上角实时倒计时悬浮胶囊，到期自动安全停止并退出。\n- **多仓线路、脚本兼容与剧集刮削加固**：\n  - 修复多仓导入时部分子仓线路与自定义分组丢失问题（合并站点容量提升至 `2500`、批次上限提升至 `64`）；\n  - 增强常见 JS / Python / CatVod 模块及本地代理兼容性；\n  - 优化剧集刮削分词并保留年份标题线索，降低无关续作/衍生片误匹配概率。\n- **盘搜与弹幕四项专项修复**：\n  - **手动搜索匹配弹幕**：针对网盘加长文件名，播放菜单新增「手动搜索匹配弹幕」双栏选集弹窗并按剧集记忆绑定；\n  - **盘搜网盘宽卡片展示**：搜索网盘结果以宽卡片完整显示文件名与 `4K` / `HDR` / 高码率规格标签；\n  - **同词二次搜索修复**：修复搜索同一影片一次后二次触发盘搜返回空结果的问题；\n  - **历史记录重开修复**：修复盘搜影片从历史记录再次进入提示「原源已失效」问题，支持自动刷新详情接口地址重试。\n- **局域网扫码直绑 WebDAV & Emby 连接修复**：\n  - 「我的 → 云同步 → 局域网扫码绑定」支持 `marco-bind-box-v1` 端到端加密通道，手机扫码即可将 WebDAV 配置安全推送至电视并同步触发云合并；\n  - Emby 连接表单默认切换为 `HTTP（8096）` 并支持 HTTPS 切换与裸域名输入，登录支持 `/emby` 与根路径 `/` 自动回退、标准 `X-Emby-Authorization` 头与 `PlaybackInfo` 4K/多音轨 DirectPlay。\n\n## 包信息与构建记录\n\n- **正式安装包**：`MarcoMovie-0.6.4-android-tv.apk`（`56936646` B；兼容别名 `MarcoMovie-0.6.4-preview.apk`）\n- **APK SHA-256**：`d04df3eba20e728176bd79af3693d63b6e94ddc672a829d3e181f334e513dd3b`\n- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`\n- **精确构建提交**：`a9d5c8cb2bc5c083dc82639c3cbf7026c01882db`\n- **自动化验证**：已通过 `check_public_content.py`（2885 文件）、`format_java --check`、`run_api23_callback_checks.py`（945 应用类）、`run_guard_checks.py`（170 项）及 Android TV 全套纯 JVM 回归。已在小米电视 Android 9（MiTV-ASTP0，`armeabi-v7a`）完成从 `0.6.3` 保留本地配置/收藏无损覆盖安装至 `0.6.4`（`versionCode: 101`）与冷启动拉起验收（零崩溃）；全功能长片及更多品牌电视实机验收仍待继续覆盖。\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.6.4"
+    },
+    {
       "tag": "android-mobile-v0.7.3",
       "version": "0.7.3",
       "platforms": [

@@ -2,23 +2,23 @@
   "android-tv": {
     "folder": "/MarcoMovie/电视版",
     "share_url": "https://pan.quark.cn/s/b9207bfb5e53",
-    "file": "MarcoMovie-0.6.3-android-tv.apk",
-    "version": "0.6.3",
-    "sha256": "68a08fcc4efd5d92a0c9115a07f2a22c57a71672b9ed215e11d030e4765d0faa"
+    "file": "MarcoMovie-0.6.4-android-tv.apk",
+    "version": "0.6.4",
+    "sha256": "d04df3eba20e728176bd79af3693d63b6e94ddc672a829d3e181f334e513dd3b"
   },
   "android-mobile": {
     "folder": "/MarcoMovie/手机版",
     "share_url": "https://pan.quark.cn/s/370912cb6556",
-    "file": "MarcoMovie-0.7.3-android-mobile.apk",
-    "version": "0.7.3",
-    "sha256": "f0e06d02f87e566ca908c75dfc75517f914ee300de3fbf9f4269a62efdca7bb2"
+    "file": "MarcoMovie-0.7.4-android-mobile.apk",
+    "version": "0.7.4",
+    "sha256": "47201cfc2243927b33d6a7656f24c4879122957dc49388b9bd661467e15d2100"
   },
   "ios": {
     "folder": "/MarcoMovie/iOS",
     "share_url": "https://pan.quark.cn/s/88f59851a6f7",
-    "file": "MarcoMovie-0.7.11-ios-iphone-ipad-unsigned.ipa",
-    "version": "0.7.11",
-    "sha256": "abc548633b25cc1e1457f729ca79ecbbb8ddcce974be4bd70d71b4875f92b1ce"
+    "file": "MarcoMovie-0.7.12-ios-iphone-ipad-unsigned.ipa",
+    "version": "0.7.12",
+    "sha256": "0f6a79c3b7881aa5eb06ad27cfe6dff91031bffe5e1a9fbca852e13166c2bc13"
   },
   "windows-setup": {
     "folder": "/MarcoMovie/Windows安装版",
@@ -44,9 +44,9 @@
   "android-lite": {
     "folder": "/MarcoMovie/轻量版",
     "share_url": "https://pan.quark.cn/s/6d0af5ae83ab",
-    "file": "MarcoMovie-0.5.10-android-lite.apk",
-    "version": "0.5.10",
-    "sha256": "01492f7b046fdace312ace17e3c8ea145fbc577a522a72f58103798e2d242694"
+    "file": "MarcoMovie-0.5.11-android-lite.apk",
+    "version": "0.5.11",
+    "sha256": "3a4c3a3e1910ac3d498ca807cb42ca890d91a852c4bda255a5b205112bceee5f"
   },
   "tv": {
     "folder": "/MarcoTV/电视版",
@@ -114,9 +114,9 @@
   "ios14": {
     "folder": "/MarcoMovie/iOS14",
     "share_url": "https://pan.quark.cn/s/ec14fc783349",
-    "file": "MarcoMovie-0.7.11-ios14-unsigned.ipa",
-    "version": "0.7.11",
-    "sha256": "38a97338c1f4b81f28e5b9c3e3470f8aacf25fd90b83b7ba8d38912b15f198be"
+    "file": "MarcoMovie-0.7.12-ios14-unsigned.ipa",
+    "version": "0.7.12",
+    "sha256": "c48d74299d3630c8ed88acd0613acc57bb11f44534895c8c234846f94dfd46c5"
   },
   "wp-pet-golden": {
     "folder": "/MarcoTV/壁纸-金毛",

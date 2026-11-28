@@ -1,0 +1,16 @@
+# Marco Movie Android 手机 / 平板 0.7.4
+
+发布日期：2026-11-28。应用版本 `0.7.4`（版本代码 `104`）；最低 Android 6 / API 23（`arm64-v8a` + `armeabi-v7a` 双架构）。
+
+## 核心更新
+
+- **手机端一键扫码绑定电视 / 桌面 WebDAV**：应用内相机扫码（支持相册选图与剪贴板兜底）支持 `marco-bind-box-v1` 端到端加密绑定协议，可将手机已配置的 WebDAV 服务器、账号、加密密码与同步选项加密推送至电视端、桌面端或 Apple TV，并支持从对方反向拉取配置后立即双向同步。
+- **Emby / Jellyfin HTTP 8096 与直连兼容性修复**：连接弹窗协议默认设为 `HTTP（8096）` 并支持 HTTPS 切换、选填端口/路径/名称与裸域名直填（自动清洗 `/web/` 后缀）；登录增加 `/emby` 与根路径 `/` 自动回退、标准 `X-Emby-Authorization` 请求头与 TLS 握手失败无凭据探测明确引导；`PlaybackInfo` 默认放行 4K HEVC / AV1 与多音轨 DirectPlay。
+
+## 包信息与构建记录
+
+- **正式安装包**：`MarcoMovie-0.7.4-android-mobile.apk`（`100995540` B；兼容别名 `MarcoMovie-0.7.4-mobile.apk`，含 `.idsig` v4 签名块）
+- **APK SHA-256**：`47201cfc2243927b33d6a7656f24c4879122957dc49388b9bd661467e15d2100`
+- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`
+- **精确构建提交**：`a9d5c8cb2bc5c083dc82639c3cbf7026c01882db`
+- **自动化验证**：已通过双架构官方正式签名打包与 16 KB 对齐校验、`run_api23_callback_checks.py`（1008 应用类）、`run_guard_checks.py`、`run_secure_storage_checks.py` 与手机端 Emby / 云同步 / 弹幕回归。物理设备升级实测仍待后续补齐。
