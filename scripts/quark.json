@@ -2,16 +2,16 @@
   "android-tv": {
     "folder": "/MarcoMovie/电视版",
     "share_url": "https://pan.quark.cn/s/b9207bfb5e53",
-    "file": "MarcoMovie-0.6.5-android-tv.apk",
-    "version": "0.6.5",
-    "sha256": "ca077300759218e262aa4fe46425ca83019d10c72b1b367c6f5834145fef011d"
+    "file": "MarcoMovie-0.6.6-android-tv.apk",
+    "version": "0.6.6",
+    "sha256": "8e3ff32f3bbc59489a30f2bcf285102427aa0c2781ffc8d71074023b6d38e781"
   },
   "android-mobile": {
     "folder": "/MarcoMovie/手机版",
     "share_url": "https://pan.quark.cn/s/370912cb6556",
-    "file": "MarcoMovie-0.7.5-android-mobile.apk",
-    "version": "0.7.5",
-    "sha256": "b6c20804919791c7298448d7e48a85f220a7638a569028da8c2694b8ea86e39b"
+    "file": "MarcoMovie-0.7.6-android-mobile.apk",
+    "version": "0.7.6",
+    "sha256": "4b7a700f71d1a1a4a1afc3d2ec5a5ae9d8ab8caadba566eb8fc77a7273995413"
   },
   "ios": {
     "folder": "/MarcoMovie/iOS",

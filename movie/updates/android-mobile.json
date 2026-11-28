@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.7.5",
-  "versionCode": 105,
+  "versionName": "0.7.6",
+  "versionCode": 106,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 手机 / 平板 0.7.5\n\n发布日期：2026-11-28。应用版本 `0.7.5`（版本代码 `105`）；最低 Android 6 / API 23（`arm64-v8a` + 16 KB 页面对齐 `armeabi-v7a` / `arm64-v8a` 双架构原生库）。\n\n## 核心更新\n\n- **修复安卓手机端本地代理 / 受限流 / 本地文件无法投屏问题**：新增按单次投屏会话随机 32 位令牌隔离的局域网 HTTP 中继 `LanCastMediaRelay` 与 `DlnaCastClient.prepareCastTarget`，使回环代理流（`127.0.0.1`）、带 `Cookie` / `Referer` / `Authorization` / 自定义 `User-Agent` 的远程流以及本地 `file:/` 离线视频与 HLS 分片均可直接投屏到同一局域网电视 / 盒子，并在停止投屏、退出播放或进入隐私空间时即时吊销会话；公网直链继续保持免中继直推。\n- **播放页状态信息（右上角 HUD）位置支持手动调整**：支持在设置页与播放页「更多 -> 状态信息显示位置」选择 5 档停靠预设（右上/左上/顶部居中/右下/左下）、X/Y 坐标偏移滑条、16:9 实时预览及播放画面直接拖动定位（松手自动吸附最近边角并保留安全区边距）。\n- **播放页 HUD 按钮支持自定义添减与排序**：新增 `MobilePlayerHudButtons` 统一编辑器（支持播放页「更多 -> 自定义播放页 HUD 按钮」与设置页 `自定义播放器按钮顺序`），支持底栏 17 项功能按钮自由添减与排序，以及顶部/左侧 5 项快捷按钮独立显隐控制。\n- **修复云同步 `WebDAV 读取失败 (HTTP 409)` 与中文路径编码问题**：`CloudSync.syncWebdav()` 在 `GET` 收到 `HTTP 409` 时自动通过 `MKCOL` 补建缺失父目录并重试读取；`openConnection()` 对非 ASCII / 中文 WebDAV 路径执行标准 URI ASCII 编码。\n- **承接 0.7.5 聚合盘搜续播、Emby 结构化表单与横屏弹幕修复**：支持「聚剧|四盘」/ `csp_S_zps` 占位 `\"0\"`/`\"1\"` ID 防护与静默重搜原地迁移、Emby `HTTP / 8096` 与 `.strm` DirectPlay、以及横屏弹幕设置弹窗贴顶对齐与对比度修复。\n\n## 包信息与构建记录\n\n- **正式安装包**：`MarcoMovie-0.7.5-android-mobile.apk`（`101036500` B；兼容别名 `MarcoMovie-0.7.5-mobile.apk`，含 `.idsig` v4 签名块）\n- **APK SHA-256**：`b6c20804919791c7298448d7e48a85f220a7638a569028da8c2694b8ea86e39b`\n- **APK v4 签名文件**：`MarcoMovie-0.7.5-android-mobile.apk.idsig`（`804262` B）— `5a98640a6c3b54dd0cc065f1368a860c8827d4287030d8cfd98734f1e9906bba`\n- **对应源码包**：`MarcoMovie-android-mobile-v0.7.5-source.zip`（`23512621` B）— `c75b15ff5e5cc79a2f05a08637926aa599eb4b6396837a4ebab2c33bd868be51`\n- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`\n- **精确构建提交**：`0c1077cf3c2d09af11364c69febe7b960b38e81f`（`git_dirty: false`）\n- **自动化验证**：已通过双架构官方正式签名打包与 16 KB 对齐校验、`check_public_content.py`（`2907` 文件）、`format_java --check`（`647` 文件）、`sync_readme_versions --check`、`run_api23_callback_checks.py`（`1020` 应用类）、`run_cast_search_picker_checks.py`（`51` 项）、`run_mobile_ui_redesign_checks.py`（`228` 项）、`run_ai_beta_checks.py`（`154` 项）、`run_cloud_sync_checks.py`（`106` 项）、`run_review_fix_checks.py`（`62` 项）、`run_local_proxy_checks.py`（`34` 项）、`run_checks.py`、`run_update_checks.py`、`run_conformance_checks.py`（`20/20`）与 `run_guard_checks.py`（`170` 项）。物理手机覆盖安装、真机 DLNA 电视投屏及真实 WebDAV 实机联调仍待后续补齐。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.7.5/MarcoMovie-0.7.5-android-mobile.apk",
-  "size": 101036500,
-  "sha256": "b6c20804919791c7298448d7e48a85f220a7638a569028da8c2694b8ea86e39b",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.7.5-android-mobile.apk",
+  "notes": "# Marco Movie Android 手机 / 平板 0.7.6\n\n发布日期：2026-11-28。应用版本 `0.7.6`（版本代码 `106`）；最低 Android 6 / API 23（双架构 `armeabi-v7a` + `arm64-v8a`）。\n\n## 本次更新\n\n- **新增折叠屏半折悬停 HUD 与画面上下分离模式（自动开启）**：\n  - 新增 `FoldableTabletopController`，兼容 Jetpack WindowManager FoldingFeature 与铰链传感器多层级识别，在横向折叠半折悬停姿态下自动进入悬停分屏模式（`[68°, 142°]` 切入 / `[55°, 155°]` 迟滞退出，防角度抖动误触），展开或合盖自动还原。\n  - 上半屏严格承载视频画面、弹幕、字幕与轻触闪现顶栏；下半屏转为 `#FF0A0C10` 哑光暗色常驻触控台，提供返回 `<`、锁屏、弹幕开关、倍速、音效、双行线路/分辨率胶囊、选集、字幕、更多、全宽进度条与时间戳、左下播放/暂停及右下下一集。\n  - 支持在设置与播放器「更多」面板随时开关 `折叠半折悬停分离模式`（`Prefs.FOLDABLE_TABLETOP_SPLIT_HUD`）。\n- **彻底修复多仓全局搜索大量线路显示「未完成」问题**：\n  - 将 `MobileSearchPage` 固定 6 线程搜索池升级为与电视端一致的优先级双通道 `SearchCoordinator`：HTTP / Emby / Alist 通道与插件爬虫通道隔离调度，原生插件通道上限提升至 16 线程、`400+` 多仓场景自动按来源数扩容全局会话超时预算（最高 `360s`），阻塞超时池不再饿死后续健康来源（411 源压测实现 `0 未完成`）。\n- **整合结构化 Emby、局域网投屏中继、右上角状态定位、HUD 按钮自定义与 WebDAV 修复**：\n  - 保留 `0.7.5` 结构化 Emby 连接与编辑、局域网投屏媒体中继 `LanCastMediaRelay`、横屏弹幕面板间距修复、播放页右上角状态定位（5 档停靠与微调）、底栏与快捷按钮自由排序及 WebDAV 云同步修复，同时修复「聚剧|四盘」等聚合盘搜源历史直连续播与搜索词匹配。\n\n## 安装与校验\n\n- **正式包名**：`com.pilipala.marcomovie`（Mobile edition，`minSdk 23` / `targetSdk 35`）。\n- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`。\n- 说明：最终构建提交哈希、APK 与源码包 SHA-256 校验值见对应 GitHub Release 发布页及 [platform-releases.md](../platform-releases.md)。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.7.6/MarcoMovie-0.7.6-android-mobile.apk",
+  "size": 101048788,
+  "sha256": "4b7a700f71d1a1a4a1afc3d2ec5a5ae9d8ab8caadba566eb8fc77a7273995413",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.7.6-android-mobile.apk",
   "packages": {
-    "MarcoMovie-0.7.5-android-mobile.apk": {
-      "size": 101036500,
-      "sha256": "b6c20804919791c7298448d7e48a85f220a7638a569028da8c2694b8ea86e39b",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.7.5/MarcoMovie-0.7.5-android-mobile.apk"
+    "MarcoMovie-0.7.6-android-mobile.apk": {
+      "size": 101048788,
+      "sha256": "4b7a700f71d1a1a4a1afc3d2ec5a5ae9d8ab8caadba566eb8fc77a7273995413",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.7.6/MarcoMovie-0.7.6-android-mobile.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.7.5"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.7.6"
 }

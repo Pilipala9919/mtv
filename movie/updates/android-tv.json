@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-tv",
-  "versionName": "0.6.5",
-  "versionCode": 102,
+  "versionName": "0.6.6",
+  "versionCode": 103,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 电视 / 盒子 0.6.5\n\n发布日期：2026-11-28。应用版本 `0.6.5`（版本代码 `102`）；最低 Android 6 / API 23（32 位 `armeabi-v7a`）。本次为电视端背景视觉专项修复版本，彻底消除 `0.6.4` 大屏动态柔光背景出现的菱形噪点纹，并完整保留 `0.6.4` 全部功能与稳定性改进。\n\n## 本次修复\n\n- **修复电视端首页背景出现菱形网格纹问题**：将 `HomeAmbient.acquireTvScratchBitmap()` 缓存位图色彩格式由 16 位 `Bitmap.Config.RGB_565` 恢复为 32 位 `Bitmap.Config.ARGB_8888`（保留双缓冲复用与绘图前底色擦除，消除有序抖动矩阵在 `192×108` 放大至 `1920×1080` 大屏时的菱形棋盘纹），恢复细腻平滑的影院柔光渐变背景。\n\n## 包信息与实机验证\n\n- **正式安装包**：`MarcoMovie-0.6.5-android-tv.apk`（`56936646` B；兼容别名 `MarcoMovie-0.6.5-preview.apk`），包名 `com.pilipala.marcomovie`\n- **APK SHA-256**：`ca077300759218e262aa4fe46425ca83019d10c72b1b367c6f5834145fef011d`\n- **对应源码包**：`MarcoMovie-android-tv-v0.6.5-source.zip`（`23509378` B），SHA-256：`e1d85c51df2bb8e4f07ebb951549f3b904329baa59756bf6c8d57d895161bc90`\n- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`（覆盖安装无损保留本地配置、收藏与观看记录）\n- **精确构建提交**：`79d63024ce6fedd872b6748b9de208ad08d81c2f`\n- **实机验证**：已在小米电视 Android 9（`MiTV-ASTP0`，`armeabi-v7a`）完成保留配置从 `0.6.4` 无损覆盖升级至 `0.6.5`（`versionCode: 102`）、冷启动拉起（零崩溃）及实机首页截屏对比确认首页柔光渐变背景已彻底消除菱形纹。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.6.5/MarcoMovie-0.6.5-android-tv.apk",
-  "size": 56936646,
-  "sha256": "ca077300759218e262aa4fe46425ca83019d10c72b1b367c6f5834145fef011d",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.6.5-android-tv.apk",
+  "notes": "# Marco Movie Android 电视 / 盒子 0.6.6\n\n发布日期：2026-11-28。应用版本 `0.6.6`（版本代码 `103`）；最低 Android 6 / API 23（32 位 `armeabi-v7a`）。本版本合入 `0.6.5` 首页背景防菱形纹修复，并新增大屏弹窗对齐与聚合盘搜源历史记录直连续播修复。\n\n## 本次更新\n\n- **修复「选线路与选集」等电视端弹窗卡片未对齐与边缘留白不均问题**：\n  - `MainActivity.row()` 与 `DanmuSettingsPanel` 全部横向行布局显式关闭 `baselineAligned`，消除混合单行/多行文本卡片基准线导致的阶梯错位。\n  - `DetailScreen` 引入同步测量等高行容器 `EqualHeightEpisodeRow`，在首轮 `measure` 即把同排剧集卡对齐至一致高度，并对齐 `AppDialog` 标题/底部按钮、线路头部与选集网格左右外边距（`col == 0` / 末列归零）。\n  - 统一 `TvDetailHost.showEpisodesDialog`、`SourcePicker` 页脚网格及 `TvDanmuSearchDialog` 搜索框与按钮高度（`42dp`），消除右侧额外缩进。\n- **修复「聚剧|四盘」等聚合盘搜源历史记录重开失效需重搜的问题**：\n  - `Cms.Site.isNetdiskSite()` 识别 `聚剧` / `四盘` / `csp_S_zps`；`TvDetailHost` 在遇到 `\"0\"` / `\"1\"` 占位 `vod_id`、无可用线路或详情失效时，先自动以净化标题（`HistoryResumeMatcher.cleanSearchTitle`）执行同站静默重匹配（优先于跨源跳转），就地绑定并迁移历史条目键至新版可用片源，保留断点「继续播放」位置。\n- **合入 0.6.5 电视端背景菱形纹修复（`ARGB_8888`）**：\n  - 保留 `HomeAmbient.acquireTvScratchBitmap()` 32 位 `ARGB_8888` 柔光渐变双缓冲，消除低色深缩放至 1080p 电视大屏时产生的菱形棋盘抖动纹。\n- **统一全局搜索结果卡片样式与筛选标签展示**：\n  - 将「全部」与各来源下的网盘/聚合源（如「聚剧|四盘」、夸克/网盘源）搜索结果统一为一致的 `2:3` 竖版海报卡片与等宽列布局，消除宽窄混排与右侧留白缺口，并在副标题中精简日期与画质标签且不再截断「全部」计数胶囊。\n- **修复电视端播放页右上角进度与时间开关不生效问题**：\n  - `PlayerChrome.shouldShowTvTopRightHud` 与 `updatePlaybackHud()` 不再因电视 HDR/杜比视界 `SurfaceView` 的底栏隐藏节流逻辑而连带隐藏右上角 HUD；使用 `Gravity.TOP | Gravity.RIGHT`、`bringToFront()` 与动态字号/边距刷新；在「更多」菜单切换开关时即时刷新并自动收起控制栏以便立刻看到右上角进度与时间生效。\n- **剧集智能刮削保留清晰度、HDR/杜比与容量大小并清理嵌套网盘文件夹后缀**：\n  - `TvSeriesScraper` 新增 `extractEpisodeSpecSummary()` / `extractEpisodeSizeTag()`，自动从原文件名提炼 `8K`/`4K`/`2K`/`1080P`/`720P`、`杜比`/`HDR10+`/`HDR`/`原盘`/`高码`/`60帧` 及 `GB`/`MB` 容量大小并在选集网格与播控选集弹窗中保留显示（如 `第01集 · 4K · 杜比 · 3.2GB`），同时剥离嵌套 `【...【...】...】` 目录后缀与连续点号 clutter。\n- **修复扩展源配置中心网盘登录弹窗右侧越界裁切及遥控器无法点击问题**：\n  - `PluginDialogStyler` 接管蜘蛛自定义非扫码 `PopupWindow` / 子面板窗口，放宽 `FLAG_NOT_FOCUSABLE`、接管返回键关闭与首次默认聚焦；识别同音网盘名（夸夸/优汐/摆渡/迅蕾/光雅/115/天意）与状态胶囊（`未登录`/`已登录` 等），规范横向行与可点击 `TextView` 边界与焦点态，彻底消除右侧白胶囊被弹窗边界切半且遥控器无法选点的问题。\n- **彻底修复小米电视 3s 等 Android 6.0.1（API 23）设备选剧进入后闪退问题**：\n  - 将 `android-tv/dependencies.json` 中携带未脱糖 API 24/26 字节码（`ThreadLocal.withInitial`、`ArrayList.sort`、`Stream`、`java.nio.file`）的 `jsoup 1.18.3` 降级为 API 23 兼容的 `jsoup 1.15.4`，消除爬虫详情解析触发的 `NoSuchMethodError`；同时在 API 23 上禁用需 API 24 Bionic 符号的 `MPV` 内核、修复 `Cms.evictDohCache` / `SpiderGatewayServer` / `TvAudioEffectProcessor` API 24+ 调用并加宽 `LinkageError` 安全兜底捕获。\n- **电视端倍速播放改为当前剧连播有效、返回主页自动重置**：\n  - 新增 `PlaybackControls.TvDramaSpeedSession`，电视端在播放器内调节的倍速仅在当前剧连续选集/换线播放时保持；返回主页、搜索页、片库分类或切换其他剧集后自动重置为 `1.0×`，不再将上一部剧的倍速延续到其他剧集。\n- **彻底修复多仓全局搜索大量线路显示「未完成」问题**：\n  - 升级 `SearchCoordinator` 双通道调度：HTTP 通道与原生爬虫通道严格隔离并扩容插件阻塞超时预算（`16` 线程上限 / 低内存电视 `12` 线程，`15s` 阻塞恢复与空闲线程唤醒），随 `400+` 多仓规模动态扩展全球搜索总预算（最高 `360s`），保证多仓全部站点有序收敛，避免数百路线提前截断成 `299 未完成`。\n- **优化退出弹窗与「选线路与选集」弹窗对齐及资源规格识别**：\n  - `MainActivity.confirmExitApp()` 精简为仅保留单个「确认退出」按钮并默认强制聚焦（按返回键取消退出）。\n  - `DetailScreen` `EqualHeightEpisodeRow` 在 `onMeasure` 与 `onLayout` 双阶段强制拉齐同排选集卡片上下边界与两行文本重力；`TvSeriesScraper` 剥离网盘原始文件冗长点号后缀（呈现 `正片` / `正片 · 修正版`），并在双行选集卡第二行及播控选集菜单清晰展示 `4K · 杜比 · HDR · DD+ · 18.5GB` 等画质与容量信息。\n\n## 安装与校验\n\n- **正式包名**：`com.pilipala.marcomovie`（TV edition，`minSdk 23` / `targetSdk 28`）。\n- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`。\n- 说明：最终构建提交哈希、APK 与源码包 SHA-256 校验值见对应 GitHub Release 发布页及 [platform-releases.md](../platform-releases.md)。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.6.6/MarcoMovie-0.6.6-android-tv.apk",
+  "size": 56932550,
+  "sha256": "8e3ff32f3bbc59489a30f2bcf285102427aa0c2781ffc8d71074023b6d38e781",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.6.6-android-tv.apk",
   "packages": {
-    "MarcoMovie-0.6.5-android-tv.apk": {
-      "size": 56936646,
-      "sha256": "ca077300759218e262aa4fe46425ca83019d10c72b1b367c6f5834145fef011d",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.6.5/MarcoMovie-0.6.5-android-tv.apk"
+    "MarcoMovie-0.6.6-android-tv.apk": {
+      "size": 56932550,
+      "sha256": "8e3ff32f3bbc59489a30f2bcf285102427aa0c2781ffc8d71074023b6d38e781",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-tv-v0.6.6/MarcoMovie-0.6.6-android-tv.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.6.5"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-tv-v0.6.6"
 }
