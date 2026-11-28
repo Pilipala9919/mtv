@@ -9,9 +9,9 @@
   "android-mobile": {
     "folder": "/MarcoMovie/手机版",
     "share_url": "https://pan.quark.cn/s/370912cb6556",
-    "file": "MarcoMovie-0.7.6-android-mobile.apk",
-    "version": "0.7.6",
-    "sha256": "4b7a700f71d1a1a4a1afc3d2ec5a5ae9d8ab8caadba566eb8fc77a7273995413"
+    "file": "MarcoMovie-0.7.7-android-mobile.apk",
+    "version": "0.7.7",
+    "sha256": "bce1f467e7b38050ac3773d2d358a32c99b686fad91dce7ba3c0aa9ec95755ef"
   },
   "ios": {
     "folder": "/MarcoMovie/iOS",

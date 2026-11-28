@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "platform": "android-mobile",
-  "versionName": "0.7.6",
-  "versionCode": 106,
+  "versionName": "0.7.7",
+  "versionCode": 107,
   "minSdk": 23,
   "prerelease": false,
-  "notes": "# Marco Movie Android 手机 / 平板 0.7.6\n\n发布日期：2026-11-28。应用版本 `0.7.6`（版本代码 `106`）；最低 Android 6 / API 23（双架构 `armeabi-v7a` + `arm64-v8a`）。\n\n## 本次更新\n\n- **新增折叠屏半折悬停 HUD 与画面上下分离模式（自动开启）**：\n  - 新增 `FoldableTabletopController`，兼容 Jetpack WindowManager FoldingFeature 与铰链传感器多层级识别，在横向折叠半折悬停姿态下自动进入悬停分屏模式（`[68°, 142°]` 切入 / `[55°, 155°]` 迟滞退出，防角度抖动误触），展开或合盖自动还原。\n  - 上半屏严格承载视频画面、弹幕、字幕与轻触闪现顶栏；下半屏转为 `#FF0A0C10` 哑光暗色常驻触控台，提供返回 `<`、锁屏、弹幕开关、倍速、音效、双行线路/分辨率胶囊、选集、字幕、更多、全宽进度条与时间戳、左下播放/暂停及右下下一集。\n  - 支持在设置与播放器「更多」面板随时开关 `折叠半折悬停分离模式`（`Prefs.FOLDABLE_TABLETOP_SPLIT_HUD`）。\n- **彻底修复多仓全局搜索大量线路显示「未完成」问题**：\n  - 将 `MobileSearchPage` 固定 6 线程搜索池升级为与电视端一致的优先级双通道 `SearchCoordinator`：HTTP / Emby / Alist 通道与插件爬虫通道隔离调度，原生插件通道上限提升至 16 线程、`400+` 多仓场景自动按来源数扩容全局会话超时预算（最高 `360s`），阻塞超时池不再饿死后续健康来源（411 源压测实现 `0 未完成`）。\n- **整合结构化 Emby、局域网投屏中继、右上角状态定位、HUD 按钮自定义与 WebDAV 修复**：\n  - 保留 `0.7.5` 结构化 Emby 连接与编辑、局域网投屏媒体中继 `LanCastMediaRelay`、横屏弹幕面板间距修复、播放页右上角状态定位（5 档停靠与微调）、底栏与快捷按钮自由排序及 WebDAV 云同步修复，同时修复「聚剧|四盘」等聚合盘搜源历史直连续播与搜索词匹配。\n\n## 安装与校验\n\n- **正式包名**：`com.pilipala.marcomovie`（Mobile edition，`minSdk 23` / `targetSdk 35`）。\n- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`。\n- 说明：最终构建提交哈希、APK 与源码包 SHA-256 校验值见对应 GitHub Release 发布页及 [platform-releases.md](../platform-releases.md)。\n",
-  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.7.6/MarcoMovie-0.7.6-android-mobile.apk",
-  "size": 101048788,
-  "sha256": "4b7a700f71d1a1a4a1afc3d2ec5a5ae9d8ab8caadba566eb8fc77a7273995413",
-  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.7.6-android-mobile.apk",
+  "notes": "# Marco Movie Android 手机 / 平板 0.7.7\n\n发布日期：2026-11-28。应用版本 `0.7.7`（版本代码 `107`）；最低 Android 6 / API 23（双架构 `armeabi-v7a` + 16 KB 页面对齐 `arm64-v8a`）。\n\n## 本次更新\n\n- **修复平板与手机关闭首页「沉浸式巨幅海报」后顶栏悬空遮挡与滚动跳位问题**：\n  - `MobileHomePage.computeFloatingHeaderTranslationY` 在关闭沉浸式海报时让顶部品牌/站源栏 `floatingTopBar` 随 `scrollY` `1:1` 平滑上移收起并设为透明无背景、离屏后隐藏，彻底避免悬浮顶栏遮挡滚动后的海报卡片；\n  - 同步修正无沉浸式海报时首组精选模块（`firstUnderHero`）顶距、拦截滚动容器子项抢焦点（`FOCUS_BLOCK_DESCENDANTS`）并在异步刷新后保持原滚动位置 `savedScrollY`。\n- **修复本地代理直链与 HLS 拉流网速卡在 ~1 MB/s 导致大体积视频卡顿问题**：\n  - 重构 `MediaDiskCache` 与 `HlsStreamProxy`：将直链逐块（256 KiB）串行新建短连接请求与同步阻塞写盘改造为复用 `MoviePlayer.mediaHttpClient()` 连接池的单连接连续流式直传（64 KiB 分片边读边下发）、有界异步写盘与异步容量裁剪，并在播放器切换/寻址关闭流时通过 `RequestScope` 即时取消上游请求；\n  - `LocalProxy` 本地回环套接字开启 `TCP_NODELAY` 并配置 256 KiB 发送缓冲区，消除小分片回传延迟与本地吞吐瓶颈。\n- **修复剧集详情页部分海报模糊、未拉取到高清封面问题**：\n  - `MobileDetailScreen` 在 `PosterHookImageView` 中新增分辨率单调门控 `shouldAcceptPosterBitmap` 与 `applyPosterBitmap(bm, isHd)`，防止异步晚到的低清缩略图覆盖已渲染的高清海报；\n  - `ImageLoader.upgradePosterUrl(..., detail=true)` 扩展腾讯（`puui.qpic.cn`）、爱奇艺（`pic*.iqiyipic.com`）、芒果 TV（`*.hitv.com`）等 CDN 原图尺寸升格规则，并在 `fetchPosterBytesWithFallback` 增加 `.webp` / `.jpg` 与豆瓣镜像（`img9` / `img1`）回退；\n  - 抽取 `SeasonParser.stripSeriesEditionSuffix` 剥离「第X季 / 沪语版 / 未删减版」等版本后缀进行基准剧名二次回退，放宽多季年份差容忍度（`diff <= 6`），移除 Rexxar 过早截断并补充百科竖图兜底，合理下调竖版高清分辨率门槛（`360×500`）。\n\n## 安装与校验\n\n- **正式包名**：`com.pilipala.marcomovie`（Mobile edition，`minSdk 23` / `targetSdk 28`；兼容别名 `MarcoMovie-0.7.7-mobile.apk`）。\n- **官方签名证书 SHA-256**：`2549f01e89c41201ea171847048228c6df79a7c57fff2ec9a439195c757a80de`。\n- 说明：最终构建提交哈希、APK / `.idsig` / 源码包字节大小与 SHA-256 校验值见对应 GitHub Release 发布页及 [platform-releases.md](../platform-releases.md)。\n",
+  "githubUrl": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.7.7/MarcoMovie-0.7.7-android-mobile.apk",
+  "size": 101052884,
+  "sha256": "bce1f467e7b38050ac3773d2d358a32c99b686fad91dce7ba3c0aa9ec95755ef",
+  "url": "https://marcotv.wlj9919.top/movie/MarcoMovie-0.7.7-android-mobile.apk",
   "packages": {
-    "MarcoMovie-0.7.6-android-mobile.apk": {
-      "size": 101048788,
-      "sha256": "4b7a700f71d1a1a4a1afc3d2ec5a5ae9d8ab8caadba566eb8fc77a7273995413",
-      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.7.6/MarcoMovie-0.7.6-android-mobile.apk"
+    "MarcoMovie-0.7.7-android-mobile.apk": {
+      "size": 101052884,
+      "sha256": "bce1f467e7b38050ac3773d2d358a32c99b686fad91dce7ba3c0aa9ec95755ef",
+      "url": "https://github.com/Pilipala9919/MarcoMovie/releases/download/android-mobile-v0.7.7/MarcoMovie-0.7.7-android-mobile.apk"
     }
   },
-  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.7.6"
+  "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/android-mobile-v0.7.7"
 }
