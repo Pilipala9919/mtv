@@ -2,6 +2,42 @@
   "schema": 1,
   "releases": [
     {
+      "tag": "macos-v0.6.2",
+      "version": "0.6.2",
+      "platforms": [
+        "macos"
+      ],
+      "published_at": "2026-11-28T03:19:36Z",
+      "prerelease": false,
+      "target_commitish": "4475ca1b22acefa3a282bbe0ce25186601f0d995",
+      "notes": "# Marco Movie macOS 0.6.2\n\n发布日期：2026-11-28。应用版本 `0.6.2`（构建号 `74`）；Apple Silicon & Intel 通用包（`.app` ZIP）。\n\n## 核心更新\n\n- **macOS 专项流畅度、4K 臻彩与桌面体验升级**：\n  - 合入 `CVDisplayLink` 屏幕刷新率自适应视频同步机制，改善高刷 Mac 播控平滑度；\n  - 完善 4K / 臻彩分类识别与高画质网盘选集体验，新增起播阶段与网速遥测及有界下一集预缓冲；\n  - 完善 Finder 本地 `.json`/`.zip` 配置导入、后台无感订阅刷新与多显示器窗口尺寸记忆。\n- **桌面端 WebDAV 局域网扫码直绑**：macOS「云同步」新增局域网加密二维码生成，手机扫码即可快速推送或同步 WebDAV 配置与凭据。\n- **Emby / Jellyfin 连接表单与 HTTP 8096 兼容修复**：连接弹窗默认 `HTTP + 8096` 并支持 HTTPS 切换、选填端口/路径/名称、裸域名直填与 `/emby` → `/` 根路径自动回退，补齐 `X-Emby-Authorization` 头与 TLS 握手无凭据引导，默认启用 4K DirectPlay。\n\n## 构建与说明\n\n- **精确构建提交**：`4475ca1b22acefa3a282bbe0ce25186601f0d995`\n- **公证说明**：发布包采用 ad-hoc 签名未做 Apple 公证，首次运行如遇系统拦截请右键点击应用「打开」或核对官方 `.sha256` 校验和。\n\n## 包文件校验\n\n- `MarcoMovie-0.6.2-macos-desktop.zip`（`137098074` B），SHA-256：`bee810d5b7a02fdca92c84a75022e0a2235fcc11e30974c6ec99fe74f28c19ff`\n- `MarcoMovie-0.6.2-macos.zip`（`137098074` B），SHA-256：`bee810d5b7a02fdca92c84a75022e0a2235fcc11e30974c6ec99fe74f28c19ff`\n- 对应源码包：`MarcoMovie-macos-v0.6.2-source.zip`（`23463045` B），SHA-256：`fe035c386a0618c30026239fd9ee5f8c41842c043a46ee739cb3313071b51c5a`\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/macos-v0.6.2"
+    },
+    {
+      "tag": "harmonyos-v0.1.3",
+      "version": "0.1.3",
+      "platforms": [
+        "harmonyos"
+      ],
+      "published_at": "2026-11-28T03:14:15Z",
+      "prerelease": false,
+      "target_commitish": "4475ca1b22acefa3a282bbe0ce25186601f0d995",
+      "notes": "# Marco Movie HarmonyOS NEXT 0.1.3\n\n发布日期：2026-11-28。应用版本 `0.1.3`（构建号 `1000004`）；最低 HarmonyOS NEXT API 12（通用未签名 `.hap`）。\n\n## 核心更新\n\n- **HarmonyOS NEXT 局域网扫码直绑 WebDAV**：同时覆盖触屏端扫码推/拉绑定与智慧屏大屏端展示 `marco-bind-box-v1` 加密二维码，实现鸿蒙设备与 Android / Windows / macOS / Apple TV 间快速安全绑定 WebDAV 与双向合并。\n- **Emby / Jellyfin HTTP 8096 与 4K DirectPlay 修复**：连接弹窗默认采用 `HTTP + 8096` 并支持 HTTPS 切换与裸域名直填，自动兼容 `/emby` 与根路径 `/` 回退、标准 `X-Emby-Authorization` 头、TLS 握手失败 HTTP 端口明确引导及 DirectPlay 放行。\n\n## 安装与校验说明\n\n- **精确构建提交**：`4475ca1b22acefa3a282bbe0ce25186601f0d995`\n- **安装方式**：未签名通用 `.hap`，安装前需使用 DevEco Studio 自动签名或 `hap-sign-tool` 签名后安装；因缺少物理鸿蒙真机，实机冷启动与播放表现仍待反馈。\n\n## 包文件校验\n\n- `MarcoMovie-0.1.3-harmonyos-universal.hap`（`54626398` B），SHA-256：`95efa6160b691557a4812f21ffbf27a5a49382525b698e0367709687f69d9477`\n- `MarcoMovie-0.1.3-harmonyos.hap`（`54626398` B），SHA-256：`95efa6160b691557a4812f21ffbf27a5a49382525b698e0367709687f69d9477`\n- 对应源码包：`MarcoMovie-harmonyos-v0.1.3-source.zip`（`23489437` B），SHA-256：`afc3ab1bfc8bd27c61959fbf37e52f2e1581356bf1ef59cb689298f43470de3e`\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/harmonyos-v0.1.3"
+    },
+    {
+      "tag": "appletv-v0.1.3",
+      "version": "0.1.3",
+      "platforms": [
+        "appletv"
+      ],
+      "published_at": "2026-11-28T03:13:41Z",
+      "prerelease": false,
+      "target_commitish": "4475ca1b22acefa3a282bbe0ce25186601f0d995",
+      "notes": "# Marco Movie Apple TV 0.1.3\n\n发布日期：2026-11-28。应用版本 `0.1.3`（构建号 `4`）；最低系统要求 `tvOS 16.0`（未签名 `.ipa`）。\n\n## 核心更新\n\n- **客厅 WebDAV 局域网扫码直绑**：在 Apple TV 端引入 `WebdavBindCrypto`（AES/HMAC `marco-bind-box-v1`）与 `/bind` 端点；客厅大屏展示局域网二维码后，使用移动设备扫码即可直接将 WebDAV 地址、账号与加密密码安全同步至 Apple TV 并触发合并。\n- **同步合入近期 tvOS 稳定性与体验改进**：包含大屏播放 HUD 操控优化、6 路流式网盘 Range 代理、焦点恢复与弹幕稳定性增强。\n\n## 安装与校验说明\n\n- **精确构建提交**：`4475ca1b22acefa3a282bbe0ce25186601f0d995`\n- **安装方式**：未签名 `.ipa`（`MarcoMovie-0.1.3-tvos-appletv-unsigned.ipa` 及兼容别名 `MarcoMovie-0.1.3-appletv-unsigned.ipa`），可通过 Xcode 或自签工具部署，未真机验证全部商业片源。\n\n## 包文件校验\n\n- `MarcoMovie-0.1.3-tvos-appletv-unsigned.ipa`（`3451700` B），SHA-256：`07cd22222f2701e6a8a3e4d42c5cc7c8a8c90544cc2e0b18ece83816a969d110`\n- `MarcoMovie-0.1.3-appletv-unsigned.ipa`（`3451700` B），SHA-256：`07cd22222f2701e6a8a3e4d42c5cc7c8a8c90544cc2e0b18ece83816a969d110`\n- 对应源码包：`MarcoMovie-appletv-v0.1.3-source.zip`（`23476241` B），SHA-256：`91eb56bdabbc4e1119304c78b7e60756e684cb47c580fc73769269aafb49055c`\n",
+      "release_url": "https://github.com/Pilipala9919/MarcoMovie/releases/tag/appletv-v0.1.3"
+    },
+    {
       "tag": "windows-v0.7.5",
       "version": "0.7.5",
       "platforms": [
